@@ -20,7 +20,7 @@
     if(L.off)return;
     yoLista.then(function(){
       if(L.off)return;
-      if(!window.LF_ME)return;   /* sin sesión no se entrega nada: así la aplicación nunca cree que un registro "no existe" y escriba valores por defecto */
+      if(!window.LF_ME||window.LF_ME.forzar)return;   /* sin sesión (o con cambio de contraseña pendiente) no se entrega nada: así la aplicación nunca cree que un registro "no existe" y escriba valores por defecto */
       if(L.tipo==="col"){
         api("GET","col/"+encodeURIComponent(L.col)).then(function(r){if(L.off)return;L.cb({docs:r.docs.map(function(d){return {id:d.id,exists:true,data:function(){return JSON.parse(JSON.stringify(d.data))}}})})}).catch(function(e){if(L.err)L.err(e)});
       }else{
@@ -40,12 +40,13 @@
     }catch(e){}
   });
   function docUsuarios(){
-    var d={users:(window.LF_USERS||[]).map(function(u){return {u:u.u,name:u.name,rol:u.rol,doc:u.doc||"",salt:"",hash:"",it:0}})};
-    return {get:function(){return yoLista.then(function(){return snapDoc("users",{exists:true,data:{users:window.LF_USERS?(window.LF_USERS.map(function(u){return {u:u.u,name:u.name,rol:u.rol,doc:u.doc||"",salt:"",hash:"",it:0}})):[]}})})},
+    function mapa(u){return {u:u.u,name:u.name,rol:u.rol,doc:u.doc||"",modulos:u.modulos||null,perm:u.perm||null,salt:"",hash:"",it:0}}
+    var d={users:(window.LF_USERS||[]).map(mapa)};
+    return {get:function(){return yoLista.then(function(){return snapDoc("users",{exists:true,data:{users:window.LF_USERS?(window.LF_USERS.map(mapa)):[]}})})},
       set:function(){return Promise.reject(new Error("Los usuarios se administran desde el servidor."))},
       delete:function(){return Promise.reject(new Error("Los usuarios se administran desde el servidor."))},
       update:function(){return Promise.reject(new Error("Los usuarios se administran desde el servidor."))},
-      onSnapshot:function(cb){var L={off:false};yoLista.then(function(){if(!L.off)cb(snapDoc("users",{exists:true,data:{users:(window.LF_USERS||[]).map(function(u){return {u:u.u,name:u.name,rol:u.rol,doc:u.doc||"",salt:"",hash:"",it:0}})}}))});return function(){L.off=true}},
+      onSnapshot:function(cb){var L={off:false};yoLista.then(function(){if(!L.off)cb(snapDoc("users",{exists:true,data:{users:(window.LF_USERS||[]).map(mapa)}}))});return function(){L.off=true}},
       acquire:function(){return Promise.resolve({acquired:false})}};
   }
   var DB={
@@ -55,7 +56,7 @@
       var p=String(ruta).split("/"),col=p[0],id=p[1];
       var base="doc/"+encodeURIComponent(col)+"/"+encodeURIComponent(id);
       return {
-        get:function(){return yoLista.then(function(){return window.LF_ME?api("GET",base):{exists:false,data:null}}).then(function(r){return snapDoc(id,r)})},
+        get:function(){return yoLista.then(function(){return window.LF_ME&&!window.LF_ME.forzar?api("GET",base):{exists:false,data:null}}).then(function(r){return snapDoc(id,r)})},
         set:function(obj){return api("PUT",base,obj).then(function(){refresca(col,id)})},
         update:function(obj){return api("PATCH",base,obj).then(function(){refresca(col,id)})},
         delete:function(){return api("DELETE",base).then(function(){refresca(col,id)})},
@@ -73,7 +74,7 @@
     profiles:function(ids){var o={};(ids||[]).forEach(function(i){o[i]={name:""}});return Promise.resolve(o)}
   };
   var ASSETS={
-    upload:function(f){return api("POST","archivo",f,{"x-nombre":encodeURIComponent(f.name||"archivo"),"Content-Type":f.type||"application/octet-stream"})},
+    upload:function(f,o){var h={"x-nombre":encodeURIComponent(f.name||"archivo"),"Content-Type":f.type||"application/octet-stream"};if(o&&o.privado)h["x-privado"]="1";return api("POST","archivo",f,h)},
     delete:function(id){return api("DELETE","archivo/"+id)}
   };
   var DL={

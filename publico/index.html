@@ -92,16 +92,17 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
 <div id="vHome">
   <p class="sub" id="hSal"></p>
   <div class="mods">
-    <button class="mod nodoc" id="mPag"><b>Control de pagos</b><span>Colegiaturas, recibos, becas, gastos y corte de caja.</span><span class="st" id="mPagS"></span></button>
-    <button class="mod need-admin nodoc" id="mIns"><b>Inscripción de alumnos</b><span>Nuevas admisiones: alta del alumno, grupo, pago de inscripción, ficha y recibo.</span><span class="st" id="mInsS"></span></button>
-    <button class="mod onlydoc" id="mDoc"><b>Mis asignaturas</b><span>Listas, contenido y calificaciones de las asignaturas que se te asignaron.</span><span class="st" id="mDocS"></span></button>
-    <button class="mod need-admin nodoc" id="mTit"><b>Titulaciones por experiencia laboral</b><span>Trámites de titulación: datos, documentos, abonos y expediente en PDF.</span><span class="st" id="mTitS"></span></button>
-    <button class="mod need-admin nodoc" id="mNom"><b>Nómina docente</b><span>Pago mensual a docentes por asignatura y horas: $120 por hora, y $150 en Enfermería, maestría y doctorado.</span><span class="st" id="mNomS"></span></button>
-    <button class="mod need-admin nodoc" id="mNa"><b>Nómina administrativa</b><span>Sueldos del personal administrativo: empleados, periodos, bonos, descuentos y recibos. Cuenta como gasto en el corte de caja y en el estado de cuenta final.</span><span class="st" id="mNaS"></span></button>
-    <button class="mod need-cobro nodoc" id="mVer"><b>Verificación de pagos</b><span>Transferencias por verificar en la app del banco, según los recibos emitidos.</span><span class="st" id="mVerS"></span></button>
-    <button class="mod need-admin nodoc" id="mA2"><b>Acuerdo 286</b><span>Bachillerato por Acuerdo 286: ficha de inscripción, documentos, evaluación, envío, certificado y pagos.</span><span class="st" id="mA2S"></span></button>
-    <button class="mod need-cobro nodoc" id="mAcu"><b>Acuerdos</b><span>Prórrogas y pagos en parcialidades con los alumnos.</span><span class="st" id="mAcuS"></span></button>
-    <button class="mod nodoc" id="mEsc"><b>Control escolar</b><span>Seguimiento académico de los alumnos.</span><span class="st">En preparación</span></button>
+    <button class="mod" id="mPag"><b>Control de pagos</b><span>Colegiaturas, recibos, becas, gastos y corte de caja.</span><span class="st" id="mPagS"></span></button>
+    <button class="mod" id="mIns"><b>Inscripción de alumnos</b><span>Nuevas admisiones: alta del alumno, grupo, pago de inscripción, ficha y recibo.</span><span class="st" id="mInsS"></span></button>
+    <button class="mod" id="mDoc"><b>Mis asignaturas</b><span>Listas, contenido y calificaciones de las asignaturas que se te asignaron.</span><span class="st" id="mDocS"></span></button>
+    <button class="mod" id="mTit"><b>Titulaciones por experiencia laboral</b><span>Trámites de titulación: datos, documentos, abonos y expediente en PDF.</span><span class="st" id="mTitS"></span></button>
+    <button class="mod" id="mNom"><b>Nómina docente</b><span>Pago mensual a docentes por asignatura y horas: $120 por hora, y $150 en Enfermería, maestría y doctorado.</span><span class="st" id="mNomS"></span></button>
+    <button class="mod" id="mNa"><b>Nómina administrativa</b><span>Sueldos del personal administrativo: empleados, periodos, bonos, descuentos y recibos. Cuenta como gasto en el corte de caja y en el estado de cuenta final.</span><span class="st" id="mNaS"></span></button>
+    <button class="mod" id="mUsr" hidden><b>Usuarios y permisos</b><span>Crea usuarios y decide a qué módulos entra cada uno y con qué privilegio: solo ver o editar.</span><span class="st" id="mUsrS"></span></button>
+    <button class="mod" id="mVer"><b>Verificación de pagos</b><span>Transferencias por verificar en la app del banco, según los recibos emitidos.</span><span class="st" id="mVerS"></span></button>
+    <button class="mod" id="mA2"><b>Acuerdo 286</b><span>Bachillerato por Acuerdo 286: ficha de inscripción, documentos, evaluación, envío, certificado y pagos.</span><span class="st" id="mA2S"></span></button>
+    <button class="mod" id="mAcu"><b>Acuerdos</b><span>Prórrogas y pagos en parcialidades con los alumnos.</span><span class="st" id="mAcuS"></span></button>
+    <button class="mod" id="mEsc"><b>Control escolar</b><span>Seguimiento académico de los alumnos.</span><span class="st">En preparación</span></button>
   </div>
 </div>
 <div id="vEsc" hidden>
@@ -255,7 +256,8 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
       <div class="bar"><button class="p" id="dcAdd">Agregar docente</button></div>
     </div>
     <h2 style="margin-top:12px">Docentes</h2>
-    <div class="wrap"><table style="min-width:640px"><thead><tr><th>Nombre</th><th>Especialidad</th><th>Teléfono</th><th>Correo</th><th class="n">Asignaturas</th><th class="n">Sesiones</th><th>Acceso</th><th></th></tr></thead><tbody id="dcTb"></tbody></table></div>
+    <p class="hint" id="dcMsg" style="min-height:1.3em"></p>
+    <div class="wrap"><table style="min-width:640px"><thead><tr><th>Nombre</th><th>Especialidad</th><th>Teléfono</th><th>Correo</th><th class="n">Asignaturas</th><th class="n">Sesiones</th><th>Expediente</th><th>Acceso</th><th></th></tr></thead><tbody id="dcTb"></tbody></table></div>
     <div class="bar need-admin" style="margin-top:10px"><button id="dcAccAll">Crear acceso a todos los docentes sin usuario</button></div>
     <div id="dcAcc" hidden>
       <h2 style="margin-top:12px">Accesos creados</h2>
@@ -265,7 +267,15 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     </div>
   </div>
 </div>
-<div id="vNa" hidden>
+<div id="vPor" hidden><div id="poBody"></div></div>
+   <div id="vUsr" hidden>
+     <p class="hint">Crea usuarios y decide a qué módulos entra cada uno y con qué privilegio: <b>Solo ver</b> (consulta, sin capturar) o <b>Editar</b> (captura y registra). El Administrador siempre entra a todo. Las contraseñas se guardan cifradas.</p>
+     <div class="bar"><input id="usBus" class="grow" type="search" placeholder="Buscar usuario" aria-label="Buscar usuario"><button class="p" id="usNew">Nuevo usuario</button><button id="usAl" hidden>Accesos de alumnos</button></div>
+     <label id="usVerAlL" class="hint" style="display:flex;gap:6px;align-items:center" hidden><input id="usVerAl" type="checkbox" style="width:auto"><span id="usVerAlT"></span></label>
+     <p class="hint" id="usMsg2" style="min-height:1.3em"></p>
+     <div class="wrap"><table style="min-width:760px"><thead><tr><th>Nombre</th><th>Usuario</th><th>Perfil</th><th>Módulos y privilegios</th><th></th></tr></thead><tbody id="usTb"></tbody></table></div>
+   </div>
+   <div id="vNa" hidden>
      <div class="bar"><button class="p" id="naT1">Nómina del periodo</button><button id="naT2">Empleados</button></div>
      <div id="naP1">
        <p class="hint">Sueldos del personal administrativo. El sueldo del periodo sale del sueldo mensual del empleado (la mitad en cada quincena); puedes sumar bonos o restar descuentos antes de pagar. Cada pago queda como gasto en el corte de caja y en el estado de cuenta final.</p>
@@ -398,7 +408,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     </div>
   </div>
 </div>
-<div class="bar" id="tabs" hidden><button class="p" id="tAl">Alumnos</button><button id="tGa" class="need-cobro">Gastos y corte de caja</button><button id="tEf" class="need-admin">Estado de cuenta final</button></div>
+<div class="bar" id="tabs" hidden><button class="p" id="tAl">Alumnos</button><button id="tGa">Gastos y corte de caja</button><button id="tEf">Estado de cuenta final</button></div>
 <div id="vAl" hidden>
 <div class="bar">
   <input id="q" class="grow" type="search" placeholder="Buscar por nombre, matrícula o carrera" aria-label="Buscar">
@@ -742,6 +752,53 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <div class="bar" style="justify-content:flex-end;margin:0"><button id="naPCan">Cancelar</button><button class="p" id="naPOk">Registrar pago</button></div>
    </dialog>
 
+   <dialog id="dDx" style="width:min(820px,98vw)">
+     <h2 id="dxT">Expediente del docente</h2>
+     <p class="hint" id="dxS"></p>
+     <div class="row">
+       <label class="full">Fotografía del docente<span style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><img id="dxImg" alt="" style="width:72px;height:90px;object-fit:cover;border-radius:8px;background:var(--bg);border:1px solid var(--line);visibility:hidden"><input id="dxFoto" type="file" accept="image/*" style="max-width:240px"><button class="d" id="dxFotoQ" hidden>Quitar fotografía</button></span></label>
+       <label>Grado académico más alto<select id="dxGrado"><option>Licenciatura</option><option>Maestría</option><option>Doctorado</option></select></label>
+       <label>Nombre del grado (opcional)<input id="dxGradoN" placeholder="Ej. Maestría en Educación"></label>
+     </div>
+     <p class="hint" id="dxProg" style="font-weight:600;color:var(--ink)"></p>
+     <div id="dxDocs"></div>
+     <p class="hint" id="dxMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button class="p" id="dxCls">Cerrar</button></div>
+   </dialog>
+
+   <dialog id="dAA" style="width:min(900px,98vw)">
+     <h2>Accesos de alumnos</h2>
+     <p class="hint">Crea el usuario y la contraseña de cada alumno para que consulte su grupo, materias, docentes, calificaciones y el registro de sus pagos (solo lectura). El usuario es la matrícula y la contraseña inicial se genera sola; el alumno debe cambiarla al entrar. Anota o descarga las contraseñas ahora: no se pueden volver a ver (solo restablecer).</p>
+     <div class="row">
+       <label>Plan de estudios<select id="aaPlan"></select></label>
+       <label>Grupo<select id="aaGrupo"></select></label>
+       <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="aaSin" type="checkbox" checked style="width:auto"> Solo alumnos que aún no tienen acceso</label>
+     </div>
+     <p class="hint" id="aaInfo" style="font-weight:600;color:var(--ink)"></p>
+     <div class="bar"><button class="p" id="aaCrear">Crear accesos</button><button id="aaCsv" hidden>Descargar accesos (CSV)</button><button id="aaPdf" hidden>Hojas de acceso (PDF)</button></div>
+     <p class="hint" id="aaMsg" style="min-height:1.3em"></p>
+     <div id="aaRes" hidden><div class="wrap" style="max-height:260px;overflow:auto"><table style="min-width:520px"><thead><tr><th>Alumno</th><th>Matrícula</th><th>Usuario</th><th>Contraseña</th></tr></thead><tbody id="aaTb"></tbody></table></div></div>
+     <h2 style="margin-top:14px">Un solo alumno</h2>
+     <input id="aaBus" type="search" placeholder="Busca por nombre o matrícula (mínimo 2 letras)" aria-label="Buscar alumno">
+     <div id="aaUno"></div>
+     <div class="bar" style="justify-content:flex-end;margin:10px 0 0"><button class="p" id="aaCan">Cerrar</button></div>
+   </dialog>
+
+   <dialog id="dUsr" style="width:min(860px,98vw)">
+     <h2 id="usT">Nuevo usuario</h2>
+     <div class="row">
+       <label>Nombre completo<input id="usNom"></label>
+       <label>Usuario (sin acentos ni espacios)<input id="usUsu" autocomplete="off"></label>
+       <label><span id="usPwL">Contraseña</span><input id="usPw" type="password" autocomplete="new-password"></label>
+       <label>Perfil<select id="usRol"><option value="admin">Administrador (todo)</option><option value="caja">Caja</option><option value="consulta">Consulta</option><option value="docente">Docente</option><option value="personalizado">Personalizado</option></select></label>
+       <label id="usDocL" hidden class="full">Docente al que pertenece este usuario<select id="usDoc"></select></label>
+     </div>
+     <p class="hint" id="usHint"></p>
+     <div id="usMods"></div>
+     <p class="hint" id="usMsg" style="color:var(--bad);min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="usCan">Cancelar</button><button class="p" id="usOk">Guardar usuario</button></div>
+   </dialog>
+
    <dialog id="dBk" style="width:min(560px,96vw)">
   <h2>Respaldo completo</h2>
   <p class="hint">Descarga una copia de todos los datos de la plataforma: alumnos, pagos, calificaciones, grupos, docentes, titulaciones, Acuerdo 286, nómina y demás. Sirve como copia de seguridad y como punto de partida para migrar a otra plataforma. <b>Guárdalo en un lugar seguro: contiene datos personales.</b></p>
@@ -879,6 +936,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
 
 <dialog id="dPf" style="width:min(680px,96vw)">
   <div id="pfBody"></div>
+  <div id="pfAcc"></div>
   <div id="pfDocs"></div>
   <div id="pfJus"></div>
   <h2 style="margin-top:16px">Boleta por cuatrimestre</h2>
@@ -1421,7 +1479,7 @@ function recFormalPDF(s,g){
 var DBH=null,USER=null,ROL="consulta",ST={},LG={},MY="",LEGACY=[];
 try{if(!localStorage.getItem(KEY+"-migrado"))LEGACY=S.slice()}catch(e){LEGACY=S.slice()}
 S=[];save=function(){};
-var ROLTXT={admin:"Administrador",caja:"Caja",consulta:"Consulta",docente:"Docente"};
+var ROLTXT={admin:"Administrador",caja:"Caja",consulta:"Consulta",docente:"Docente",personalizado:"Personalizado",alumno:"Alumno"};
 function fmtFolio(n){return "R-"+String(n).padStart(6,"0")}
 function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
 function dberr(e){alert("No se pudo guardar: "+((e&&(e.message||e.code))||"error")+((e&&e.code==="invalid_argument")?". Es posible que tu usuario no tenga permiso para esta acción.":""))}
@@ -1641,20 +1699,30 @@ function renderCaja(){
 }
 var MOD="home",TAB="al";
 function vista(v){
-  TAB=v;var ga=v==="ga",ef=v==="ef"&&ROL==="admin",on=MOD==="pagos";
-  if(v==="ef"&&!ef)v=TAB="al";
+  if(typeof PERMS==="undefined"||PERMS===undefined)return;   /* llamada anterior a que existan los permisos */
+  var pp=permiso("pagos")!=="none",pc=permiso("corte")!=="none",pe=permiso("estado")!=="none";
+  if(v==="al"&&!pp)v=pc?"ga":"ef";
+  if(v==="ga"&&!pc)v=pp?"al":"ef";
+  if(v==="ef"&&!pe)v=pp?"al":"ga";
+  TAB=v;var ga=v==="ga",ef=v==="ef",on=MOD==="pagos";
+  if(on){var rt=efectivoRol(ga?"corte":(ef?"estado":"pagos"));if(rt&&rt!==ROL)setRol(rt)}
+  $("tAl").hidden=!pp;$("tGa").hidden=!pc;$("tEf").hidden=!pe;
   $("vAl").hidden=!on||ga||ef;$("vGa").hidden=!on||!ga;$("vEf").hidden=!on||!ef;$("sum").hidden=!on||ga||ef;
-  $("tAl").className=(ga||ef)?"":"p";$("tGa").className=ga?"p need-cobro":"need-cobro";$("tEf").className=ef?"p need-admin":"need-admin";
+  $("tAl").className=(ga||ef)?"":"p";$("tGa").className=ga?"p":"";$("tEf").className=ef?"p":"";
   if(on&&ga){if(!$("cFec").value)$("cFec").value=today();$("gFec").value=today();cargaCierre();renderCaja()}
   if(on&&ef)renderEf();
 }
 function ir(m){
+  if(typeof APP!=="undefined"&&APP&&APP.rol==="alumno")m="por";   /* los alumnos solo tienen su portal */
+  if(m!=="home"&&!accesoVista(m))m="home";
+  var rv=m==="home"?BASEROL:rolDeVista(m);if(rv&&rv!==ROL)setRol(rv);
   MOD=m;var home=m==="home";
+  $("vUsr").hidden=m!=="usr";$("vPor").hidden=m!=="por";
   $("vHome").hidden=!home;$("vEsc").hidden=m!=="esc";$("vIns").hidden=m!=="ins";$("vAcu").hidden=m!=="acu";$("vDoc").hidden=m!=="doc";$("vTit").hidden=m!=="tit";$("vA2").hidden=m!=="a2";$("vVer").hidden=m!=="ver";$("vNom").hidden=m!=="nom";$("vNa").hidden=m!=="na";
-  $("tabs").hidden=m!=="pagos";$("nav").hidden=home;$("subt").hidden=m!=="pagos";$("warn").hidden=m!=="pagos";
-  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Control de pagos":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":"Control escolar")))))))));
-  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();
-  if(home)renderHome();
+  $("tabs").hidden=m!=="pagos";$("nav").hidden=home||m==="por";$("subt").hidden=m!=="pagos";$("warn").hidden=m!=="pagos";
+  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Control de pagos":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":"Control escolar")))))))))));
+  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="por")renderPor();
+  if(home){if(typeof MODDEF!=="undefined"&&MODDEF)aplicaModulos();renderHome()}
 }
 $("tAl").onclick=function(){vista("al")};$("tGa").onclick=function(){vista("ga")};
 function irFecha(f){$("cFec").value=f;cargaCierre();renderCaja()}
@@ -1738,7 +1806,7 @@ function renderHome(){
   $("mTitS").textContent=tl.length+(tl.length===1?" trámite":" trámites")+" · "+tl.filter(function(t){return t.iniciado}).length+" en proceso";
   var al2=Object.keys(A2||{}).map(function(k){return A2[k]});
   $("mA2S").textContent=al2.length+(al2.length===1?" inscrito":" inscritos")+" · "+al2.filter(function(t){return t.enviado}).length+" enviados";
-  if(ROL==="admin"){var hn=new Date(),ny=hn.getFullYear(),nm=hn.getMonth()+1,nn=Object.keys(DOC||{}).filter(function(k){return filasNom(k,ny,nm).length}).length;$("mNomS").textContent=nn+(nn===1?" docente":" docentes")+" con clases en "+MESN[nm-1];var ne=Object.keys(EMP||{}).filter(function(k){return EMP[k].activo!==false}).length;$("mNaS").textContent=ne+(ne===1?" empleado activo":" empleados activos")}
+  if(permiso("nomina_doc")!=="none"||permiso("nomina_adm")!=="none"){var hn=new Date(),ny=hn.getFullYear(),nm=hn.getMonth()+1,nn=Object.keys(DOC||{}).filter(function(k){return filasNom(k,ny,nm).length}).length;$("mNomS").textContent=nn+(nn===1?" docente":" docentes")+" con clases en "+MESN[nm-1];var ne=Object.keys(EMP||{}).filter(function(k){return EMP[k].activo!==false}).length;$("mNaS").textContent=ne+(ne===1?" empleado activo":" empleados activos")}
   $("mInsS").textContent=nn+(nn===1?" alumno":" alumnos")+" de nuevo ingreso en el ciclo "+cicloAct();
 }
 $("mPag").onclick=function(){ir("pagos")};$("mIns").onclick=function(){ir("ins")};$("mAcu").onclick=function(){ir("acu")};$("mDoc").onclick=function(){ir("doc")};$("mTit").onclick=function(){ir("tit")};$("mA2").onclick=function(){ir("a2")};$("mVer").onclick=function(){ir("ver")};$("mNom").onclick=function(){ir("nom")};$("mNa").onclick=function(){ir("na")};$("mEsc").onclick=function(){ir("esc")};$("nHome").onclick=function(){ir("home")};
@@ -1766,8 +1834,15 @@ function fotoRedim(file){
   });
 }
 function etab(t){
+  var pe=permiso("escolar")!=="none",pc=permiso("constancias")!=="none";
+  if(!pe&&pc)t="N";
+  if(pe&&t==="R"&&permiso("escolar")!=="editar")t="A";
   ETAB=t;["A","P","G","C","K","D","N","E","J","R"].forEach(function(k){$("e"+k).hidden=k!==t});
-  Array.prototype.forEach.call($("eTabs").querySelectorAll("button"),function(b){b.className=(b.dataset.et===t?"p":"")+(b.dataset.nc?" need-cobro":"")+(b.dataset.na?" need-admin":"")});
+  var rt=t==="N"?mayorRol(efectivoRol("escolar"),efectivoRol("constancias")):efectivoRol("escolar");if(MOD==="esc"&&rt&&rt!==ROL)setRol(rt);
+  Array.prototype.forEach.call($("eTabs").querySelectorAll("button"),function(b){
+    var k=b.dataset.et;b.className=k===t?"p":"";
+    b.hidden=k==="N"?!(pe||pc):(k==="R"?permiso("escolar")!=="editar":!pe);
+  });
   renderEsc();
 }
 $("eTabs").onclick=function(e){var t=e.target.dataset.et;if(t)etab(t)};
@@ -1791,7 +1866,7 @@ function openPf(id){
     (act.length?act.map(function(m){var d=DOC[m.docId];return '<div class="pay"><span>'+esc(m.nom)+' <small>'+esc(d?d.nombre:"sin docente")+' · '+esc(hor(m))+(m.aula?' · '+esc(m.aula):'')+(m.ev?' · Evaluación: '+fd(m.ev):'')+'</small></span></div>'}).join(""):'<p class="hint">Aún no hay asignaturas cargadas para este plan y periodo.</p>')+
     '<h2 style="margin-top:16px">Historial académico</h2>'+
     (it.length?'<div class="wrap"><table style="min-width:620px"><thead><tr><th>Periodo</th><th>Asignatura</th><th>Docente</th><th class="n">Calificación</th><th>Estatus</th></tr></thead><tbody>'+it.map(function(x){var ok=x.cal>=MINAP;return '<tr><td>'+esc(x.per)+'</td><td>'+esc(x.mat)+'</td><td>'+esc(x.doc||"")+'</td><td class="n">'+(x.cal==null?"—":x.cal.toFixed(1))+'</td><td>'+(x.cal==null?'<span class="tag parcial">En curso</span>':'<span class="tag '+(ok?'pagado':'sin')+'">'+(ok?'Aprobada':'Reprobada')+'</span>')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Sin calificaciones registradas.</p>');
-  initBoleta(id);renderDocsPf(id);renderJusPf(id);
+  initBoleta(id);renderDocsPf(id);renderJusPf(id);ACCPF={sid:id,p:null};renderAccPf(id);
   $("dPf").showModal();
 }
 $("pfCls").onclick=function(){$("dPf").close()};
@@ -1828,23 +1903,35 @@ $("alOk").onclick=async function(){
 /* ---- Docentes ---- */
 function renderDoc(){
   var L=Object.keys(DOC).map(function(k){return Object.assign({id:k},DOC[k])}).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))});
+  var base=BASEROL==="admin";
+  $("dcAccAll").parentNode.hidden=!base;
   $("dcTb").innerHTML=L.length?L.map(function(d){var n=(d.asig||[]).length,ss=sesTot(d);
-    return '<tr><td>'+esc(d.nombre)+'</td><td>'+esc(d.esp||"")+'</td><td>'+esc(d.tel||"")+'</td><td>'+esc(d.mail||"")+'</td><td class="n">'+n+'</td><td class="n">'+ss+'</td><td>'+(usuarioDoc(d.id)?esc(usuarioDoc(d.id).u):'<span class="hint">Sin acceso</span>')+'</td><td><button class="need-admin" data-ac="'+d.id+'">'+(usuarioDoc(d.id)?'Restablecer clave':'Crear acceso')+'</button> <button data-da="'+d.id+'">Asignaturas</button> <button class="need-admin" data-ed="'+d.id+'">Editar</button> <button class="d need-admin" data-dl="'+d.id+'">Quitar</button></td></tr>'}).join(""):vacio(8,"Aún no hay docentes registrados.");
+    var acc=base?'<button data-ac="'+d.id+'">'+(usuarioDoc(d.id)?'Restablecer clave':'Crear acceso')+'</button> ':'',exp=puedeExp()?'<button data-ex="'+d.id+'">Expediente</button> ':'';
+    return '<tr><td>'+esc(d.nombre)+'</td><td>'+esc(d.esp||"")+'</td><td>'+esc(d.tel||"")+'</td><td>'+esc(d.mail||"")+'</td><td class="n">'+n+'</td><td class="n">'+ss+'</td><td>'+dxCelda(d.id)+'</td><td>'+(usuarioDoc(d.id)?esc(usuarioDoc(d.id).u):'<span class="hint">Sin acceso</span>')+'</td><td>'+acc+exp+'<button data-da="'+d.id+'">Asignaturas</button> <button class="need-admin" data-ed="'+d.id+'">Editar</button> <button class="d need-admin" data-dl="'+d.id+'">Quitar</button></td></tr>'}).join(""):vacio(9,"Aún no hay docentes registrados.");
 }
 function limpiaDc(){EDD=null;["dcNom","dcEsp","dcTel","dcMail"].forEach(function(i){$(i).value=""});$("dcAdd").textContent="Agregar docente"}
 $("dcAdd").onclick=async function(){
   if(ROL!=="admin")return;
   var n=$("dcNom").value.trim();if(!n){alert("Escribe el nombre del docente.");return}
   var id=EDD||uid(),d={nombre:n,esp:$("dcEsp").value.trim(),tel:$("dcTel").value.trim(),mail:$("dcMail").value.trim(),asig:(DOC[id]&&DOC[id].asig)||[]};
-  try{await DBH.doc("docentes/"+id).set(d);DOC[id]=d;limpiaDc();renderDoc()}catch(e){dberr(e)}
+  var nuevoDoc=!EDD;
+  try{await DBH.doc("docentes/"+id).set(d);DOC[id]=d;limpiaDc();renderDoc();if(nuevoDoc&&puedeExp())abreDx(id,true)}catch(e){dberr(e)}
 };
 $("dcTb").onclick=async function(e){
   var t=e.target.dataset;
   if(t.ac){accesosDoc([t.ac]);return}
   if(t.da)return openDa(t.da);
+  if(t.ex)return abreDx(t.ex,false);
   if(t.ed){var d=DOC[t.ed];EDD=t.ed;$("dcNom").value=d.nombre;$("dcEsp").value=d.esp||"";$("dcTel").value=d.tel||"";$("dcMail").value=d.mail||"";$("dcAdd").textContent="Guardar cambios"}
-  if(t.dl&&ROL==="admin"&&confirm("¿Quitar a "+DOC[t.dl].nombre+"? Sus asignaturas quedarán sin docente.")){
-    try{await DBH.doc("docentes/"+t.dl).delete();delete DOC[t.dl];renderDoc()}catch(er){dberr(er)}
+  if(t.dl&&ROL==="admin"){
+    if(DCCONF!==t.dl){DCCONF=t.dl;e.target.textContent="Confirmar";$("dcMsg").style.color="var(--bad)";$("dcMsg").textContent="Se quitará a "+DOC[t.dl].nombre+", con su expediente y sus archivos. Sus asignaturas quedarán sin docente. Pulsa «Confirmar» para continuar.";clearTimeout(DCT);var bb=e.target;DCT=setTimeout(function(){DCCONF=null;bb.textContent="Quitar";$("dcMsg").textContent=""},8000);return}
+    clearTimeout(DCT);DCCONF=null;
+    try{
+      var xd=DXD[t.dl],ids=[];if(xd&&xd.docs)Object.keys(xd.docs).forEach(function(k){if(xd.docs[k]&&xd.docs[k].id)ids.push(xd.docs[k].id)});
+      await DBH.doc("docentes/"+t.dl).delete();try{await DBH.doc("docentes_docs/"+t.dl).delete()}catch(e2){}
+      delete DOC[t.dl];delete DXD[t.dl];if(ids.length&&(await assetsLib()))ids.forEach(function(i){ASSETS.delete(i).catch(function(){})});
+      $("dcMsg").style.color="var(--ok)";$("dcMsg").textContent="Docente quitado.";renderDoc();
+    }catch(er){dberr(er)}
   }
 };
 /* ---- Calendario escolar (asignaturas, docentes y horarios) ---- */
@@ -2746,9 +2833,9 @@ function progEgreso(s){
   return {n:cat.length,apr:apr,m:cols.length,pag:pag,acad:acad,pagos:pagos,ok:acad&&pagos};
 }
 /* Pasa solo a egresados a quien cumple las dos condiciones (lo hace una sesión de Administrador) */
-function agendaEgresos(){if(ROL!=="admin"||!DBH)return;clearTimeout(EGT);EGT=setTimeout(chkEgresos,1200)}
+function agendaEgresos(){if(ROL!=="admin"||permiso("escolar")!=="editar"||!DBH)return;clearTimeout(EGT);EGT=setTimeout(chkEgresos,1200)}
 async function chkEgresos(){
-  if(EGCHK||ROL!=="admin"||!DBH)return;
+  if(EGCHK||ROL!=="admin"||permiso("escolar")!=="editar"||!DBH)return;
   EGCHK=true;
   try{
     for(var i=0;i<S.length;i++){
@@ -3003,7 +3090,7 @@ function genPass(){
   return s.slice(0,4)+"-"+s.slice(4);
 }
 async function accesosDoc(ids){
-  if(ROL!=="admin")return;
+  if(BASEROL!=="admin"||ROL!=="admin")return;
   if(!USERS.some(function(u){return u.rol==="admin"})){alert("Primero crea el usuario Administrador en Usuarios; si no, nadie podría entrar después de crear los accesos.");return}
   if(!ids.length){alert("Todos los docentes ya tienen acceso.");return}
   try{
@@ -4430,7 +4517,7 @@ function verCred(sid,vig,code){
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
 /* ===== Respaldo completo (datos y archivos) ===== */
-var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin"];
+var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs"];
 var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT"];
 var BKLAST=null;
 function leeCol(n){
@@ -4785,6 +4872,387 @@ $("efXls").onclick=function(){
   saveFile("estado-de-cuenta-final-"+D.R.d1.slice(0,7)+".xlsx",new Blob([X.write(wb,{bookType:"xlsx",type:"array",cellDates:true})],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
   $("efMsg").style.color="var(--ok)";$("efMsg").textContent="Estado de cuenta descargado en Excel.";
 };
+/* ===== Expediente del docente: currículum, documentos y fotografía ===== */
+var DXD={},DXID=null,DCCONF=null,DCT=null;
+var DXBASE=[["cv","Currículum vitae"],["cedula","Cédula profesional"],["titulo","Título"],["cert","Certificado total de estudios"],["ine","INE vigente"],["curp","CURP"],["acta","Acta de nacimiento"]];
+var DXLIC=[["lic_titulo","Título de licenciatura"],["lic_cedula","Cédula profesional de licenciatura"],["lic_cert","Certificado total de estudios de licenciatura"]];
+function dxGrado(x){return (x&&x.grado)||"Licenciatura"}
+function dxLista(x){
+  var g=dxGrado(x),sufijo=g==="Maestría"?" de maestría":g==="Doctorado"?" de doctorado":"",docs=(x&&x.docs)||{};
+  var base=DXBASE.map(function(r){var n=r[1];if(sufijo&&(r[0]==="cedula"||r[0]==="titulo"||r[0]==="cert"))n=n+sufijo;return [r[0],n]});
+  var lic=(g!=="Licenciatura"||DXLIC.some(function(r){return docs[r[0]]}))?DXLIC:[];
+  return {base:base,lic:lic,pidelic:g!=="Licenciatura"};
+}
+function dxProg(did){
+  var x=DXD[did]||{},L=dxLista(x),docs=x.docs||{},todos=L.base.concat(L.pidelic?L.lic:[]);
+  return {n:todos.filter(function(r){return docs[r[0]]}).length+(x.foto?1:0),total:todos.length+1};
+}
+function dxCelda(did){if(!puedeExp())return "";var p=dxProg(did);return '<span class="tag '+(p.n===p.total?"pagado":p.n?"parcial":"sin")+'">'+p.n+' de '+p.total+'</span>'}
+var DXQ=Promise.resolve();
+/* Las escrituras del expediente se hacen una tras otra, para que dos cargas seguidas no se pisen */
+function saveDx(did,patch){
+  var pr=DXQ.then(async function(){
+    var old=DXD[did]||{docs:{}},pt=typeof patch==="function"?patch(old):patch,nd=Object.assign({docs:{}},old,pt);
+    await DBH.doc("docentes_docs/"+did).set(nd);DXD[did]=nd;return nd;
+  });
+  DXQ=pr.catch(function(){});return pr;
+}
+function abreDx(id,nuevo){
+  if(!puedeExp()||!DOC[id])return;
+  DXID=id;$("dxT").textContent="Expediente de "+DOC[id].nombre;
+  $("dxS").textContent=nuevo?"Docente registrado. Anexa su currículum, su documentación y su fotografía (puedes hacerlo ahora o más tarde desde «Expediente»).":"Documentos en PDF, JPG o PNG de hasta 20 MB (el currículum también puede ser Word).";
+  $("dxMsg").textContent="";renderDx();$("dDx").showModal();
+}
+function filaDx(g,r,docs){
+  var p=docs[r[0]];
+  return '<div class="pay" style="flex-wrap:wrap"><span>'+(p?'<span class="tag pagado">Cargado</span> ':'<span class="tag sin">Falta</span> ')+esc(r[1])+(p?' <small>'+esc(p.name)+(p.size?' · '+kbT(p.size):'')+'</small>':'')+'</span><span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+
+    (p?'<a href="/_blob/'+attr(p.id)+'" target="_blank" rel="noopener" style="padding:8px 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:inherit;background:var(--surface);font-weight:500">Ver</a><button data-dl="'+r[0]+'">Descargar</button><button class="d" data-rm="'+r[0]+'">Quitar</button>':'')+
+    '<input type="file" data-up="'+r[0]+'" accept="'+(r[0]==="cv"?"application/pdf,image/jpeg,image/png,.doc,.docx":"application/pdf,image/jpeg,image/png")+'" style="max-width:210px"></span></div>';
+}
+function renderDx(){
+  var x=DXD[DXID]||{docs:{}},docs=x.docs||{},L=dxLista(x);
+  $("dxImg").src=x.foto||"";$("dxImg").style.visibility=x.foto?"visible":"hidden";$("dxFotoQ").hidden=!x.foto;
+  $("dxGrado").value=dxGrado(x);$("dxGradoN").value=x.gradoN||"";
+  $("dxDocs").innerHTML='<h2 style="margin-top:12px">Documentos'+(L.pidelic?' del grado de '+esc(dxGrado(x).toLowerCase()):'')+'</h2>'+L.base.map(function(r){return filaDx("b",r,docs)}).join("")+
+    (L.lic.length?'<h2 style="margin-top:14px">Estudios de licenciatura</h2><p class="hint">'+(L.pidelic?'Por contar con '+esc(dxGrado(x).toLowerCase())+', anexa también los documentos de su licenciatura.':'Documentos de licenciatura guardados.')+'</p>'+L.lic.map(function(r){return filaDx("l",r,docs)}).join(""):"");
+  var p=dxProg(DXID);$("dxProg").textContent=p.n+" de "+p.total+" elementos cargados (incluye la fotografía)";
+}
+$("dxCls").onclick=function(){$("dDx").close();renderDoc()};
+$("dxGrado").onchange=async function(){try{await saveDx(DXID,{grado:this.value});renderDx()}catch(e){dberr(e)}};
+$("dxGradoN").onchange=async function(){try{await saveDx(DXID,{gradoN:this.value.trim()})}catch(e){dberr(e)}};
+$("dxFoto").onchange=async function(){
+  var f=this.files&&this.files[0];if(!f||!puedeExp())return;
+  if(!/^image\//.test(f.type||"")){$("dxMsg").textContent="La fotografía debe ser una imagen (JPG o PNG).";this.value="";return}
+  try{var d=await fotoRedim(f);await saveDx(DXID,{foto:d});renderDx();$("dxMsg").textContent="Fotografía guardada."}catch(e){$("dxMsg").textContent="No se pudo leer la imagen."}
+  this.value="";
+};
+$("dxFotoQ").onclick=async function(){if(!puedeExp())return;try{await saveDx(DXID,{foto:null});renderDx();$("dxMsg").textContent="Fotografía quitada."}catch(e){dberr(e)}};
+$("dxDocs").onchange=async function(e){
+  var k=e.target.dataset&&e.target.dataset.up,f=e.target.files&&e.target.files[0];if(!k||!f||!puedeExp())return;
+  var okTipo=/\.(pdf|jpe?g|png)$/i.test(f.name||"")||/^(application\/pdf|image\/jpeg|image\/png)$/.test(f.type||"")||(k==="cv"&&/\.(docx?)$/i.test(f.name||""));
+  if(!okTipo){$("dxMsg").textContent=k==="cv"?"El currículum debe ser PDF, Word, JPG o PNG.":"El archivo debe ser PDF, JPG o PNG.";e.target.value="";return}
+  if(f.size>20*1024*1024){$("dxMsg").textContent="El archivo pesa más de 20 MB.";e.target.value="";return}
+  if(!(await assetsLib())){$("dxMsg").textContent="Para cargar documentos tu cuenta necesita el nivel Editor.";e.target.value="";return}
+  $("dxMsg").textContent="Subiendo "+f.name+"…";
+  try{
+    var up=await ASSETS.upload(f,{privado:true}),viejo=null,did=DXID;
+    await saveDx(did,function(x){viejo=(x.docs||{})[k];var docs=Object.assign({},x.docs);docs[k]={id:up.id,name:f.name,size:up.sizeBytes||f.size,type:f.type||""};return {docs:docs}});
+    if(viejo&&viejo.id)ASSETS.delete(viejo.id).catch(function(){});
+    renderDx();$("dxMsg").textContent="Documento cargado.";
+  }catch(er){$("dxMsg").textContent="No se pudo cargar el documento ("+((er&&(er.code||er.message))||"error")+")."}
+  e.target.value="";
+};
+$("dxDocs").onclick=async function(e){
+  var d=e.target.dataset,x=DXD[DXID]||{docs:{}};if(!d)return;
+  var k=d.dl||d.rm,p=k&&(x.docs||{})[k];if(!p)return;
+  if(d.dl){try{var r=await fetch("/_blob/"+p.id);if(!r.ok)throw new Error("x");await saveFile(p.name,await r.blob())}catch(er){window.open("/_blob/"+p.id,"_blank")}return}
+  if(d.rm&&puedeExp()){try{await saveDx(DXID,function(y){var docs=Object.assign({},y.docs);delete docs[k];return {docs:docs}});renderDx();if(await assetsLib())ASSETS.delete(p.id).catch(function(){})}catch(er){dberr(er)}}
+};
+/* ===== Permisos por módulo y administración de usuarios ===== */
+var BASEROL="consulta",PERMS={};
+var NIV3=[["none","Sin acceso"],["ver","Solo ver"],["editar","Editar"]];
+var MODDEF=[
+  ["pagos","Control de pagos","Cobros, recibos y estados de cuenta de los alumnos","caja","mPag",NIV3],
+  ["corte","Gastos y corte de caja","Gastos del día y cierre de caja (con Editar se captura el conteo a ciegas)","caja",null,NIV3],
+  ["estado","Estado de cuenta final","Ingresos, egresos y resultado del periodo (solo consulta; muestra los totales de dinero)","admin",null,[["none","Sin acceso"],["ver","Con acceso (solo consulta)"]]],
+  ["ver","Verificación de pagos","Confirmar las transferencias contra la app del banco","caja","mVer",NIV3],
+  ["inscripcion","Inscripción de alumnos","Alta de alumnos, grupo, pago de inscripción y ficha","admin","mIns",NIV3],
+  ["escolar","Control escolar","Alumnos, plan de estudios, grupos, calendario, calificaciones, docentes, egresados, justificantes y credenciales","admin","mEsc",NIV3],
+  ["constancias","Constancias de estudios","Generar y cobrar constancias (una pestaña de Control escolar)","caja",null,NIV3],
+  ["acuerdos","Acuerdos de pago","Prórrogas y parcialidades","caja","mAcu",NIV3],
+  ["a286","Acuerdo 286","Bachillerato por Acuerdo 286: inscripción, documentos, evaluación y pagos","admin","mA2",NIV3],
+  ["titulaciones","Titulaciones por experiencia laboral","Procesos de titulación, documentos y abonos","admin","mTit",NIV3],
+  ["nomina_doc","Nómina docente","Pago a docentes por asignatura y horas","admin","mNom",NIV3],
+  ["nomina_adm","Nómina administrativa","Empleados y pago de sueldos del personal administrativo","admin","mNa",NIV3],
+  ["docente","Mis asignaturas (sesión de docente)","Listas y calificaciones de un docente; requiere elegir a qué docente corresponde el usuario","docente","mDoc",[["none","Sin acceso"],["editar","Con acceso"]]],
+  ["expedientes","Expedientes de docentes","Documentos personales y fotografía de los docentes (información confidencial)","admin",null,[["none","Sin acceso"],["editar","Con acceso"]]]
+];
+var PLANT={
+  caja:{pagos:"editar",corte:"editar",ver:"editar",acuerdos:"editar",escolar:"ver",constancias:"editar"},
+  consulta:{pagos:"ver",escolar:"ver"},
+  docente:{docente:"editar"},
+  personalizado:{}
+};
+var RANGO={consulta:0,docente:0,caja:1,admin:2};
+function limitaPlat(r){return RANGO[r]>RANGO[PLAT]&&r!=="docente"?PLAT:r}
+function permisosApp(){
+  var t={};MODDEF.forEach(function(m){t[m[0]]=m[5][m[5].length-1][0]});
+  if(!APP)return t;
+  if(APP.perm)return APP.perm;
+  if(APP.rol==="admin")return t;
+  if(APP.modulos&&typeof APP.modulos==="object")return APP.modulos;
+  return PLANT[APP.rol]||{};
+}
+function permiso(id){var n=PERMS&&PERMS[id];return n||"none"}
+function esAdminReal(){return !APP||APP.rol==="admin"}
+function puedeExp(){return permiso("expedientes")==="editar"}
+function efectivoRol(id){
+  var n=permiso(id);if(n==="none")return null;
+  if(esAdminReal())return BASEROL;
+  var d=MODDEF.find(function(m){return m[0]===id}),min=d?d[3]:"consulta";
+  return limitaPlat(n==="ver"&&id!=="estado"?"consulta":min);
+}
+var MODV={pagos:"pagos",ins:"inscripcion",esc:"escolar",acu:"acuerdos",doc:"docente",tit:"titulaciones",a2:"a286",ver:"ver",nom:"nomina_doc",na:"nomina_adm"};
+function accesoVista(m){
+  if(m==="por")return !!(APP&&APP.rol==="alumno");
+  if(APP&&APP.rol==="alumno")return false;
+  if(m==="usr")return esAdminReal()&&BASEROL==="admin";
+  if(m==="pagos")return permiso("pagos")!=="none"||permiso("corte")!=="none"||permiso("estado")!=="none";
+  if(m==="esc")return permiso("escolar")!=="none"||permiso("constancias")!=="none";
+  if(m==="doc")return permiso("docente")!=="none"&&!!(APP&&APP.doc);
+  return !!MODV[m]&&permiso(MODV[m])!=="none";
+}
+function rolDeVista(m){
+  if(m==="usr"||m==="por")return BASEROL;
+  if(m==="pagos")return efectivoRol(permiso("pagos")!=="none"?"pagos":(permiso("corte")!=="none"?"corte":"estado"));
+  if(m==="esc")return mayorRol(efectivoRol("escolar"),efectivoRol("constancias"));
+  return efectivoRol(MODV[m]);
+}
+function mayorRol(a,b){if(!a)return b;if(!b)return a;return RANGO[a]>=RANGO[b]?a:b}
+function aplicaModulos(){
+  MODDEF.forEach(function(m){
+    var t=m[4];if(!t||!$(t))return;
+    var vis=permiso(m[0])!=="none";
+    if(m[0]==="escolar")vis=permiso("escolar")!=="none"||permiso("constancias")!=="none";
+    if(m[0]==="pagos")vis=permiso("pagos")!=="none"||permiso("corte")!=="none"||permiso("estado")!=="none";
+    if(m[0]==="docente")vis=vis&&!!(APP&&APP.doc);
+    $(t).hidden=!vis;
+  });
+  $("mUsr").hidden=!accesoVista("usr");
+}
+function vistasPermitidas(){return ["pagos","ins","esc","acu","doc","tit","a2","ver","nom","na"].filter(accesoVista)}
+/* ---- Administración de usuarios (pantalla "Usuarios y permisos") ---- */
+var USEDIT=null,USCONF=null,UST=null,PW_MIN=6;
+function resumenMods(u){
+  if(u.rol==="admin")return "Todos los módulos";
+  var p=u.perm||(u.modulos&&typeof u.modulos==="object"?u.modulos:(PLANT[u.rol]||{})),o=[];
+  MODDEF.forEach(function(m){var n=p[m[0]];if(n&&n!=="none"){var op=m[5].find(function(x){return x[0]===n});o.push(m[1]+(m[5].length>2||m[0]==="estado"?" ("+(n==="ver"?"ver":n==="editar"?"editar":n)+")":""))}});
+  return o.join(" · ")||"Ninguno";
+}
+function renderUsr(){
+  if(!$("usTb"))return;
+  var q=$("usBus").value.toLowerCase(),L=(USERS||[]).filter(function(u){return (u.rol!=="alumno"||$("usVerAl").checked)&&(u.name+" "+u.u).toLowerCase().indexOf(q)>-1});
+  $("usAl").hidden=!window.LF_NUBE;var nal=(USERS||[]).filter(function(u){return u.rol==="alumno"}).length;$("usVerAlL").hidden=!nal;$("usVerAlT").textContent="Mostrar los "+nal+" usuarios de alumnos";
+  $("usTb").innerHTML=L.length?L.map(function(u){var doc=u.doc&&DOC[u.doc];return '<tr><td>'+esc(u.name)+(doc?'<br><span class="hint">Docente: '+esc(doc.nombre)+'</span>':'')+'</td><td>'+esc(u.u)+'</td><td>'+esc(ROLTXT[u.rol]||u.rol)+'</td><td style="white-space:normal;min-width:260px"><span class="hint">'+esc(resumenMods(u))+'</span></td><td>'+(u.rol==="alumno"?(window.LF_NUBE?'<button data-ra="'+esc(u.alumno)+'">Restablecer contraseña</button> ':''):'<button data-ed="'+esc(u.u)+'">Editar</button> ')+'<button class="d" data-dl="'+esc(u.u)+'">'+(USCONF===u.u?"Confirmar":"Eliminar")+'</button></td></tr>'}).join(""):'<tr><td colspan="5" class="empty">'+(USERS.length?"Sin resultados.":"Aún no hay usuarios. Mientras no existan, el sistema no pide contraseña.")+'</td></tr>';
+  $("mUsrS").textContent=(USERS||[]).length+((USERS||[]).length===1?" usuario":" usuarios");
+}
+$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mUsr").onclick=function(){ir("usr")};
+function nivelesMods(){var o={};Array.prototype.forEach.call($("usMods").querySelectorAll("select[data-m]"),function(s){if(s.value!=="none")o[s.dataset.m]=s.value});return o}
+function pintaMods(p,bloqueado){
+  $("usMods").innerHTML='<div class="wrap"><table style="min-width:640px"><thead><tr><th>Módulo</th><th style="width:220px">Privilegio</th></tr></thead><tbody>'+MODDEF.map(function(m){
+    var v=bloqueado?m[5][m[5].length-1][0]:(p[m[0]]||"none");
+    return '<tr><td style="white-space:normal"><b>'+esc(m[1])+'</b><br><span class="hint">'+esc(m[2])+'</span></td><td><select data-m="'+m[0]+'"'+(bloqueado?' disabled':'')+'>'+m[5].map(function(o){return '<option value="'+o[0]+'"'+(o[0]===v?' selected':'')+'>'+esc(o[1])+'</option>'}).join("")+'</select></td></tr>'}).join("")+'</tbody></table></div>';
+  docVisible();
+}
+function docVisible(){
+  var need=$("usRol").value!=="admin"&&($("usRol").value==="docente"||nivelesMods().docente==="editar");
+  $("usDocL").hidden=!need;
+  if(need){var cur=$("usDoc").value;setOpts($("usDoc"),'<option value="">Elige un docente</option>'+Object.keys(DOC).map(function(k){return '<option value="'+k+'">'+esc(DOC[k].nombre)+'</option>'}).join(""));if(cur)$("usDoc").value=cur}
+}
+var USHINT={admin:"El Administrador entra a todos los módulos y administra usuarios y respaldos.",caja:"Cobra, registra gastos, verifica transferencias y atiende acuerdos. No ve totales de dinero.",consulta:"Solo consulta: ve pagos y Control escolar sin capturar.",docente:"Sesión de docente: solo sus asignaturas, listas y calificaciones.",personalizado:"Elige abajo, módulo por módulo, a qué entra y con qué privilegio."};
+$("usRol").onchange=function(){
+  var r=this.value;$("usHint").textContent=USHINT[r]||"";
+  if(r==="admin")pintaMods({},true);else pintaMods(r==="personalizado"?nivelesMods():(PLANT[r]||{}),false);
+};
+$("usMods").onchange=function(e){if(e.target.dataset&&e.target.dataset.m){docVisible();if($("usRol").value!=="personalizado"&&$("usRol").value!=="admin"){var ig=JSON.stringify(PLANT[$("usRol").value]||{}),ac=JSON.stringify(nivelesMods());if(ig!==ac){$("usRol").value="personalizado";$("usHint").textContent=USHINT.personalizado}}}};
+function abreUsr(u){
+  USEDIT=u;var x=u?USERS.find(function(y){return y.u===u}):null;
+  $("usT").textContent=x?"Editar usuario":"Nuevo usuario";$("usMsg").textContent="";
+  $("usNom").value=x?x.name:"";$("usUsu").value=x?x.u:"";$("usUsu").readOnly=!!x;$("usPw").value="";
+  $("usPwL").textContent=x?"Contraseña nueva (déjala vacía para no cambiarla)":"Contraseña (mínimo "+PW_MIN+" caracteres)";
+  $("usRol").value=x?x.rol:"caja";$("usHint").textContent=USHINT[$("usRol").value]||"";
+  var p=x?(x.rol==="admin"?{}:(x.perm||x.modulos||PLANT[x.rol]||{})):(PLANT.caja||{});
+  pintaMods(p,$("usRol").value==="admin");docVisible();if(x&&x.doc)$("usDoc").value=x.doc;
+  $("dUsr").showModal();
+}
+$("usNew").onclick=function(){if(BASEROL==="admin")abreUsr(null)};
+$("usCan").onclick=function(){$("dUsr").close();renderUsr()};
+$("usTb").onclick=async function(e){
+  var d=e.target.dataset;if(!d||BASEROL!=="admin")return;
+  if(d.ed){abreUsr(d.ed);return}
+  if(d.ra){var sa=S.find(function(x){return x.id===d.ra});if(sa){AANEW=[];$("aaMsg").textContent="";$("aaBus").value="";renderAA();$("dAA").showModal();accesosAlumnos([sa])}return}
+  if(d.dl){
+    var y=USERS.find(function(z){return z.u===d.dl});if(!y)return;
+    if(APP&&y.u===APP.u){$("usMsg2").style.color="var(--bad)";$("usMsg2").textContent="No puedes eliminar tu propio usuario.";return}
+    if(USCONF!==d.dl){USCONF=d.dl;clearTimeout(UST);UST=setTimeout(function(){USCONF=null;$("usMsg2").textContent="";renderUsr()},8000);$("usMsg2").style.color="var(--bad)";$("usMsg2").textContent="Se eliminará a "+y.name+". Pulsa «Confirmar» para continuar.";renderUsr();return}
+    clearTimeout(UST);USCONF=null;
+    try{await usrBorrar(d.dl);$("usMsg2").style.color="var(--ok)";$("usMsg2").textContent="Usuario eliminado.";renderUsr()}catch(er){$("usMsg2").style.color="var(--bad)";$("usMsg2").textContent=(er&&er.message)||"No se pudo eliminar."}
+  }
+};
+$("usOk").onclick=async function(){
+  if(BASEROL!=="admin")return;
+  var nom=$("usNom").value.trim(),u=nrm($("usUsu").value),pw=$("usPw").value,rol=$("usRol").value,mods=rol==="admin"?null:nivelesMods(),doc=$("usDocL").hidden?"":$("usDoc").value;
+  var msg=function(t){$("usMsg").textContent=t};
+  if(!nom||!u){msg("Escribe el nombre y el usuario.");return}
+  if(!/^[a-z0-9._-]{3,40}$/.test(u)){msg("El usuario solo puede llevar letras sin acentos, números, punto, guion y guion bajo (3 a 40 caracteres).");return}
+  var nuevo=!USERS.some(function(x){return x.u===u});
+  if(nuevo&&pw.length<PW_MIN){msg("La contraseña debe tener al menos "+PW_MIN+" caracteres.");return}
+  if(pw&&pw.length<PW_MIN){msg("La contraseña debe tener al menos "+PW_MIN+" caracteres.");return}
+  if(!$("usDocL").hidden&&!doc){msg("Elige el docente al que pertenece este usuario.");return}
+  if(rol!=="admin"&&!Object.keys(mods).length){msg("Elige al menos un módulo al que pueda entrar este usuario.");return}
+  var b=this;b.disabled=true;
+  try{await usrGuardar({u:u,name:nom,rol:rol,doc:doc,modulos:mods,clave:pw||undefined});$("dUsr").close();$("usMsg2").style.color="var(--ok)";$("usMsg2").textContent="Usuario guardado.";renderUsr()}
+  catch(e){msg((e&&e.message)||"No se pudo guardar el usuario.")}
+  b.disabled=false;
+};
+/* En esta versión (sin servidor propio) los usuarios se guardan en la base compartida */
+async function usrGuardar(o){
+  var ex=USERS.find(function(x){return x.u===o.u});
+  if(!ex&&!o.clave)throw new Error("Escribe una contraseña para el usuario nuevo.");
+  if(ex&&ex.rol==="admin"&&o.rol!=="admin"&&USERS.filter(function(z){return z.rol==="admin"}).length<2)throw new Error("Debe quedar al menos un administrador.");
+  var nu={u:o.u,name:o.name,rol:o.rol,doc:o.doc||"",modulos:o.rol==="admin"?null:o.modulos};
+  if(o.clave){var salt=newSalt();nu.salt=salt;nu.it=ITER;nu.hash=await hashPw(o.clave,salt,ITER)}else{nu.salt=ex.salt;nu.it=ex.it;nu.hash=ex.hash}
+  USERS=ex?USERS.map(function(x){return x.u===o.u?nu:x}):USERS.concat([nu]);
+  await saveUsers();
+}
+async function usrBorrar(u){
+  var y=USERS.find(function(z){return z.u===u});if(!y)return;
+  if(y.rol==="admin"&&USERS.filter(function(z){return z.rol==="admin"}).length<2)throw new Error("Debe quedar al menos un administrador.");
+  USERS=USERS.filter(function(z){return z.u!==u});await saveUsers();
+}
+/* ===== Portal del alumno y accesos de alumnos ===== */
+function renderPor(){
+  if(!$("poBody"))return;
+  var s=S[0];
+  if(!s){$("poBody").innerHTML='<p class="hint">Cargando tu información…</p>';return}
+  var g=grupoReciente(s.id),eg=EGR[s.id]&&!EGR[s.id].revertido;
+  var datos=[["Matrícula",s.mat],["Plan de estudios",planDe(s)],["Ingreso",s.ingreso?"septiembre de "+s.ingreso:""],["Grupo",g?g.num+" · cuatrimestre "+g.cuat+" · "+g.per:"Aún sin grupo asignado"],["Estado",eg?"Egresado":"Alumno activo"]];
+  var mats=g?Object.keys(MAT).map(function(k){return MAT[k]}).filter(function(m){return m.plan===g.plan&&m.per===g.per&&m.cuat===g.cuat}).sort(function(a,b){return String(a.nom).localeCompare(String(b.nom))}):[];
+  var ps=perDe(s.id).slice().reverse(),per=$("poPer")&&$("poPer").value&&ps.indexOf($("poPer").value)>-1?$("poPer").value:(ps[0]||"");
+  var pagos=(s.pagos||[]).slice().sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))||String(b.folio).localeCompare(String(a.folio))}),A=alloc(s);
+  var h='<p class="sub">Hola, <b>'+esc(s.nombre)+'</b>. Aquí puedes consultar tu información académica y el registro de tus pagos.</p>'+
+   '<h2>Mis datos</h2><div class="row">'+datos.filter(function(x){return x[1]}).map(function(x){return '<label>'+esc(x[0])+'<b style="color:var(--ink);font-weight:600">'+esc(x[1])+'</b></label>'}).join("")+'</div>'+
+   '<h2 style="margin-top:16px">Mis materias y docentes'+(g?' · cuatrimestre '+esc(g.cuat)+'':'')+'</h2>'+
+   (mats.length?'<div class="wrap"><table style="min-width:640px"><thead><tr><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Aula</th><th>Evaluación</th></tr></thead><tbody>'+mats.map(function(m){var d=DOC[m.docId];return '<tr><td>'+esc(m.nom)+'</td><td>'+(d?esc(d.nombre)+(d.esp?'<br><span class="hint">'+esc(d.esp)+'</span>':''):'<span class="hint">Por asignar</span>')+'</td><td>'+esc(hor(m))+'</td><td>'+esc(m.aula||"")+'</td><td>'+(m.ev?esc(fd(m.ev)):'—')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Todavía no hay materias registradas para tu grupo.</p>')+
+   '<h2 style="margin-top:16px">Mis calificaciones</h2>'+
+   (ps.length?'<div class="bar"><select id="poPer" aria-label="Periodo" style="width:auto">'+ps.map(function(p){return '<option value="'+attr(p)+'"'+(p===per?' selected':'')+'>'+esc(etiquetaPer(s.id,p))+'</option>'}).join("")+'</select><button id="poBol">Boleta (PDF)</button></div><div id="poCal"></div>':'<p class="hint">Aún no tienes calificaciones capturadas.</p>')+
+   '<h2 style="margin-top:16px">Registro de mis pagos</h2>'+
+   (pagos.length?'<div class="wrap"><table style="min-width:620px"><thead><tr><th>Folio</th><th>Fecha</th><th>Concepto</th><th>Forma de pago</th><th class="n">Monto</th><th>Estado</th></tr></thead><tbody>'+pagos.map(function(g2){var c=esConf(g2);return '<tr><td>'+esc(g2.folio||"")+'</td><td>'+esc(fd(g2.fecha))+'</td><td style="white-space:normal;min-width:200px">'+esc(c?(conc(A[g2.id])||"Pago"):"Se confirmará al verificar el depósito")+'</td><td>'+esc(g2.metodo||"")+'</td><td class="n">'+esc(mx.format(g2.monto))+'</td><td>'+(c?'<span class="tag pagado">Registrado'+(g2.estado==="confirmado"&&g2.confFecha?' · confirmado '+esc(fd(g2.confFecha)):'')+'</span>':'<span class="tag parcial">Pendiente de confirmar</span>')+'</td></tr>'}).join("")+'</tbody></table></div><p class="hint">'+pagos.length+(pagos.length===1?' pago registrado':' pagos registrados')+'. Si ves algún dato que no corresponda, acude a Control escolar.</p>':'<p class="hint">Aún no tienes pagos registrados.</p>');
+  $("poBody").innerHTML=h;
+  if(ps.length)pintaCalPor(s.id,per);
+}
+function pintaCalPor(sid,per){
+  var a=datosPer(sid,per),pr=promIt(a),g=promedio(sid);
+  $("poCal").innerHTML=a.length?'<div class="wrap"><table style="min-width:520px"><thead><tr><th>Asignatura</th><th>Docente</th><th class="n">Calificación</th><th>Estatus</th></tr></thead><tbody>'+a.map(function(x){return '<tr><td>'+esc(x.mat)+'</td><td>'+esc(x.doc||"")+'</td><td class="n">'+esc(n1(x.cal))+'</td><td>'+(x.cal==null?'<span class="tag sin">En curso</span>':x.cal>=MINAP?'<span class="tag pagado">Aprobada</span>':'<span class="tag parcial">Reprobada</span>')+'</td></tr>'}).join("")+'</tbody></table></div><p class="hint">Promedio del cuatrimestre: <b>'+(pr===null?"—":pr.toFixed(1))+'</b>'+(g!==null?' · Promedio general: <b>'+g.toFixed(1)+'</b>':'')+' · Calificación aprobatoria: '+MINAP.toFixed(1)+'.</p>':'<p class="hint">Sin calificaciones en este periodo.</p>';
+}
+$("poBody").onchange=function(e){if(e.target.id==="poPer"){var s=S[0];if(s)pintaCalPor(s.id,e.target.value)}};
+$("poBody").onclick=function(e){if(e.target.id==="poBol"&&$("poPer")&&S[0])boletaPDF(S[0].id,$("poPer").value)};
+/* ---- Accesos de alumnos (solo Administrador; requiere el servidor de la nube) ---- */
+var AANEW=[];
+function usuarioAlumno(sid){return USERS.find(function(u){return u.rol==="alumno"&&u.alumno===sid})}
+function usAlumno(s){
+  var b=nrm(s.mat).replace(/[^a-z0-9._-]/g,"-").replace(/^-+|-+$/g,"")||"alumno";
+  if(b.length<3)b="al"+b;b=b.slice(0,36);
+  var ex=usuarioAlumno(s.id);if(ex)return ex.u;
+  var u=b,i=2;while(USERS.some(function(x){return x.u===u})||AANEW.some(function(x){return x.u===u&&x.alumno!==s.id})){u=b+i;i++}
+  return u;
+}
+function aaObjetivo(){
+  var pl=$("aaPlan").value,gr=$("aaGrupo").value,sin=$("aaSin").checked;
+  return S.filter(function(s){
+    if(esEgr(s.id))return false;
+    if(pl&&planDe(s)!==pl)return false;
+    if(gr&&!((GRP[gr]&&GRP[gr].alumnos)||[]).some(function(x){return x===s.id}))return false;
+    if(sin&&usuarioAlumno(s.id))return false;
+    return true;
+  }).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))});
+}
+function renderAA(){
+  setOpts($("aaPlan"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
+  var po=periodos();setOpts($("aaGrupo"),'<option value="">Todos los grupos</option>'+Object.keys(GRP).map(function(k){return Object.assign({id:k},GRP[k])}).sort(function(a,b){return po.indexOf(b.per)-po.indexOf(a.per)||String(a.plan).localeCompare(String(b.plan))||a.cuat-b.cuat}).map(function(g){return '<option value="'+g.id+'">'+esc("Grupo "+g.num+" · "+g.plan+" · "+g.per+" · cuat. "+g.cuat)+'</option>'}).join(""));
+  var L=aaObjetivo(),con=S.filter(function(s){return !esEgr(s.id)&&usuarioAlumno(s.id)}).length;
+  $("aaInfo").textContent=L.length+(L.length===1?" alumno recibirá":" alumnos recibirán")+" un acceso"+($("aaSin").checked?"":" nuevo (a quienes ya tienen, se les genera una contraseña nueva)")+" · "+con+(con===1?" alumno ya tiene acceso":" alumnos ya tienen acceso");
+  $("aaCrear").disabled=!L.length;
+  var q=$("aaBus").value.toLowerCase(),R=S.filter(function(s){return !esEgr(s.id)&&q.length>1&&(s.mat+" "+s.nombre).toLowerCase().indexOf(q)>-1}).slice(0,8);
+  $("aaUno").innerHTML=R.length?R.map(function(s){var u=usuarioAlumno(s.id);return '<div class="pay"><span>'+esc(s.nombre)+' <small>'+esc(s.mat)+(u?' · usuario '+esc(u.u):' · sin acceso')+'</small></span><span><button data-uno="'+s.id+'">'+(u?'Restablecer contraseña':'Crear acceso')+'</button></span></div>'}).join(""):(q.length>1?'<p class="hint">Sin resultados.</p>':"");
+  $("aaRes").hidden=!AANEW.length;$("aaCsv").hidden=$("aaPdf").hidden=!AANEW.length;
+  $("aaTb").innerHTML=AANEW.map(function(a){return '<tr><td>'+esc(a.nombre)+'</td><td>'+esc(a.mat)+'</td><td><b>'+esc(a.u)+'</b></td><td><code>'+esc(a.p)+'</code></td></tr>'}).join("");
+}
+$("usAl").onclick=function(){if(BASEROL!=="admin"||!window.apiAlumnos)return;AANEW=[];$("aaMsg").textContent="";$("aaBus").value="";renderAA();$("dAA").showModal()};
+$("aaCan").onclick=function(){$("dAA").close();renderUsr()};
+["aaPlan","aaGrupo","aaSin"].forEach(function(i){$(i).onchange=renderAA});$("aaBus").oninput=renderAA;
+async function accesosAlumnos(lista){
+  if(BASEROL!=="admin"||!window.apiAlumnos||!lista.length)return;
+  var items=lista.map(function(s){return {s:s,u:usAlumno(s),p:genPass()}}),hechos=0,omit=[];
+  $("aaCrear").disabled=true;
+  try{
+    for(var i=0;i<items.length;i+=25){
+      var lote=items.slice(i,i+25);$("aaMsg").style.color="var(--muted)";$("aaMsg").textContent="Creando accesos… "+Math.min(i+25,items.length)+" de "+items.length;
+      var r=await window.apiAlumnos(lote.map(function(x){return {u:x.u,name:x.s.nombre,alumno:x.s.id,clave:x.p}}));
+      if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo crear el acceso.");
+      lote.forEach(function(x){if(r.j.ok.indexOf(x.u)>-1){AANEW=AANEW.filter(function(a){return a.alumno!==x.s.id});AANEW.push({alumno:x.s.id,nombre:x.s.nombre,mat:x.s.mat,u:x.u,p:x.p});hechos++}});
+      (r.j.omitidos||[]).forEach(function(o){omit.push(o.u+": "+o.motivo)});
+    }
+    if(window.cargaUsuariosSrv)await window.cargaUsuariosSrv();
+    $("aaMsg").style.color=omit.length?"var(--bad)":"var(--ok)";
+    $("aaMsg").textContent=hechos+(hechos===1?" acceso creado.":" accesos creados.")+" Entrega a cada alumno su usuario y su contraseña; deberá cambiarla al entrar."+(omit.length?" No se pudieron crear "+omit.length+": "+omit.slice(0,4).join(" · ")+(omit.length>4?"…":""):"");
+  }catch(e){$("aaMsg").style.color="var(--bad)";$("aaMsg").textContent=(e&&e.message)||"No se pudieron crear los accesos."}
+  renderAA();
+}
+$("aaCrear").onclick=function(){accesosAlumnos(aaObjetivo())};
+$("aaUno").onclick=function(e){var id=e.target.dataset&&e.target.dataset.uno;if(!id)return;var s=S.find(function(x){return x.id===id});if(s)accesosAlumnos([s])};
+$("aaCsv").onclick=function(){saveFile("accesos_alumnos.csv","\uFEFFalumno,matricula,usuario,contrasena\r\n"+AANEW.map(function(a){return [a.nombre,a.mat,a.u,a.p].map(csvq).join(",")}).join("\r\n")+"\r\n")};
+function hojasAccesoPDF(lista,archivo){
+  var J=pdfLib();if(!J||!lista.length)return;
+  var d=new J.jsPDF({unit:"mm",format:"a4"}),W=90,H=52,n=0;
+  lista.forEach(function(a,i){
+    var k=i%10;if(i>0&&k===0)d.addPage();
+    var x=15+(k%2)*(W+0),y=12+Math.floor(k/2)*(H+2);
+    d.setDrawColor(150,150,150);d.setLineWidth(0.2);d.setLineDashPattern([1.5,1.5],0);d.rect(x,y,W,H);d.setLineDashPattern([],0);
+    try{d.addImage(LOGO_C,"PNG",x+3,y+3,8*LOGO_R,8)}catch(e){}
+    d.setTextColor(15,107,99);d.setFont("helvetica","bold");d.setFontSize(8.5);d.text(uni(),x+3+8*LOGO_R+2,y+7);
+    d.setTextColor(90,90,90);d.setFont("helvetica","normal");d.setFontSize(6.5);d.text("Acceso al portal del alumno",x+3+8*LOGO_R+2,y+10.5);
+    d.setTextColor(0,0,0);d.setFont("helvetica","bold");d.setFontSize(8.5);d.splitTextToSize(String(a.nombre),W-6).slice(0,2).forEach(function(l,j){d.text(l,x+3,y+18+j*4)});
+    d.setFont("helvetica","normal");d.setFontSize(7.5);d.setTextColor(90,90,90);d.text("Matrícula: "+a.mat,x+3,y+27);
+    d.text("Usuario:",x+3,y+33);d.text("Contraseña:",x+3,y+39);
+    d.setTextColor(0,0,0);d.setFont("courier","bold");d.setFontSize(10);d.text(String(a.u),x+24,y+33);d.text(String(a.p),x+24,y+39);
+    d.setFont("helvetica","normal");d.setFontSize(6);d.setTextColor(90,90,90);d.text("Entra en "+location.origin+" y cambia tu contraseña al ingresar.",x+3,y+46);
+    n++;
+  });
+  saveFile(archivo,d.output("arraybuffer"));
+}
+$("aaPdf").onclick=function(){hojasAccesoPDF(AANEW,"hojas-de-acceso-alumnos-"+today()+".pdf")};
+/* ---- Acceso a la plataforma dentro de la ficha del alumno ---- */
+var ACCPF={sid:null,p:null};
+async function renderAccPf(sid){
+  var c=$("pfAcc");if(!c)return;
+  if(ACCPF.sid!==sid){ACCPF={sid:sid,p:null}}
+  if(!window.LF_NUBE||BASEROL!=="admin"||ROL!=="admin"||!window.apiAcceso){c.innerHTML="";return}
+  if(!USERS.length&&window.cargaUsuariosSrv){try{await window.cargaUsuariosSrv()}catch(e){}}
+  if(ALID!==sid)return;
+  var s=S.find(function(x){return x.id===sid}),u=usuarioAlumno(sid),pw=ACCPF.p,h='<h2 style="margin-top:16px">Acceso a la plataforma</h2>';
+  if(!s){c.innerHTML="";return}
+  if(!u){h+='<p class="hint">Este alumno todavía no tiene usuario y contraseña para entrar al portal (consulta de grupo, materias, docentes, calificaciones y registro de pagos).</p><div class="bar"><button class="p" data-ac="reset">Crear acceso</button></div>'}
+  else{
+    h+='<div class="row"><label>Usuario<b style="color:var(--ink);font-weight:600;font-size:15px">'+esc(u.u)+'</b></label><label>Contraseña<span>'+(pw?'<code style="font-size:15px;color:var(--ink)">'+esc(pw)+'</code>':(u.temporal?'<span class="hint">••••••••</span>':'<span class="hint">La cambió el alumno: por seguridad no se puede ver.</span>'))+'</span></label></div>'+
+      '<p class="hint">'+(u.forzar?'Aún no entra ni cambia su contraseña inicial.':'Ya cambió su contraseña inicial.')+'</p>'+
+      '<div class="bar">'+(!pw&&u.temporal?'<button data-ac="ver">Mostrar contraseña</button>':'')+(pw?'<button data-ac="copiar">Copiar usuario y contraseña</button><button data-ac="pdf">Hoja de acceso (PDF)</button>':'')+'<button data-ac="reset">Restablecer contraseña</button></div>'+
+      (u.temporal||pw?'':'<p class="hint">Si el alumno olvidó su contraseña, restablécela: se genera una nueva y se muestra aquí mismo.</p>');
+  }
+  h+='<p class="hint" id="pfAccMsg" style="min-height:1.2em"></p>';
+  c.innerHTML=h;
+}
+$("pfAcc").onclick=async function(e){
+  var k=e.target.dataset&&e.target.dataset.ac;if(!k||BASEROL!=="admin")return;
+  var sid=ACCPF.sid,s=S.find(function(x){return x.id===sid});if(!s)return;
+  var msg=function(t,bad){var m=$("pfAccMsg");if(m){m.style.color=bad?"var(--bad)":"var(--ok)";m.textContent=t}};
+  try{
+    if(k==="ver"){
+      var r=await window.apiAcceso(sid);
+      if(r.ok&&r.j.temporal){ACCPF.p=r.j.temporal;renderAccPf(sid)}else msg("La contraseña ya no está disponible: el alumno la cambió.",true);
+    }else if(k==="reset"){
+      var ex=usuarioAlumno(sid);
+      if(ex&&!confirm("Se generará una contraseña nueva para "+s.nombre+" y la actual dejará de funcionar. ¿Continuar?"))return;
+      var u=usAlumno(s),p=genPass(),r2=await window.apiAlumnos([{u:u,name:s.nombre,alumno:sid,clave:p}]);
+      if(!r2.ok||!r2.j.ok||r2.j.ok.indexOf(u)<0)throw new Error((r2.j&&r2.j.omitidos&&r2.j.omitidos[0]&&r2.j.omitidos[0].motivo)||(r2.j&&r2.j.error)||"No se pudo crear el acceso.");
+      ACCPF.p=p;if(window.cargaUsuariosSrv)await window.cargaUsuariosSrv();await renderAccPf(sid);msg("Contraseña lista. Entrégasela al alumno: deberá cambiarla al entrar.");
+    }else if(k==="copiar"){
+      var uu=usuarioAlumno(sid);await navigator.clipboard.writeText("Usuario: "+(uu?uu.u:"")+"\nContraseña: "+ACCPF.p);msg("Copiado.");
+    }else if(k==="pdf"){
+      var u2=usuarioAlumno(sid);hojasAccesoPDF([{nombre:s.nombre,mat:s.mat,u:u2.u,p:ACCPF.p}],"hoja-de-acceso-"+slug(s.mat)+".pdf");
+    }
+  }catch(er){msg((er&&er.message)||"No se pudo completar la operación.",true)}
+};
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}
@@ -4801,10 +5269,16 @@ function sesion(){
   if(need){$("lgE").textContent="";return}
   var rank={consulta:0,caja:1,admin:2},r=PLAT;
   if(APP&&APP.rol==="docente")r=PLAT==="consulta"?"consulta":"docente";
+  else if(APP&&(APP.rol==="personalizado"||APP.rol==="alumno"))r="consulta";
   else if(APP&&rank[APP.rol]<rank[PLAT])r=APP.rol;
-  setRol(r);
-  if(r==="docente"){if(MOD==="home")ir("doc")}else if(MOD==="doc")ir("home");
-  $("who").textContent=APP?"Sesión: "+APP.name+" · "+ROLTXT[r]+(r!==APP.rol?" (limitado por el acceso de tu cuenta de claude.ai)":""):"Sesión: "+(OWNER_BYPASS?"propietario":(PNAME||"usuario"))+" · "+ROLTXT[r];
+  BASEROL=r;PERMS=permisosApp();
+  setRol(r);aplicaModulos();
+  var vp=vistasPermitidas();
+  if(APP&&APP.rol==="alumno"){if(MOD!=="por")ir("por")}
+  else if(MOD==="home"&&vp.length===1&&vp[0]==="doc")ir("doc");
+  else if(MOD!=="home"&&!accesoVista(MOD))ir("home");
+  else if(MOD==="home")aplicaModulos();
+  $("who").textContent=APP?"Sesión: "+APP.name+" · "+(ROLTXT[APP.rol]||APP.rol)+(RANGO[r]<RANGO[APP.rol]&&APP.rol!=="docente"&&APP.rol!=="personalizado"?" (limitado por el acceso de tu cuenta de claude.ai)":""):"Sesión: "+(OWNER_BYPASS?"propietario":(PNAME||"usuario"))+" · "+ROLTXT[r];
   $("bOut").hidden=!(USERS.length&&(APP||OWNER_BYPASS));
   lanzaVerif();
 }
@@ -4816,7 +5290,7 @@ async function entrar(){
     else await hashPw(p,"sin-usuario",ITER);
   }catch(e){$("lgE").textContent="Este navegador no permite verificar contraseñas.";return}
   if(!ok){await sleep(700);$("lgE").textContent="Usuario o contraseña incorrectos.";return}
-  APP={u:x.u,name:x.name,rol:x.rol,doc:x.doc||""};
+  APP={u:x.u,name:x.name,rol:x.rol,doc:x.doc||"",modulos:x.modulos||null};
   try{sessionStorage.setItem(KEY+"-ses",x.u)}catch(e){}
   $("lgP").value="";sesion();
 }
@@ -4830,7 +5304,7 @@ function renderUs(){
   $("usL").innerHTML=USERS.map(function(u,i){return '<div class="pay"><span>'+esc(u.name)+' <small>'+esc(u.u)+' · '+ROLTXT[u.rol]+'</small></span><span><button data-ed="'+i+'">Editar o restablecer clave</button> <button class="d" data-dl="'+i+'">Eliminar</button></span></div>'}).join("")||'<p class="hint">Aún no hay usuarios. Mientras no existan, la página no pide contraseña.</p>';
 }
 function limpiaUs(){$("uN").value="";$("uU").value="";$("uP").value="";$("uU").readOnly=false;$("uR").value="caja";uRolUI()}
-$("bUs").onclick=function(){renderUs();limpiaUs();$("dUs").showModal()};
+$("bUs").onclick=function(){ir("usr")};
 $("uCls").onclick=function(){$("dUs").close()};
 $("uAdd").onclick=async function(){
   if(ROL!=="admin")return;
@@ -4887,18 +5361,18 @@ $("usL").onclick=async function(e){
     if(d.exists&&d.data().plans)PL=JSON.parse(JSON.stringify(d.data().plans));
     if(d.exists&&d.data().extra)EXTRA=JSON.parse(JSON.stringify(d.data().extra));
     if(d.exists&&d.data().cons)CONSC=JSON.parse(JSON.stringify(d.data().cons));
-    else if(ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC}).catch(function(){});
+    else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC}).catch(function(){});
     rebuild();
   },onErr);
-  [["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
-    DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(c[0]==="calif"||c[0]==="constancias")render();if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
+  [["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+    DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(c[0]==="calif"||c[0]==="constancias")render();if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
   DBH.collection("gastos").onSnapshot(function(s){G={};s.docs.forEach(function(d){G[d.id]=d.data()});if(!$("vGa").hidden)renderCaja()},onErr);
   DBH.collection("cortes").onSnapshot(function(s){CT={};s.docs.forEach(function(d){CT[d.id]=d.data()});if(!$("vGa").hidden){if(!cDirty)cargaCierre();renderCaja()}},onErr);
   DBH.doc("config/users").onSnapshot(function(d){
     USERS=(d.exists&&d.data().users)||[];
-    if(!APP){if(window.LF_ME)APP={u:LF_ME.u,name:LF_ME.name,rol:LF_ME.rol,doc:LF_ME.doc||""}}
-    else{var y=USERS.find(function(z){return z.u===APP.u});APP=y?{u:y.u,name:y.name,rol:y.rol,doc:y.doc||""}:null}
+    if(!APP){if(window.LF_ME)APP={u:LF_ME.u,name:LF_ME.name,rol:LF_ME.rol,doc:LF_ME.doc||"",modulos:LF_ME.modulos||null,perm:LF_ME.perm||null}}
+    else{var y=USERS.find(function(z){return z.u===APP.u});APP=y?{u:y.u,name:y.name,rol:y.rol,doc:y.doc||"",modulos:y.modulos||null,perm:y.perm||null}:null}
     sesion();if($("dUs").open)renderUs();
   },function(e){document.body.classList.remove("locked");onErr(e)});
   DBH.doc("config/nomina").onSnapshot(function(d){if(d.exists&&d.data().base>0&&d.data().esp>0)NOMC={base:d.data().base,esp:d.data().esp};if(MOD==="nom"&&!$("dNm").open)renderNom()},onErr);

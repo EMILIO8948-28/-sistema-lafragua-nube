@@ -27,28 +27,38 @@ db.exec('PRAGMA journal_mode = WAL; PRAGMA synchronous = FULL;');
 db.exec(`
 CREATE TABLE IF NOT EXISTS docs (coleccion TEXT NOT NULL, id TEXT NOT NULL, data TEXT NOT NULL, actualizado INTEGER NOT NULL, PRIMARY KEY (coleccion, id));
 CREATE TABLE IF NOT EXISTS archivos (id TEXT PRIMARY KEY, nombre TEXT, tipo TEXT, tamano INTEGER, creado INTEGER);
-CREATE TABLE IF NOT EXISTS usuarios (u TEXT PRIMARY KEY, nombre TEXT NOT NULL, rol TEXT NOT NULL, doc TEXT, salt TEXT NOT NULL, hash TEXT NOT NULL, creado INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS usuarios (u TEXT PRIMARY KEY, nombre TEXT NOT NULL, rol TEXT NOT NULL, doc TEXT, salt TEXT NOT NULL, hash TEXT NOT NULL, creado INTEGER NOT NULL, modulos TEXT, alumno TEXT, forzar INTEGER NOT NULL DEFAULT 0, temporal TEXT);
 CREATE TABLE IF NOT EXISTS sesiones (token TEXT PRIMARY KEY, u TEXT NOT NULL, creado INTEGER NOT NULL, expira INTEGER NOT NULL, ultimo INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS auditoria (id INTEGER PRIMARY KEY AUTOINCREMENT, fecha INTEGER NOT NULL, u TEXT, ip TEXT, accion TEXT NOT NULL, detalle TEXT);
 `);
+try { db.exec('ALTER TABLE archivos ADD COLUMN privado INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* la columna ya existe */ }
+try { db.exec('ALTER TABLE usuarios ADD COLUMN modulos TEXT'); } catch (e) { /* la columna ya existe */ }
+try { db.exec('ALTER TABLE usuarios ADD COLUMN temporal TEXT'); } catch (e) { /* la columna ya existe */ }
+try { db.exec('ALTER TABLE usuarios ADD COLUMN alumno TEXT'); } catch (e) { /* la columna ya existe */ }
+try { db.exec('ALTER TABLE usuarios ADD COLUMN forzar INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* la columna ya existe */ }
 const q = {
   lista: db.prepare('SELECT id, data FROM docs WHERE coleccion = ? ORDER BY id'),
   uno: db.prepare('SELECT data FROM docs WHERE coleccion = ? AND id = ?'),
   pon: db.prepare('INSERT INTO docs (coleccion, id, data, actualizado) VALUES (?, ?, ?, ?) ON CONFLICT(coleccion, id) DO UPDATE SET data = excluded.data, actualizado = excluded.actualizado'),
   borra: db.prepare('DELETE FROM docs WHERE coleccion = ? AND id = ?'),
-  ponArch: db.prepare('INSERT INTO archivos (id, nombre, tipo, tamano, creado) VALUES (?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET nombre = excluded.nombre, tipo = excluded.tipo, tamano = excluded.tamano'),
-  uArch: db.prepare('SELECT nombre, tipo, tamano FROM archivos WHERE id = ?'),
+  ponArch: db.prepare('INSERT INTO archivos (id, nombre, tipo, tamano, creado, privado) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET nombre = excluded.nombre, tipo = excluded.tipo, tamano = excluded.tamano, privado = excluded.privado'),
+  uArch: db.prepare('SELECT nombre, tipo, tamano, privado FROM archivos WHERE id = ?'),
   bArch: db.prepare('DELETE FROM archivos WHERE id = ?'),
-  todosArch: db.prepare('SELECT id, nombre FROM archivos ORDER BY id'),
+  todosArch: db.prepare('SELECT id, nombre, privado FROM archivos ORDER BY id'),
   cuenta: db.prepare('SELECT coleccion, COUNT(*) AS n FROM docs GROUP BY coleccion ORDER BY coleccion'),
   usr: db.prepare('SELECT * FROM usuarios WHERE u = ?'),
-  usrs: db.prepare('SELECT u, nombre, rol, doc FROM usuarios ORDER BY nombre'),
+  usrs: db.prepare('SELECT u, nombre, rol, doc, modulos, alumno, forzar, (temporal IS NOT NULL) AS tmp FROM usuarios ORDER BY nombre'),
   nUsr: db.prepare('SELECT COUNT(*) AS n FROM usuarios'),
   nAdm: db.prepare("SELECT COUNT(*) AS n FROM usuarios WHERE rol = 'admin'"),
   admins: db.prepare("SELECT * FROM usuarios WHERE rol = 'admin'"),
-  insUsr: db.prepare('INSERT INTO usuarios (u, nombre, rol, doc, salt, hash, creado) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(u) DO UPDATE SET nombre = excluded.nombre, rol = excluded.rol, doc = excluded.doc, salt = excluded.salt, hash = excluded.hash'),
-  updUsr: db.prepare('UPDATE usuarios SET nombre = ?, rol = ?, doc = ? WHERE u = ?'),
+  insUsr: db.prepare('INSERT INTO usuarios (u, nombre, rol, doc, salt, hash, creado, modulos) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(u) DO UPDATE SET nombre = excluded.nombre, rol = excluded.rol, doc = excluded.doc, salt = excluded.salt, hash = excluded.hash, modulos = excluded.modulos'),
+  updUsr: db.prepare('UPDATE usuarios SET nombre = ?, rol = ?, doc = ?, modulos = ? WHERE u = ?'),
   borUsr: db.prepare('DELETE FROM usuarios WHERE u = ?'),
+  setForzar: db.prepare('UPDATE usuarios SET forzar = ? WHERE u = ?'),
+  setAlumno: db.prepare('UPDATE usuarios SET alumno = ? WHERE u = ?'),
+  setTemporal: db.prepare('UPDATE usuarios SET temporal = ? WHERE u = ?'),
+  usrDeAlumno: db.prepare("SELECT u, forzar, temporal FROM usuarios WHERE rol = 'alumno' AND alumno = ?"),
+  usrAlumno: db.prepare("SELECT u, nombre, alumno FROM usuarios WHERE rol = 'alumno'"),
   insSes: db.prepare('INSERT INTO sesiones (token, u, creado, expira, ultimo) VALUES (?, ?, ?, ?, ?)'),
   getSes: db.prepare('SELECT * FROM sesiones WHERE token = ?'),
   tocaSes: db.prepare('UPDATE sesiones SET ultimo = ? WHERE token = ?'),
@@ -64,7 +74,7 @@ const q = {
 const hoy = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); };
 const dormir = ms => new Promise(r => setTimeout(r, ms));
 const NOMBRE_OK = /^[A-Za-z0-9_.@+:~-]{1,200}$/, ID_ARCH = /^[0-9a-f]{32}$/, USUARIO_OK = /^[a-z0-9._-]{3,40}$/;
-const ROLES = ['admin', 'caja', 'consulta', 'docente'];
+const ROLES = ['admin', 'caja', 'consulta', 'docente', 'personalizado'];   // 'alumno' solo se crea con /api/usuarios/alumnos
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
 const clientes = new Set();
 function ipDe(req) { if (CONFIAR_PROXY && req.headers['x-forwarded-for']) return String(req.headers['x-forwarded-for']).split(',')[0].trim(); return req.socket.remoteAddress || ''; }
@@ -82,8 +92,24 @@ async function leeJSON(req, max) { try { const o = JSON.parse((await leeCuerpo(r
 function cookies(req) { const o = {}; String(req.headers.cookie || '').split(';').forEach(p => { const i = p.indexOf('='); if (i > 0) o[p.slice(0, i).trim()] = p.slice(i + 1).trim(); }); return o; }
 const sha = t => crypto.createHash('sha256').update(t).digest('hex');
 
+/* ---------- Contraseña inicial de los alumnos ----------
+   Se guarda cifrada (AES-256-GCM, con una llave que vive solo en el disco del servidor y no entra a los respaldos)
+   únicamente mientras el alumno no la cambia; al cambiarla se borra y la contraseña propia del alumno nunca se puede ver. */
+const LLAVE_ARCH = path.join(DATOS, 'secreto.key');
+let LLAVE = null;
+function llave() {
+  if (LLAVE) return LLAVE;
+  if (ENV.LF_CLAVE_SECRETA && /^[0-9a-f]{64}$/i.test(ENV.LF_CLAVE_SECRETA)) { LLAVE = Buffer.from(ENV.LF_CLAVE_SECRETA, 'hex'); return LLAVE; }
+  if (fs.existsSync(LLAVE_ARCH)) LLAVE = Buffer.from(fs.readFileSync(LLAVE_ARCH, 'utf8').trim(), 'hex');
+  if (!LLAVE || LLAVE.length !== 32) { LLAVE = crypto.randomBytes(32); fs.writeFileSync(LLAVE_ARCH, LLAVE.toString('hex'), { mode: 0o600 }); }
+  return LLAVE;
+}
+function cifra(txt) { const iv = crypto.randomBytes(12), c = crypto.createCipheriv('aes-256-gcm', llave(), iv), ct = Buffer.concat([c.update(String(txt), 'utf8'), c.final()]); return Buffer.concat([iv, c.getAuthTag(), ct]).toString('base64'); }
+function descifra(b64) { try { const b = Buffer.from(String(b64), 'base64'), d = crypto.createDecipheriv('aes-256-gcm', llave(), b.subarray(0, 12)); d.setAuthTag(b.subarray(12, 28)); return Buffer.concat([d.update(b.subarray(28)), d.final()]).toString('utf8'); } catch (e) { return null; } }
+
 /* ---------- Contraseñas y sesiones ---------- */
 function hashClave(clave, salt) { return crypto.scryptSync(String(clave), salt, 64, { N: 16384, r: 8, p: 1 }).toString('hex'); }
+function hashClaveAsync(clave, salt) { return new Promise((ok, mal) => crypto.scrypt(String(clave), salt, 64, { N: 16384, r: 8, p: 1 }, (e, k) => e ? mal(e) : ok(k.toString('hex')))); }
 function claveOk(clave, u) { const a = Buffer.from(hashClave(clave, u.salt), 'hex'), b = Buffer.from(u.hash, 'hex'); return a.length === b.length && crypto.timingSafeEqual(a, b); }
 function validaClave(c, u) { if (typeof c !== 'string' || c.length < 8) return 'La contraseña debe tener al menos 8 caracteres.'; if (c.length > 200) return 'La contraseña es demasiado larga.'; if (u && c.toLowerCase() === u) return 'La contraseña no puede ser igual al usuario.'; return ''; }
 function esSegura(req) { return COOKIE_SEGURA || (CONFIAR_PROXY && String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim() === 'https'); }
@@ -98,38 +124,128 @@ function sesionDe(req) {
   if (s.expira < ahora || ahora - s.ultimo > IDLE_MS) { q.borSes.run(s.token); return null; }
   const u = q.usr.get(s.u); if (!u) { q.borSes.run(s.token); return null; }
   if (ahora - s.ultimo > 60000) q.tocaSes.run(ahora, s.token);
-  return { u: u.u, name: u.nombre, rol: u.rol, doc: u.doc || '', _token: s.token };
+  const modulos = parseModulos(u.modulos);
+  return { u: u.u, name: u.nombre, rol: u.rol, doc: u.doc || '', modulos, perm: permisosDe(u.rol, modulos), alumno: u.alumno || '', forzar: !!u.forzar, _token: s.token };
 }
 const intentos = new Map();
 function limite(clave, max, ventanaMs) { const a = intentos.get(clave), ahora = Date.now(); if (!a || ahora - a.desde > ventanaMs) return false; return a.n >= max; }
 function falla(clave, ventanaMs) { const a = intentos.get(clave), ahora = Date.now(); if (!a || ahora - a.desde > ventanaMs) intentos.set(clave, { n: 1, desde: ahora }); else a.n++; }
 setInterval(() => { const ahora = Date.now(); intentos.forEach((v, k) => { if (ahora - v.desde > 3600000) intentos.delete(k); }); q.limpiaSes.run(ahora); }, 600000).unref();
-const publicoUsuario = u => ({ u: u.u, name: u.nombre || u.name, rol: u.rol, doc: u.doc || '' });
-const listaUsuarios = () => q.usrs.all().map(x => ({ u: x.u, name: x.nombre, rol: x.rol, doc: x.doc || '' }));
+const publicoUsuario = u => { const m = u.perm ? u.modulos : parseModulos(u.modulos); return { u: u.u, name: u.nombre || u.name, rol: u.rol, doc: u.doc || '', modulos: m || null, perm: permisosDe(u.rol, m), alumno: u.alumno || '', forzar: !!u.forzar, temporal: !!u.tmp }; };
+const listaUsuarios = () => q.usrs.all().map(x => publicoUsuario(x));
 
-/* ---------- Permisos por rol (se aplican aquí, no solo en la pantalla) ---------- */
-const COL_LEE = {
-  caja: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'acuerdos', 'constancias', 'gastos', 'cortes', 'criterios', 'justificantes', 'docentes', 'meta', 'config'],
-  consulta: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'criterios', 'justificantes', 'docentes', 'config'],
-  docente: ['students', 'grupos', 'materias', 'docentes', 'calif', 'criterios', 'catalogo', 'contenidos', 'config']
+/* ---------- Permisos por módulo (se aplican aquí, no solo en la pantalla) ----------
+   Cada usuario tiene un nivel por módulo: "ver" (solo lectura) o "editar" (lectura y escritura).
+   L = colecciones que lee; E = colecciones que además escribe cuando el nivel es "editar". */
+const MODULOS = {
+  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias'], E: ['ledger', 'meta', 'constancias'], plans: true },
+  corte:        { L: ['gastos', 'cortes', 'ledger', 'students'], E: ['gastos', 'cortes'], plans: true },
+  estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'egresados'], E: [], plans: true, nomina: true },
+  ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
+  inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
+  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta'], plans: true, archivos: true },
+  constancias:  { L: ['constancias', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
+  acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
+  a286:         { L: ['acuerdo286'], E: ['acuerdo286', 'meta'], archivos: true },
+  titulaciones: { L: ['titulaciones'], E: ['titulaciones', 'meta'], archivos: true },
+  nomina_doc:   { L: ['nomina', 'docentes', 'materias'], E: ['nomina', 'meta'], nomina: true, nominaE: true },
+  nomina_adm:   { L: ['empleados', 'nomina_admin'], E: ['empleados', 'nomina_admin', 'meta'] },
+  docente:      { L: ['students', 'grupos', 'materias', 'docentes', 'calif', 'criterios', 'catalogo', 'contenidos'], E: ['calif', 'criterios'] },
+  expedientes:  { L: ['docentes_docs'], E: ['docentes_docs'], archivos: true, privados: true }
 };
-const COL_ESC = { caja: ['ledger', 'gastos', 'cortes', 'acuerdos', 'constancias', 'meta'], consulta: [], docente: ['calif', 'criterios'] };
-function puedeLeer(rol, col, id) {
-  if (col === 'config' && id === 'users') return false;
-  if (rol === 'admin') return true;
-  if (col === 'config') { if (id === 'nomina') return false; if (id === 'plans') return rol !== 'docente'; return true; }
-  return (COL_LEE[rol] || []).includes(col);
+const VER_ALUMNOS_COMPLETOS = ['pagos', 'corte', 'estado', 'ver', 'inscripcion', 'escolar', 'constancias', 'acuerdos'];
+const PLANTILLAS = {
+  caja: { pagos: 'editar', corte: 'editar', ver: 'editar', acuerdos: 'editar', escolar: 'ver', constancias: 'editar' },
+  consulta: { pagos: 'ver', escolar: 'ver' },
+  docente: { docente: 'editar' },
+  personalizado: {}
+};
+function permisosDe(rol, modulos) {
+  if (rol === 'admin') { const t = {}; Object.keys(MODULOS).forEach(k => { t[k] = 'editar'; }); return t; }
+  if (modulos && typeof modulos === 'object') return modulos;
+  return PLANTILLAS[rol] || {};
 }
-function puedeEscribir(rol, col, id) {
+function parseModulos(txt) { if (!txt) return null; try { const o = JSON.parse(txt); return o && typeof o === 'object' ? o : null; } catch (e) { return null; } }
+function nivel(s, m) { return s.rol === 'admin' ? 'editar' : ((s.perm || {})[m] || 'none'); }
+function tiene(s, m, min) { const n = nivel(s, m); return min === 'editar' ? n === 'editar' : n !== 'none'; }
+/* ---- Alumnos: solo ven lo suyo (filtro por registro) ---- */
+function gruposDeAlumno(sid) { return q.lista.all('grupos').map(r => ({ id: r.id, d: JSON.parse(r.data) })).filter(g => Array.isArray(g.d.alumnos) && g.d.alumnos.includes(sid)); }
+function contextoAlumno(s) {
+  const grupos = gruposDeAlumno(s.alumno), mats = q.lista.all('materias').map(r => ({ id: r.id, d: JSON.parse(r.data) })).filter(m => grupos.some(g => g.d.plan === m.d.plan && g.d.per === m.d.per && g.d.cuat === m.d.cuat));
+  return { grupos, docIds: new Set(mats.map(m => m.d.docId).filter(Boolean)) };
+}
+const CAMPOS_ALUMNO = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'nuevo', 'sexo', 'beca'];
+function filtraAlumno(s, col, id, data, ctx) {
+  const sid = s.alumno;
+  if (!sid) return null;
+  switch (col) {
+    case 'students': { if (id !== sid) return null; const o = {}; CAMPOS_ALUMNO.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
+    case 'ledger': { if (id !== sid) return null; return { pagos: (data.pagos || []).map(g => { const o = Object.assign({}, g); delete o.by; delete o.byn; delete o.confPor; return o; }) }; }
+    case 'calif': case 'constancias': case 'egresados': return id === sid ? data : null;
+    case 'grupos': return (data.alumnos || []).includes(sid) ? Object.assign({}, data, { alumnos: [sid] }) : null;
+    case 'materias': return ctx.grupos.some(g => g.d.plan === data.plan && g.d.per === data.per && g.d.cuat === data.cuat) ? data : null;
+    case 'docentes': return ctx.docIds.has(id) ? { nombre: data.nombre, esp: data.esp || '' } : null;
+    case 'catalogo': return data;
+    case 'config': return (id === 'plans' || id === 'app') ? data : null;
+    default: return null;
+  }
+}
+function eventoAlumno(s, c, id) {
+  if (['students', 'ledger', 'calif', 'constancias', 'egresados'].includes(c)) return id === s.alumno;
+  if (['grupos', 'materias', 'docentes', 'catalogo'].includes(c)) return true;
+  if (c === 'config') return id === 'plans' || id === 'app';
+  return false;
+}
+function puedeLeer(s, col, id) {
   if (col === 'config' && id === 'users') return false;
-  if (rol === 'admin') return true;
-  return (COL_ESC[rol] || []).includes(col);
+  if (s.rol === 'alumno') return eventoAlumno(s, col, id);
+  if (s.rol === 'admin') return true;
+  const P = s.perm || {};
+  if (col === 'config') {
+    if (id === 'nomina') return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].nomina);
+    if (id === 'plans') return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].plans);
+    return Object.keys(P).some(m => P[m] !== 'none');
+  }
+  if (col === 'meta') return Object.keys(P).some(m => P[m] === 'editar' && MODULOS[m] && MODULOS[m].E.includes('meta'));
+  return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].L.includes(col));
+}
+function puedeEscribir(s, col, id) {
+  if (col === 'config' && id === 'users') return false;
+  if (s.rol === 'alumno') return false;
+  if (s.rol === 'admin') return true;
+  const P = s.perm || {};
+  if (col === 'config') return id === 'nomina' && P.nomina_doc === 'editar';
+  return Object.keys(P).some(m => P[m] === 'editar' && MODULOS[m] && MODULOS[m].E.includes(col));
+}
+function puedeArchivos(s, privado) {
+  if (s.rol === 'alumno') return false;
+  if (s.rol === 'admin') return true;
+  const P = s.perm || {};
+  if (privado) return P.expedientes === 'editar';
+  return Object.keys(P).some(m => P[m] === 'editar' && MODULOS[m] && MODULOS[m].archivos && !MODULOS[m].privados);
 }
 const CAMPOS_DOCENTE = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'sexo', 'nuevo'];
-function reduce(rol, col, data) { if (rol !== 'docente' || col !== 'students') return data; const o = {}; CAMPOS_DOCENTE.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
+function reduce(s, col, data) {
+  if (col !== 'students' || s.rol === 'admin') return data;
+  const P = s.perm || {};
+  if (VER_ALUMNOS_COMPLETOS.some(m => P[m] && P[m] !== 'none')) return data;
+  const o = {}; CAMPOS_DOCENTE.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o;
+}
+function validaModulos(m) {
+  if (m === undefined || m === null) return { ok: true, valor: null };
+  if (typeof m !== 'object' || Array.isArray(m)) return { ok: false };
+  const o = {};
+  for (const k of Object.keys(m)) {
+    if (!MODULOS[k]) return { ok: false };
+    const v = m[k]; if (!['none', 'ver', 'editar'].includes(v)) return { ok: false };
+    if ((k === 'estado' || k === 'expedientes') && false) return { ok: false };
+    if (v !== 'none') o[k] = v;
+  }
+  return { ok: true, valor: o };
+}
 
 /* ---------- Eventos en tiempo real ---------- */
-function difunde(c, id) { const m = 'data: ' + JSON.stringify({ c, id }) + '\n\n'; clientes.forEach(cl => { if (!puedeLeer(cl.rol, c, id)) return; try { cl.res.write(m); } catch (e) { clientes.delete(cl); } }); }
+function difunde(c, id) { const m = 'data: ' + JSON.stringify({ c, id }) + '\n\n'; clientes.forEach(cl => { if (!puedeLeer(cl.s, c, id)) return; try { cl.res.write(m); } catch (e) { clientes.delete(cl); } }); }
 const candados = new Map();
 
 /* ---------- Respaldos ---------- */
@@ -174,7 +290,7 @@ async function respaldoCompleto(res) {
   const tmp = path.join(TMP, 'dl-' + crypto.randomBytes(6).toString('hex') + '.db');
   db.exec("VACUUM INTO '" + tmp.replace(/'/g, "''") + "'");
   const entradas = [{ nombre: 'lafragua.db', ruta: tmp }], indice = [];
-  q.todosArch.all().forEach(a => { const ruta = path.join(ARCH, a.id); if (!fs.existsSync(ruta)) return; const nom = 'archivos/' + a.id + '-' + String(a.nombre || 'archivo').replace(/[^\w.\- áéíóúñÁÉÍÓÚÑ]/g, '_'); entradas.push({ nombre: nom, ruta }); indice.push({ id: a.id, archivo: nom, nombre: a.nombre, origen: '' }); });
+  q.todosArch.all().forEach(a => { const ruta = path.join(ARCH, a.id); if (!fs.existsSync(ruta)) return; const nom = 'archivos/' + a.id + '-' + String(a.nombre || 'archivo').replace(/[^\w.\- áéíóúñÁÉÍÓÚÑ]/g, '_'); entradas.push({ nombre: nom, ruta }); indice.push({ id: a.id, archivo: nom, nombre: a.nombre, origen: '', privado: a.privado ? 1 : 0 }); });
   entradas.push({ nombre: 'indice-1.json', datos: Buffer.from(JSON.stringify(indice)) });
   try { await enviaZip(res, 'respaldo-completo-' + hoy() + '.zip', entradas); } finally { try { fs.unlinkSync(tmp); } catch (e) {} }
 }
@@ -239,7 +355,7 @@ async function api(req, res, partes) {
     if (!USUARIO_OK.test(u)) return responde(res, 400, { error: 'El usuario solo puede llevar letras sin acentos, números, punto, guion y guion bajo (3 a 40 caracteres).' });
     if (!nombre) return responde(res, 400, { error: 'Escribe el nombre.' });
     if (err) return responde(res, 400, { error: err });
-    const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(u, nombre, 'admin', '', salt, hashClave(c.clave, salt), Date.now());
+    const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(u, nombre, 'admin', '', salt, hashClave(c.clave, salt), Date.now(), null);
     audita(u, req, hay ? 'Administrador restablecido por recuperación' : 'Configuración inicial: administrador creado'); nuevaSesion(req, res, u);
     return responde(res, 200, { ok: true });
   }
@@ -248,21 +364,29 @@ async function api(req, res, partes) {
   const s = sesionDe(req);
   if (!s) return responde(res, 401, { error: 'Sesión requerida' });
   const rol = s.rol;
+  if (s.forzar && !['logout', 'cambiar-clave'].includes(tipo)) return responde(res, 403, { error: 'Debes cambiar tu contraseña antes de continuar.', forzar: true });
 
   if (tipo === 'logout' && m === 'POST') { q.borSes.run(s._token); ponCookie(req, res, '', 0); audita(s.u, req, 'Cierre de sesión'); return responde(res, 200, { ok: true }); }
 
   if (tipo === 'eventos' && m === 'GET') {
     res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive' });
-    res.write('retry: 2000\n\n'); const cl = { res, rol }; clientes.add(cl); req.on('close', () => clientes.delete(cl)); return;
+    res.write('retry: 2000\n\n'); const cl = { res, s, u: s.u }; clientes.add(cl); req.on('close', () => clientes.delete(cl)); return;
   }
   if (tipo === 'col' && m === 'GET' && NOMBRE_OK.test(a || '')) {
-    if (!puedeLeer(rol, a, null)) return responde(res, 200, { docs: [] });
-    return responde(res, 200, { docs: q.lista.all(a).map(r => ({ id: r.id, data: reduce(rol, a, JSON.parse(r.data)) })) });
+    if (s.rol === 'alumno') {
+      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'grupos', 'materias', 'docentes', 'catalogo'].includes(a)) return responde(res, 200, { docs: [] });
+      const ctx = contextoAlumno(s), docs = [];
+      q.lista.all(a).forEach(r => { const d = filtraAlumno(s, a, r.id, JSON.parse(r.data), ctx); if (d) docs.push({ id: r.id, data: d }); });
+      return responde(res, 200, { docs });
+    }
+    if (!puedeLeer(s, a, null)) return responde(res, 200, { docs: [] });
+    return responde(res, 200, { docs: q.lista.all(a).map(r => ({ id: r.id, data: reduce(s, a, JSON.parse(r.data)) })) });
   }
   if (tipo === 'doc' && NOMBRE_OK.test(a || '') && NOMBRE_OK.test(b || '')) {
-    if (m === 'GET') { if (!puedeLeer(rol, a, b)) return responde(res, 200, { exists: false, data: null }); const r = q.uno.get(a, b); return responde(res, 200, r ? { exists: true, data: reduce(rol, a, JSON.parse(r.data)) } : { exists: false, data: null }); }
+    if (m === 'GET' && s.rol === 'alumno') { const r0 = q.uno.get(a, b), d0 = r0 ? filtraAlumno(s, a, b, JSON.parse(r0.data), contextoAlumno(s)) : null; return responde(res, 200, d0 ? { exists: true, data: d0 } : { exists: false, data: null }); }
+    if (m === 'GET') { if (!puedeLeer(s, a, b)) return responde(res, 200, { exists: false, data: null }); const r = q.uno.get(a, b); return responde(res, 200, r ? { exists: true, data: reduce(s, a, JSON.parse(r.data)) } : { exists: false, data: null }); }
     if (m === 'PUT' || m === 'PATCH' || m === 'DELETE') {
-      if (!puedeEscribir(rol, a, b)) { audita(s.u, req, 'Escritura denegada', m + ' ' + a + '/' + b); return responde(res, 403, { error: 'No tienes permiso para hacer esto.' }); }
+      if (!puedeEscribir(s, a, b)) { audita(s.u, req, 'Escritura denegada', m + ' ' + a + '/' + b); return responde(res, 403, { error: 'No tienes permiso para hacer esto.' }); }
       if (m === 'DELETE') { q.borra.run(a, b); difunde(a, b); return responde(res, 200, { ok: true }); }
       let cuerpo; try { cuerpo = JSON.parse((await leeCuerpo(req, 6 * 1024 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
       if (cuerpo === null || typeof cuerpo !== 'object' || Array.isArray(cuerpo)) return responde(res, 400, { error: 'Se esperaba un objeto' });
@@ -271,17 +395,19 @@ async function api(req, res, partes) {
     }
   }
   if (tipo === 'lock' && m === 'POST' && NOMBRE_OK.test(a || '') && NOMBRE_OK.test(b || '')) {
-    if (!puedeEscribir(rol, a, b)) return responde(res, 403, { error: 'No tienes permiso para hacer esto.' });
+    if (!puedeEscribir(s, a, b)) return responde(res, 403, { error: 'No tienes permiso para hacer esto.' });
     const c = await leeJSON(req, 10000), k = a + '/' + b, ahora = Date.now(), v = candados.get(k);
     if (!v || v.exp < ahora || v.holder === c.holder) { candados.set(k, { holder: String(c.holder || ''), exp: ahora + Math.min(Number(c.ttlMs) || 4000, 30000) }); return responde(res, 200, { acquired: true }); }
     return responde(res, 200, { acquired: false });
   }
   if (tipo === 'archivo') {
-    if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador puede subir o quitar archivos.' });
-    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100);
-    if (m === 'POST' && !a) { const buf = await leeCuerpo(req, 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now()); return responde(res, 200, { id, sizeBytes: buf.length }); }
+    const privSolicitado = req.headers['x-privado'] === '1';
+    if (m === 'DELETE') { const inf = q.uArch.get(a || ''); if (!puedeArchivos(s, !!(inf && inf.privado))) return responde(res, 403, { error: 'No tienes permiso para quitar archivos.' }); }
+    else if (!puedeArchivos(s, privSolicitado)) return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
+    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0);
+    if (m === 'POST' && !a) { const buf = await leeCuerpo(req, 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now(), priv()); return responde(res, 200, { id, sizeBytes: buf.length }); }
     if (ID_ARCH.test(a || '')) {
-      if (m === 'PUT') { const buf = await leeCuerpo(req, 26 * 1024 * 1024); fs.writeFileSync(path.join(ARCH, a), buf); q.ponArch.run(a, nombre(), mime(), buf.length, Date.now()); return responde(res, 200, { id: a, sizeBytes: buf.length }); }
+      if (m === 'PUT') { const buf = await leeCuerpo(req, 26 * 1024 * 1024); fs.writeFileSync(path.join(ARCH, a), buf); q.ponArch.run(a, nombre(), mime(), buf.length, Date.now(), priv()); return responde(res, 200, { id: a, sizeBytes: buf.length }); }
       if (m === 'DELETE') { try { fs.unlinkSync(path.join(ARCH, a)); } catch (e) {} q.bArch.run(a); return responde(res, 200, { ok: true }); }
     }
   }
@@ -290,20 +416,55 @@ async function api(req, res, partes) {
   if (tipo === 'usuarios') {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador puede administrar usuarios.' });
     if (m === 'GET' && !a) return responde(res, 200, { usuarios: listaUsuarios() });
+    /* Acceso de un alumno: usuario, estado y, si aún no la cambia, su contraseña inicial */
+    if (m === 'GET' && a === 'alumno' && b && NOMBRE_OK.test(b)) {
+      const r = q.usrDeAlumno.get(b);
+      if (!r) return responde(res, 200, { tiene: false });
+      const temporal = r.temporal ? descifra(r.temporal) : null;
+      if (temporal) audita(s.u, req, 'Consultó la contraseña inicial de un alumno', 'usuario ' + r.u);
+      return responde(res, 200, { tiene: true, u: r.u, forzar: !!r.forzar, temporal });
+    }
+    /* Accesos de alumnos: usuario y contraseña inicial (deben cambiarla al entrar) */
+    if (m === 'POST' && a === 'alumnos') {
+      const c = await leeJSON(req, 400000), items = Array.isArray(c.items) ? c.items.slice(0, 40) : [], hechos = [], omitidos = [];
+      for (const it of items) {
+        const u = String(it.u || '').trim().toLowerCase(), alumno = String(it.alumno || ''), nombre = String(it.name || '').trim().slice(0, 80), clave = String(it.clave || '');
+        if (!USUARIO_OK.test(u)) { omitidos.push({ u, motivo: 'El usuario no es válido' }); continue; }
+        if (!NOMBRE_OK.test(alumno) || !q.uno.get('students', alumno)) { omitidos.push({ u, motivo: 'El alumno no existe' }); continue; }
+        const err = validaClave(clave, u); if (err) { omitidos.push({ u, motivo: err }); continue; }
+        const ex = q.usr.get(u);
+        if (ex && !(ex.rol === 'alumno' && ex.alumno === alumno)) { omitidos.push({ u, motivo: 'Ese usuario ya existe y pertenece a otra persona' }); continue; }
+        const previo = q.usrAlumno.all().find(x => x.alumno === alumno && x.u !== u);
+        if (previo) { omitidos.push({ u, motivo: 'El alumno ya tiene el usuario ' + previo.u }); continue; }
+        const salt = crypto.randomBytes(16).toString('hex'), hash = await hashClaveAsync(clave, salt);
+        q.insUsr.run(u, nombre || u, 'alumno', '', salt, hash, ex ? ex.creado : Date.now(), null); q.setAlumno.run(alumno, u); q.setForzar.run(1, u); q.setTemporal.run(cifra(clave), u);
+        if (ex) q.borSesU.run(u);
+        hechos.push(u);
+      }
+      audita(s.u, req, 'Accesos de alumnos', hechos.length + ' creados o restablecidos' + (omitidos.length ? ' · ' + omitidos.length + ' omitidos' : ''));
+      return responde(res, 200, { ok: hechos, omitidos });
+    }
     if (m === 'POST' && !a) {
       const c = await leeJSON(req), u = String(c.u || '').trim().toLowerCase(), nombre = String(c.name || '').trim().slice(0, 80), r = String(c.rol || ''), doc = String(c.doc || '');
       if (!USUARIO_OK.test(u)) return responde(res, 400, { error: 'El usuario solo puede llevar letras sin acentos, números, punto, guion y guion bajo (3 a 40 caracteres).' });
       if (!nombre) return responde(res, 400, { error: 'Escribe el nombre.' });
       if (!ROLES.includes(r)) return responde(res, 400, { error: 'Rol no válido.' });
-      if (r === 'docente' && !doc) return responde(res, 400, { error: 'Elige el docente al que pertenece este usuario.' });
       const ex = q.usr.get(u);
+      if (ex && ex.rol === 'alumno') return responde(res, 400, { error: 'Los accesos de alumnos se administran desde «Accesos de alumnos».' });
+      /* Si la solicitud no trae módulos (por ejemplo al restablecer una clave), se conservan los que ya tenía */
+      const vm = (c.modulos === undefined && ex) ? { ok: true, valor: parseModulos(ex.modulos) } : validaModulos(c.modulos); if (!vm.ok) return responde(res, 400, { error: 'Los permisos de módulos no son válidos.' });
+      const mods = r === 'admin' ? null : vm.valor;
+      const docUsar = doc || ((c.modulos === undefined && ex) ? (ex.doc || '') : '');
+      const necesitaDoc = r === 'docente' || !!(mods && mods.docente === 'editar');
+      if (necesitaDoc && !docUsar) return responde(res, 400, { error: 'Elige el docente al que pertenece este usuario.' });
       if (ex && ex.rol === 'admin' && r !== 'admin' && q.nAdm.get().n < 2) return responde(res, 400, { error: 'Debe quedar al menos un administrador.' });
       if (!ex || c.clave) { const err = validaClave(c.clave, u); if (err) return responde(res, 400, { error: err }); }
-      if (!ex) { const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(u, nombre, r, r === 'docente' ? doc : '', salt, hashClave(c.clave, salt), Date.now()); audita(s.u, req, 'Usuario creado', u + ' (' + r + ')'); }
+      if (!ex) { const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(u, nombre, r, necesitaDoc ? docUsar : '', salt, hashClave(c.clave, salt), Date.now(), mods ? JSON.stringify(mods) : null); audita(s.u, req, 'Usuario creado', u + ' (' + r + ')' + (mods ? ' · módulos: ' + Object.keys(mods).map(k => k + '=' + mods[k]).join(', ') : '')); }
       else {
-        q.updUsr.run(nombre, r, r === 'docente' ? doc : '', u);
-        if (c.clave) { const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(u, nombre, r, r === 'docente' ? doc : '', salt, hashClave(c.clave, salt), ex.creado); q.borSesU.run(u); }
-        audita(s.u, req, 'Usuario modificado', u + ' (' + r + ')' + (c.clave ? ' · nueva contraseña' : ''));
+        q.updUsr.run(nombre, r, necesitaDoc ? docUsar : '', mods ? JSON.stringify(mods) : null, u);
+        if (c.clave) { const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(u, nombre, r, necesitaDoc ? docUsar : '', salt, hashClave(c.clave, salt), ex.creado, mods ? JSON.stringify(mods) : null); q.borSesU.run(u); }
+        audita(s.u, req, 'Usuario modificado', u + ' (' + r + ')' + (mods ? ' · módulos: ' + Object.keys(mods).map(k => k + '=' + mods[k]).join(', ') : '') + (c.clave ? ' · nueva contraseña' : ''));
+        clientes.forEach(cl => { if (cl.u === u) { try { cl.res.end(); } catch (e) {} clientes.delete(cl); } });
       }
       return responde(res, 200, { usuarios: listaUsuarios() });
     }
@@ -319,11 +480,11 @@ async function api(req, res, partes) {
     if (limite('pw|' + s.u, 5, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' });
     if (!claveOk(String(c.actual || ''), usr)) { falla('pw|' + s.u, 900000); await dormir(400); return responde(res, 400, { error: 'La contraseña actual no es correcta.' }); }
     const err = validaClave(c.nueva, s.u); if (err) return responde(res, 400, { error: err });
-    const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(s.u, usr.nombre, usr.rol, usr.doc, salt, hashClave(c.nueva, salt), usr.creado); q.borSesUmenos.run(s.u, s._token);
+    const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(s.u, usr.nombre, usr.rol, usr.doc, salt, hashClave(c.nueva, salt), usr.creado, usr.modulos || null); q.borSesUmenos.run(s.u, s._token); q.setForzar.run(0, s.u); q.setTemporal.run(null, s.u);
     audita(s.u, req, 'Cambió su contraseña'); return responde(res, 200, { ok: true });
   }
   if (tipo === 'autoriza-admin' && m === 'POST') {
-    if (rol !== 'admin' && rol !== 'caja') return responde(res, 403, { error: 'No tienes permiso para hacer esto.' });
+    if (rol !== 'admin' && nivel(s, 'pagos') !== 'editar') return responde(res, 403, { error: 'No tienes permiso para hacer esto.' });
     const c = await leeJSON(req), adm = q.admins.all();
     if (!adm.length) return responde(res, 409, { error: 'No hay un usuario administrador configurado.' });
     if (limite('aut|' + s.u, 5, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' });
@@ -354,10 +515,12 @@ const servidor = http.createServer(async (req, res) => {
     if (ruta.startsWith('/api/')) return await api(req, res, ruta.slice(5).split('/'));
     if (ruta === '/config-local.js') { res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8', 'Cache-Control': 'no-store' }); return res.end('window.LOCAL_APPURL=' + JSON.stringify(URL_PUBLICA || '') + ';'); }
     if (ruta.startsWith('/_blob/')) {
-      if (!sesionDe(req)) { res.writeHead(401, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Inicia sesión para ver este archivo.'); }
+      const sBlob = sesionDe(req);
+      if (!sBlob) { res.writeHead(401, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Inicia sesión para ver este archivo.'); }
       const id = ruta.slice(7), f = path.join(ARCH, id);
       if (!ID_ARCH.test(id) || !fs.existsSync(f)) { res.writeHead(404); return res.end('No encontrado'); }
       const info = q.uArch.get(id) || {};
+      if (info.privado && sBlob.rol !== 'admin' && nivel(sBlob, 'expedientes') === 'none') { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Este archivo es confidencial: solo lo puede ver el Administrador.'); }
       res.writeHead(200, { 'Content-Type': info.tipo || 'application/octet-stream', 'Content-Disposition': "inline; filename*=UTF-8''" + encodeURIComponent(info.nombre || id), 'Cache-Control': 'private, no-store' });
       return fs.createReadStream(f).pipe(res);
     }

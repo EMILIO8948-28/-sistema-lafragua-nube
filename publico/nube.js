@@ -24,38 +24,42 @@
     if(r.ok)return {ok:{name:r.j.nombre}};
     return {err:r.status===409?"sin":"mala",msg:r.j.error};
   };
-  /* Administración de usuarios en el servidor */
+  /* Administración de usuarios en el servidor (pantalla «Usuarios y permisos») */
+  window.PW_MIN=8;
   window.saveUsers=function(){return Promise.resolve()};
-  function pasaUsuarios(lista){USERS=(lista||[]).map(function(x){return {u:x.u,name:x.name,rol:x.rol,doc:x.doc||"",salt:"",hash:"",it:0}});renderUs()}
-  $("bUs").onclick=async function(){
-    var r=await llama("GET","/api/usuarios");if(r.ok)pasaUsuarios(r.j.usuarios);
-    limpiaUs();$("dUs").showModal();
+  function pasaUsuarios(lista){USERS=(lista||[]).map(function(x){return {u:x.u,name:x.name,rol:x.rol,doc:x.doc||"",modulos:x.modulos||null,perm:x.perm||null,alumno:x.alumno||"",forzar:!!x.forzar,temporal:!!x.temporal,salt:"",hash:"",it:0}});if(typeof renderUsr==="function"&&MOD==="usr")renderUsr();if(MOD==="esc"&&ETAB==="D")renderDoc()}
+  window.usrGuardar=async function(o){
+    var r=await llama("POST","/api/usuarios",{u:o.u,name:o.name,rol:o.rol,doc:o.doc||"",modulos:o.rol==="admin"?undefined:o.modulos,clave:o.clave||undefined});
+    if(!r.ok)throw new Error(r.j.error||"No se pudo guardar el usuario.");
+    pasaUsuarios(r.j.usuarios);
   };
-  $("uAdd").onclick=async function(){
-    if(ROL!=="admin")return;
-    var n=$("uN").value.trim(),u=nrm($("uU").value),p=$("uP").value,rol=$("uR").value;
-    if(!n||!u){alert("Completa el nombre y el usuario.");return}
-    if(!/^[a-z0-9._-]{3,40}$/.test(u)){alert("El usuario solo puede llevar letras sin acentos, números, punto, guion y guion bajo (3 a 40 caracteres).");return}
-    if(rol==="docente"&&!$("uDoc").value){alert("Elige el docente al que pertenece este usuario.");return}
-    var nuevo=!USERS.some(function(x){return x.u===u});
-    if(nuevo&&p.length<8){alert("La contraseña debe tener al menos 8 caracteres.");return}
-    if(p&&p.length<8){alert("La contraseña debe tener al menos 8 caracteres.");return}
-    var r=await llama("POST","/api/usuarios",{u:u,name:n,rol:rol,doc:rol==="docente"?$("uDoc").value:"",clave:p||undefined});
-    if(!r.ok){alert(r.j.error||"No se pudo guardar el usuario.");return}
-    pasaUsuarios(r.j.usuarios);limpiaUs();
+  window.usrBorrar=async function(u){
+    var r=await llama("DELETE","/api/usuarios/"+encodeURIComponent(u));
+    if(!r.ok)throw new Error(r.j.error||"No se pudo eliminar.");
+    pasaUsuarios(r.j.usuarios);
   };
-  $("usL").onclick=async function(e){
-    var d=e.target.dataset;
-    if(d.ed!==undefined){var x=USERS[+d.ed];$("uN").value=x.name;$("uU").value=x.u;$("uU").readOnly=true;$("uR").value=x.rol;uRolUI();$("uDoc").value=x.doc||"";$("uP").value="";$("uP").focus()}
-    if(d.dl!==undefined){
-      var y=USERS[+d.dl];
-      if(APP&&y.u===APP.u){alert("No puedes eliminar tu propio usuario.");return}
-      if(!confirm("¿Eliminar a "+y.name+"?"))return;
-      var r=await llama("DELETE","/api/usuarios/"+encodeURIComponent(y.u));
-      if(!r.ok){alert(r.j.error||"No se pudo eliminar.");return}
-      pasaUsuarios(r.j.usuarios);
-    }
+  async function cargaUsuarios(){var r=await llama("GET","/api/usuarios");if(r.ok)pasaUsuarios(r.j.usuarios)}
+  window.cargaUsuariosSrv=cargaUsuarios;
+  window.apiAlumnos=function(items){return llama("POST","/api/usuarios/alumnos",{items:items})};
+  window.apiAcceso=function(sid){return llama("GET","/api/usuarios/alumno/"+encodeURIComponent(sid))};
+  /* Accesos de docentes: el servidor guarda las contraseñas cifradas */
+  window.accesosDoc=async function(ids){
+    if(BASEROL!=="admin"||ROL!=="admin")return;
+    if(!ids.length){alert("Todos los docentes ya tienen acceso.");return}
+    try{
+      for(var i=0;i<ids.length;i++){
+        var did=ids[i],d=DOC[did];if(!d)continue;
+        var ex=usuarioDoc(did),pass=genPass(),u=ex?ex.u:userDe(d.nombre);
+        var r=await llama("POST","/api/usuarios",{u:u,name:d.nombre,rol:ex?ex.rol:"docente",doc:did,clave:pass});
+        if(!r.ok)throw new Error(r.j.error||"No se pudo crear el acceso.");
+        pasaUsuarios(r.j.usuarios);ACCNEW.push({doc:d.nombre,u:u,p:pass});
+      }
+      renderDoc();renderAcc();
+    }catch(e){alert((e&&e.message)||"No se pudo crear el acceso.")}
   };
+  $("dcAccAll").onclick=function(){accesosDoc(Object.keys(DOC).filter(function(k){return !usuarioDoc(k)}))};
+  $("bUs").onclick=async function(){await cargaUsuarios();ir("usr")};
+  $("mUsr").onclick=async function(){await cargaUsuarios();ir("usr")};
   /* Cambiar mi contraseña */
   $("bPw").onclick=function(){$("pwA").value="";$("pwN").value="";$("pwR").value="";$("pwMsg").textContent="";$("dPw").showModal()};
   $("pwCan").onclick=function(){$("dPw").close()};
@@ -66,7 +70,18 @@
     var x=await llama("POST","/api/cambiar-clave",{actual:a,nueva:n});
     if(!x.ok){$("pwMsg").textContent=x.j.error||"No se pudo cambiar la contraseña.";return}
     $("pwMsg").style.color="var(--ok)";$("pwMsg").textContent="Contraseña cambiada. Las demás sesiones abiertas se cerraron.";
+    if(window.LF_ME&&window.LF_ME.forzar){setTimeout(function(){location.reload()},600)}
   };
+  /* Cambio de contraseña obligatorio (accesos nuevos o restablecidos de alumnos) */
+  (window.LF_LISTO||Promise.resolve()).then(function(){
+    if(!(window.LF_ME&&window.LF_ME.forzar))return;
+    $("pwA").value="";$("pwN").value="";$("pwR").value="";
+    $("pwMsg").style.color="var(--ink)";$("pwMsg").textContent="Por seguridad, cambia tu contraseña inicial para continuar. Escribe la que te entregaron y elige una nueva.";
+    $("pwCan").hidden=true;
+    $("dPw").addEventListener("cancel",function(e){e.preventDefault()});
+    var so=document.createElement("button");so.textContent="Cerrar sesión";so.id="pwOut";so.onclick=function(){$("bOut").onclick()};$("pwCan").parentNode.insertBefore(so,$("pwCan"));
+    $("dPw").showModal();
+  });
   /* Respaldo completo del servidor */
   $("bkSrv").onclick=function(){location.href="/api/respaldo/descargar"};
   (window.LF_LISTO||Promise.resolve()).then(function(){$("bPw").hidden=!window.LF_ME;if(window.LF_ME)document.body.setAttribute("data-nube","1")});

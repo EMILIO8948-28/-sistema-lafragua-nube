@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Herramientas · Sistema escolar Lafragua</title>
+<style>
+body{font-family:system-ui,"Segoe UI",sans-serif;background:#f4f7f9;color:#1b2a3a;margin:0;padding:16px}
+main{max-width:760px;margin:0 auto}
+h1{color:#0f6b63;font-size:22px}
+section{background:#fff;border:1px solid #d9e0e6;border-radius:12px;padding:16px;margin:14px 0}
+h2{font-size:17px;margin:0 0 6px}
+p{color:#4a5a6a;font-size:14px;line-height:1.45}
+button{padding:9px 14px;border:1px solid #cdd6dd;border-radius:8px;background:#fff;cursor:pointer;font:inherit}
+button.p{background:#0f6b63;color:#fff;border-color:#0f6b63}
+button:disabled{opacity:.5}
+input[type=file]{margin:8px 0;display:block}
+.msg{min-height:1.4em;font-size:14px;margin-top:8px}
+.ok{color:#14633f}.mal{color:#a1281d}
+table{border-collapse:collapse;font-size:13px;margin:8px 0}td{padding:3px 12px 3px 0}
+a{color:#0f6b63}
+</style>
+</head>
+<body>
+<main>
+<h1>🎓 Herramientas del sistema</h1>
+<p><a href="/">← Volver al sistema</a> · Esta página solo funciona con una sesión de Administrador abierta.</p>
+
+<section>
+  <h2>1. Pasar los datos de la plataforma anterior</h2>
+  <p>En la plataforma anterior (claude.ai) entra como Administrador, pulsa <b>Respaldo</b> y descarga los <b>datos (JSON)</b>. Luego elige ese archivo aquí.</p>
+  <input type="file" id="fJson" accept=".json,application/json">
+  <div id="resumen"></div>
+  <button class="p" id="bRest" disabled>Restaurar datos</button>
+  <div class="msg" id="mRest"></div>
+</section>
+
+<section>
+  <h2>2. Pasar los archivos adjuntos (PDF e imágenes)</h2>
+  <p>En el mismo botón <b>Respaldo</b> de la plataforma anterior descarga los <b>archivos adjuntos (ZIP)</b>. Si son varias partes, selecciónalas todas a la vez. Haz este paso <b>después</b> del paso 1.</p>
+  <input type="file" id="fZip" accept=".zip" multiple>
+  <button class="p" id="bZip" disabled>Subir archivos</button>
+  <div class="msg" id="mZip"></div>
+</section>
+
+<section>
+  <h2>3. Respaldos</h2>
+  <p>El servidor hace un respaldo de la base de datos cada día y el proveedor guarda copias del disco. <b>Además, descarga un respaldo completo a tu computadora cada semana</b> y guárdalo fuera del servidor.</p>
+  <button class="p" id="bDescarga">Descargar respaldo completo (ZIP)</button>
+  <button id="bResp">Hacer un respaldo en el servidor ahora</button>
+  <div class="msg" id="mResp"></div>
+</section>
+
+<section>
+  <h2>4. Qué hay guardado</h2>
+  <div id="estado"><p>Cargando…</p></div>
+</section>
+
+<section>
+  <h2>5. Registro de seguridad</h2>
+  <p>Últimos movimientos importantes: inicios de sesión, intentos fallidos, cambios de usuarios y descargas de respaldos.</p>
+  <div id="audit"><p>Cargando…</p></div>
+</section>
+</main>
+
+<script src="lib/jszip.min.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(i){return document.getElementById(i)},H={"x-lafragua":"1"},DATA=null,paso=0;
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function msg(id,t,ok){var e=$(id);e.textContent=t;e.className="msg "+(ok===true?"ok":ok===false?"mal":"")}
+async function put(col,id,obj){
+  var r=await fetch("/api/doc/"+encodeURIComponent(col)+"/"+encodeURIComponent(id),{method:"PUT",credentials:"same-origin",headers:Object.assign({"Content-Type":"application/json"},H),body:JSON.stringify(obj)});
+  if(!r.ok)throw new Error(col+"/"+id+": "+r.status);
+}
+function mb(n){return (n/1048576).toFixed(1)+" MB"}
+async function estado(){
+  try{var x=await fetch("/api/info",{credentials:"same-origin"});if(x.status===401||x.status===403){$("estado").innerHTML="<p class='mal'>Entra al sistema como Administrador y vuelve a abrir esta página.</p>";return}
+    var r=await x.json();
+    $("estado").innerHTML=(r.colecciones.length?"<table>"+r.colecciones.map(function(c){return "<tr><td>"+esc(c.coleccion)+"</td><td><b>"+c.n+"</b></td></tr>"}).join("")+"</table>":"<p>Todavía no hay datos guardados.</p>")+"<p>Base de datos: "+mb(r.bytesBaseDatos)+" · Archivos adjuntos: "+mb(r.bytesArchivos)+"<br>Respaldos del servidor: "+(r.respaldos.length?esc(r.respaldos.slice(0,5).join(", ")):"ninguno todavía")+"</p>";
+  }catch(e){$("estado").innerHTML="<p class='mal'>No se pudo leer el estado.</p>"}
+  try{var a=await (await fetch("/api/auditoria",{credentials:"same-origin"})).json();
+    $("audit").innerHTML=a.registros?"<table>"+a.registros.slice(0,40).map(function(g){return "<tr><td>"+esc(g.fecha.replace("T"," ").slice(0,16))+"</td><td>"+esc(g.u||"")+"</td><td>"+esc(g.accion)+"</td><td>"+esc(g.detalle||"")+"</td></tr>"}).join("")+"</table>":"<p class='mal'>Solo el Administrador puede ver este registro.</p>"}
+  catch(e){$("audit").innerHTML="<p class='mal'>No se pudo leer el registro.</p>"}
+}
+$("fJson").onchange=function(){
+  var f=this.files[0];DATA=null;paso=0;$("bRest").disabled=true;$("resumen").innerHTML="";msg("mRest","");
+  if(!f)return;var rd=new FileReader();
+  rd.onload=function(){
+    try{DATA=JSON.parse(rd.result)}catch(e){msg("mRest","El archivo no es un respaldo válido.",false);return}
+    if(DATA.app!=="colegiaturas-universidad-lafragua"||!DATA.colecciones){DATA=null;msg("mRest","Este archivo no es un respaldo de la plataforma de la Universidad Lafragua.",false);return}
+    var c=DATA.colecciones,filas=Object.keys(c).map(function(k){return "<tr><td>"+esc(k)+"</td><td><b>"+Object.keys(c[k]).length+"</b></td></tr>"}).join("");
+    $("resumen").innerHTML="<p>Respaldo del "+esc((DATA.exportado||"").slice(0,10))+":</p><table>"+filas+"<tr><td>archivos adjuntos</td><td><b>"+((DATA.archivos||[]).length)+"</b></td></tr></table>";
+    $("bRest").disabled=false;
+  };
+  rd.readAsText(f);
+};
+$("bRest").onclick=async function(){
+  if(!DATA)return;
+  if(paso===0){paso=1;this.textContent="Confirmar: restaurar ahora";msg("mRest","Se cargarán estos datos. Los registros que ya existan con el mismo nombre se reemplazan; los demás se conservan. Pulsa de nuevo para continuar.",null);return}
+  var b=this;b.disabled=true;
+  try{
+    await fetch("/api/respaldo",{method:"POST",headers:H,credentials:"same-origin"});
+    var lista=[],c=DATA.colecciones;
+    Object.keys(c).forEach(function(k){Object.keys(c[k]).forEach(function(id){lista.push([k,id,c[k][id]])})});
+    Object.keys(DATA.documentos||{}).forEach(function(p){var s=p.split("/");lista.push([s[0],s[1],DATA.documentos[p]])});
+    Object.keys(DATA.contenidos||{}).forEach(function(id){lista.push(["contenidos",id,DATA.contenidos[id]])});
+    for(var i=0;i<lista.length;i++){if(i%20===0)msg("mRest","Restaurando… "+i+" de "+lista.length,null);await put(lista[i][0],lista[i][1],lista[i][2])}
+    msg("mRest","Listo: se restauraron "+lista.length+" registros. Ahora sube los archivos adjuntos (paso 2) y abre el sistema. Las contraseñas de usuarios no se pasan: crea los usuarios en el botón «Usuarios» del sistema.",true);
+    estado();
+  }catch(e){msg("mRest","No se pudo restaurar: "+e.message,false)}
+  paso=0;b.textContent="Restaurar datos";b.disabled=false;
+};
+var TIPOS={pdf:"application/pdf",jpg:"image/jpeg",jpeg:"image/jpeg",png:"image/png"};
+$("fZip").onchange=function(){$("bZip").disabled=!this.files.length};
+$("bZip").onclick=async function(){
+  var fs=$("fZip").files;if(!fs.length)return;var b=this;b.disabled=true;var total=0,fallos=0;
+  try{
+    for(var z=0;z<fs.length;z++){
+      var zip=await JSZip.loadAsync(fs[z]),idx=Object.keys(zip.files).filter(function(n){return /^indice-\d+\.json$/.test(n)});
+      if(!idx.length){msg("mZip",fs[z].name+" no parece un ZIP de respaldo.",false);continue}
+      var items=JSON.parse(await zip.file(idx[0]).async("string"));
+      for(var i=0;i<items.length;i++){
+        var it=items[i],ent=zip.file(it.archivo);if(!ent){fallos++;continue}
+        var bl=await ent.async("blob"),ext=String(it.nombre||"").split(".").pop().toLowerCase();
+        var r=await fetch("/api/archivo/"+it.id,{method:"PUT",credentials:"same-origin",headers:Object.assign({"x-nombre":encodeURIComponent(it.nombre||"archivo"),"Content-Type":TIPOS[ext]||"application/octet-stream"},H),body:bl});
+        if(r.ok)total++;else fallos++;
+        if((total+fallos)%10===0)msg("mZip","Subiendo… "+(total+fallos),null);
+      }
+    }
+    msg("mZip","Listo: "+total+" archivos subidos"+(fallos?" y "+fallos+" con problemas.":"."),!fallos);
+  }catch(e){msg("mZip","No se pudieron subir los archivos: "+e.message,false)}
+  b.disabled=false;
+};
+$("bResp").onclick=async function(){
+  try{var r=await (await fetch("/api/respaldo",{method:"POST",headers:H,credentials:"same-origin"})).json();msg("mResp",r.ok?"Respaldo hecho en el servidor.":"No se pudo: "+(r.error||""),!!r.ok);estado()}catch(e){msg("mResp","No se pudo hacer el respaldo.",false)}
+};
+$("bDescarga").onclick=function(){location.href="/api/respaldo/descargar"};
+estado();
+})();
+</script>
+</body>
+</html>

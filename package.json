@@ -1,0 +1,8 @@
+{
+  "name": "sistema-lafragua",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema escolar y de colegiaturas de la Universidad Lafragua",
+  "engines": { "node": ">=22.13" },
+  "scripts": { "start": "node servidor.js" }
+}

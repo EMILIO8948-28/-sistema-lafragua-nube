@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configuración inicial · Sistema escolar Lafragua</title>
+<style>
+body{font-family:system-ui,"Segoe UI",sans-serif;background:#f4f7f9;color:#1b2a3a;margin:0;padding:16px}
+main{max-width:440px;margin:6vh auto;background:#fff;border:1px solid #d9e0e6;border-radius:14px;padding:20px}
+h1{font-size:20px;color:#0f6b63;margin:0 0 6px}p{font-size:14px;color:#4a5a6a;line-height:1.45}
+label{display:block;font-size:13px;color:#4a5a6a;margin:10px 0 4px}
+input{width:100%;padding:9px 10px;border:1px solid #cdd6dd;border-radius:8px;font:inherit;box-sizing:border-box}
+button{margin-top:14px;width:100%;padding:10px;border:0;border-radius:8px;background:#0f6b63;color:#fff;font:inherit;cursor:pointer}
+button:disabled{opacity:.6}.err{color:#a1281d;font-size:13px;min-height:1.3em;margin-top:8px}
+</style>
+</head>
+<body>
+<main>
+  <h1>🎓 Configuración inicial</h1>
+  <p>Crea la cuenta del <b>administrador</b> del sistema. Esta página solo funciona mientras no exista ningún usuario y pide el código de configuración que está en las variables del servidor.</p>
+  <label>Código de configuración<input id="tk" type="password" autocomplete="off"></label>
+  <label>Tu nombre completo<input id="nm" autocomplete="name"></label>
+  <label>Usuario (sin acentos ni espacios)<input id="us" autocomplete="username"></label>
+  <label>Contraseña (mínimo 8 caracteres)<input id="pw" type="password" autocomplete="new-password"></label>
+  <label>Repite la contraseña<input id="p2" type="password" autocomplete="new-password"></label>
+  <div class="err" id="er"></div>
+  <button id="go">Crear administrador y entrar</button>
+</main>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+$("go").onclick=async function(){
+  $("er").textContent="";
+  if($("pw").value!==$("p2").value){$("er").textContent="Las contraseñas no coinciden.";return}
+  this.disabled=true;
+  try{
+    var r=await fetch("/api/configurar",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","x-lafragua":"1"},body:JSON.stringify({token:$("tk").value.trim(),u:$("us").value,name:$("nm").value,clave:$("pw").value})});
+    var j=await r.json().catch(function(){return {}});
+    if(r.ok){location.href="/";return}
+    $("er").textContent=j.error||"No se pudo configurar.";
+  }catch(e){$("er").textContent="No se pudo conectar con el servidor."}
+  this.disabled=false;
+};
+})();
+</script>
+</body>
+</html>

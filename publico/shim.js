@@ -1,18 +1,26 @@
 /* Conexión de la aplicación con el servidor en la nube (reemplaza lo que antes daba claude.ai) */
 (function(){
   "use strict";
+  /* Los QR impresos con la dirección del sistema (#c., #v., #a.) abren la verificación pública, sin iniciar sesión */
+  if(/^#[vca]\.[A-Za-z0-9_~-]+\.[A-Za-z0-9_~.-]+$/.test(location.hash||"")&&location.pathname!=="/verificar"){location.replace("/verificar"+location.hash)}
   var CAB={"x-lafragua":"1"},YO=null,CONSULTA=false;
   function aviso401(){if(window.__lf401)return;window.__lf401=1;alert("Tu sesión terminó. Vuelve a iniciar sesión.");location.reload()}
-  function api(met,ruta,cuerpo,extra){
+  function api(met,ruta,cuerpo,extra,reint){
     var h=Object.assign({},CAB,extra||{}),o={method:met,headers:h,cache:"no-store",credentials:"same-origin"};
+    if(window.LF_AUTORIZA&&!/^borrados/.test(ruta))h["x-autoriza"]=window.LF_AUTORIZA;
     if(cuerpo!==undefined){if(cuerpo instanceof Blob||cuerpo instanceof ArrayBuffer||ArrayBuffer.isView(cuerpo))o.body=cuerpo;else{o.body=JSON.stringify(cuerpo);h["Content-Type"]="application/json"}}
-    return fetch("/api/"+ruta,o).then(function(r){return r.json().catch(function(){return {}}).then(function(j){if(!r.ok){if(r.status===401&&YO&&YO.usuario)aviso401();var e=new Error(j.error||("Error "+r.status));e.code=String(r.status);throw e}return j})});
+    return fetch("/api/"+ruta,o).then(function(r){return r.json().catch(function(){return {}}).then(function(j){if(!r.ok){
+      /* Borrar o quitar información necesita la autorización del encargado: se pide y se reintenta */
+      if(r.status===403&&j.requiereAutorizacion&&!reint&&typeof window.pideAutorizacion==="function"){return window.pideAutorizacion(j).then(function(id){window.LF_AUTORIZA=id;return api(met,ruta,cuerpo,extra,true)})}
+      if(r.status===401&&YO&&YO.usuario)aviso401();var e=new Error(j.error||("Error "+r.status));e.code=String(r.status);throw e}return j})});
   }
   function cargaYo(){if(!YO)YO=fetch("/api/yo",{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.json()}).then(function(j){
-    window.LF_NUBE=true;window.LF_ME=j.usuario||null;window.LF_USERS=j.usuarios||[];window.LF_SETUP=!!j.setup;
+    window.LF_NUBE=true;window.LF_URLP=String(j.urlPublica||"");window.LF_ME=j.usuario||null;window.LF_USERS=j.usuarios||[];window.LF_SETUP=!!j.setup;
     if(j.setup&&!/configurar/.test(location.pathname)){location.replace("/configurar.html")}
     return j}).catch(function(){window.LF_ME=null;window.LF_USERS=[];return {}});return YO}
   var yoLista=cargaYo();window.LF_LISTO=yoLista;
+  /* Dirección que llevan los códigos QR: la de la plataforma donde está alojada (o la que se fije con LF_URL_PUBLICA) */
+  Object.defineProperty(window,"LF_APPURL",{configurable:true,get:function(){return String(window.LF_URLP||location.origin).replace(/\/+$/,"")+"/verificar"}});
   var escuchas=[],tiempos={};
   function vacioCol(){return {docs:[]}}
   function snapDoc(id,r){return {id:id,exists:!!r.exists,data:function(){return r.data?JSON.parse(JSON.stringify(r.data)):undefined}}}
@@ -35,7 +43,7 @@
   yoLista.then(function(){
     if(!window.LF_ME)return;
     try{var es=new EventSource("/api/eventos"),abierto=false;
-      es.onmessage=function(e){try{var m=JSON.parse(e.data);refresca(m.c,m.id)}catch(x){}};
+      es.onmessage=function(e){try{var m=JSON.parse(e.data);if(m.c==="_borrados"){if(window.LF_BORRADOS)window.LF_BORRADOS(m.id);return}refresca(m.c,m.id)}catch(x){}};
       es.onopen=function(){if(abierto)escuchas.forEach(carga);abierto=true};
     }catch(e){}
   });
@@ -74,7 +82,7 @@
     profiles:function(ids){var o={};(ids||[]).forEach(function(i){o[i]={name:""}});return Promise.resolve(o)}
   };
   var ASSETS={
-    upload:function(f,o){var h={"x-nombre":encodeURIComponent(f.name||"archivo"),"Content-Type":f.type||"application/octet-stream"};if(o&&o.privado)h["x-privado"]="1";return api("POST","archivo",f,h)},
+    upload:function(f,o){var h={"x-nombre":encodeURIComponent(f.name||"archivo"),"Content-Type":f.type||"application/octet-stream"};if(o&&o.privado)h["x-privado"]="1";if(o&&o.categoria)h["x-categoria"]=String(o.categoria);return api("POST","archivo",f,h)},
     delete:function(id){return api("DELETE","archivo/"+id)}
   };
   var DL={

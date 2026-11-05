@@ -75,11 +75,11 @@ with sync_playwright() as pw:
     pg.evaluate("""async()=>{var s=S.find(x=>x.nombre==='Ana Nube'),g=s.pagos[1];openCf(s.id,g.id);$("cfFec").value=today();await $("cfOk").onclick()}""")
     W(pg,"paid(S.find(s=>s.nombre==='Ana Nube'))===2600");ok('caja_confirma_transferencia',True)
     ok('caja_sin_errores_de_permiso',len(malos)==antes)
-    # caja quita un pago: pide contraseña de administrador
-    pg.evaluate("""async()=>{var s=S.find(x=>x.nombre==='Ana Nube');window.__pid=s.pagos[2].id;await $("sPays").onclick({target:{dataset:{del:window.__pid}}})}""")
-    ok('caja_ve_pedir_clave',pg.is_visible('#sAut'))
-    pg.fill('#sAutPw','clave-equivocada');pg.click('#sAutOk');W(pg,"document.getElementById('sPMsg').textContent.includes('incorrecta')");ok('caja_clave_admin_mala',pg.evaluate("S.find(s=>s.nombre==='Ana Nube').pagos.length")==3)
-    pg.fill('#sAutPw','nueva-admin-77');pg.click('#sAutOk');W(pg,"S.find(s=>s.nombre==='Ana Nube').pagos.length===2");ok('caja_clave_admin_buena',True)
+    # caja quita un pago: el servidor pide la autorización del encargado (contraseña de un administrador)
+    pg.evaluate("""var s=S.find(x=>x.nombre==='Ana Nube');window.__pid=s.pagos[2].id;openSt(s.id)""");pg.wait_for_selector('#dSt[open]');pid=pg.evaluate("window.__pid")
+    pg.click('#sPays [data-del="%s"]'%pid);pg.wait_for_timeout(200);pg.click('#sPays [data-del="%s"]'%pid);pg.wait_for_selector('#dAu[open]');ok('caja_ve_pedir_clave',pg.is_visible('#auPw'))
+    pg.fill('#auPw','clave-equivocada');pg.click('#auClave');W(pg,"document.getElementById('auMsg').textContent.includes('incorrecta')");ok('caja_clave_admin_mala',pg.evaluate("S.find(s=>s.nombre==='Ana Nube').pagos.length")==3)
+    pg.fill('#auPw','nueva-admin-77');pg.click('#auClave');W(pg,"S.find(s=>s.nombre==='Ana Nube').pagos.length===2");ok('caja_clave_admin_buena',True)
     ok('caja_sin_acceso_a_usuarios',pg.evaluate("(async()=>{var r=await fetch('/api/usuarios');return r.status})()")==403 and pg.evaluate("document.getElementById('mUsr').hidden"))
     pg.evaluate("document.querySelectorAll('dialog[open]').forEach(function(d){d.close()})");pg.click('#bOut');W(pg,"document.body.classList.contains('locked')")
     # 6) docente
@@ -118,7 +118,7 @@ p.terminate();p.wait()
 esperados={(401,'/api/login'),(403,'/api/autoriza-admin'),(403,'/api/usuarios'),(400,'/api/cambiar-clave'),(401,'/api/configurar')}
 print('respuestas de error:',sorted(set((c,u.split('?')[0]) for c,u,_ in malos)))
 print('detalle:',[m for m in malos if m[0]==401 and 'config/plans' in m[1]])
-inesperados=[(c,u) for c,u,_ in malos if (c,u.split('?')[0]) not in esperados and not (c==403 and u.startswith('/api/configurar'))]
+inesperados=[(c,u) for c,u,_ in malos if (c,u.split('?')[0]) not in esperados and not (c==403 and u.startswith('/api/configurar')) and not (c==403 and (u.startswith('/api/doc/ledger/') or u.startswith('/api/borrados/'))) and not (c==401 and u.startswith('/api/borrados'))]
 ok('sin_errores_inesperados',len(inesperados)==0)
 if inesperados:print('INESPERADOS:',inesperados[:8])
 bad=[k for k,v in R.items() if not v];print(len(R),'comprobaciones');print('FALLAN:',bad)

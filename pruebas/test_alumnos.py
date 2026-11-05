@@ -74,8 +74,8 @@ with sync_playwright() as pw:
     # ---- lo que ve el alumno 1 ----
     def leer(cx,c):return cx.request.get(B+'/api/col/'+c).json()['docs']
     st=leer(a1,'students');ok('solo_su_registro',len(st)==1 and st[0]['id']=='s1' and st[0]['data']['mat']=='1001')
-    ok('sin_datos_de_contacto_ni_archivos',all(k not in st[0]['data'] for k in ['tel','dom','mail','dpdf','tut','via']))
-    lg=leer(a1,'ledger');ok('solo_sus_pagos',len(lg)==1 and lg[0]['id']=='s1' and len(lg[0]['data']['pagos'])==2 and all('byn' not in x and 'by' not in x for x in lg[0]['data']['pagos']))
+    ok('sin_datos_de_contacto_ni_archivos',all(k not in st[0]['data'] for k in ['tel','dom','mail','dpdf','via']) and st[0]['data']['tut']=='Rosa')
+    lg=leer(a1,'ledger');ok('solo_sus_pagos',len(lg)==1 and lg[0]['id']=='s1' and len(lg[0]['data']['pagos'])==2 and all('by' not in x and x.get('byn')=='Caja Uno' for x in lg[0]['data']['pagos']))
     ok('solo_sus_calificaciones',[d['id'] for d in leer(a1,'calif')]==['s1'])
     gr=leer(a1,'grupos');ok('solo_su_grupo_sin_companeros',len(gr)==1 and gr[0]['data']['num']=='1111' and gr[0]['data']['alumnos']==['s1'])
     ok('solo_materias_de_su_grupo',sorted(d['id'] for d in leer(a1,'materias'))==['m1','m2'])
@@ -153,7 +153,7 @@ with sync_playwright() as pw:
     pa.evaluate("ir('pagos')");ok('no_entra_a_modulos_del_personal',pa.evaluate("MOD")=='por')
     ok('alumno_sin_datos_ajenos_en_memoria',pa.evaluate("Object.keys(ST).length")==1 and pa.evaluate("Object.keys(LG).join()")=='s1' and pa.evaluate("Object.keys(GRP).length")==1 and pa.evaluate("Object.keys(DOC).length")==2)
     pa.click('#bPw');ok('puede_cambiar_su_contrasena',pa.is_visible('#pwOk'));pa.click('#pwCan')
-    pa.evaluate("document.querySelectorAll('dialog[open]').forEach(function(d){d.close()})");pa.click('#bOut');pa.wait_for_function("document.body.classList.contains('locked')")
+    pa.evaluate("document.querySelectorAll('dialog[open]').forEach(function(d){d.close()})");pa.click('#bOut');W(pa,"document.body.classList.contains('locked')")
     ok('cierra_sesion',pa.is_visible('#login'))
     # ---- baja de un usuario de alumno ----
     ok('baja_de_usuario_alumno',ctx.request.delete(B+'/api/usuarios/1002',headers=HDR).status==200 and b.new_context().request.post(B+'/api/login',data=json.dumps({'u':'1002','clave':'clave-de-beto-2'}),headers=HDR).status==401)

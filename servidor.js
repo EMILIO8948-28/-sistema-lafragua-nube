@@ -32,17 +32,21 @@ CREATE TABLE IF NOT EXISTS sesiones (token TEXT PRIMARY KEY, u TEXT NOT NULL, cr
 CREATE TABLE IF NOT EXISTS auditoria (id INTEGER PRIMARY KEY AUTOINCREMENT, fecha INTEGER NOT NULL, u TEXT, ip TEXT, accion TEXT NOT NULL, detalle TEXT);
 `);
 try { db.exec('ALTER TABLE archivos ADD COLUMN privado INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* la columna ya existe */ }
+try { db.exec('ALTER TABLE archivos ADD COLUMN dueno TEXT'); } catch (e) { /* la columna ya existe */ }
+try { db.exec('ALTER TABLE archivos ADD COLUMN cat TEXT'); } catch (e) { /* la columna ya existe */ }
 try { db.exec('ALTER TABLE usuarios ADD COLUMN modulos TEXT'); } catch (e) { /* la columna ya existe */ }
 try { db.exec('ALTER TABLE usuarios ADD COLUMN temporal TEXT'); } catch (e) { /* la columna ya existe */ }
 try { db.exec('ALTER TABLE usuarios ADD COLUMN alumno TEXT'); } catch (e) { /* la columna ya existe */ }
 try { db.exec('ALTER TABLE usuarios ADD COLUMN forzar INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* la columna ya existe */ }
+db.exec(`CREATE TABLE IF NOT EXISTS borrados (id TEXT PRIMARY KEY, u TEXT NOT NULL, nombre TEXT, creado INTEGER NOT NULL, estado TEXT NOT NULL, via TEXT, descripcion TEXT NOT NULL, detalle TEXT, resuelto_por TEXT, resuelto INTEGER, motivo TEXT, expira INTEGER, ops TEXT)`);
+db.exec('CREATE INDEX IF NOT EXISTS ix_borrados_estado ON borrados (estado, creado)');
 const q = {
   lista: db.prepare('SELECT id, data FROM docs WHERE coleccion = ? ORDER BY id'),
   uno: db.prepare('SELECT data FROM docs WHERE coleccion = ? AND id = ?'),
   pon: db.prepare('INSERT INTO docs (coleccion, id, data, actualizado) VALUES (?, ?, ?, ?) ON CONFLICT(coleccion, id) DO UPDATE SET data = excluded.data, actualizado = excluded.actualizado'),
   borra: db.prepare('DELETE FROM docs WHERE coleccion = ? AND id = ?'),
-  ponArch: db.prepare('INSERT INTO archivos (id, nombre, tipo, tamano, creado, privado) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET nombre = excluded.nombre, tipo = excluded.tipo, tamano = excluded.tamano, privado = excluded.privado'),
-  uArch: db.prepare('SELECT nombre, tipo, tamano, privado FROM archivos WHERE id = ?'),
+  ponArch: db.prepare('INSERT INTO archivos (id, nombre, tipo, tamano, creado, privado, dueno, cat) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET nombre = excluded.nombre, tipo = excluded.tipo, tamano = excluded.tamano, privado = excluded.privado'),
+  uArch: db.prepare('SELECT nombre, tipo, tamano, privado, dueno, cat FROM archivos WHERE id = ?'),
   bArch: db.prepare('DELETE FROM archivos WHERE id = ?'),
   todosArch: db.prepare('SELECT id, nombre, privado FROM archivos ORDER BY id'),
   cuenta: db.prepare('SELECT coleccion, COUNT(*) AS n FROM docs GROUP BY coleccion ORDER BY coleccion'),
@@ -54,6 +58,14 @@ const q = {
   insUsr: db.prepare('INSERT INTO usuarios (u, nombre, rol, doc, salt, hash, creado, modulos) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(u) DO UPDATE SET nombre = excluded.nombre, rol = excluded.rol, doc = excluded.doc, salt = excluded.salt, hash = excluded.hash, modulos = excluded.modulos'),
   updUsr: db.prepare('UPDATE usuarios SET nombre = ?, rol = ?, doc = ?, modulos = ? WHERE u = ?'),
   borUsr: db.prepare('DELETE FROM usuarios WHERE u = ?'),
+  insBor: db.prepare('INSERT INTO borrados (id, u, nombre, creado, estado, descripcion, detalle) VALUES (?, ?, ?, ?, ?, ?, ?)'),
+  getBor: db.prepare('SELECT * FROM borrados WHERE id = ?'),
+  updBor: db.prepare('UPDATE borrados SET estado = ?, via = ?, resuelto_por = ?, resuelto = ?, motivo = ?, expira = ? WHERE id = ?'),
+  opsBor: db.prepare('UPDATE borrados SET ops = ? WHERE id = ?'),
+  pasaBor: db.prepare("UPDATE borrados SET estado = 'pendiente', creado = ? WHERE id = ? AND estado = 'borrador'"),
+  listaBor: db.prepare("SELECT * FROM borrados WHERE estado != 'borrador' ORDER BY creado DESC LIMIT 200"),
+  limpiaBor: db.prepare("DELETE FROM borrados WHERE estado = 'borrador' AND creado < ?"),
+  archRef: db.prepare('SELECT 1 FROM docs WHERE data LIKE ? LIMIT 1'),
   setForzar: db.prepare('UPDATE usuarios SET forzar = ? WHERE u = ?'),
   setAlumno: db.prepare('UPDATE usuarios SET alumno = ? WHERE u = ?'),
   setTemporal: db.prepare('UPDATE usuarios SET temporal = ? WHERE u = ?'),
@@ -143,7 +155,7 @@ const MODULOS = {
   estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'egresados'], E: [], plans: true, nomina: true },
   ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
   inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
-  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta'], plans: true, archivos: true },
+  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta', 'planeaciones'], plans: true, archivos: true },
   constancias:  { L: ['constancias', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
   acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
   a286:         { L: ['acuerdo286'], E: ['acuerdo286', 'meta'], archivos: true },
@@ -174,14 +186,14 @@ function contextoAlumno(s) {
   const grupos = gruposDeAlumno(s.alumno), mats = q.lista.all('materias').map(r => ({ id: r.id, d: JSON.parse(r.data) })).filter(m => grupos.some(g => g.d.plan === m.d.plan && g.d.per === m.d.per && g.d.cuat === m.d.cuat));
   return { grupos, docIds: new Set(mats.map(m => m.d.docId).filter(Boolean)) };
 }
-const CAMPOS_ALUMNO = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'nuevo', 'sexo', 'beca'];
+const CAMPOS_ALUMNO = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'nuevo', 'sexo', 'edad', 'beca', 'tut', 'tutTel'];
 function filtraAlumno(s, col, id, data, ctx) {
   const sid = s.alumno;
   if (!sid) return null;
   switch (col) {
     case 'students': { if (id !== sid) return null; const o = {}; CAMPOS_ALUMNO.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
-    case 'ledger': { if (id !== sid) return null; return { pagos: (data.pagos || []).map(g => { const o = Object.assign({}, g); delete o.by; delete o.byn; delete o.confPor; return o; }) }; }
-    case 'calif': case 'constancias': case 'egresados': return id === sid ? data : null;
+    case 'ledger': { if (id !== sid) return null; return { pagos: (data.pagos || []).map(g => { const o = Object.assign({}, g); delete o.by; delete o.confPor; return o; }) }; }
+    case 'calif': case 'constancias': case 'egresados': case 'fotos': return id === sid ? data : null;
     case 'grupos': return (data.alumnos || []).includes(sid) ? Object.assign({}, data, { alumnos: [sid] }) : null;
     case 'materias': return ctx.grupos.some(g => g.d.plan === data.plan && g.d.per === data.per && g.d.cuat === data.cuat) ? data : null;
     case 'docentes': return ctx.docIds.has(id) ? { nombre: data.nombre, esp: data.esp || '' } : null;
@@ -191,16 +203,19 @@ function filtraAlumno(s, col, id, data, ctx) {
   }
 }
 function eventoAlumno(s, c, id) {
-  if (['students', 'ledger', 'calif', 'constancias', 'egresados'].includes(c)) return id === s.alumno;
+  if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos'].includes(c)) return id === s.alumno;
   if (['grupos', 'materias', 'docentes', 'catalogo'].includes(c)) return true;
   if (c === 'config') return id === 'plans' || id === 'app';
   return false;
 }
+function esPlaneacionPropia(s, id) { if (!s.doc) return false; if (!id) return true; const r = q.uno.get('materias', id); if (!r) return false; try { return JSON.parse(r.data).docId === s.doc; } catch (e) { return false; } }
 function puedeLeer(s, col, id) {
   if (col === 'config' && id === 'users') return false;
+  if (col === '_borrados') return s.rol === 'admin' || id === s.u;
   if (s.rol === 'alumno') return eventoAlumno(s, col, id);
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
+  if (col === 'planeaciones') return P.escolar === 'editar' || (!!(P.docente && P.docente !== 'none') && esPlaneacionPropia(s, id));
   if (col === 'config') {
     if (id === 'nomina') return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].nomina);
     if (id === 'plans') return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].plans);
@@ -214,6 +229,7 @@ function puedeEscribir(s, col, id) {
   if (s.rol === 'alumno') return false;
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
+  if (col === 'planeaciones' && P.escolar !== 'editar') return P.docente === 'editar' && esPlaneacionPropia(s, id);
   if (col === 'config') return id === 'nomina' && P.nomina_doc === 'editar';
   return Object.keys(P).some(m => P[m] === 'editar' && MODULOS[m] && MODULOS[m].E.includes(col));
 }
@@ -221,7 +237,7 @@ function puedeArchivos(s, privado) {
   if (s.rol === 'alumno') return false;
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
-  if (privado) return P.expedientes === 'editar';
+  if (privado) return P.expedientes === 'editar' || P.docente === 'editar' || P.escolar === 'editar';
   return Object.keys(P).some(m => P[m] === 'editar' && MODULOS[m] && MODULOS[m].archivos && !MODULOS[m].privados);
 }
 const CAMPOS_DOCENTE = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'sexo', 'nuevo'];
@@ -242,6 +258,91 @@ function validaModulos(m) {
     if (v !== 'none') o[k] = v;
   }
   return { ok: true, valor: o };
+}
+
+/* ---------- Borrados protegidos ----------
+   Nadie que no sea Administrador borra nada sin autorización: o la contraseña del encargado, o su aprobación.
+   Es un borrado: eliminar un documento o un archivo, o quitar elementos de un documento (un pago, un gasto, un documento cargado…). */
+const NOMBRES_COL = { students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura' };
+const EXENTAS_PUT = new Set(['meta', 'calif', 'criterios', 'contenidos', 'cortes', 'config', 'fotos', 'planeaciones']);
+const VENTANA_BORRADO = 10 * 60000, RACHA_BORRADO = 15000;
+function alumnoDe(col, id) { if (['students', 'ledger', 'calif', 'constancias', 'fotos', 'egresados'].includes(col)) { const r = q.uno.get('students', id); if (r) { try { return JSON.parse(r.data).nombre || ''; } catch (e) {} } } return ''; }
+function resumenReg(o, col) {
+  if (o === null || o === undefined) return '';
+  if (typeof o !== 'object') { const r = (col === 'grupos') ? q.uno.get('students', String(o)) : null; if (r) { try { return JSON.parse(r.data).nombre; } catch (e) {} } return String(o).slice(0, 60); }
+  const p = [];
+  if (o.folio) p.push('folio ' + o.folio);
+  if (o.num && o.num !== o.folio) p.push(String(o.num));
+  const nom = o.nombre || o.emp || o.concepto || o.c || o.name || o.nom; if (nom) p.push(String(nom).slice(0, 60) + (o.apPat ? ' ' + o.apPat : ''));
+  if (o.mat && !o.nombre) p.push('matrícula ' + o.mat);
+  const mon = typeof o.monto === 'number' ? o.monto : (typeof o.neto === 'number' ? o.neto : null); if (mon !== null) p.push(dinero(mon));
+  if (o.fecha) p.push(String(o.fecha));
+  return p.join(' · ') || (o.id ? 'registro ' + String(o.id).slice(0, 12) : 'elemento');
+}
+function esRegistro(a) { return a && typeof a === 'object' && !Array.isArray(a) && (a.id !== undefined || (Object.keys(a).length && Object.values(a).every(v => v && typeof v === 'object' && !Array.isArray(v)))); }
+function quitados(v, n, ruta, out, prof) {
+  if (prof > 4) return;
+  if (Array.isArray(v)) {
+    if (!Array.isArray(n)) { if (v.length) out.push({ ruta, item: v[0], n: v.length }); return; }
+    const conId = v.length > 0 && v.every(x => x && typeof x === 'object' && x.id !== undefined);
+    if (conId) { const ids = new Set(n.filter(x => x && typeof x === 'object').map(x => x.id)); v.forEach(x => { if (!ids.has(x.id)) out.push({ ruta, item: x }); else quitados(x, n.find(z => z && z.id === x.id), ruta + '[' + x.id + ']', out, prof + 1); }); }
+    else if (v.length > 0 && v.every(x => x === null || typeof x !== 'object')) { const set = new Set(n); v.forEach(x => { if (!set.has(x)) out.push({ ruta, item: x }); }); }
+    else if (n.length < v.length) out.push({ ruta, item: null, n: v.length - n.length });
+    return;
+  }
+  if (v && typeof v === 'object') {
+    if (!n || typeof n !== 'object' || Array.isArray(n)) { if (esRegistro(v)) out.push({ ruta, item: v }); return; }
+    Object.keys(v).forEach(k => {
+      const a = v[k], b = n[k];
+      if (a && typeof a === 'object' && (Array.isArray(a) ? a.length : Object.keys(a).length)) {
+        if (b === undefined || b === null) { if (Array.isArray(a) || esRegistro(a)) out.push({ ruta: ruta + '.' + k, item: Array.isArray(a) ? a[0] : a, n: Array.isArray(a) ? a.length : undefined }); }
+        else quitados(a, b, ruta + '.' + k, out, prof + 1);
+      }
+    });
+  }
+}
+const TIPO_RUTA = { pagos: 'pago', items: 'registro', abonos: 'abono', docs: 'documento', tram: 'documento', obt: 'documento', asig: 'asignatura', alumnos: 'alumno del grupo', cuotas: 'parcialidad', filas: 'fila de nómina', cert: 'certificado' };
+const dinero = n => '$' + Number(n).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function describeBorrado(m, col, id, viejo, nuevo) {
+  const colN = NOMBRES_COL[col] || col, quien = alumnoDe(col, id), de = quien ? ' · ' + quien : '';
+  if (m === 'DELETE') return 'Eliminar ' + colN.toLowerCase() + (col === 'students' && viejo && viejo.nombre ? ' ' + viejo.nombre + (viejo.mat ? ' (matrícula ' + viejo.mat + ')' : '') : de.replace(' · ', ' de ')) + (viejo && col !== 'students' ? ' — ' + resumenReg(viejo, col) : '');
+  const out = []; quitados(viejo, nuevo, '', out, 0);
+  const tr = out.slice(0, 3).map(o => {
+    const ult = String(o.ruta || '').split(/[.[]/).filter(Boolean).pop() || '', tipo = TIPO_RUTA[ult] || 'elemento';
+    return tipo + ': ' + (o.item !== undefined && o.item !== null ? resumenReg(o.item, col) : (o.n + ' elemento(s)'));
+  });
+  return 'Quitar ' + tr.join('; ') + (out.length > 3 ? ' y ' + (out.length - 3) + ' más' : '') + ' (' + colN + de + ')';
+}
+function envioBorrado(u) { difunde('_borrados', u); difunde('_borrados', '*'); }
+/* Devuelve true si ya respondió (403) porque el borrado necesita autorización. */
+function protegeBorrado(s, req, res, o) {
+  if (s.rol === 'admin') return false;
+  let esBorrado = false;
+  if (o.accion === 'DELETE') esBorrado = o.col !== 'meta';
+  else if (o.accion === 'PUT') { if (!EXENTAS_PUT.has(o.col) && o.viejo) { const out = []; quitados(o.viejo, o.nuevo, '', out, 0); esBorrado = out.length > 0; } }
+  else if (o.accion === 'ARCHIVO') esBorrado = true;
+  if (!esBorrado) return false;
+  const id = String(req.headers['x-autoriza'] || '');
+  if (id) {
+    const b = q.getBor.get(id), ahora = Date.now();
+    if (b && b.u === s.u && b.estado === 'aprobada' && b.expira > ahora) {
+      /* Autoriza una acción, no una ventana de tiempo: tras la primera operación, las siguientes deben seguir de inmediato */
+      const ops = JSON.parse(b.ops || '[]'), ultima = ops.length ? ops[ops.length - 1].t : 0;
+      if (ops.length < 80 && (!ultima || ahora - ultima <= RACHA_BORRADO)) { ops.push({ t: ahora, op: o.accion, col: o.col, id: o.id }); q.opsBor.run(JSON.stringify(ops), id); audita(s.u, req, 'Borrado autorizado', o.accion + ' ' + o.col + '/' + o.id + ' · solicitud ' + id); envioBorrado(s.u); return false; }
+    }
+  }
+  q.limpiaBor.run(Date.now() - 3600000);
+  const d = o.descripcion || describeBorrado(o.accion, o.col, o.id, o.viejo, o.nuevo), bid = crypto.randomBytes(8).toString('hex');
+  q.insBor.run(bid, s.u, s.name, Date.now(), 'borrador', d, JSON.stringify({ op: o.accion, col: o.col, id: o.id }));
+  audita(s.u, req, 'Borrado bloqueado: necesita autorización', d);
+  responde(res, 403, { error: 'Esta acción necesita la autorización del encargado.', requiereAutorizacion: true, solicitud: bid, descripcion: d });
+  return true;
+}
+function vistaBorrado(b) {
+  const ahora = Date.now(); let estado = b.estado;
+  if (estado === 'aprobada' && b.expira && b.expira < ahora) estado = 'vencida';
+  const _o = JSON.parse(b.ops || '[]'); if (estado === 'aprobada' && _o.length && ahora - _o[_o.length - 1].t > RACHA_BORRADO) estado = 'usada';
+  return { id: b.id, u: b.u, nombre: b.nombre, creado: new Date(b.creado).toISOString(), estado, via: b.via || '', descripcion: b.descripcion, resueltoPor: b.resuelto_por || '', resuelto: b.resuelto ? new Date(b.resuelto).toISOString() : '', motivo: b.motivo || '', expira: b.expira ? new Date(b.expira).toISOString() : '', ops: JSON.parse(b.ops || '[]') };
 }
 
 /* ---------- Eventos en tiempo real ---------- */
@@ -326,6 +427,46 @@ function origenOk(req) {
 function tokenSetupOk(t) { const esp = ENV.LF_SETUP_TOKEN || SETUP_AUTO; if (typeof t !== 'string' || !esp) return false; const a = Buffer.from(t), b = Buffer.from(esp); return a.length === b.length && crypto.timingSafeEqual(a, b); }
 let SETUP_AUTO = '';
 
+/* ---------- Verificación pública de documentos (el QR de recibos, constancias y credenciales) ----------
+   Cualquiera que lea el código QR puede comprobar que el documento es auténtico, sin iniciar sesión.
+   Solo responde si el código del QR coincide con el registro, y devuelve únicamente lo que ya trae el documento impreso. */
+const ORDINAL = ['', 'primer', 'segundo', 'tercer', 'cuarto', 'quinto', 'sexto', 'séptimo', 'octavo', 'noveno', 'décimo', 'undécimo', 'duodécimo'];
+function chkTxt(t) { t = String(t); let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return ('00000000' + h.toString(16)).slice(-8); }
+function enmascara(m) { m = String(m || ''); return m.length > 3 ? '•'.repeat(m.length - 3) + m.slice(-3) : m; }
+function hoyISO() { const d = new Date(Date.now() - 6 * 3600000); return d.toISOString().slice(0, 10); }   // hora del centro de México
+function verificaDoc(t, id, code, vig) {
+  const no = { ok: false, motivo: 'No se encontró un documento que coincida con este código. Si tienes el documento en papel, puede no ser auténtico.' };
+  const nombreAl = sid => { const r = q.uno.get('students', sid); return r ? JSON.parse(r.data) : null; };
+  if (t === 'c') {
+    for (const r of q.lista.all('constancias')) {
+      const x = ((JSON.parse(r.data).items) || []).find(i => String(i.num).toUpperCase() === id.toUpperCase());
+      if (!x) continue;
+      if (code !== chkTxt('C|' + x.num + '|' + x.mat + '|' + x.fecha)) return no;
+      const conProm = (x.tipo || (x.prom != null ? 'promedio' : 'simple')) === 'promedio' && x.prom != null;
+      return { ok: true, tipo: 'constancia', titulo: 'Constancia de estudios' + (conProm ? ' con promedio' : ''), folio: x.num, fecha: x.fecha, nombre: x.nombre, matricula: enmascara(x.mat), plan: x.plan, periodo: x.cuat ? (ORDINAL[x.cuat] || x.cuat + '.º') + ' cuatrimestre · ' + (x.per || '') : '', grupo: x.grupo || '', promedio: conProm ? Number(x.prom).toFixed(1) : null, dirigida: x.dest || 'A quien corresponda' };
+    }
+    return no;
+  }
+  if (t === 'v') {
+    const dentro = (origen, nombre, folio, monto, fecha, metodo, estado) => ({ ok: true, tipo: 'recibo', titulo: 'Recibo de pago', origen, folio, fecha, monto: Number(monto), metodo, nombre, estado: estado !== 'pendiente' ? 'Pago registrado' : 'Transferencia pendiente de confirmar' });
+    const buscar = (coleccion, sacar) => { for (const r of q.lista.all(coleccion)) { const d = JSON.parse(r.data); for (const g of sacar(d)) { if (String(g.folio || '').toUpperCase() === id.toUpperCase()) return { r, d, g }; } } return null; };
+    let h = buscar('ledger', d => d.pagos || []);
+    if (h) { if (code !== chkTxt(h.g.folio + '|' + Number(h.g.monto).toFixed(2) + '|' + h.g.fecha)) return no; const a = nombreAl(h.r.id); return dentro('Control de pagos', a ? a.nombre : '', h.g.folio, h.g.monto, h.g.fecha, h.g.metodo, h.g.estado); }
+    h = buscar('titulaciones', d => d.abonos || []);
+    if (h) { if (code !== chkTxt(h.g.folio + '|' + Number(h.g.monto).toFixed(2) + '|' + h.g.fecha)) return no; return dentro('Titulaciones', [h.d.nombre, h.d.apPat, h.d.apMat].filter(Boolean).join(' '), h.g.folio, h.g.monto, h.g.fecha, h.g.metodo, h.g.estado); }
+    h = buscar('acuerdo286', d => d.pagos || []);
+    if (h) { if (code !== chkTxt(h.g.folio + '|' + Number(h.g.monto).toFixed(2) + '|' + h.g.fecha)) return no; return dentro('Acuerdo 286', [h.d.nombre, h.d.apPat, h.d.apMat].filter(Boolean).join(' '), h.g.folio, h.g.monto, h.g.fecha, h.g.metodo, h.g.estado); }
+    return no;
+  }
+  if (t === 'a') {
+    if (code !== chkTxt('CR|' + id + '|' + vig)) return no;
+    const a = nombreAl(id); if (!a) return no;
+    const eg = q.uno.get('egresados', id), egresado = !!(eg && !JSON.parse(eg.data).revertido), v = vig.slice(0, 4) + '-' + vig.slice(4, 6) + '-' + vig.slice(6, 8);
+    return { ok: true, tipo: 'credencial', titulo: 'Credencial de estudiante', nombre: a.nombre, matricula: enmascara(a.mat), plan: a.programa || a.carrera || '', vigencia: v, vigente: !egresado && v >= hoyISO(), egresado };
+  }
+  return no;
+}
+
 async function api(req, res, partes) {
   const m = req.method, [tipo, a, b] = partes, ip = ipDe(req);
   if (m !== 'GET' && !req.headers['x-lafragua']) return responde(res, 403, { error: 'Solicitud no permitida' });
@@ -334,7 +475,15 @@ async function api(req, res, partes) {
   /* --- públicas --- */
   if (tipo === 'yo' && m === 'GET') {
     const s = sesionDe(req), hay = q.nUsr.get().n > 0;
-    return responde(res, 200, { modo: 'nube', setup: !hay, usuario: s ? publicoUsuario(s) : null, usuarios: s ? (s.rol === 'admin' ? listaUsuarios() : [publicoUsuario(s)]) : [{ u: '_', name: '', rol: 'consulta', doc: '' }] });
+    return responde(res, 200, { modo: 'nube', urlPublica: String(ENV.LF_URL_PUBLICA || ''), setup: !hay, usuario: s ? publicoUsuario(s) : null, usuarios: s ? (s.rol === 'admin' ? listaUsuarios() : [publicoUsuario(s)]) : [{ u: '_', name: '', rol: 'consulta', doc: '' }] });
+  }
+  if (tipo === 'verificar' && m === 'GET') {
+    if (limite('ver|' + ip, 60, 60000)) return responde(res, 429, { ok: false, motivo: 'Demasiadas consultas. Espera un minuto e inténtalo de nuevo.' });
+    falla('ver|' + ip, 60000);
+    const u = new URL(req.url, 'http://x').searchParams, t = u.get('t') || '', id = u.get('id') || '', code = (u.get('c') || '').toLowerCase(), vig = u.get('v') || '';
+    if (!/^[vca]$/.test(t) || !/^[A-Za-z0-9_~-]{1,60}$/.test(id) || !/^[0-9a-f]{8}$/.test(code) || (t === 'a' && !/^\d{8}$/.test(vig))) return responde(res, 400, { ok: false, motivo: 'El código no es válido.' });
+    res.setHeader('Cache-Control', 'no-store');
+    return responde(res, 200, Object.assign({ consultado: new Date().toISOString() }, verificaDoc(t, id, code, vig)));
   }
   if (tipo === 'login' && m === 'POST') {
     const c = await leeJSON(req), u = String(c.u || '').trim().toLowerCase(), clave = typeof c.clave === 'string' ? c.clave : '';
@@ -374,24 +523,39 @@ async function api(req, res, partes) {
   }
   if (tipo === 'col' && m === 'GET' && NOMBRE_OK.test(a || '')) {
     if (s.rol === 'alumno') {
-      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'grupos', 'materias', 'docentes', 'catalogo'].includes(a)) return responde(res, 200, { docs: [] });
+      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'grupos', 'materias', 'docentes', 'catalogo'].includes(a)) return responde(res, 200, { docs: [] });
       const ctx = contextoAlumno(s), docs = [];
       q.lista.all(a).forEach(r => { const d = filtraAlumno(s, a, r.id, JSON.parse(r.data), ctx); if (d) docs.push({ id: r.id, data: d }); });
       return responde(res, 200, { docs });
     }
     if (!puedeLeer(s, a, null)) return responde(res, 200, { docs: [] });
-    return responde(res, 200, { docs: q.lista.all(a).map(r => ({ id: r.id, data: reduce(s, a, JSON.parse(r.data)) })) });
+    return responde(res, 200, { docs: q.lista.all(a).filter(r => a !== 'planeaciones' || puedeLeer(s, a, r.id)).map(r => ({ id: r.id, data: reduce(s, a, JSON.parse(r.data)) })) });
   }
   if (tipo === 'doc' && NOMBRE_OK.test(a || '') && NOMBRE_OK.test(b || '')) {
     if (m === 'GET' && s.rol === 'alumno') { const r0 = q.uno.get(a, b), d0 = r0 ? filtraAlumno(s, a, b, JSON.parse(r0.data), contextoAlumno(s)) : null; return responde(res, 200, d0 ? { exists: true, data: d0 } : { exists: false, data: null }); }
     if (m === 'GET') { if (!puedeLeer(s, a, b)) return responde(res, 200, { exists: false, data: null }); const r = q.uno.get(a, b); return responde(res, 200, r ? { exists: true, data: reduce(s, a, JSON.parse(r.data)) } : { exists: false, data: null }); }
     if (m === 'PUT' || m === 'PATCH' || m === 'DELETE') {
       if (!puedeEscribir(s, a, b)) { audita(s.u, req, 'Escritura denegada', m + ' ' + a + '/' + b); return responde(res, 403, { error: 'No tienes permiso para hacer esto.' }); }
-      if (m === 'DELETE') { q.borra.run(a, b); difunde(a, b); return responde(res, 200, { ok: true }); }
+      if (m === 'DELETE') { const r0 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'DELETE', col: a, id: b, viejo: r0 ? JSON.parse(r0.data) : null })) return; q.borra.run(a, b); difunde(a, b); return responde(res, 200, { ok: true }); }
       let cuerpo; try { cuerpo = JSON.parse((await leeCuerpo(req, 6 * 1024 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
       if (cuerpo === null || typeof cuerpo !== 'object' || Array.isArray(cuerpo)) return responde(res, 400, { error: 'Se esperaba un objeto' });
       let nuevo = cuerpo; if (m === 'PATCH') { const r = q.uno.get(a, b); nuevo = Object.assign(r ? JSON.parse(r.data) : {}, cuerpo); }
-      q.pon.run(a, b, JSON.stringify(nuevo), Date.now()); difunde(a, b); return responde(res, 200, { ok: true });
+      if (s.rol !== 'admin') { const r1 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'PUT', col: a, id: b, viejo: r1 ? JSON.parse(r1.data) : null, nuevo })) return; }
+      /* Planeaciones: quien las sube no puede aprobarlas; si cambia sus archivos, vuelven a revisión */
+      if (a === 'planeaciones' && s.rol !== 'admin' && (s.perm || {}).escolar !== 'editar') {
+        const r2 = q.uno.get(a, b), viejo2 = r2 ? JSON.parse(r2.data) : {}, ids = x => ((x && x.files) || []).map(f => f.id).sort().join(',');
+        ['estado', 'revisor', 'revFecha', 'motivo'].forEach(k => { if (viejo2[k] !== undefined) nuevo[k] = viejo2[k]; else delete nuevo[k]; });
+        if (ids(nuevo) !== ids(viejo2) || (!viejo2.estado && ids(nuevo))) { if (ids(nuevo)) { nuevo.estado = 'pendiente'; delete nuevo.revisor; delete nuevo.revFecha; delete nuevo.motivo; } else { delete nuevo.estado; delete nuevo.revisor; delete nuevo.revFecha; delete nuevo.motivo; } }
+      }
+      /* Si el docente cambia sus puntos de evaluación, la planeación aprobada o denegada vuelve a revisión */
+      let reabre = null;
+      if (a === 'criterios' && s.rol !== 'admin' && (s.perm || {}).escolar !== 'editar') {
+        const rc = q.uno.get(a, b), vc = rc ? JSON.parse(rc.data) : {}, rp = q.uno.get('planeaciones', b);
+        if (rp && JSON.stringify(vc.items || []) !== JSON.stringify(nuevo.items || [])) { const dp = JSON.parse(rp.data); if (dp.estado === 'aprobada' || dp.estado === 'denegada') { dp.estado = 'pendiente'; delete dp.revisor; delete dp.revFecha; delete dp.motivo; reabre = dp; } }
+      }
+      q.pon.run(a, b, JSON.stringify(nuevo), Date.now()); difunde(a, b);
+      if (reabre) { q.pon.run('planeaciones', b, JSON.stringify(reabre), Date.now()); difunde('planeaciones', b); }
+      return responde(res, 200, { ok: true });
     }
   }
   if (tipo === 'lock' && m === 'POST' && NOMBRE_OK.test(a || '') && NOMBRE_OK.test(b || '')) {
@@ -402,12 +566,13 @@ async function api(req, res, partes) {
   }
   if (tipo === 'archivo') {
     const privSolicitado = req.headers['x-privado'] === '1';
-    if (m === 'DELETE') { const inf = q.uArch.get(a || ''); if (!puedeArchivos(s, !!(inf && inf.privado))) return responde(res, 403, { error: 'No tienes permiso para quitar archivos.' }); }
+    if (m === 'DELETE') { const inf = q.uArch.get(a || ''); if (!puedeArchivos(s, !!(inf && inf.privado))) return responde(res, 403, { error: 'No tienes permiso para quitar archivos.' }); if (inf && inf.privado && s.rol !== 'admin' && inf.dueno !== s.u && !(inf.cat === 'planeacion' ? nivel(s, 'escolar') === 'editar' : nivel(s, 'expedientes') === 'editar')) return responde(res, 403, { error: 'Ese archivo no es tuyo.' }); }
     else if (!puedeArchivos(s, privSolicitado)) return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
-    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0);
-    if (m === 'POST' && !a) { const buf = await leeCuerpo(req, 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now(), priv()); return responde(res, 200, { id, sizeBytes: buf.length }); }
+    if (m === 'DELETE' && ID_ARCH.test(a || '') && s.rol !== 'admin') { const inf2 = q.uArch.get(a); if (q.archRef.get('%' + a + '%') && protegeBorrado(s, req, res, { accion: 'ARCHIVO', col: 'archivo', id: a, descripcion: 'Eliminar el archivo «' + ((inf2 && inf2.nombre) || a) + '»' })) return; }
+    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (req.headers['x-categoria'] === 'planeacion' ? 'planeacion' : '');
+    if (m === 'POST' && !a) { const buf = await leeCuerpo(req, 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id, sizeBytes: buf.length }); }
     if (ID_ARCH.test(a || '')) {
-      if (m === 'PUT') { const buf = await leeCuerpo(req, 26 * 1024 * 1024); fs.writeFileSync(path.join(ARCH, a), buf); q.ponArch.run(a, nombre(), mime(), buf.length, Date.now(), priv()); return responde(res, 200, { id: a, sizeBytes: buf.length }); }
+      if (m === 'PUT') { const buf = await leeCuerpo(req, 26 * 1024 * 1024); fs.writeFileSync(path.join(ARCH, a), buf); q.ponArch.run(a, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id: a, sizeBytes: buf.length }); }
       if (m === 'DELETE') { try { fs.unlinkSync(path.join(ARCH, a)); } catch (e) {} q.bArch.run(a); return responde(res, 200, { ok: true }); }
     }
   }
@@ -483,6 +648,44 @@ async function api(req, res, partes) {
     const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(s.u, usr.nombre, usr.rol, usr.doc, salt, hashClave(c.nueva, salt), usr.creado, usr.modulos || null); q.borSesUmenos.run(s.u, s._token); q.setForzar.run(0, s.u); q.setTemporal.run(null, s.u);
     audita(s.u, req, 'Cambió su contraseña'); return responde(res, 200, { ok: true });
   }
+  if (tipo === 'borrados') {
+    if (m === 'GET' && !a) {
+      if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
+      const L = q.listaBor.all().map(vistaBorrado);
+      return responde(res, 200, { pendientes: L.filter(x => x.estado === 'pendiente'), historial: L.filter(x => x.estado !== 'pendiente') });
+    }
+    const bo = a && NOMBRE_OK.test(a) ? q.getBor.get(a) : null;
+    if (!bo) return responde(res, 404, { error: 'No existe esa solicitud.' });
+    if (m === 'GET' && !b) { if (bo.u !== s.u && rol !== 'admin') return responde(res, 404, { error: 'No existe esa solicitud.' }); return responde(res, 200, vistaBorrado(bo)); }
+    if (m === 'POST' && b === 'solicitar') {
+      if (bo.u !== s.u) return responde(res, 403, { error: 'No es tu solicitud.' });
+      if (bo.estado !== 'borrador') return responde(res, 409, { error: 'La solicitud ya fue enviada.' });
+      q.pasaBor.run(Date.now(), bo.id); audita(s.u, req, 'Solicitó autorización para borrar', bo.descripcion); envioBorrado(s.u);
+      return responde(res, 200, vistaBorrado(q.getBor.get(bo.id)));
+    }
+    if (m === 'POST' && b === 'clave') {
+      if (bo.u !== s.u) return responde(res, 403, { error: 'No es tu solicitud.' });
+      if (!['borrador', 'pendiente'].includes(bo.estado)) return responde(res, 409, { error: 'La solicitud ya fue resuelta.' });
+      const c = await leeJSON(req), adm = q.admins.all();
+      if (!adm.length) return responde(res, 409, { error: 'No hay un usuario administrador configurado.' });
+      if (limite('aut|' + s.u, 5, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' });
+      const hit = adm.find(x => claveOk(String(c.clave || ''), x));
+      if (!hit) { falla('aut|' + s.u, 900000); audita(s.u, req, 'Autorización de borrado con contraseña fallida', bo.descripcion); await dormir(400); return responde(res, 403, { error: 'Contraseña del encargado incorrecta.' }); }
+      q.updBor.run('aprobada', 'clave', hit.u, Date.now(), '', Date.now() + VENTANA_BORRADO, bo.id);
+      audita(s.u, req, 'Borrado autorizado con la contraseña del encargado', bo.descripcion + ' · ' + hit.u); envioBorrado(s.u);
+      return responde(res, 200, vistaBorrado(q.getBor.get(bo.id)));
+    }
+    if (m === 'POST' && b === 'resolver') {
+      if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador puede aprobar o denegar.' });
+      if (bo.estado !== 'pendiente') return responde(res, 409, { error: 'La solicitud ya fue resuelta.' });
+      const c = await leeJSON(req), ap = c.accion === 'aprobar';
+      if (!ap && c.accion !== 'denegar') return responde(res, 400, { error: 'Acción no válida.' });
+      q.updBor.run(ap ? 'aprobada' : 'denegada', 'solicitud', s.u, Date.now(), String(c.motivo || '').slice(0, 200), ap ? Date.now() + VENTANA_BORRADO : null, bo.id);
+      audita(s.u, req, ap ? 'Aprobó un borrado' : 'Denegó un borrado', bo.u + ': ' + bo.descripcion); envioBorrado(bo.u);
+      return responde(res, 200, vistaBorrado(q.getBor.get(bo.id)));
+    }
+    return responde(res, 404, { error: 'No encontrado' });
+  }
   if (tipo === 'autoriza-admin' && m === 'POST') {
     if (rol !== 'admin' && nivel(s, 'pagos') !== 'editar') return responde(res, 403, { error: 'No tienes permiso para hacer esto.' });
     const c = await leeJSON(req), adm = q.admins.all();
@@ -520,11 +723,12 @@ const servidor = http.createServer(async (req, res) => {
       const id = ruta.slice(7), f = path.join(ARCH, id);
       if (!ID_ARCH.test(id) || !fs.existsSync(f)) { res.writeHead(404); return res.end('No encontrado'); }
       const info = q.uArch.get(id) || {};
-      if (info.privado && sBlob.rol !== 'admin' && nivel(sBlob, 'expedientes') === 'none') { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Este archivo es confidencial: solo lo puede ver el Administrador.'); }
+      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || (info.cat === 'planeacion' ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
+      if (info.privado && !verPriv) { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Este archivo es confidencial: solo lo puede ver el Administrador.'); }
       res.writeHead(200, { 'Content-Type': info.tipo || 'application/octet-stream', 'Content-Disposition': "inline; filename*=UTF-8''" + encodeURIComponent(info.nombre || id), 'Cache-Control': 'private, no-store' });
       return fs.createReadStream(f).pipe(res);
     }
-    const rel = ruta === '/' ? '/index.html' : (ruta === '/configurar' ? '/configurar.html' : ruta);
+    const rel = ruta === '/' ? '/index.html' : (ruta === '/configurar' ? '/configurar.html' : (ruta === '/verificar' ? '/verificar.html' : ruta));
     const f = path.normalize(path.join(PUB, rel));
     if (!f.startsWith(PUB + path.sep) || !fs.existsSync(f) || !fs.statSync(f).isFile()) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('No encontrado'); }
     res.writeHead(200, { 'Content-Type': MIME[path.extname(f).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-cache' });

@@ -17,7 +17,7 @@
     $("lgGo").disabled=false;
   };
   $("lgGo").onclick=window.entrar;
-  $("bOut").onclick=async function(){window.__lf401=1;window.LF_ME=null;try{await llama("POST","/api/logout")}catch(e){}location.reload()};
+  $("bOut").onclick=async function(){window.LF_AUTORIZA=null;window.__lf401=1;window.LF_ME=null;try{await llama("POST","/api/logout")}catch(e){}location.reload()};
   /* Autorización de un administrador (para que Caja pueda quitar un pago) */
   window.claveAdmin=async function(pw){
     var r=await llama("POST","/api/autoriza-admin",{clave:pw,motivo:"Quitar un pago"});
@@ -40,6 +40,12 @@
   };
   async function cargaUsuarios(){var r=await llama("GET","/api/usuarios");if(r.ok)pasaUsuarios(r.j.usuarios)}
   window.cargaUsuariosSrv=cargaUsuarios;
+  /* Solicitudes de borrado (notificaciones del encargado) */
+  window.borradosLista=async function(){var r=await llama("GET","/api/borrados");if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudieron leer las notificaciones.");return r.j};
+  window.borradosResolver=async function(id,accion,motivo){var r=await llama("POST","/api/borrados/"+encodeURIComponent(id)+"/resolver",{accion:accion,motivo:motivo||""});if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo guardar tu respuesta.");return r.j};
+  window.borradoSolicitar=async function(id){var r=await llama("POST","/api/borrados/"+encodeURIComponent(id)+"/solicitar",{});if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo enviar la solicitud.");return r.j};
+  window.borradoClave=async function(id,clave){var r=await llama("POST","/api/borrados/"+encodeURIComponent(id)+"/clave",{clave:clave});if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo autorizar.");return r.j};
+  window.borradoEstado=async function(id){var r=await llama("GET","/api/borrados/"+encodeURIComponent(id));if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo consultar la solicitud.");return r.j};
   window.apiAlumnos=function(items){return llama("POST","/api/usuarios/alumnos",{items:items})};
   window.apiAcceso=function(sid){return llama("GET","/api/usuarios/alumno/"+encodeURIComponent(sid))};
   /* Accesos de docentes: el servidor guarda las contraseñas cifradas */

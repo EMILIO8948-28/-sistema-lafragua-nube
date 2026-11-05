@@ -47,3 +47,7 @@ Cuando te entregue una versión nueva, sube los archivos cambiados al repositori
 - Es **un solo servidor** (no se debe aumentar a varias copias): para ~300 alumnos sobra.
 - Los QR de recibos, constancias y credenciales llevan la dirección de este sistema. Si después pones dominio propio, los QR nuevos usarán esa dirección; los ya impresos conservan la anterior (la dirección de Render seguirá funcionando).
 - Los PDF y el Excel necesitan que el navegador cargue sus librerías de internet la primera vez.
+
+
+## Dirección de los códigos QR (opcional)
+Los recibos, constancias y credenciales llevan un código QR que abre la página pública `/verificar` de este sistema. Por defecto usa la dirección desde la que se usa el sistema. Si quieres fijar una dirección (por ejemplo, tu dominio propio), agrega en Render > Environment la variable `LF_URL_PUBLICA` con la dirección completa, por ejemplo `https://sistema.tuescuela.edu.mx` (sin diagonal final).

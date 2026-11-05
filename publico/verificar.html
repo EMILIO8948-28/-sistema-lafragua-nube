@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Verificación de documentos · Universidad Lafragua</title>
+<style>
+:root{--bg:#eef2f1;--surface:#fff;--ink:#17302d;--muted:#5d6f6c;--line:#d8e2e0;--brand:#0f6b63;--ok:#14633f;--okbg:#e7f4ee;--okline:#9fd3b6;--bad:#8a1c1c;--badbg:#fdecea;--badline:#f1b1ab;--warn:#7a4b00;--warnbg:#fff4dc;--warnline:#ecce8a}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1b19;--surface:#162b28;--ink:#e6f1ef;--muted:#9bb2ae;--line:#2a4440;--brand:#4fb3a8;--ok:#7fd6a8;--okbg:#14352a;--okline:#2d6a52;--bad:#f2a3a3;--badbg:#3a1c1c;--badline:#7a3a3a;--warn:#f1c97a;--warnbg:#3a2c10;--warnline:#7a6226}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+main{max-width:640px;margin:0 auto;padding:18px 14px 40px}
+.hoja{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.enc{display:flex;gap:14px;align-items:center;padding:18px 20px;border-bottom:3px solid var(--brand)}
+.enc img{height:58px;width:auto;flex:none}
+.enc b{display:block;font-size:18px;color:var(--brand);line-height:1.15}
+.enc span{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.tit{padding:14px 20px 0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sello{margin:10px 20px 0;border-radius:14px;padding:18px;text-align:center;border:2px solid}
+.sello .ic{font-size:34px;line-height:1}
+.sello h1{margin:6px 0 4px;font-size:22px;letter-spacing:.02em}
+.sello p{margin:0;font-size:14px;line-height:1.4}
+.sello.ok{background:var(--okbg);color:var(--ok);border-color:var(--okline)}
+.sello.bad{background:var(--badbg);color:var(--bad);border-color:var(--badline)}
+.sello.warn{background:var(--warnbg);color:var(--warn);border-color:var(--warnline)}
+.sec{padding:16px 20px 0}
+.sec h2{margin:0 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:0}
+dt,dd{padding:9px 0;border-bottom:1px solid var(--line);margin:0}
+dt{color:var(--muted);padding-right:16px;font-size:14px}
+dd{font-weight:650;word-break:break-word;font-size:15px}
+.nota{padding:14px 20px;color:var(--muted);font-size:13px;line-height:1.5}
+.pie{padding:12px 20px 18px;border-top:1px dashed var(--line);margin-top:6px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+button,summary{font:inherit}
+button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
+button.p{background:var(--brand);border-color:var(--brand);color:#fff}
+details{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 16px}
+summary{cursor:pointer;padding:12px 0;font-weight:650}
+form{display:grid;gap:10px;padding:4px 0 16px}
+label{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+input,select{font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%}
+.cargando{padding:40px 0;text-align:center;color:var(--muted)}
+@media print{body{background:#fff}details,.pie button{display:none}main{padding:0}.hoja{border:0}}
+</style>
+</head>
+<body>
+<main>
+  <div class="hoja">
+    <div class="enc"><img src="/logo.png" alt="" onerror="this.remove()"><div><b>Universidad Lafragua</b><span>Verificación de autenticidad de documentos</span><span>Guadalupe Victoria No. 3, Tejupilco de Hidalgo, Estado de México · C.P. 51400</span></div></div>
+    <div id="res"><div class="cargando">Verificando el documento…</div></div>
+    <div class="pie" id="pie" hidden><span id="cons"></span><button id="imp" type="button">Imprimir o guardar comprobante</button></div>
+  </div>
+  <details id="man">
+    <summary>¿No puedes escanear el código? Verifica con los datos del documento</summary>
+    <form id="fm" autocomplete="off">
+      <label>Tipo de documento<select id="mt"><option value="c">Constancia de estudios</option><option value="v">Recibo de pago</option></select></label>
+      <label>Folio (por ejemplo C-000012 o R-000345)<input id="mf" required maxlength="40" placeholder="Folio del documento"></label>
+      <label id="mML">Matrícula del alumno<input id="mm" maxlength="40"></label>
+      <label id="mOL" hidden>Monto del recibo (en pesos)<input id="mo" inputmode="decimal" placeholder="1300.00"></label>
+      <label>Fecha del documento<input id="md" type="date" required></label>
+      <button class="p" type="submit">Verificar</button>
+    </form>
+  </details>
+</main>
+<script>
+(function(){
+  var res=document.getElementById("res"),pie=document.getElementById("pie");
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function fd(i){var p=String(i||"").split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:String(i||"")}
+  function mx(n){return Number(n).toLocaleString("es-MX",{style:"currency",currency:"MXN"})}
+  function chk(s){var h=2166136261,i;s=String(s);for(i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0}return ("00000000"+h.toString(16)).slice(-8)}
+  function tabla(f){return '<div class="sec"><h2>Datos registrados en la base de datos de la institución</h2><dl>'+f.filter(function(x){return x[1]!==""&&x[1]!=null}).map(function(x){return '<dt>'+esc(x[0])+'</dt><dd>'+esc(x[1])+'</dd>'}).join("")+'</dl></div>'}
+  function sello(t,ic,tit,txt){return '<div class="sello '+t+'"><div class="ic">'+ic+'</div><h1>'+tit+'</h1><p>'+txt+'</p></div>'}
+  function marca(j){
+    var d=j&&j.consultado?new Date(j.consultado):new Date(),f=d.toLocaleString("es-MX",{timeZone:"America/Mexico_City",dateStyle:"long",timeStyle:"short"});
+    document.getElementById("cons").textContent="Consulta realizada el "+f+" (hora del centro de México).";pie.hidden=false;
+  }
+  function pinta(j){
+    var h="";
+    if(!j.ok){
+      h=sello("bad","✖","No se pudo verificar",esc(j.motivo||"No existe un documento con ese folio y código en la base de datos."))+'<div class="nota">Esto puede ocurrir si el documento no es de esta institución, si fue alterado o si el código está dañado. Si tienes dudas, comunícate a Control escolar con el documento en mano.</div>';
+    }else if(j.tipo==="constancia"){
+      h=sello("ok","✔","Documento auténtico","Esta <b>"+esc(j.titulo.toLowerCase())+"</b> fue emitida por Universidad Lafragua y existe en su base de datos.")+
+        tabla([["Documento",j.titulo],["Folio",j.folio],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Periodo",j.periodo],["Grupo",j.grupo],["Promedio general",j.promedio],["Dirigida a",j.dirigida],["Fecha de expedición",fd(j.fecha)]])+
+        '<div class="nota">Compara el nombre, el folio, la fecha'+(j.promedio?" y el promedio":"")+' con los del documento que tienes en las manos. Si algún dato no coincide, el documento pudo haber sido alterado.</div>';
+    }else if(j.tipo==="recibo"){
+      var pend=j.estado!=="Pago registrado";
+      h=(pend?sello("warn","!","Recibo encontrado","El recibo existe en la base de datos, pero es una <b>transferencia pendiente de confirmar</b> en el banco."):sello("ok","✔","Documento auténtico","Este <b>recibo de pago</b> fue emitido por Universidad Lafragua y existe en su base de datos."))+
+        tabla([["Documento","Recibo de pago"],["Folio",j.folio],["Origen",j.origen],["Nombre",j.nombre],["Monto",mx(j.monto)],["Fecha",fd(j.fecha)],["Forma de pago",j.metodo],["Estado",j.estado]])+
+        '<div class="nota">Compara el folio, el nombre, el monto y la fecha con los del recibo que tienes. Si algún dato no coincide, el recibo pudo haber sido alterado.</div>';
+    }else if(j.tipo==="credencial"){
+      h=(j.vigente?sello("ok","✔","Credencial auténtica y vigente","Esta credencial de estudiante existe en la base de datos de Universidad Lafragua."):sello("warn","!",j.egresado?"Credencial auténtica · persona egresada":"Credencial auténtica · vigencia terminada",j.egresado?"La persona ya aparece como egresada.":"La vigencia de esta credencial ya terminó."))+
+        tabla([["Documento","Credencial de estudiante"],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Vigencia",fd(j.vigencia)]]);
+    }
+    res.innerHTML=h;marca(j);
+  }
+  function verifica(){
+    var m=/^#([vca])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(location.hash||"");
+    if(!m){res.innerHTML=sello("warn","⌖","Escanea el código QR","Escanea el código QR de un documento de la institución para comprobar que es auténtico, o usa el formulario de abajo.");document.getElementById("man").open=true;return}
+    var t=m[1],id=m[2],p=m[3].split("."),code,vig="";
+    if(t==="a"){vig=p[0]||"";code=p[1]||""}else code=p[0]||"";
+    res.innerHTML='<div class="cargando">Verificando el documento…</div>';pie.hidden=true;
+    fetch("/api/verificar?t="+t+"&id="+encodeURIComponent(id)+"&c="+encodeURIComponent(code)+(vig?"&v="+encodeURIComponent(vig):""),{headers:{"Accept":"application/json"}})
+      .then(function(r){return r.json().catch(function(){return {ok:false,motivo:"No se pudo leer la respuesta del servidor."}})})
+      .then(pinta).catch(function(){res.innerHTML=sello("bad","✖","Sin conexión","No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.")});
+  }
+  /* Verificación manual: se calcula el mismo código que lleva el QR a partir de los datos impresos */
+  var mt=document.getElementById("mt");
+  mt.onchange=function(){var c=mt.value==="c";document.getElementById("mML").hidden=!c;document.getElementById("mOL").hidden=c;document.getElementById("mm").required=c;document.getElementById("mo").required=!c};mt.onchange();
+  document.getElementById("fm").onsubmit=function(e){
+    e.preventDefault();
+    var f=document.getElementById("mf").value.trim().toUpperCase(),d=document.getElementById("md").value,code;
+    if(!/^[A-Z0-9-]{1,40}$/.test(f)){alert("El folio solo lleva letras, números y guiones.");return}
+    if(mt.value==="c")code=chk("C|"+f+"|"+document.getElementById("mm").value.trim()+"|"+d);
+    else{var mo=parseFloat(String(document.getElementById("mo").value).replace(/[$,\s]/g,""));if(!(mo>=0)){alert("Escribe el monto del recibo.");return}code=chk(f+"|"+mo.toFixed(2)+"|"+d)}
+    var nuevo="#"+mt.value+"."+f+"."+code;
+    if(location.hash===nuevo)verifica();else location.hash=nuevo;
+    document.getElementById("man").open=false;window.scrollTo(0,0);
+  };
+  document.getElementById("imp").onclick=function(){window.print()};
+  window.addEventListener("hashchange",verifica);
+  verifica();
+})();
+</script>
+</body>
+</html>

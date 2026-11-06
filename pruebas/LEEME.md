@@ -23,5 +23,6 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_historial.py` · calificaciones anteriores por alumno y por CSV, sin cobros de extraordinario, periodos y permisos (32).
 - `test_boleta_qr.py` · QR de la boleta: verificación pública, PDF, lectura con cámara (necesita `opencv-python` y `numpy`) y verificación dentro de la aplicación (28).
 - `test_solicitudes.py` · solicitudes del alumno (justificante, boleta, constancia), atención de Control escolar, notificaciones del alumno, QR del justificante y privacidad (59).
+- `test_fusion.py` · fusión de grupos de dos licenciaturas: calendario, docente, calificaciones por plan, portal y Control escolar (30).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

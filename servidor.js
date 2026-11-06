@@ -183,8 +183,14 @@ function nivel(s, m) { return s.rol === 'admin' ? 'editar' : ((s.perm || {})[m] 
 function tiene(s, m, min) { const n = nivel(s, m); return min === 'editar' ? n === 'editar' : n !== 'none'; }
 /* ---- Alumnos: solo ven lo suyo (filtro por registro) ---- */
 function gruposDeAlumno(sid) { return q.lista.all('grupos').map(r => ({ id: r.id, d: JSON.parse(r.data) })).filter(g => Array.isArray(g.d.alumnos) && g.d.alumnos.includes(sid)); }
+/* Una materia del calendario es de un grupo si coincide su plan, periodo y cuatrimestre, o si está fusionada con ese plan y cuatrimestre */
+function materiaDeGrupo(m, g) {
+  if (m.per !== g.per) return false;
+  if (m.plan === g.plan && m.cuat === g.cuat) return true;
+  return Array.isArray(m.fus) && m.fus.some(f => f.plan === g.plan && f.cuat === g.cuat);
+}
 function contextoAlumno(s) {
-  const grupos = gruposDeAlumno(s.alumno), mats = q.lista.all('materias').map(r => ({ id: r.id, d: JSON.parse(r.data) })).filter(m => grupos.some(g => g.d.plan === m.d.plan && g.d.per === m.d.per && g.d.cuat === m.d.cuat));
+  const grupos = gruposDeAlumno(s.alumno), mats = q.lista.all('materias').map(r => ({ id: r.id, d: JSON.parse(r.data) })).filter(m => grupos.some(g => materiaDeGrupo(m.d, g.d)));
   return { grupos, docIds: new Set(mats.map(m => m.d.docId).filter(Boolean)) };
 }
 const CAMPOS_ALUMNO = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'nuevo', 'sexo', 'edad', 'beca', 'tut', 'tutTel'];
@@ -198,7 +204,7 @@ function filtraAlumno(s, col, id, data, ctx) {
     case 'solicitudes': return data.sid === sid ? data : null;
     case 'justificantes': { if (data.sid !== sid || data.estado !== 'Aprobado') return null; const o = {}; ['id', 'num', 'sid', 'nombre', 'mat', 'plan', 'sexo', 'grupo', 'fecha', 'desde', 'hasta', 'motivo', 'estado', 'solicitud'].forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'grupos': return (data.alumnos || []).includes(sid) ? Object.assign({}, data, { alumnos: [sid] }) : null;
-    case 'materias': return ctx.grupos.some(g => g.d.plan === data.plan && g.d.per === data.per && g.d.cuat === data.cuat) ? data : null;
+    case 'materias': return ctx.grupos.some(g => materiaDeGrupo(data, g.d)) ? data : null;
     case 'docentes': return ctx.docIds.has(id) ? { nombre: data.nombre, esp: data.esp || '' } : null;
     case 'catalogo': return data;
     case 'config': return (id === 'plans' || id === 'app') ? data : null;

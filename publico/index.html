@@ -278,6 +278,15 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
         <label>Hora de inicio<input id="mIni" type="time"></label>
         <label>Hora de fin<input id="mFin" type="time"></label>
         <label class="full">Aula<input id="mAula" placeholder="Ej. Aula 3"></label>
+        <div style="grid-column:1/-1">
+          <label class="hint" style="display:flex;flex-direction:row;gap:8px;align-items:flex-start;color:var(--ink)"><input id="mFus" type="checkbox" style="width:auto;margin-top:3px"><span><b>Fusionar con otra licenciatura</b>: la misma clase, con el mismo docente y horario, para los grupos de dos licenciaturas que tienen una materia igual o parecida.</span></label>
+          <div id="mFusW" class="row" style="margin-top:8px" hidden>
+            <label>Otra licenciatura<select id="mFusPl"></select></label>
+            <label>Cuatrimestre en esa licenciatura<select id="mFusCu"></select></label>
+            <label class="full">Asignatura equivalente en esa licenciatura<select id="mFusNom"></select></label>
+            <div id="mFusSug" class="hint" style="grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;align-items:center"></div>
+          </div>
+        </div>
       </div>
       <div class="bar"><button class="p" id="mAdd">Agregar al calendario</button></div>
     </div>
@@ -2052,10 +2061,11 @@ $("dcTb").onclick=async function(e){
 };
 /* ---- Calendario escolar (asignaturas, docentes y horarios) ---- */
 $("mDias").innerHTML=DIAS.map(function(d){return '<label style="flex-direction:row;align-items:center;gap:4px;color:var(--ink)"><input type="checkbox" value="'+d+'" style="width:auto"> '+d+'</label>'}).join("");
+var MPERSET=false;
 function renderMat(){
   var po=periodos(),per=perAct();
   setOpts($("mPer"),po.map(function(p){return '<option>'+esc(p)+'</option>'}).join(""));
-  if(!$("mPer").value)$("mPer").value=per;
+  if(!MPERSET){$("mPer").value=per;MPERSET=true}
   setOpts($("mPlan"),PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
   setOpts($("mDocSel"),'<option value="">Sin asignar</option>'+Object.keys(DOC).map(function(k){return '<option value="'+k+'">'+esc(DOC[k].nombre)+'</option>'}).join(""));
   setOpts($("mFPer"),'<option value="">Todos los periodos</option>'+po.map(function(p){return '<option>'+esc(p)+'</option>'}).join(""));
@@ -2064,10 +2074,10 @@ function renderMat(){
   var L=Object.keys(MAT).map(function(k){return Object.assign({id:k},MAT[k])}).filter(function(m){return (!fp||m.per===fp)&&(!fl||m.plan===fl)})
     .sort(function(a,b){return po.indexOf(b.per)-po.indexOf(a.per)||String(a.plan).localeCompare(String(b.plan))||ordPlan(a,b)});
   $("mTb").innerHTML=L.length?L.map(function(m){var d=DOC[m.docId];
-    return '<tr><td>'+esc(m.per)+'</td><td>'+esc(m.plan)+' · cuat. '+m.cuat+'</td><td>'+esc(m.nom)+'</td><td>'+esc(d?d.nombre:"Sin asignar")+'</td><td>'+esc(hor(m))+'</td><td>'+(m.ev?esc(fd(m.ev)):"—")+'</td><td>'+esc(m.aula||"")+'</td><td><button data-mpl="'+m.id+'">Planeación'+(plFiles(m.id).length?' ('+plFiles(m.id).length+')':'')+'</button> <button class="need-admin" data-me="'+m.id+'">Editar</button> <button class="d need-admin" data-md="'+m.id+'">Quitar</button></td></tr>'}).join(""):vacio(8,"Aún no hay asignaturas cargadas.");
+    return '<tr><td>'+esc(m.per)+'</td><td>'+esc(m.plan)+' · cuat. '+m.cuat+'</td><td>'+esc(m.nom)+fusTexto(m)+'</td><td>'+esc(d?d.nombre:"Sin asignar")+'</td><td>'+esc(hor(m))+'</td><td>'+(m.ev?esc(fd(m.ev)):"—")+'</td><td>'+esc(m.aula||"")+'</td><td><button data-mpl="'+m.id+'">Planeación'+(plFiles(m.id).length?' ('+plFiles(m.id).length+')':'')+'</button> <button class="need-admin" data-me="'+m.id+'">Editar</button> <button class="d need-admin" data-md="'+m.id+'">Quitar</button></td></tr>'}).join(""):vacio(8,"Aún no hay asignaturas cargadas.");
 }
 $("mFPer").onchange=$("mFPlan").onchange=renderMat;
-function limpiaMat(){EDM=null;["mNomI","mAula","mIni","mFin"].forEach(function(i){$(i).value=""});$("mCuat").value="1";$("mAdd").textContent="Agregar al calendario"}
+function limpiaMat(){EDM=null;["mNomI","mAula","mIni","mFin"].forEach(function(i){$(i).value=""});$("mCuat").value="1";$("mFus").checked=false;$("mFusW").hidden=true;$("mAdd").textContent="Agregar al calendario"}
 $("mAdd").onclick=async function(){
   if(ROL!=="admin")return;
   var nom=$("mNomI").value.trim(),ini=$("mIni").value,fin=$("mFin").value,per=$("mPer").value,plan=$("mPlan").value,doc=$("mDocSel").value;
@@ -2076,14 +2086,16 @@ $("mAdd").onclick=async function(){
   if(fin<=ini){alert("La hora de fin debe ser posterior a la de inicio.");return}
   var id=EDM||uid(),cf=doc?Object.keys(MAT).filter(function(k){var m=MAT[k];return k!==id&&m.per===per&&m.docId===doc&&m.ini<fin&&ini<m.fin}):[];
   if(cf.length&&!confirm("Ese docente ya tiene "+MAT[cf[0]].nom+" en ese horario. ¿Guardar de todos modos?"))return;
+  var fu=fusDesdeForm(id,per,plan,nom);if(fu.error){alert(fu.error);return}
   var d={per:per,plan:plan,cuat:parseInt($("mCuat").value,10)||1,nom:nom,docId:doc,dias:dias,ini:ini,fin:fin,aula:$("mAula").value.trim(),ev:(MAT[id]&&MAT[id].ev)||""};
+  if(fu.fus.length)d.fus=fu.fus;
   try{await DBH.doc("materias/"+id).set(d);MAT[id]=d;limpiaMat();renderMat()}catch(e){dberr(e)}
 };
 $("mTb").onclick=async function(e){
   var t=e.target.dataset;
   if(t.mpl){abrePl(t.mpl);return}
   if(t.me){var m=MAT[t.me];EDM=t.me;$("mPer").value=m.per;$("mPlan").value=m.plan;$("mCuat").value=m.cuat;$("mNomI").value=m.nom;$("mDocSel").value=m.docId||"";$("mIni").value=m.ini;$("mFin").value=m.fin;$("mAula").value=m.aula||"";
-    $("mAdd").textContent="Guardar cambios"}
+    fusEditar(m);$("mAdd").textContent="Guardar cambios"}
   if(t.md&&ROL==="admin"&&confirm("¿Quitar "+MAT[t.md].nom+" del calendario? Las calificaciones ya capturadas se conservan en el historial.")){
     try{await DBH.doc("materias/"+t.md).delete();delete MAT[t.md];renderMat()}catch(er){dberr(er)}
   }
@@ -2095,8 +2107,8 @@ function renderCal(){
   var po=periodos(),gs=Object.keys(GRP).map(function(k){return Object.assign({id:k},GRP[k])}).sort(function(a,b){return po.indexOf(b.per)-po.indexOf(a.per)||String(a.plan).localeCompare(String(b.plan))||a.cuat-b.cuat||String(a.num).localeCompare(String(b.num))});
   setOpts($("kGr"),'<option value="">'+(gs.length?"Elige un grupo":"Primero crea un grupo en la pestaña Grupos")+'</option>'+gs.map(function(g){return '<option value="'+g.id+'">'+esc("Grupo "+g.num+" · "+g.plan+" · "+g.per+" · cuat. "+g.cuat)+'</option>'}).join(""));
   var g=GRP[$("kGr").value];
-  var ms=g?Object.keys(MAT).map(function(k){return Object.assign({id:k},MAT[k])}).filter(function(m){return m.plan===g.plan&&m.per===g.per&&m.cuat===g.cuat}).sort(function(a,b){return String(a.nom).localeCompare(String(b.nom))}):[];
-  setOpts($("kMat"),'<option value="">'+(g?(ms.length?"Elige una asignatura":"Este grupo no tiene asignaturas en el calendario"):"Primero elige un grupo")+'</option>'+ms.map(function(m){return '<option value="'+m.id+'">'+esc(m.nom)+'</option>'}).join(""));
+  var ms=g?Object.keys(MAT).map(function(k){return Object.assign({id:k},MAT[k])}).filter(function(m){var mp=matParaPlan(m,g.plan);return mp&&m.per===g.per&&mp.cuat===g.cuat}).sort(function(a,b){return String(matParaPlan(a,g.plan).nom).localeCompare(String(matParaPlan(b,g.plan).nom))}):[];
+  setOpts($("kMat"),'<option value="">'+(g?(ms.length?"Elige una asignatura":"Este grupo no tiene asignaturas en el calendario"):"Primero elige un grupo")+'</option>'+ms.map(function(m){return '<option value="'+m.id+'">'+esc(matParaPlan(m,g.plan).nom)+(fusDe(m).length?' (fusionada)':'')+'</option>'}).join(""));
   var mid=$("kMat").value,m=MAT[mid];
   var al=g?(g.alumnos||[]).map(function(id){return S.find(function(s){return s.id===id})}).filter(Boolean).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))}):[];
   resumenGr(g,ms,al);
@@ -2120,7 +2132,7 @@ function resumenGr(g,ms,al){
   if(!al.length){t.innerHTML='<tbody>'+vacio(1,"Este grupo aún no tiene alumnos.")+'</tbody>';return}
   if(!ms.length){t.innerHTML='<tbody>'+vacio(1,"Aún no hay asignaturas de este grupo en el calendario escolar.")+'</tbody>';return}
   t.style.minWidth=(240+ms.length*100)+"px";
-  t.innerHTML='<thead><tr><th>Alumno</th>'+ms.map(function(m){return '<th class="n">'+esc(m.nom)+(m.ev?'<br><span class="hint">'+esc(fd(m.ev))+'</span>':'')+'</th>'}).join("")+'<th class="n">Promedio</th></tr></thead><tbody>'+
+  t.innerHTML='<thead><tr><th>Alumno</th>'+ms.map(function(m){return '<th class="n">'+esc((matParaPlan(m,g.plan)||m).nom)+(m.ev?'<br><span class="hint">'+esc(fd(m.ev))+'</span>':'')+'</th>'}).join("")+'<th class="n">Promedio</th></tr></thead><tbody>'+
     al.map(function(s){
       var fs=[],cells=ms.map(function(m){
         var x=itemOf(s.id,m.id);
@@ -2149,7 +2161,8 @@ $("kGuardar").onclick=async function(){
       var v=por[sid],old=itemOf(sid,mid),a1=old&&old.cal!=null?old.cal:null;
       if(a1===v)continue;
       var items=((CAL[sid]&&CAL[sid].items)||[]).filter(function(x){return x.mid!==mid});
-      if(v!==null)items.push({id:old?old.id:uid(),mid:mid,mat:m.nom,plan:m.plan,per:m.per,cuat:m.cuat,doc:(DOC[m.docId]||{}).nombre||"",cal:v,fecha:today()});
+      var s2=S.find(function(y){return y.id===sid}),mp2=(s2&&matParaPlan(m,planDe(s2)))||{nom:m.nom,cuat:m.cuat};
+      if(v!==null)items.push({id:old?old.id:uid(),mid:mid,mat:mp2.nom,plan:s2?planDe(s2):m.plan,per:m.per,cuat:mp2.cuat,doc:(DOC[m.docId]||{}).nombre||"",cal:v,fecha:today()});
       await DBH.doc("calif/"+sid).set({items:items});CAL[sid]={items:items};n++;
     }
     kDirty=false;render();renderCal();$("kInfo").textContent="Se guardaron "+n+" calificaciones.";
@@ -3066,15 +3079,16 @@ function renderDm(){
   var filas=[];
   L.forEach(function(c,i){
     var gs=c.m?gruposPlan(c.plan,c.per,c.cuat):[];
+    if(c.m&&fusDe(c.m).length){var gv=grupoFusion(c.m);if(gv.alumnos.length||gruposDeMat(c.m).length){filas.push({c:c,i:i,g:gv});return}}
     if(!gs.length)filas.push({c:c,i:i,g:null});
     gs.forEach(function(g){filas.push({c:c,i:i,g:g})});
   });
   $("dmL").innerHTML=filas.length?'<div class="wrap"><table style="min-width:720px"><thead><tr><th>Asignatura</th><th>Grupo</th><th>Horario</th><th>Evaluación</th><th class="n">Sesiones</th><th></th></tr></thead><tbody>'+filas.map(function(f){
     var c=f.c,m=c.m,g=f.g,key=c.plan+"|"+c.per+"|"+c.nom;
-    return '<tr><td><b>'+esc(c.nom)+'</b><br><span class="hint">'+esc(c.plan)+' · cuatrimestre '+c.cuat+' · '+esc(c.per)+'</span></td><td>'+(g?esc("Grupo "+g.num)+'<br><span class="hint">'+alumnosGr(g).length+' alumnos</span>':'<span class="hint">Sin grupo</span>')+'</td><td>'+(m?esc(hor(m)):'<span class="hint">Aún sin horario</span>')+'</td><td>'+(m&&m.ev?esc(fd(m.ev)):'—')+'</td><td class="n">'+(c.ses==null?'—':c.ses)+'</td><td style="white-space:normal;min-width:230px">'+
+    return '<tr><td><b>'+esc(c.nom)+'</b><br><span class="hint">'+esc(c.plan)+' · cuatrimestre '+c.cuat+' · '+esc(c.per)+'</span></td><td>'+(g?esc((g.fusion?"Grupos ":"Grupo ")+g.num)+'<br><span class="hint">'+alumnosGr(g).length+' alumnos'+(g.fusion?' · '+esc(g.planes.join(" + "))+' (fusionados)':'')+'</span>':'<span class="hint">Sin grupo</span>')+'</td><td>'+(m?esc(hor(m)):'<span class="hint">Aún sin horario</span>')+'</td><td>'+(m&&m.ev?esc(fd(m.ev)):'—')+'</td><td class="n">'+(c.ses==null?'—':c.ses)+'</td><td style="white-space:normal;min-width:230px">'+
       (m?'<div style="margin-bottom:6px">'+plTag(m)+'</div>':'')+'<div style="display:flex;flex-wrap:wrap;gap:6px"><button data-ct="'+f.i+'">Contenido</button>'+(m?'<button data-pl="'+f.i+'">Planeación</button>':'')+(g?'<button data-lp="'+f.i+'|'+g.id+'">Lista (PDF)</button><button data-lc="'+f.i+'|'+g.id+'">Lista (CSV)</button><button class="p" data-ev="'+f.i+'|'+g.id+'">Calificaciones</button>':'')+'</div></td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Aún no tienes asignaturas asignadas. Pide al Administrador que te asigne tus asignaturas en Control escolar > Docentes.</p>';
 }
-function claveClase(v){var p=String(v).split("|"),c=misClases()[+p[0]];return {c:c,g:p[1]?GRP[p[1]]&&Object.assign({id:p[1]},GRP[p[1]]):null}}
+function claveClase(v){var p=String(v).split("|"),c=misClases()[+p[0]];return {c:c,g:p[1]?grp(p[1]):null}}
 $("dmL").onclick=function(e){
   var t=e.target.dataset;if(ROL!=="docente")return;
   var v=t.ct!==undefined?t.ct:t.pl!==undefined?t.pl:t.lp||t.lc||t.ev;if(v===undefined)return;
@@ -3093,17 +3107,17 @@ function listaPDF(c,g){
   var J=pdfLib();if(!J)return;
   var al=alumnosGr(g),d=new J.jsPDF({unit:"mm",format:"a4"}),y=titulo(d,"Lista de alumnos"),doc=DOC[miDoc()];
   d.setFontSize(10);
-  [["Asignatura",c.nom],["Docente",doc?doc.nombre:""],["Plan de estudios",c.plan],["Grupo",g.num],["Periodo",c.per+" · cuatrimestre "+c.cuat],["Horario",c.m?hor(c.m):"—"]].forEach(function(r){
+  [["Asignatura",c.nom],["Docente",doc?doc.nombre:""],["Plan de estudios",g.fusion?g.planes.join(" + ")+" (fusionados)":c.plan],[g.fusion?"Grupos":"Grupo",g.num],["Periodo",c.per+" · cuatrimestre "+c.cuat],["Horario",c.m?hor(c.m):"—"]].forEach(function(r){
     d.setFont("helvetica","bold");d.setTextColor(0,0,0);d.text(r[0]+":",15,y);d.setFont("helvetica","normal");d.text(String(r[1]||"-"),50,y);y+=5.5;
   });
-  y=tbl(d,y+4,[{h:"No.",x:15},{h:"Matrícula",x:30},{h:"Alumno",x:60,w:135}],al.map(function(s,i){return [String(i+1),s.mat,s.nombre]}));
+  y=tbl(d,y+4,g.fusion?[{h:"No.",x:15},{h:"Matrícula",x:30},{h:"Alumno",x:60,w:80},{h:"Licenciatura",x:145,w:50}]:[{h:"No.",x:15},{h:"Matrícula",x:30},{h:"Alumno",x:60,w:135}],al.map(function(s,i){return g.fusion?[String(i+1),s.mat,s.nombre,planDe(s)]:[String(i+1),s.mat,s.nombre]}));
   d.setFont("helvetica","normal");d.setFontSize(9);d.setTextColor(90,90,90);d.text("Total de alumnos: "+al.length,15,y+6);
-  saveFile("lista-"+slug(c.nom)+"-grupo-"+g.num+".pdf",d.output("arraybuffer"));
+  saveFile("lista-"+slug(c.nom)+"-grupo-"+seguro(g.num)+".pdf",d.output("arraybuffer"));
 }
 function listaCSV(c,g){
-  var L=["matricula,nombre,sexo,asignatura,grupo,periodo"];
-  alumnosGr(g).forEach(function(s){L.push([s.mat,s.nombre,s.sexo||"",c.nom,g.num,c.per].map(csvq).join(","))});
-  saveFile("lista-"+slug(c.nom)+"-grupo-"+g.num+".csv","\uFEFF"+L.join("\r\n")+"\r\n");
+  var L=["matricula,nombre,sexo,asignatura,grupo,periodo"+(g.fusion?",licenciatura":"")];
+  alumnosGr(g).forEach(function(s){L.push([s.mat,s.nombre,s.sexo||"",c.nom,g.num,c.per].concat(g.fusion?[planDe(s)]:[]).map(csvq).join(","))});
+  saveFile("lista-"+slug(c.nom)+"-grupo-"+seguro(g.num)+".csv","\uFEFF"+L.join("\r\n")+"\r\n");
 }
 /* ---- Contenido de la asignatura en PDF (texto) ---- */
 function contenidoPDF(){
@@ -3135,21 +3149,21 @@ function openEv(c,g){
   EVM=m.id;EVG=g.id;
   EVC=((CRIT[m.id]&&CRIT[m.id].items)||[]).map(function(x){return {id:x.id,nom:x.nom,peso:x.peso||0}});
   EVPTS={};alumnosGr(g).forEach(function(s){var it=itemOf(s.id,m.id);EVPTS[s.id]=it&&it.pts?Object.assign({},it.pts):{}});
-  $("evT").textContent=c.nom+" · Grupo "+g.num;
-  $("evS").textContent=c.plan+" · "+c.per+" · cuatrimestre "+c.cuat+(m.ev?" · Evaluación: "+fd(m.ev):"");
+  $("evT").textContent=c.nom+" · "+(g.fusion?"Grupos ":"Grupo ")+g.num;
+  $("evS").textContent=(g.fusion?g.planes.join(" + ")+" (fusionados)":c.plan)+" · "+c.per+" · cuatrimestre "+c.cuat+(m.ev?" · Evaluación: "+fd(m.ev):"");
   $("evMsg").textContent="";renderEvC();renderEvT();$("dEv").showModal();
 }
 function renderEvC(){
   $("evCrit").innerHTML=EVC.length?EVC.map(function(c,i){return '<div style="display:flex;gap:8px;align-items:center;margin:4px 0"><input data-ci="'+i+'" data-f="nom" value="'+attr(c.nom)+'" placeholder="Ej. Examen escrito" style="flex:1"><input data-ci="'+i+'" data-f="peso" type="number" min="0" max="100" step="1" value="'+(c.peso>0?c.peso:"")+'" placeholder="Peso %" style="width:110px"><button class="d" data-cq="'+i+'">Quitar</button></div>'}).join(""):'<p class="hint">Aún no hay puntos de evaluación. Agrega los que tomarás como referencia (examen, tareas, participación…).</p>';
 }
 function renderEvT(){
-  var g=GRP[EVG],al=g?alumnosGr(g):[],pe=EVC.map(function(c){return c.peso>0?+c.peso:0}),pw=EVC.length>0&&pe.every(function(p){return p>0}),sw=pe.reduce(function(a,b){return a+b},0);
+  var g=grp(EVG),al=g?alumnosGr(g):[],fu=!!(g&&g.fusion),pe=EVC.map(function(c){return c.peso>0?+c.peso:0}),pw=EVC.length>0&&pe.every(function(p){return p>0}),sw=pe.reduce(function(a,b){return a+b},0);
   $("evPeso").textContent=!EVC.length?"":(pw?(sw===100?"Pesos: suman 100 %.":"Los pesos suman "+sw+" %; se ajustan proporcionalmente."):"Sin pesos completos: la calificación es el promedio simple de los puntos.");
   if(!EVC.length){$("evTabla").innerHTML='<tbody><tr><td class="empty">Agrega al menos un punto de evaluación para capturar calificaciones.</td></tr></tbody>';return}
   $("evTabla").style.minWidth=(300+EVC.length*120)+"px";
-  $("evTabla").innerHTML='<thead><tr><th>Matrícula</th><th>Alumno</th>'+EVC.map(function(c){return '<th class="n">'+esc(c.nom||"(sin nombre)")+(pw?'<br><span class="hint">'+c.peso+' %</span>':'')+'</th>'}).join("")+'<th class="n">Calificación</th></tr></thead><tbody>'+al.map(function(s){
+  $("evTabla").innerHTML='<thead><tr><th>Matrícula</th><th>Alumno</th>'+(fu?'<th>Licenciatura</th>':'')+EVC.map(function(c){return '<th class="n">'+esc(c.nom||"(sin nombre)")+(pw?'<br><span class="hint">'+c.peso+' %</span>':'')+'</th>'}).join("")+'<th class="n">Calificación</th></tr></thead><tbody>'+al.map(function(s){
     var p=EVPTS[s.id]||{},f=calcFinal(EVC,p),old=itemOf(s.id,EVM),mostrar=f!==null?f:(old&&old.cal!=null&&!(old.pts&&Object.keys(old.pts).length)?old.cal:null);
-    return '<tr><td>'+esc(s.mat)+'</td><td>'+esc(s.nombre)+'</td>'+EVC.map(function(c){var v=p[c.id];return '<td class="n"><input type="number" min="0" max="10" step="0.1" data-sid="'+s.id+'" data-cid="'+c.id+'" value="'+(v===undefined||v===null?"":v)+'" style="width:76px"></td>'}).join("")+'<td class="n" data-fin="'+s.id+'"><b>'+(mostrar===null?"—":mostrar.toFixed(1))+'</b></td></tr>'}).join("")+'</tbody>';
+    return '<tr><td>'+esc(s.mat)+'</td><td>'+esc(s.nombre)+'</td>'+(fu?'<td>'+esc(planDe(s))+'</td>':'')+EVC.map(function(c){var v=p[c.id];return '<td class="n"><input type="number" min="0" max="10" step="0.1" data-sid="'+s.id+'" data-cid="'+c.id+'" value="'+(v===undefined||v===null?"":v)+'" style="width:76px"></td>'}).join("")+'<td class="n" data-fin="'+s.id+'"><b>'+(mostrar===null?"—":mostrar.toFixed(1))+'</b></td></tr>'}).join("")+'</tbody>';
 }
 $("evCrit").oninput=function(e){
   var t=e.target.dataset,i=+t.ci;if(!EVC[i]||!t.f)return;
@@ -3174,7 +3188,7 @@ $("evGuardaCrit").onclick=async function(){
   try{await guardaCritEv();renderEvC();renderEvT();$("evMsg").textContent="Puntos de evaluación guardados."}catch(e){dberr(e)}
 };
 $("evGuarda").onclick=async function(){
-  var m=MAT[EVM],g=GRP[EVG];if(ROL!=="docente"||!m||!g||m.docId!==miDoc())return;
+  var m=MAT[EVM],g=grp(EVG);if(ROL!=="docente"||!m||!g||m.docId!==miDoc())return;
   if(!EVC.some(function(c){return String(c.nom).trim()})){alert("Agrega al menos un punto de evaluación.");return}
   var al=alumnosGr(g),mal=false;
   al.forEach(function(s){Object.keys(EVPTS[s.id]||{}).forEach(function(k){var v=EVPTS[s.id][k];if(v<0||v>10)mal=true})});
@@ -3190,7 +3204,8 @@ $("evGuarda").onclick=async function(){
       var f=calcFinal(EVC,p);
       if(old&&JSON.stringify(old.pts||{})===JSON.stringify(p)&&(old.cal==null?null:old.cal)===f)continue;
       var items=((CAL[s.id]&&CAL[s.id].items)||[]).filter(function(x){return x.mid!==EVM});
-      if(hay)items.push({id:old?old.id:uid(),mid:EVM,mat:m.nom,plan:m.plan,per:m.per,cuat:m.cuat,doc:nombre,cal:f,pts:p,fecha:today()});
+      var mp=matParaPlan(m,planDe(s))||{nom:m.nom,cuat:m.cuat};
+      if(hay)items.push({id:old?old.id:uid(),mid:EVM,mat:mp.nom,plan:planDe(s),per:m.per,cuat:mp.cuat,doc:nombre,cal:f,pts:p,fecha:today()});
       await DBH.doc("calif/"+s.id).set({items:items});CAL[s.id]={items:items};n++;
     }
     render();renderEvC();renderEvT();$("evMsg").textContent="Se guardaron los puntos y "+n+(n===1?" calificación.":" calificaciones.");
@@ -5261,13 +5276,13 @@ function renderPor(){
   if(!s){$("poBody").innerHTML='<p class="hint">Cargando tu información…</p>';return}
   var g=grupoReciente(s.id),eg=EGR[s.id]&&!EGR[s.id].revertido;
   var datos=[["Matrícula",s.mat],["Plan de estudios",planDe(s)],["Ingreso",s.ingreso?"septiembre de "+s.ingreso:""],["Grupo",g?g.num+" · cuatrimestre "+g.cuat+" · "+g.per:"Aún sin grupo asignado"],["Estado",eg?"Egresado":"Alumno activo"]];
-  var mats=g?Object.keys(MAT).map(function(k){return MAT[k]}).filter(function(m){return m.plan===g.plan&&m.per===g.per&&m.cuat===g.cuat}).sort(function(a,b){return String(a.nom).localeCompare(String(b.nom))}):[];
+  var mats=g?Object.keys(MAT).map(function(k){return MAT[k]}).filter(function(m){var mp=matParaPlan(m,g.plan);return mp&&m.per===g.per&&mp.cuat===g.cuat}).sort(function(a,b){return String((matParaPlan(a,g.plan)||a).nom).localeCompare(String((matParaPlan(b,g.plan)||b).nom))}):[];
   var ps=perDe(s.id).slice().reverse(),per=$("poPer")&&$("poPer").value&&ps.indexOf($("poPer").value)>-1?$("poPer").value:(ps[0]||"");
   var pagos=(s.pagos||[]).slice().sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))||String(b.folio).localeCompare(String(a.folio))}),A=alloc(s);
   var h='<p class="sub">Hola, <b>'+esc(s.nombre)+'</b>. Aquí puedes consultar tu información académica y el registro de tus pagos.</p>'+
    notifPor()+'<h2 style="margin-top:16px">Mis datos</h2><div class="row">'+datos.filter(function(x){return x[1]}).map(function(x){return '<label>'+esc(x[0])+'<b style="color:var(--ink);font-weight:600">'+esc(x[1])+'</b></label>'}).join("")+'</div>'+
    '<h2 style="margin-top:16px">Mis materias y docentes'+(g?' · cuatrimestre '+esc(g.cuat)+'':'')+'</h2>'+
-   (mats.length?'<div class="wrap"><table style="min-width:640px"><thead><tr><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Aula</th><th>Evaluación</th></tr></thead><tbody>'+mats.map(function(m){var d=DOC[m.docId];return '<tr><td>'+esc(m.nom)+'</td><td>'+(d?esc(d.nombre)+(d.esp?'<br><span class="hint">'+esc(d.esp)+'</span>':''):'<span class="hint">Por asignar</span>')+'</td><td>'+esc(hor(m))+'</td><td>'+esc(m.aula||"")+'</td><td>'+(m.ev?esc(fd(m.ev)):'—')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Todavía no hay materias registradas para tu grupo.</p>')+
+   (mats.length?'<div class="wrap"><table style="min-width:640px"><thead><tr><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Aula</th><th>Evaluación</th></tr></thead><tbody>'+mats.map(function(m){var d=DOC[m.docId];return '<tr><td>'+esc((matParaPlan(m,g.plan)||m).nom)+(fusDe(m).length?'<br><span class="hint">Clase compartida con otra licenciatura</span>':'')+'</td><td>'+(d?esc(d.nombre)+(d.esp?'<br><span class="hint">'+esc(d.esp)+'</span>':''):'<span class="hint">Por asignar</span>')+'</td><td>'+esc(hor(m))+'</td><td>'+esc(m.aula||"")+'</td><td>'+(m.ev?esc(fd(m.ev)):'—')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Todavía no hay materias registradas para tu grupo.</p>')+
    '<h2 style="margin-top:16px">Mis calificaciones</h2>'+
    (ps.length?'<div class="bar"><select id="poPer" aria-label="Periodo" style="width:auto">'+ps.map(function(p){return '<option value="'+attr(p)+'"'+(p===per?' selected':'')+'>'+esc(etiquetaPer(s.id,p))+'</option>'}).join("")+'</select><button id="poBol">Boleta (PDF)</button></div><div id="poCal"></div>':'<p class="hint">Aún no tienes calificaciones capturadas.</p>')+
    '<h2 style="margin-top:16px">Mi credencial digital</h2>'+credPor(s,eg)+solicitudesPor()+'<h2 style="margin-top:16px">Mis pagos y recibos</h2>'+
@@ -5995,6 +6010,67 @@ function verJust(num,code){
     h=(malo?rcBanner("bad","Los datos del código QR no coinciden con el registro. El justificante puede estar alterado."):a.estado!=="Aprobado"?rcBanner("warn","El justificante existe, pero su estado es: "+a.estado+"."):rcBanner("ok","Justificante auténtico y vigente."))+rcTabla([["Folio",a.num],["Alumno",a.nombre],["Matrícula",a.mat],["Plan de estudios",a.plan],["Grupo",a.grupo||""],["Faltas justificadas",rangoJu(a)],["Fecha de emisión",fd(a.fecha)]]);
   }
   $("rcRes").innerHTML=h;$("dRc").showModal();
+}
+/* ===== Fusión de grupos de dos licenciaturas (una misma clase para materias iguales o parecidas) ===== */
+var GRPV={};
+function fusDe(m){return (m&&Array.isArray(m.fus))?m.fus:[]}
+function matParaPlan(m,plan){if(m.plan===plan)return {nom:m.nom,cuat:m.cuat};var f=fusDe(m).find(function(x){return x.plan===plan});return f?{nom:f.nom,cuat:f.cuat}:null}
+function gruposDeMat(m){var L=gruposPlan(m.plan,m.per,m.cuat);fusDe(m).forEach(function(f){gruposPlan(f.plan,m.per,f.cuat).forEach(function(g){L.push(g)})});return L}
+function grupoFusion(m){
+  var gs=gruposDeMat(m),al=[];gs.forEach(function(g){(g.alumnos||[]).forEach(function(id){if(al.indexOf(id)<0)al.push(id)})});
+  var v={id:"F:"+m.id,num:gs.map(function(g){return g.num}).join(" + "),alumnos:al,plan:m.plan,per:m.per,cuat:m.cuat,fusion:true,planes:[m.plan].concat(fusDe(m).map(function(f){return f.plan})),mid:m.id};
+  GRPV[v.id]=v;return v;
+}
+function grp(id){return GRPV[id]||(GRP[id]?Object.assign({id:id},GRP[id]):null)}
+function seguro(s){return String(s).replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+function tokN(s){return nz(s).replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(function(w){return w.length>2&&["del","los","las","para","con","por","sus","una","uno","que"].indexOf(w)<0})}
+function simNom(a,b){if(nz(a)===nz(b))return 1;var A=tokN(a),B=tokN(b);if(!A.length||!B.length)return 0;var I=A.filter(function(w){return B.indexOf(w)>-1}).length;return I/(A.length+B.length-I)}
+/* ---- formulario del calendario ---- */
+function fusForm(){
+  var on=$("mFus").checked;$("mFusW").hidden=!on;if(!on)return;
+  var plan=$("mPlan").value,otros=PL.filter(function(p){return p.k!==plan}),act=$("mFusPl").value;
+  setOpts($("mFusPl"),otros.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
+  var pb=$("mFusPl").value,it=catItems(pb).slice().sort(ordPlan);
+  if(!it.length){$("mFusCu").innerHTML="";$("mFusNom").innerHTML='<option value="">'+esc(pb)+' aún no tiene asignaturas cargadas en Plan de estudios</option>';$("mFusSug").textContent="";return}
+  var cs=[];it.forEach(function(x){if(cs.indexOf(x.cuat)<0)cs.push(x.cuat)});cs.sort(function(a,b){return a-b});
+  var cu=$("mFusCu").value;setOpts($("mFusCu"),cs.map(function(c){return '<option value="'+c+'">Cuatrimestre '+c+'</option>'}).join(""));
+  var cv=$("mFusCu").value;
+  var fila=it.filter(function(x){return String(x.cuat)===cv}),nv=$("mFusNom").value;
+  setOpts($("mFusNom"),fila.map(function(x){return '<option value="'+attr(x.nom)+'">'+esc((x.clave?x.clave+" · ":"")+x.nom)+'</option>'}).join(""));
+  var nom=$("mNomI").value.trim(),sug=nom?it.map(function(x){return {x:x,s:simNom(nom,x.nom)}}).filter(function(r){return r.s>=0.25}).sort(function(a,b){return b.s-a.s}).slice(0,5):[];
+  $("mFusSug").innerHTML=sug.length?'Materias iguales o parecidas en '+esc(pb)+': '+sug.map(function(r){return '<button type="button" data-fs="'+attr(r.x.id)+'">'+esc(r.x.nom)+' · cuat. '+r.x.cuat+(r.s===1?' (igual)':'')+'</button>'}).join(" "):(nom?'No se encontraron materias iguales o parecidas en '+esc(pb)+'; elige la equivalente a mano.':'Escribe la asignatura para ver sugerencias.');
+}
+function fusAuto(){
+  var pb=$("mFusPl").value,nom=$("mNomI").value.trim();if(!nom||!pb)return;
+  var best=catItems(pb).map(function(x){return {x:x,s:simNom(nom,x.nom)}}).sort(function(a,b){return b.s-a.s})[0];
+  if(best&&best.s>=0.5){$("mFusCu").value=String(best.x.cuat);fusForm();$("mFusNom").value=best.x.nom}
+}
+$("mFus").onchange=function(){fusForm();if($("mFus").checked)fusAuto()};
+$("mFusPl").onchange=function(){$("mFusCu").value="";fusForm();fusAuto()};
+$("mFusCu").onchange=fusForm;
+$("mPlan").addEventListener("change",function(){fusForm()});
+$("mNomI").addEventListener("input",function(){if($("mFus").checked)fusForm()});
+$("mFusSug").onclick=function(e){var id=e.target.dataset.fs;if(!id)return;var x=catItems($("mFusPl").value).find(function(i){return i.id===id});if(!x)return;$("mFusCu").value=String(x.cuat);fusForm();$("mFusNom").value=x.nom};
+function fusSirve(x,plan,nom){return (x.plan===plan&&nz(x.nom)===nz(nom))||fusDe(x).some(function(f){return f.plan===plan&&nz(f.nom)===nz(nom)})}
+function fusDesdeForm(id,per,plan,nom){
+  var dup0=Object.keys(MAT).find(function(k){var x=MAT[k];return k!==id&&x.per===per&&x.plan!==plan&&fusSirve(x,plan,nom)});
+  if(dup0)return {error:"«"+nom+"» de "+plan+" ya forma parte de una clase fusionada en "+per+" (con "+MAT[dup0].plan+"). Edita esa clase en lugar de crear otra, para no duplicar pagos ni calificaciones."};
+  if(!$("mFus").checked)return {fus:[]};
+  var pb=$("mFusPl").value,cu=parseInt($("mFusCu").value,10),nb=$("mFusNom").value;
+  if(!pb||!cu||!nb)return {error:"Elige la licenciatura, el cuatrimestre y la asignatura equivalente para fusionar."};
+  if(pb===plan)return {error:"Elige una licenciatura distinta."};
+  var dup=Object.keys(MAT).find(function(k){var x=MAT[k];return k!==id&&x.per===per&&fusSirve(x,pb,nb)});
+  if(dup)return {error:"«"+nb+"» de "+pb+" ya está en el calendario de "+per+(MAT[dup].docId&&DOC[MAT[dup].docId]?" con "+DOC[MAT[dup].docId].nombre:"")+". Quita o edita esa materia para fusionarla aquí; si no, se pagaría dos veces al docente y se duplicarían calificaciones."};
+  return {fus:[{plan:pb,cuat:cu,nom:nb}]};
+}
+function fusEditar(m){
+  var f=fusDe(m)[0];$("mFus").checked=!!f;
+  if(f){fusForm();$("mFusPl").value=f.plan;$("mFusCu").value="";fusForm();$("mFusCu").value=String(f.cuat);fusForm();$("mFusNom").value=f.nom}else $("mFusW").hidden=true;
+}
+function fusTexto(m){
+  var f=fusDe(m)[0];if(!f)return "";
+  var gs=gruposDeMat(m);
+  return '<br><span class="tag parcial">Fusionada con '+esc(f.plan)+'</span> <span class="hint">cuat. '+f.cuat+' · «'+esc(f.nom)+'»'+(gs.length?' · Grupos: '+gs.map(function(g){return esc(g.num)+' ('+esc(g.plan)+', '+alumnosGr(g).length+')'}).join(" + "):'')+'</span>';
 }
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;

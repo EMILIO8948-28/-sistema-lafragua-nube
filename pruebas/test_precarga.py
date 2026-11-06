@@ -31,7 +31,8 @@ with sync_playwright() as pw:
     pa=arranca(3101,'/tmp/pcd_a','/tmp/pc_a')
     cat=doc('/tmp/pcd_a','catalogo','pedagogia')
     ok('carga_las_47_asignaturas_al_arrancar',cat is not None and len(cat['items'])==47 and len(set(i['cuat'] for i in cat['items']))==9)
-    ok('carga_los_47_contenidos',cuenta('/tmp/pcd_a','contenidos')==47 and 'Mesopotamia' in doc('/tmp/pcd_a','contenidos','ped-lp01')['txt'] and 'Antropología' in doc('/tmp/pcd_a','contenidos','ped-lp06')['txt'])
+    ok('carga_los_47_contenidos',cuenta('/tmp/pcd_a','contenidos')==96 and 'Mesopotamia' in doc('/tmp/pcd_a','contenidos','ped-lp01')['txt'] and 'Antropología' in doc('/tmp/pcd_a','contenidos','ped-lp06')['txt'])
+    dc=doc('/tmp/pcd_a','catalogo','derecho');ok('carga_tambien_derecho_49_materias_en_9_cuatrimestres',dc is not None and len(dc['items'])==49 and len(set(i['cuat'] for i in dc['items']))==9 and 'Derecho' in dc['plan'] and doc('/tmp/pcd_a','contenidos','der-ld01') is not None and doc('/tmp/pcd_a','meta','precarga-derecho') is not None)
     ok('deja_marca_y_bitacora',doc('/tmp/pcd_a','meta','precarga-pedagogia')['cargados'][0].startswith('pedagogia (47') and any('Precarga de plan' in r[0] for r in db('/tmp/pcd_a').execute("select accion from auditoria").fetchall()))
     ok('ignora_archivos_invalidos',doc('/tmp/pcd_a','meta','precarga-mal') is None and doc('/tmp/pcd_a','meta','precarga-otro') is None or True)
     # se ve en la plataforma
@@ -44,28 +45,29 @@ with sync_playwright() as pw:
         except Exception:pass
         time.sleep(0.2)
     pg.evaluate("ir('esc');etab('P')");pg.select_option('#pPlan','Pedagogía');pg.evaluate("renderPlan()")
-    ok('se_ve_en_plan_de_estudios','47 asignaturas en 9 cuatrimestres' in pg.inner_text('#pRes') and pg.locator('#pLista [data-ct]').count()==47)
+    pg.select_option('#pPlan','Derecho');pg.evaluate("renderPlan()");ok('derecho_se_ve_en_plan_de_estudios','49 asignaturas en 9 cuatrimestres' in pg.inner_text('#pRes') and pg.locator('#pLista [data-ct]').count()==49)
+    pg.select_option('#pPlan','Pedagogía');pg.evaluate("renderPlan()");ok('se_ve_en_plan_de_estudios','47 asignaturas en 9 cuatrimestres' in pg.inner_text('#pRes') and pg.locator('#pLista [data-ct]').count()==47)
     pg.locator('#pLista [data-ct="ped-lp01"]').click();pg.wait_for_selector('#dCt[open]');pg.wait_for_timeout(300);ok('contenido_en_su_materia','Mesopotamia' in pg.input_value('#ctTxt'));pg.click('#ctCls')
     # el administrador quita una materia y reinicia: no vuelve
     cat['items']=[i for i in cat['items'] if i['id']!='ped-lp01']
     c=db('/tmp/pcd_a');c.execute("update docs set data=? where coleccion='catalogo' and id='pedagogia'",(json.dumps(cat),));c.execute("delete from docs where coleccion='contenidos' and id='ped-lp01'");c.commit();c.close()
     para(pa);pa=arranca(3101,'/tmp/pcd_a','/tmp/pc_a')
-    ok('no_vuelve_a_cargar_ni_repone_lo_que_se_quito',len(doc('/tmp/pcd_a','catalogo','pedagogia')['items'])==46 and doc('/tmp/pcd_a','contenidos','ped-lp01') is None and cuenta('/tmp/pcd_a','contenidos')==46)
-    ok('no_duplica_la_bitacora',db('/tmp/pcd_a').execute("select count(*) from auditoria where accion like 'Precarga%'").fetchone()[0]==1)
+    ok('no_vuelve_a_cargar_ni_repone_lo_que_se_quito',len(doc('/tmp/pcd_a','catalogo','pedagogia')['items'])==46 and doc('/tmp/pcd_a','contenidos','ped-lp01') is None and cuenta('/tmp/pcd_a','contenidos')==95)
+    ok('no_duplica_la_bitacora',db('/tmp/pcd_a').execute("select count(*) from auditoria where accion like 'Precarga%'").fetchone()[0]==2)
     para(pa)
     # ---- B: el plan ya tenía materias: no se toca ----
     pb0=arranca(3102,'/tmp/pcd_b','/tmp/pc_b',{'LF_SIN_PRECARGA':'1'})
-    ok('desactivada_con_la_variable',doc('/tmp/pcd_b','catalogo','pedagogia') is None and doc('/tmp/pcd_b','meta','precarga-pedagogia') is None)
+    ok('desactivada_con_la_variable',doc('/tmp/pcd_b','catalogo','pedagogia') is None and doc('/tmp/pcd_b','catalogo','derecho') is None and doc('/tmp/pcd_b','meta','precarga-pedagogia') is None)
     para(pb0)
     c=db('/tmp/pcd_b');c.execute("insert into docs (coleccion,id,data,actualizado) values ('catalogo','pedagogia',?,1)",(json.dumps({'plan':'Pedagogía','items':[{'id':'mia','cuat':1,'clave':'X1','nom':'Mi materia','ct':0,'pdf':0}]}),));c.commit();c.close()
     pb=arranca(3102,'/tmp/pcd_b','/tmp/pc_b')
-    cat=doc('/tmp/pcd_b','catalogo','pedagogia');ok('si_ya_hay_materias_no_las_toca',len(cat['items'])==1 and cat['items'][0]['id']=='mia' and cuenta('/tmp/pcd_b','contenidos')==0)
+    cat=doc('/tmp/pcd_b','catalogo','pedagogia');ok('si_ya_hay_materias_no_las_toca',len(cat['items'])==1 and cat['items'][0]['id']=='mia' and cuenta('/tmp/pcd_b','contenidos')==49)
     ok('lo_marca_como_aplicado_sin_cambios',doc('/tmp/pcd_b','meta','precarga-pedagogia')['omitidos']==['pedagogia'])
     para(pb)
     # ---- C: un contenido ya existente no se pisa ----
     c=db('/tmp/pcd_c');c.executescript("create table if not exists docs (coleccion TEXT NOT NULL, id TEXT NOT NULL, data TEXT NOT NULL, actualizado INTEGER NOT NULL, PRIMARY KEY (coleccion,id))");c.execute("insert into docs values ('contenidos','ped-lp02',?,1)",(json.dumps({'txt':'texto propio','pdf':None}),));c.commit();c.close()
     pc=arranca(3103,'/tmp/pcd_c','/tmp/pc_c')
-    ok('no_pisa_contenido_existente',doc('/tmp/pcd_c','contenidos','ped-lp02')['txt']=='texto propio' and len(doc('/tmp/pcd_c','catalogo','pedagogia')['items'])==47 and cuenta('/tmp/pcd_c','contenidos')==47)
+    ok('no_pisa_contenido_existente',doc('/tmp/pcd_c','contenidos','ped-lp02')['txt']=='texto propio' and len(doc('/tmp/pcd_c','catalogo','pedagogia')['items'])==47 and cuenta('/tmp/pcd_c','contenidos')==96)
     para(pc)
     # ---- D: el paquete trae la carpeta y el Dockerfile la copia ----
     ok('dockerfile_copia_la_precarga','COPY precarga ./precarga' in open('/tmp/pc_d/Dockerfile').read() and os.path.exists('/tmp/pc_d/precarga/pedagogia.json'))

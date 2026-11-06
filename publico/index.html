@@ -91,6 +91,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
 <div class="bar" id="nav" hidden><button id="nHome">← Panel principal</button></div>
 <div id="vHome">
   <p class="sub" id="hSal"></p>
+  <div id="hSo" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:12px" hidden><b>📨 Solicitudes de alumnos por atender</b><span id="hSoT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hSoGo">Ver solicitudes</button></div></div>
   <div id="hPl" class="mod" style="cursor:default;border-color:var(--brand);margin-bottom:12px" hidden><b>📋 Planeaciones por revisar</b><span id="hPlT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hPlGo">Revisar planeaciones</button></div></div>
   <div id="hNot" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:12px" hidden><b>🔔 Solicitudes de eliminación por revisar</b><span id="hNotT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hNotGo">Revisar notificaciones</button></div></div>
   <div class="mods">
@@ -109,7 +110,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
 </div>
 <div id="vEsc" hidden>
-  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button></div>
+  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button></div>
   <div id="eA">
     <div class="bar">
       <input id="aq" class="grow" type="search" placeholder="Buscar por nombre, matrícula o plan de estudios" aria-label="Buscar alumno">
@@ -229,6 +230,28 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <div class="bar"><button class="p" id="crPdf">Generar credenciales (PDF)</button></div>
     <p class="hint" id="crMsg" style="min-height:1.4em"></p>
     <div id="crPrev"></div>
+  </div>
+  <div id="eS" hidden>
+    <p class="hint">Aquí llegan las solicitudes que hacen los alumnos desde su portal. Los <b>justificantes</b> se aprueban o se deniegan (al aprobar se genera el justificante con su folio y su QR, y el alumno lo descarga en su portal). De las <b>boletas</b> y <b>constancias</b> solo recibes el aviso para elaborarlas aquí mismo y marcarlas como atendidas.</p>
+    <h2>Pendientes <span id="solPN" class="tag sin" hidden></span></h2>
+    <div id="solPend"></div>
+    <p class="hint" id="solMsg" style="min-height:1.3em"></p>
+    <h2 style="margin-top:16px">Atendidas</h2>
+    <div class="wrap"><table style="min-width:680px"><thead><tr><th>Fecha</th><th>Alumno</th><th>Solicitud</th><th>Detalle</th><th>Resultado</th></tr></thead><tbody id="solHist"></tbody></table></div>
+  </div>
+  <div id="eH" hidden>
+    <p class="hint">Aquí capturas las calificaciones de cuatrimestres anteriores de los alumnos que ya venían avanzados. Se guardan en su historial: aparecen en su boleta y su historial académico, cuentan para su promedio y su avance de egreso, y <b>no generan cobros</b> por sí solas.</p>
+    <label class="hint" style="display:flex;gap:8px;align-items:flex-start;color:var(--ink)"><input id="hExtra" type="checkbox" style="width:auto;margin-top:3px"><span id="hExtraT"></span></label>
+    <h2 style="margin-top:14px">Capturar a un alumno</h2>
+    <div class="row"><label class="full">Alumno (escribe su matrícula o su nombre y elígelo de la lista)<input id="hAl" list="hAlL" placeholder="Ej. 20230101 — Ana López"><datalist id="hAlL"></datalist></label></div>
+    <p class="hint" id="hInfo" style="font-weight:600;color:var(--ink)"></p>
+    <div id="hGrid"></div>
+    <div class="bar" style="margin-top:10px"><button class="p" id="hGuarda" hidden>Guardar calificaciones anteriores</button></div>
+    <p class="hint" id="hMsg" style="min-height:1.4em"></p>
+    <h2 style="margin-top:18px">Varios alumnos a la vez (archivo CSV)</h2>
+    <p class="hint">Una fila por calificación: matrícula, cuatrimestre, clave o nombre de la asignatura, calificación y periodo (opcional: si no lo pones, se calcula con el ciclo de ingreso del alumno). Las filas vacías se ignoran y no se pisa lo que ya esté capturado en un grupo.</p>
+    <div class="bar"><button id="hTpl">Descargar plantilla CSV</button><button class="p" id="hImp">Cargar calificaciones desde CSV</button><input id="hFile" type="file" accept=".csv,text/csv" hidden></div>
+    <div id="hRes"></div>
   </div>
   <div id="eC" hidden>
     <div class="row"><label>Grupo<select id="kGr"></select></label><label>Asignatura<select id="kMat"></select></label></div>
@@ -821,6 +844,21 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <div class="bar" style="justify-content:flex-end;margin:0"><button class="p" id="dxCls">Cerrar</button></div>
    </dialog>
 
+   <dialog id="dSo" style="width:min(560px,96vw)">
+     <h2>Nueva solicitud</h2>
+     <div class="row"><label class="full">¿Qué necesitas?<select id="soTipo"><option value="justificante">Justificante de faltas</option><option value="boleta">Boleta de estudios</option><option value="constancia">Constancia de estudios</option></select></label></div>
+     <div id="soJ"><div class="row">
+       <label>Primer día de falta<input id="soDes" type="date"></label><label>Último día de falta<input id="soHas" type="date"></label>
+       <label class="full">Motivo<select id="soMot"></select></label>
+       <label class="full">Comprobante (obligatorio): comprobante médico u otro documento que respalde tu falta<input id="soFile" type="file" multiple accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"><span class="hint">PDF, JPG o PNG, hasta 3 archivos de 10 MB cada uno. Solo los ve Control escolar.</span></label>
+     </div></div>
+     <div id="soB" hidden><div class="row"><label class="full">Periodo de la boleta<select id="soPer"></select></label></div><p class="hint">Control escolar la elabora y te avisa para que pases por ella.</p></div>
+     <div id="soC" hidden><div class="row"><label>Tipo de constancia<select id="soTC"><option value="simple">Constancia simple</option><option value="promedio">Constancia con promedio</option></select></label><label>Dirigida a (opcional)<input id="soDest" maxlength="120" placeholder="A quien corresponda"></label></div><p class="hint">Control escolar la elabora y te avisa para que pases por ella. Puede tener costo.</p></div>
+     <div class="row"><label class="full">Comentarios (opcional)<input id="soNota" maxlength="300"></label></div>
+     <p class="hint" id="soMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="soCan">Cancelar</button><button class="p" id="soEnv">Enviar solicitud</button></div>
+   </dialog>
+
    <dialog id="dAu" style="width:min(560px,96vw)">
      <h2>Autorización del encargado</h2>
      <p class="hint">Para borrar o quitar información se necesita la autorización del encargado.</p>
@@ -1167,7 +1205,7 @@ function constCargos(s){var it=(CONS&&CONS[s.id]&&CONS[s.id].items)||[];return i
 function extraCargos(s){
   var it=(CAL&&CAL[s.id]&&CAL[s.id].items)||[];
   if(!(EXTRA.costo>0))return [];
-  return it.filter(function(x){return x.cal!=null&&x.cal<EXTRA.min}).map(function(x){return {id:"x"+x.mid,c:"Examen extraordinario: "+x.mat+" ("+x.per+")",m:EXTRA.costo}});
+  return it.filter(function(x){return x.cal!=null&&x.cal<EXTRA.min&&(!x.hist||x.exCobro)}).map(function(x){return {id:"x"+x.mid,c:"Examen extraordinario: "+x.mat+" ("+x.per+")",m:EXTRA.costo}});
 }
 var TIT="Pago de derecho a título";
 function mesAnio(k,ing){var t=8+k-1;return MES[t%12]+" "+(ing+Math.floor(t/12))}
@@ -1864,6 +1902,7 @@ function renderHome(){
   var n=APP?APP.name:(PNAME||"");
   $("hSal").textContent=(n?"Hola, "+n+". ":"")+"Elige un módulo para empezar.";
   if(typeof renderPlBadge==="function")renderPlBadge();
+  if(typeof solBadge==="function")solBadge();
   var hoy=today(),np=0,mt=0;
   S.forEach(function(s){s.pagos.forEach(function(g){if(esConf(g)&&fechaCobro(g)===hoy){np++;mt+=g.monto}})});
   var t=S.length+(S.length===1?" alumno":" alumnos");
@@ -1889,7 +1928,7 @@ $("mPag").onclick=function(){ir("pagos")};$("mIns").onclick=function(){ir("ins")
 ir("home");
 /* ===== Control escolar: alumnos, calificaciones, calendario escolar y docentes ===== */
 var DOC={},MAT={},CAL={},FOT={},ETAB="A",EDM=null,EDD=null,ALID=null,ALFOTO=null,kDirty=false;
-var DIAS=["Lun","Mar","Mié","Jue","Vie","Sáb"],MINAP=6;
+var DIAS=["Lun","Mar","Mié","Jue","Vie","Sáb"],MINAP=8;
 function perAct(){var t=today(),m=+t.slice(5,7),y=+t.slice(0,4);return m>=9?"Sep–Dic "+y:m>=5?"May–Ago "+y:"Ene–Abr "+y}
 function periodos(){var o=[],c=cicloAct();for(var y=c-3;y<=c+4;y++){o.push("Sep–Dic "+y,"Ene–Abr "+(y+1),"May–Ago "+(y+1))}return o}
 function setOpts(sel,html){var v=sel.value;sel.innerHTML=html;if(Array.prototype.some.call(sel.options,function(o){return o.value===v}))sel.value=v}
@@ -1912,17 +1951,17 @@ function fotoRedim(file){
 function etab(t){
   var pe=permiso("escolar")!=="none",pc=permiso("constancias")!=="none";
   if(!pe&&pc)t="N";
-  if(pe&&t==="R"&&permiso("escolar")!=="editar")t="A";
-  ETAB=t;["A","P","G","C","K","D","N","E","J","R"].forEach(function(k){$("e"+k).hidden=k!==t});
+  if(pe&&(t==="R"||t==="H"||t==="S")&&permiso("escolar")!=="editar")t="A";
+  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S"].forEach(function(k){$("e"+k).hidden=k!==t});
   var rt=t==="N"?mayorRol(efectivoRol("escolar"),efectivoRol("constancias")):efectivoRol("escolar");if(MOD==="esc"&&rt&&rt!==ROL)setRol(rt);
   Array.prototype.forEach.call($("eTabs").querySelectorAll("button"),function(b){
     var k=b.dataset.et;b.className=k===t?"p":"";
-    b.hidden=k==="N"?!(pe||pc):(k==="R"?permiso("escolar")!=="editar":!pe);
+    b.hidden=k==="N"?!(pe||pc):((k==="R"||k==="H"||k==="S")?permiso("escolar")!=="editar":!pe);
   });
   renderEsc();
 }
 $("eTabs").onclick=function(e){var t=e.target.dataset.et;if(t)etab(t)};
-function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
+function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
 /* ---- Alumnos ---- */
 function renderAl(){
   setOpts($("ap"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
@@ -2385,7 +2424,7 @@ async function asignaGrupo(sid,gid){
 /* ===== Historial académico y boleta por cuatrimestre ===== */
 function itemsDe(sid){return ((CAL[sid]&&CAL[sid].items)||[]).slice()}
 function cuatDe(x){return x.cuat||(MAT[x.mid]&&MAT[x.mid].cuat)||null}
-function perDe(sid){var po=periodos(),p=[];itemsDe(sid).forEach(function(x){if(p.indexOf(x.per)<0)p.push(x.per)});return p.sort(function(a,b){return po.indexOf(a)-po.indexOf(b)})}
+function perDe(sid){var p=[];itemsDe(sid).forEach(function(x){if(p.indexOf(x.per)<0)p.push(x.per)});return p.sort(function(a,b){return perKey(a)-perKey(b)})}
 function cuatPer(sid,per){var x=itemsDe(sid).filter(function(i){return i.per===per&&cuatDe(i)})[0];return x?cuatDe(x):null}
 function estat(c){return c==null?"En curso":c>=MINAP?"Aprobada":"Reprobada"}
 function promIt(a){var f=a.filter(function(x){return x.cal!=null});return f.length?Math.round(f.reduce(function(t,x){return t+x.cal},0)/f.length*10)/10:null}
@@ -2426,9 +2465,14 @@ function boletaPDF(sid,per){
   y=tbl(d,y+4,COLB,filasBoleta(a));
   y=totales(d,y+4,[["Asignaturas cursadas",String(a.length)],["Promedio del cuatrimestre",pr===null?"—":pr.toFixed(1)]]);
   d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(90,90,90);d.text("Calificación aprobatoria: "+MINAP.toFixed(1)+". Cada asignatura se evalúa una vez por cuatrimestre.",15,y+6);
-  y+=26;if(y>268){d.addPage();y=40}
+  y+=26;if(y>238){d.addPage();y=40}
   d.setDrawColor(90,90,90);d.setLineWidth(0.3);d.line(25,y,90,y);d.line(120,y,185,y);
   d.setFontSize(8.5);d.text("Control escolar",57.5,y+4,{align:"center"});d.text("Sello",152.5,y+4,{align:"center"});
+  try{
+    var yq=y+14;qrPDF(d,qrBoleta(sid,per,today()),15,yq,26);
+    d.setTextColor(90,90,90);d.setFont("helvetica","bold");d.setFontSize(8);d.text("Verifique esta boleta",45,yq+8);
+    d.setFont("helvetica","normal");d.setFontSize(7);d.text(d.splitTextToSize("Escanee el código QR para comprobar que esta boleta es auténtica y que sus datos coinciden con los registros de la institución.",120),45,yq+13);
+  }catch(e){}
   saveFile("boleta-"+s.mat+"-"+slug(per)+".pdf",d.output("arraybuffer"));
 }
 function historialPDF(sid){
@@ -3025,10 +3069,10 @@ function renderDm(){
     if(!gs.length)filas.push({c:c,i:i,g:null});
     gs.forEach(function(g){filas.push({c:c,i:i,g:g})});
   });
-  $("dmL").innerHTML=filas.length?'<div class="wrap"><table style="min-width:860px"><thead><tr><th>Periodo</th><th>Asignatura</th><th>Grupo</th><th>Horario</th><th>Evaluación</th><th class="n">Sesiones</th><th></th></tr></thead><tbody>'+filas.map(function(f){
+  $("dmL").innerHTML=filas.length?'<div class="wrap"><table style="min-width:720px"><thead><tr><th>Asignatura</th><th>Grupo</th><th>Horario</th><th>Evaluación</th><th class="n">Sesiones</th><th></th></tr></thead><tbody>'+filas.map(function(f){
     var c=f.c,m=c.m,g=f.g,key=c.plan+"|"+c.per+"|"+c.nom;
-    return '<tr><td>'+esc(c.per)+'</td><td>'+esc(c.nom)+'<br><span class="hint">'+esc(c.plan)+' · cuatrimestre '+c.cuat+'</span></td><td>'+(g?esc("Grupo "+g.num)+'<br><span class="hint">'+alumnosGr(g).length+' alumnos</span>':'<span class="hint">Sin grupo</span>')+'</td><td>'+(m?esc(hor(m)):'<span class="hint">Aún sin horario</span>')+'</td><td>'+(m&&m.ev?esc(fd(m.ev)):'—')+'</td><td class="n">'+(c.ses==null?'—':c.ses)+'</td><td style="white-space:normal;min-width:260px">'+
-      (m?plTag(m):'')+'<button data-ct="'+f.i+'">Contenido</button> '+(m?'<button data-pl="'+f.i+'">Planeación y evaluación</button> ':'')+(g?'<button data-lp="'+f.i+'|'+g.id+'">Lista (PDF)</button> <button data-lc="'+f.i+'|'+g.id+'">Lista (CSV)</button> <button class="p" data-ev="'+f.i+'|'+g.id+'">Calificaciones</button>':'')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Aún no tienes asignaturas asignadas. Pide al Administrador que te asigne tus asignaturas en Control escolar > Docentes.</p>';
+    return '<tr><td><b>'+esc(c.nom)+'</b><br><span class="hint">'+esc(c.plan)+' · cuatrimestre '+c.cuat+' · '+esc(c.per)+'</span></td><td>'+(g?esc("Grupo "+g.num)+'<br><span class="hint">'+alumnosGr(g).length+' alumnos</span>':'<span class="hint">Sin grupo</span>')+'</td><td>'+(m?esc(hor(m)):'<span class="hint">Aún sin horario</span>')+'</td><td>'+(m&&m.ev?esc(fd(m.ev)):'—')+'</td><td class="n">'+(c.ses==null?'—':c.ses)+'</td><td style="white-space:normal;min-width:230px">'+
+      (m?'<div style="margin-bottom:6px">'+plTag(m)+'</div>':'')+'<div style="display:flex;flex-wrap:wrap;gap:6px"><button data-ct="'+f.i+'">Contenido</button>'+(m?'<button data-pl="'+f.i+'">Planeación</button>':'')+(g?'<button data-lp="'+f.i+'|'+g.id+'">Lista (PDF)</button><button data-lc="'+f.i+'|'+g.id+'">Lista (CSV)</button><button class="p" data-ev="'+f.i+'|'+g.id+'">Calificaciones</button>':'')+'</div></td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Aún no tienes asignaturas asignadas. Pide al Administrador que te asigne tus asignaturas en Control escolar > Docentes.</p>';
 }
 function claveClase(v){var p=String(v).split("|"),c=misClases()[+p[0]];return {c:c,g:p[1]?GRP[p[1]]&&Object.assign({id:p[1]},GRP[p[1]]):null}}
 $("dmL").onclick=function(e){
@@ -3589,8 +3633,8 @@ function justificantePDF(a){
   d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(0,0,0);d.text("Folio: "+a.num,195,22,{align:"right"});
   y=70;d.setFont("helvetica","normal");d.setFontSize(10);d.text("Tejupilco de Hidalgo, Estado de México, a "+fechaLarga(a.fecha)+".",195,y,{align:"right"});y+=16;
   d.setFont("helvetica","bold");d.setFontSize(11);d.text("A LOS DOCENTES DE LA INSTITUCIÓN:",15,y);y+=12;
-  var cuando=a.desde===a.hasta?"el día "+fechaLarga(a.desde):"del "+fechaLarga(a.desde)+" al "+fechaLarga(a.hasta)+" ("+n+" días)";
-  var ps=["Por medio de la presente se justifican las inasistencias de "+art+" "+String(a.nombre).toUpperCase()+", con matrícula "+a.mat+", "+al+" del plan de estudios de "+a.plan+(a.grupo?", grupo "+a.grupo:"")+", correspondientes a "+cuando+", por el siguiente motivo: "+a.motivo.toLowerCase()+"."];
+  var cuando=a.desde===a.hasta?"al día "+fechaLarga(a.desde):"al periodo del "+fechaLarga(a.desde)+" al "+fechaLarga(a.hasta)+" ("+n+" días)";
+  var ps=["Por medio de la presente se justifican las inasistencias de "+art+" "+String(a.nombre).toUpperCase()+", con matrícula "+a.mat+", "+al+" del plan de estudios de "+a.plan+(a.grupo?", grupo "+a.grupo:"")+", correspondientes "+cuando+", por el siguiente motivo: "+a.motivo.toLowerCase()+"."];
   if(a.nota)ps.push("Observaciones: "+a.nota);
   ps.push("Se extiende el presente para los efectos académicos a que haya lugar.");
   d.setFont("helvetica","normal");d.setFontSize(11);
@@ -3599,6 +3643,7 @@ function justificantePDF(a){
   d.setDrawColor(90,90,90);d.setLineWidth(0.3);d.line(60,y,150,y);
   d.setFont("helvetica","normal");d.setFontSize(9);d.setTextColor(90,90,90);d.text("Control escolar",105,y+5,{align:"center"});
   d.setDrawColor(160,160,160);d.rect(160,y-26,32,32);d.setFontSize(8);d.text("Sello",176,y+10,{align:"center"});
+  try{qrPDF(d,qrJust(a),15,y-24,28);d.setFontSize(6);d.setTextColor(90,90,90);d.text("Verifique este justificante",29,y+7,{align:"center"})}catch(e){}
   d.setFontSize(8);d.text(DIR1+". "+DIR2+".",105,285,{align:"center"});
   saveFile("justificante-"+a.num+"-"+a.mat+".pdf",d.output("arraybuffer"));
 }
@@ -4547,17 +4592,18 @@ function verRecibo(folio,code){
 $("rcCls").onclick=function(){$("dRc").close()};
 $("vrVerif").onclick=function(){var f=$("vrFolio").value.trim();if(!f){$("vrMsg").textContent="Escribe el folio del recibo o de la constancia.";return}$("vrMsg").textContent="";if(/^C-/i.test(f))verConst(f,"");else verRecibo(f,"")};
 function qrHash(){
-  var m=/^#([vca])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(String(location.hash||""));if(!m)return null;
+  var m=/^#([vcabj])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(String(location.hash||""));if(!m)return null;
   var p=m[3].split(".");
   if(m[1]==="a")return /^\d{8}$/.test(p[0])&&/^[0-9a-f]{8}$/.test(p[1]||"")?{tipo:"a",id:m[2],folio:m[2],vig:p[0],code:p[1]}:null;
+  if(m[1]==="b")return /^[SEM]\d{4}$/.test(p[0])&&/^\d{8}$/.test(p[1]||"")&&/^[0-9a-f]{8}$/.test(p[2]||"")?{tipo:"b",id:m[2],folio:m[2],per:p[0],fecha:p[1],code:p[2]}:null;
   return /^[0-9a-f]{8}$/.test(p[0])&&p.length===1?{tipo:m[1],id:m[2],folio:m[2],code:p[0]}:null;
 }
 function lanzaVerif(){
   var q=qrHash();if(!q)return;var key=q.tipo+"."+q.id;if(QRVISTO===key)return;
   QRVISTO=key;var n=0;
   (function intenta(){
-    var hay=q.tipo==="v"?buscaRecibo(q.id):q.tipo==="c"?buscaConst(q.id):S.some(function(s){return s.id===q.id});
-    if(hay||n>=3){if(q.tipo==="v")verRecibo(q.id,q.code);else if(q.tipo==="c")verConst(q.id,q.code);else verCred(q.id,q.vig,q.code);return}
+    var hay=q.tipo==="v"?buscaRecibo(q.id):q.tipo==="c"?buscaConst(q.id):q.tipo==="j"?buscaJust(q.id):S.some(function(s){return s.id===q.id});
+    if(hay||n>=3){if(q.tipo==="v")verRecibo(q.id,q.code);else if(q.tipo==="c")verConst(q.id,q.code);else if(q.tipo==="b")verBoleta(q.id,q.per,q.fecha,q.code);else if(q.tipo==="j")verJust(q.id,q.code);else verCred(q.id,q.vig,q.code);return}
     n++;setTimeout(intenta,2500);
   })();
 }
@@ -4566,6 +4612,9 @@ window.addEventListener("hashchange",function(){QRVISTO="";if(!document.body.cla
 function rcBanner(t,x){var c=t==="ok"?"background:#e7f4ee;color:#14633f":t==="warn"?"background:#fff4dc;color:#7a4b00":"background:#fdecea;color:#8a1c1c";return '<div style="padding:12px;border-radius:10px;font-weight:600;margin-top:8px;'+c+'">'+x+'</div>'}
 function rcTabla(f){return '<div class="wrap" style="margin-top:10px"><table><tbody>'+f.filter(function(x){return x[1]!==""&&x[1]!=null}).map(function(x){return '<tr><td><b>'+esc(x[0])+'</b></td><td style="white-space:normal">'+esc(String(x[1]))+'</td></tr>'}).join("")+'</tbody></table></div>'}
 function qrConst(x){return appUrl()+"#c."+x.num+"."+chkTxt("C|"+x.num+"|"+x.mat+"|"+x.fecha)}
+function perCod(per){var m=/^(Sep|Ene|May)[–-](Dic|Abr|Ago) (\d{4})$/.exec(String(per||""));return m?(m[1]==="Sep"?"S":m[1]==="Ene"?"E":"M")+m[3]:""}
+function perDeCod(c){var m=/^([SEM])(\d{4})$/.exec(c||"");return m?(m[1]==="S"?"Sep–Dic ":m[1]==="E"?"Ene–Abr ":"May–Ago ")+m[2]:""}
+function qrBoleta(sid,per,fecha){var pc=perCod(per),f=String(fecha||today()).replace(/-/g,"");return appUrl()+"#b."+sid+"."+pc+"."+f+"."+chkTxt("B|"+sid+"|"+pc+"|"+f)}
 function qrCred(s,vig){var v=String(vig||"").replace(/-/g,"");return appUrl()+"#a."+s.id+"."+v+"."+chkTxt("CR|"+s.id+"|"+v)}
 function buscaConst(num){
   var f=String(num||"").trim().toUpperCase(),r=null;
@@ -4584,6 +4633,18 @@ function verConst(num,code){
   }
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
+function verBoleta(sid,pc,f8,code){
+  var s=S.find(function(y){return y.id===sid}),h,per=perDeCod(pc);
+  if(ROL==="docente")h=rcBanner("bad","No tienes permiso para verificar boletas.");
+  else if(!s)h=rcBanner("bad","No se encontró al alumno de esta boleta.")+'<p class="hint" style="margin-top:8px">La boleta puede ser falsa o el alumno ya no está registrado.</p>';
+  else{
+    var a=datosPer(sid,per),malo=code&&code!==chkTxt("B|"+sid+"|"+pc+"|"+f8),ef=/^\d{8}$/.test(f8)?f8.slice(0,4)+"-"+f8.slice(4,6)+"-"+f8.slice(6):"",g=grupoDe(sid,per),c=cuatPer(sid,per),pr=promIt(a);
+    h=(malo?rcBanner("bad","Los datos del código QR no coinciden con el registro. La boleta puede estar alterada."):!a.length?rcBanner("bad","El alumno no tiene calificaciones registradas en ese periodo. La boleta puede ser falsa."):rcBanner("ok","Boleta auténtica: existe en el sistema."))+
+      rcTabla([["Alumno",s.nombre],["Matrícula",s.mat],["Plan de estudios",planDe(s)],["Periodo",per],["Cuatrimestre",c?String(c):""],["Grupo",g?g.num:""],["Emitida el",ef?fd(ef):""]])+
+      (a.length?'<div class="wrap" style="margin-top:10px"><table><thead><tr><th>Asignatura</th><th>Docente</th><th class="n">Calificación</th><th>Estatus</th></tr></thead><tbody>'+a.map(function(x){return '<tr><td>'+esc(x.mat)+'</td><td>'+esc(x.doc||"")+'</td><td class="n">'+esc(n1(x.cal))+'</td><td>'+esc(estat(x.cal))+'</td></tr>'}).join("")+'</tbody></table></div><p class="hint">Promedio del cuatrimestre: <b>'+(pr===null?"—":pr.toFixed(1))+'</b>. Las calificaciones mostradas son las registradas actualmente; compáralas con las de la boleta.</p>':"");
+  }
+  $("rcRes").innerHTML=h;$("dRc").showModal();
+}
 function verCred(sid,vig,code){
   var s=S.find(function(y){return y.id===sid}),h;
   if(ROL==="docente")h=rcBanner("bad","No tienes permiso para verificar credenciales.");
@@ -4597,7 +4658,7 @@ function verCred(sid,vig,code){
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
 /* ===== Respaldo completo (datos y archivos) ===== */
-var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs"];
+var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","solicitudes","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs"];
 var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT"];
 var BKLAST=null;
 function leeCol(n){
@@ -5204,12 +5265,12 @@ function renderPor(){
   var ps=perDe(s.id).slice().reverse(),per=$("poPer")&&$("poPer").value&&ps.indexOf($("poPer").value)>-1?$("poPer").value:(ps[0]||"");
   var pagos=(s.pagos||[]).slice().sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))||String(b.folio).localeCompare(String(a.folio))}),A=alloc(s);
   var h='<p class="sub">Hola, <b>'+esc(s.nombre)+'</b>. Aquí puedes consultar tu información académica y el registro de tus pagos.</p>'+
-   '<h2>Mis datos</h2><div class="row">'+datos.filter(function(x){return x[1]}).map(function(x){return '<label>'+esc(x[0])+'<b style="color:var(--ink);font-weight:600">'+esc(x[1])+'</b></label>'}).join("")+'</div>'+
+   notifPor()+'<h2 style="margin-top:16px">Mis datos</h2><div class="row">'+datos.filter(function(x){return x[1]}).map(function(x){return '<label>'+esc(x[0])+'<b style="color:var(--ink);font-weight:600">'+esc(x[1])+'</b></label>'}).join("")+'</div>'+
    '<h2 style="margin-top:16px">Mis materias y docentes'+(g?' · cuatrimestre '+esc(g.cuat)+'':'')+'</h2>'+
    (mats.length?'<div class="wrap"><table style="min-width:640px"><thead><tr><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Aula</th><th>Evaluación</th></tr></thead><tbody>'+mats.map(function(m){var d=DOC[m.docId];return '<tr><td>'+esc(m.nom)+'</td><td>'+(d?esc(d.nombre)+(d.esp?'<br><span class="hint">'+esc(d.esp)+'</span>':''):'<span class="hint">Por asignar</span>')+'</td><td>'+esc(hor(m))+'</td><td>'+esc(m.aula||"")+'</td><td>'+(m.ev?esc(fd(m.ev)):'—')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Todavía no hay materias registradas para tu grupo.</p>')+
    '<h2 style="margin-top:16px">Mis calificaciones</h2>'+
    (ps.length?'<div class="bar"><select id="poPer" aria-label="Periodo" style="width:auto">'+ps.map(function(p){return '<option value="'+attr(p)+'"'+(p===per?' selected':'')+'>'+esc(etiquetaPer(s.id,p))+'</option>'}).join("")+'</select><button id="poBol">Boleta (PDF)</button></div><div id="poCal"></div>':'<p class="hint">Aún no tienes calificaciones capturadas.</p>')+
-   '<h2 style="margin-top:16px">Mi credencial digital</h2>'+credPor(s,eg)+'<h2 style="margin-top:16px">Mis pagos y recibos</h2>'+
+   '<h2 style="margin-top:16px">Mi credencial digital</h2>'+credPor(s,eg)+solicitudesPor()+'<h2 style="margin-top:16px">Mis pagos y recibos</h2>'+
    (pagos.length?'<div class="wrap"><table style="min-width:620px"><thead><tr><th>Folio</th><th>Fecha</th><th>Concepto</th><th>Forma de pago</th><th class="n">Monto</th><th>Estado</th><th>Recibo</th></tr></thead><tbody>'+pagos.map(function(g2){var c=esConf(g2);return '<tr><td>'+esc(g2.folio||"")+'</td><td>'+esc(fd(g2.fecha))+'</td><td style="white-space:normal;min-width:200px">'+esc(c?(conc(A[g2.id])||"Pago"):"Se confirmará al verificar el depósito")+'</td><td>'+esc(g2.metodo||"")+'</td><td class="n">'+esc(mx.format(g2.monto))+'</td><td>'+(c?'<span class="tag pagado">Registrado'+(g2.estado==="confirmado"&&g2.confFecha?' · confirmado '+esc(fd(g2.confFecha)):'')+'</span>':'<span class="tag parcial">Pendiente de confirmar</span>')+'</td><td>'+(c?'<button data-rc="'+attr(g2.id)+'">Recibo (PDF)</button>':'<span class="hint">Se emite al confirmar</span>')+'</td></tr>'}).join("")+'</tbody></table></div><p class="hint">'+pagos.length+(pagos.length===1?' pago registrado':' pagos registrados')+'. Si ves algún dato que no corresponda, acude a Control escolar.</p>':'<p class="hint">Aún no tienes pagos registrados.</p>');
   $("poBody").innerHTML=h;
   if(ps.length)pintaCalPor(s.id,per);
@@ -5229,6 +5290,9 @@ $("poBody").onclick=function(e){
   if(e.target.id==="poBol"&&$("poPer"))boletaPDF(s.id,$("poPer").value);
   else if(e.target.id==="poCred")credencialesPDF([s],finPeriodo(),"tarjeta","credencial-"+slug(s.mat)+".pdf");
   else if(e.target.dataset&&e.target.dataset.rc){var g=(s.pagos||[]).find(function(x){return x.id===e.target.dataset.rc});if(g)recFormalPDF(s,g)}
+  else if(e.target.dataset&&e.target.dataset.nsol)abreSol();
+  else if(e.target.dataset&&e.target.dataset.dj){var jj=JUS[e.target.dataset.dj];if(jj)justificantePDF(jj)}
+  else if(e.target.dataset&&e.target.dataset.lee){solNoLeidas().forEach(function(x){DBH.doc("solicitudes/"+x.id).update({leida:true}).then(function(){SOL[x.id]=Object.assign({},SOL[x.id],{leida:true});renderPor()}).catch(function(){})})}
 };
 /* ---- Accesos de alumnos (solo Administrador; requiere el servidor de la nube) ---- */
 var AANEW=[];
@@ -5626,7 +5690,7 @@ $("rvL").onclick=async function(e){
 };
 /* Aviso en el panel principal: planeaciones por revisar */
 function planPend(){
-  if(!puedeRevisar())return 0;var per=perAct(),n=0;
+  if(permiso("escolar")!=="editar")return 0;var per=perAct(),n=0;
   Object.keys(MAT).forEach(function(k){var m=MAT[k];if(m.per!==per||!m.docId)return;var d=PLN[k];if(d&&(d.files||[]).length&&(!d.estado||d.estado==="pendiente"))n++});
   return n;
 }
@@ -5698,6 +5762,240 @@ $("pJOk").onclick=async function(){
   }catch(e){pJm("No se pudo terminar la carga ("+((e&&(e.code||e.message))||"error")+"). Lo ya cargado se conserva; puedes volver a intentarlo.",true)}
   b.disabled=false;$("pJNo").disabled=false;
 };
+/* ===== Calificaciones anteriores (historial de alumnos que ya venían avanzados) ===== */
+var HIDX={},HSID=null,HIMP=null;
+function perKey(p){var m=/^(Sep|Ene|May)[–-](Dic|Abr|Ago) (\d{4})$/.exec(String(p||""));if(!m)return -1;var y=+m[3];return m[1]==="Sep"?y*3:m[1]==="Ene"?(y-1)*3+1:(y-1)*3+2}
+function perDeCuat(s,k){var y=+s.ingreso||cicloAct(),i=k-1,yy=y+Math.floor(i/3),t=i%3;return t===0?"Sep–Dic "+yy:t===1?"Ene–Abr "+(yy+1):"May–Ago "+(yy+1)}
+function perOpcionesH(s){var y0=Math.min(+s.ingreso||cicloAct(),cicloAct()),o=[];for(var y=y0;y<=cicloAct()+1;y++)o.push("Sep–Dic "+y,"Ene–Abr "+(y+1),"May–Ago "+(y+1));return o}
+function hMsg(t,bad){$("hMsg").textContent=t;$("hMsg").style.color=bad?"var(--bad)":"var(--ok)"}
+function renderHist(){
+  var L=S.slice().sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))});
+  HIDX={};$("hAlL").innerHTML=L.map(function(s){var k=s.mat+" — "+s.nombre;HIDX[k]=s.id;return '<option value="'+attr(k)+'">'}).join("");
+  if(HSID&&!S.some(function(x){return x.id===HSID}))HSID=null;
+  $("hExtraT").textContent="Generar cargo de examen extraordinario para las calificaciones menores a "+Number(EXTRA.min).toFixed(1)+" (normalmente no: estos exámenes ya se atendieron antes)";
+  hGrid();
+}
+function hGrid(){
+  var s=HSID&&S.find(function(x){return x.id===HSID});
+  if(!s){$("hGrid").innerHTML="";$("hInfo").textContent="";$("hGuarda").hidden=true;return}
+  var plan=planDe(s),cat=catItems(plan).slice().sort(ordPlan),items=itemsDe(s.id),pr=promedio(s.id),pg=progEgreso(s);
+  $("hInfo").textContent=s.nombre+" · matrícula "+s.mat+" · "+plan+" · ingreso "+(s.ingreso||"—")+" · promedio general "+(pr===null?"—":pr.toFixed(2))+" · asignaturas aprobadas "+pg.apr+" de "+pg.n;
+  if(!cat.length){$("hGrid").innerHTML='<p class="hint">El plan «'+esc(plan)+'» aún no tiene asignaturas cargadas. Cárgalas primero en Plan de estudios.</p>';$("hGuarda").hidden=true;return}
+  var cs=[];cat.forEach(function(c){if(cs.indexOf(c.cuat)<0)cs.push(c.cuat)});cs.sort(function(a,b){return a-b});
+  $("hGrid").innerHTML=cs.map(function(c){
+    var fila=cat.filter(function(x){return x.cuat===c}),cont={},def="";
+    fila.forEach(function(f){items.filter(function(i){return nz(i.mat)===nz(f.nom)}).forEach(function(i){cont[i.per]=(cont[i.per]||0)+1})});
+    Object.keys(cont).forEach(function(p){if(!def||cont[p]>cont[def])def=p});if(!def)def=perDeCuat(s,c);
+    var ops=perOpcionesH(s);if(ops.indexOf(def)<0)ops.push(def);
+    return '<h2 style="margin-top:14px">Cuatrimestre '+c+' <select data-hp="'+c+'" aria-label="Periodo del cuatrimestre '+c+'" style="width:auto;font-weight:400">'+ops.map(function(p){return '<option'+(p===def?' selected':'')+'>'+esc(p)+'</option>'}).join("")+'</select></h2><div class="wrap"><table style="min-width:520px"><thead><tr><th>Clave</th><th>Asignatura</th><th class="n" style="width:150px">Calificación (0 a 10)</th></tr></thead><tbody>'+
+      fila.map(function(f){
+        var ex=items.filter(function(i){return nz(i.mat)===nz(f.nom)}).sort(function(a,b){return perKey(b.per)-perKey(a.per)})[0],bloq=ex&&!ex.hist;
+        return '<tr><td>'+esc(f.clave||"")+'</td><td>'+esc(f.nom)+(bloq?'<br><span class="hint">Ya capturada en un grupo ('+esc(ex.per)+'); se corrige desde Calificaciones</span>':(ex&&ex.hist&&ex.per?'<br><span class="hint">'+esc(ex.per)+'</span>':''))+'</td><td class="n"><input type="text" inputmode="decimal" autocomplete="off" data-hid="'+attr(f.id)+'" value="'+(ex&&ex.cal!=null?ex.cal:"")+'"'+(bloq?' disabled':'')+' style="width:110px"></td></tr>'}).join("")+'</tbody></table></div>'}).join("");
+  $("hGuarda").hidden=false;
+}
+$("hAl").oninput=function(){HSID=HIDX[this.value]||null;hMsg("");hGrid()};
+$("hGrid").onchange=function(e){if(e.target.dataset&&e.target.dataset.hp!==undefined)e.target.dataset.sucio="1"};
+$("hGuarda").onclick=async function(){
+  var s=HSID&&S.find(function(x){return x.id===HSID});if(!s||ROL!=="admin")return;
+  var plan=planDe(s),cat=catItems(plan),items=itemsDe(s.id),per={},sucio={},ins=$("hGrid").querySelectorAll("input[data-hid]:not([disabled])"),nuevos=0,cambiados=0,quitados=0;
+  Array.prototype.forEach.call($("hGrid").querySelectorAll("select[data-hp]"),function(x){per[x.dataset.hp]=x.value;sucio[x.dataset.hp]=x.dataset.sucio==="1"});
+  for(var i=0;i<ins.length;i++){var raw=String(ins[i].value).replace(",","."),v=raw===""?null:parseFloat(raw);if(v!==null&&(isNaN(v)||v<0||v>10)){hMsg("Las calificaciones van de 0 a 10.",true);ins[i].focus();return}}
+  var b=this;b.disabled=true;
+  try{
+    for(var j=0;j<ins.length;j++){
+      var it=cat.find(function(x){return x.id===ins[j].dataset.hid});if(!it)continue;
+      var raw2=String(ins[j].value).replace(",","."),v2=raw2===""?null:parseFloat(raw2),mid="h:"+it.id,ex=items.find(function(x){return x.mid===mid});
+      if(v2===null){if(ex){items=items.filter(function(x){return x!==ex});quitados++}continue}
+      var p2=ex&&!sucio[it.cuat]?ex.per:per[it.cuat];
+      if(ex&&ex.cal===v2&&ex.per===p2)continue;
+      items=items.filter(function(x){return x.mid!==mid});
+      items.push({id:ex?ex.id:uid(),mid:mid,mat:it.nom,plan:plan,per:p2,cuat:it.cuat,doc:"",cal:v2,fecha:today(),hist:true,exCobro:!!$("hExtra").checked});
+      if(ex)cambiados++;else nuevos++;
+    }
+    if(!nuevos&&!cambiados&&!quitados){hMsg("No hay cambios que guardar.");b.disabled=false;return}
+    await DBH.doc("calif/"+s.id).set({items:items});CAL[s.id]={items:items};
+    render();var pg=progEgreso(s);hMsg("Listo: "+nuevos+(nuevos===1?" calificación nueva":" calificaciones nuevas")+(cambiados?", "+cambiados+" corregidas":"")+(quitados?", "+quitados+" quitadas":"")+". "+s.nombre+" lleva "+pg.apr+" de "+pg.n+" asignaturas aprobadas.");hGrid();
+  }catch(e){hMsg("No se pudo guardar ("+((e&&(e.code||e.message))||"error")+").",true)}
+  b.disabled=false;
+};
+/* ---- Varios alumnos a la vez (CSV) ---- */
+$("hTpl").onclick=function(){saveFile("plantilla_calificaciones_anteriores.csv","\uFEFFmatricula,cuatrimestre,clave,asignatura,calificacion,periodo\r\n20230101,1,LP01,Historia de la educación,9.5,Sep–Dic 2023\r\n20230101,1,,Teoría pedagógica,8,\r\n20230101,2,LP07,,9,Ene–Abr 2024\r\n")};
+$("hImp").onclick=function(){if(ROL==="admin")$("hFile").click()};
+$("hFile").onchange=function(){var f=this.files[0];this.value="";if(!f||ROL!=="admin")return;var rd=new FileReader();rd.onload=function(){hAnaliza(String(rd.result))};rd.readAsText(f)};
+function hPerValido(p,s){
+  var t=String(p||"").trim().replace(/[-—]/g,"–").replace(/\s+/g," ");if(!t)return "";
+  var m=/^(sep|ene|may)[a-z]*–(dic|abr|ago)[a-z]* (\d{4})$/i.exec(t);if(!m)return null;
+  var a=m[1].toLowerCase(),y=+m[3],nom=a==="sep"?"Sep–Dic "+y:a==="ene"?"Ene–Abr "+y:"May–Ago "+y;
+  return nom;
+}
+function hAnaliza(txt){
+  var rows=parseCSV(txt);$("hRes").innerHTML="";HIMP=null;
+  if(rows.length<2){hMsg("El archivo no tiene filas de calificaciones.",true);return}
+  var H=rows[0].map(nz),ix=function(ns){for(var i=0;i<H.length;i++)if(ns.indexOf(H[i])>-1)return i;return -1};
+  var cM=ix(["matricula"]),cK=ix(["clave"]),cA=ix(["asignatura","materia"]),cN=ix(["calificacion","cal"]),cP=ix(["periodo"]);
+  if(cM<0||cN<0||(cK<0&&cA<0)){hMsg("Faltan columnas. Usa la plantilla: matricula, cuatrimestre, clave, asignatura, calificacion, periodo.",true);return}
+  var porMat={};S.forEach(function(s){porMat[String(s.mat).trim()]=s});
+  var ok={},err=[],vacias=0,dup=0,omit=0,alumnos={};
+  rows.slice(1).forEach(function(r,i){
+    var n=i+2,mat=String(r[cM]||"").trim(),raw=String(r[cN]||"").trim().replace(",",".");
+    if(!mat&&!raw&&!String(r[cA>=0?cA:cK]||"").trim())return;
+    var s=porMat[mat];if(!s){err.push("Fila "+n+": la matrícula «"+mat+"» no existe en la plataforma.");return}
+    var cat=catItems(planDe(s));if(!cat.length){err.push("Fila "+n+": el plan «"+planDe(s)+"» de "+s.nombre+" aún no tiene asignaturas cargadas.");return}
+    var clave=cK>=0?String(r[cK]||"").trim():"",nom=cA>=0?String(r[cA]||"").trim():"",it=clave?cat.find(function(x){return nz(x.clave)&&nz(x.clave)===nz(clave)}):null;
+    if(!it&&nom)it=cat.find(function(x){return nz(x.nom)===nz(nom)});
+    if(!it){err.push("Fila "+n+": la asignatura «"+(clave||nom)+"» no está en el plan de "+planDe(s)+".");return}
+    if(raw===""){vacias++;return}
+    var v=parseFloat(raw);if(isNaN(v)||v<0||v>10){err.push("Fila "+n+": la calificación «"+raw+"» no es válida (0 a 10).");return}
+    var p=cP>=0?hPerValido(r[cP],s):"";if(p===null){err.push("Fila "+n+": el periodo «"+r[cP]+"» no es válido (ejemplo: Sep–Dic 2023).");return}
+    if(!p)p=perDeCuat(s,it.cuat);
+    var exg=itemsDe(s.id).find(function(x){return nz(x.mat)===nz(it.nom)&&!x.hist});if(exg){omit++;return}
+    var k=s.id+"|"+it.id;if(ok[k])dup++;ok[k]={sid:s.id,it:it,cal:v,per:p};alumnos[s.id]=1;
+  });
+  var lista=Object.keys(ok).map(function(k){return ok[k]});
+  HIMP=lista;
+  $("hRes").innerHTML='<div class="mod" style="cursor:default;margin-top:10px"><b>Resumen de la lectura</b><span>'+lista.length+(lista.length===1?" calificación lista":" calificaciones listas")+' para '+Object.keys(alumnos).length+(Object.keys(alumnos).length===1?" alumno":" alumnos")+(omit?' · '+omit+' omitidas porque ya estaban capturadas en un grupo':'')+(dup?' · '+dup+' repetidas (se usa la última)':'')+(vacias?' · '+vacias+' sin calificación':'')+(err.length?' · <b style="color:var(--bad)">'+err.length+' con error</b>':'')+'</span>'+(err.length?'<div style="margin-top:8px;max-height:180px;overflow:auto" class="hint">'+err.slice(0,40).map(function(e){return esc(e)}).join("<br>")+(err.length>40?"<br>… y "+(err.length-40)+" más":"")+'</div>':'')+
+    '<div class="bar" style="margin:10px 0 0"><button class="p" id="hOk"'+(lista.length?'':' disabled')+'>Cargar '+lista.length+(lista.length===1?' calificación':' calificaciones')+(err.length?' (solo las correctas)':'')+'</button><button id="hNo">Cancelar</button></div></div>';
+  hMsg("");
+}
+$("hRes").onclick=async function(e){
+  if(e.target.id==="hNo"){HIMP=null;$("hRes").innerHTML="";return}
+  if(e.target.id!=="hOk"||!HIMP||ROL!=="admin")return;
+  var L=HIMP,b=e.target,por={};b.disabled=true;
+  L.forEach(function(x){(por[x.sid]=por[x.sid]||[]).push(x)});
+  var sids=Object.keys(por),hecho=0,n=0;
+  try{
+    for(var i=0;i<sids.length;i++){
+      var sid=sids[i],s=S.find(function(y){return y.id===sid}),items=itemsDe(sid);
+      por[sid].forEach(function(x){var mid="h:"+x.it.id,ex=items.find(function(y){return y.mid===mid});items=items.filter(function(y){return y.mid!==mid});items.push({id:ex?ex.id:uid(),mid:mid,mat:x.it.nom,plan:planDe(s),per:x.per,cuat:x.it.cuat,doc:"",cal:x.cal,fecha:today(),hist:true,exCobro:!!$("hExtra").checked});n++});
+      await DBH.doc("calif/"+sid).set({items:items});CAL[sid]={items:items};hecho++;
+      if(hecho%5===0)hMsg("Cargando… "+hecho+" de "+sids.length+" alumnos");
+    }
+    HIMP=null;$("hRes").innerHTML="";render();hMsg("Listo: "+n+(n===1?" calificación cargada":" calificaciones cargadas")+" de "+sids.length+(sids.length===1?" alumno.":" alumnos."));
+  }catch(er){hMsg("No se pudo terminar la carga ("+((er&&(er.code||er.message))||"error")+"). Lo ya cargado se conserva; puedes volver a intentarlo.",true);b.disabled=false}
+};
+/* ===== Solicitudes de los alumnos (justificante, boleta de estudios y constancia) ===== */
+var SOL={},SOLOK=false;
+var SOLTIPO={justificante:"Justificante de faltas",boleta:"Boleta de estudios",constancia:"Constancia de estudios"};
+function puedeSol(){return ROL==="admin"&&(BASEROL==="admin"||permiso("escolar")==="editar")}
+function solLista(){return Object.keys(SOL).map(function(k){return Object.assign({id:k},SOL[k])})}
+function solPend(){return solLista().filter(function(x){return x.estado==="pendiente"})}
+function solResumen(x){
+  if(x.tipo==="justificante")return "Faltas: "+rangoJu(x)+" · Motivo: "+x.motivo+(x.nota?" · "+x.nota:"");
+  if(x.tipo==="boleta")return "Periodo: "+x.periodo+(x.nota?" · "+x.nota:"");
+  return (x.tipoC==="promedio"?"Constancia con promedio":"Constancia simple")+(x.dest?" · Dirigida a: "+x.dest:"")+(x.nota?" · "+x.nota:"");
+}
+function solEtiqueta(x){return x.estado==="aprobada"?'<span class="tag pagado">Aprobada</span>':x.estado==="denegada"?'<span class="tag sin">Denegada</span>':x.estado==="atendida"?'<span class="tag pagado">Atendida</span>':'<span class="tag parcial">Pendiente</span>'}
+/* ---- Control escolar ---- */
+function renderSol(){
+  if(!$("solPend"))return;
+  var P=solPend().sort(function(a,b){return String(a.creada).localeCompare(String(b.creada))}),H=solLista().filter(function(x){return x.estado!=="pendiente"}).sort(function(a,b){return String((b.resp&&b.resp.fecha)||b.creada).localeCompare(String((a.resp&&a.resp.fecha)||a.creada))||String(b.creada).localeCompare(String(a.creada))}).slice(0,60);
+  $("solPN").hidden=!P.length;$("solPN").textContent=P.length;
+  $("solPend").innerHTML=P.length?P.map(function(x){
+    var docs=(x.docs||[]).map(function(f){return '<div class="pay"><span>'+esc(f.name)+' <small>'+(f.size?kbT(f.size):"")+'</small></span><span style="display:flex;gap:6px"><a href="/_blob/'+attr(f.id)+'" target="_blank" rel="noopener" style="padding:8px 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:inherit;background:var(--surface);font-weight:500">Ver</a><button data-sd="'+attr(f.id)+'|'+attr(f.name)+'">Descargar</button></span></div>'}).join("");
+    var acc=x.tipo==="justificante"?'<div class="row" style="margin-top:8px"><label class="full">Motivo (obligatorio si la denegas)<input data-sm="'+attr(x.id)+'" maxlength="200"></label></div><div class="bar" style="margin:6px 0 0"><button class="p" data-sa="'+attr(x.id)+'">Aprobar y generar el justificante</button><button class="d" data-sn="'+attr(x.id)+'">Denegar</button></div>':
+      '<div class="bar" style="margin:8px 0 0">'+(x.tipo==="boleta"?'<button data-sb="'+attr(x.id)+'">Generar boleta (PDF)</button>':'<button data-sc="'+attr(x.id)+'">Ir a Constancias</button>')+'<button class="p" data-st="'+attr(x.id)+'">Marcar como atendida</button></div>';
+    return '<div class="mod" style="cursor:default;margin-bottom:10px"><b>'+esc(SOLTIPO[x.tipo])+' · '+esc(x.nombre)+'</b><span class="hint">'+esc(x.mat)+' · '+esc(x.plan)+' · solicitada el '+esc(fd(String(x.creada).slice(0,10)))+'</span><span style="color:var(--ink)">'+esc(solResumen(x))+'</span>'+(docs?'<div style="margin-top:6px"><b style="font-size:13px">Comprobante del alumno</b>'+docs+'</div>':'')+acc+'</div>'}).join(""):'<p class="hint">No hay solicitudes pendientes.</p>';
+  $("solHist").innerHTML=H.length?H.map(function(x){return '<tr><td>'+esc(fd(String((x.resp&&x.resp.fecha)||x.creada).slice(0,10)))+'</td><td>'+esc(x.nombre)+'<br><span class="hint">'+esc(x.mat)+'</span></td><td>'+esc(SOLTIPO[x.tipo])+'</td><td style="white-space:normal;min-width:200px">'+esc(solResumen(x))+'</td><td>'+solEtiqueta(x)+(x.estado==="denegada"&&x.resp&&x.resp.motivo?'<br><span class="hint">'+esc(x.resp.motivo)+'</span>':'')+(x.justId&&JUS[x.justId]?'<br><span class="hint">'+esc(JUS[x.justId].num)+'</span>':'')+(x.resp&&x.resp.por?'<br><span class="hint">'+esc(x.resp.por)+'</span>':'')+'</td></tr>'}).join(""):vacio(5,"Aún no hay solicitudes atendidas.");
+  solBadge();
+}
+function solBadge(){
+  var n=permiso("escolar")==="editar"?solPend().length:0,b=$("eTabs")&&$("eTabs").querySelector('[data-et="S"]');
+  if(b)b.textContent="Solicitudes de alumnos"+(n?" ("+n+")":"");
+  if($("hSo")){$("hSo").hidden=!(n&&MOD==="home");$("hSoT").textContent=n+(n===1?" alumno hizo una solicitud (justificante, boleta o constancia) y espera respuesta de Control escolar.":" alumnos hicieron solicitudes (justificante, boleta o constancia) y esperan respuesta de Control escolar.")}
+}
+async function solResuelve(id,patch){await DBH.doc("solicitudes/"+id).update(patch);SOL[id]=Object.assign({},SOL[id],patch)}
+$("solPend").onclick=async function(e){
+  var d=e.target.dataset,msg=function(t,bad){$("solMsg").style.color=bad?"var(--bad)":"var(--ok)";$("solMsg").textContent=t};
+  if(d.sd){var p=d.sd.split("|");try{var r=await fetch("/_blob/"+p[0]);if(!r.ok)throw new Error("x");await saveFile(p.slice(1).join("|"),await r.blob())}catch(er){window.open("/_blob/"+p[0],"_blank")}return}
+  if(!puedeSol())return;
+  var id=d.sa||d.sn||d.sb||d.sc||d.st,x=id&&SOL[id];if(!x)return;
+  var s=S.find(function(y){return y.id===x.sid});
+  if(d.sb){if(!s||!datosPer(s.id,x.periodo).length){msg("El alumno no tiene calificaciones registradas en "+x.periodo+".",true);return}boletaPDF(s.id,x.periodo);return}
+  if(d.sc){if(!s)return;etab("N");$("nAl").value=s.id;$("nTipo").value=x.tipoC||"simple";$("nDest").value=x.dest||"";renderCons();return}
+  e.target.disabled=true;
+  try{
+    if(d.st){await solResuelve(id,{estado:"atendida",resp:{por:APP?APP.name:"",fecha:today()},leida:false});msg("Marcada como atendida. El alumno recibe el aviso en su portal.")}
+    else if(d.sn){
+      var mot=((this.querySelector('input[data-sm="'+id+'"]')||{}).value||"").trim();
+      if(!mot){msg("Escribe el motivo para que el alumno sepa por qué se denegó.",true);e.target.disabled=false;return}
+      await solResuelve(id,{estado:"denegada",resp:{por:APP?APP.name:"",fecha:today(),motivo:mot},leida:false});msg("Solicitud denegada. El alumno verá tu motivo en su portal.")
+    }else if(d.sa){
+      if(!s){msg("No se encontró al alumno.",true);e.target.disabled=false;return}
+      var num="J-"+String(await folios(1,"meta/folioJ")).padStart(6,"0"),g=grupoReciente(s.id),jid=uid();
+      await saveJu({id:jid,num:num,sid:s.id,nombre:s.nombre,mat:s.mat,plan:planDe(s),sexo:s.sexo||"",grupo:g?g.num:"",fecha:today(),byn:APP?APP.name:"",doc:(x.docs&&x.docs[0])||null,desde:x.desde,hasta:x.hasta,motivo:x.motivo,nota:x.nota||"",estado:"Aprobado",solicitud:id});
+      await solResuelve(id,{estado:"aprobada",justId:jid,resp:{por:APP?APP.name:"",fecha:today()},leida:false});
+      msg("Aprobada. Se generó el justificante "+num+" y el alumno puede descargarlo en su portal.");
+    }
+  }catch(er){msg("No se pudo guardar ("+((er&&(er.code||er.message))||"error")+").",true);e.target.disabled=false}
+  renderSol();
+};
+$("hSoGo").onclick=function(){ir("esc");etab("S")};
+/* ---- Portal del alumno ---- */
+function solNoLeidas(){return solLista().filter(function(x){return x.estado!=="pendiente"&&x.leida!==true})}
+function notifPor(){
+  var R=solLista().filter(function(x){return x.estado!=="pendiente"}).sort(function(a,b){return String((b.resp&&b.resp.fecha)||"").localeCompare(String((a.resp&&a.resp.fecha)||""))||String(b.creada).localeCompare(String(a.creada))}).slice(0,12),n=solNoLeidas().length;
+  return '<h2 style="margin-top:16px">Notificaciones'+(n?' <span class="tag parcial">'+n+(n===1?" nueva":" nuevas")+'</span>':'')+'</h2>'+(R.length?R.map(function(x){
+    var j=x.justId&&JUS[x.justId],nuevo=x.leida!==true,t,btn="";
+    if(x.estado==="aprobada"){t="✔ Tu justificante "+(j?j.num+" ":"")+"fue aprobado (faltas: "+rangoJu(x)+").";if(j)btn='<button class="p" data-dj="'+attr(x.justId)+'">Descargar justificante (PDF)</button>'}
+    else if(x.estado==="denegada")t="✖ Tu solicitud de "+(x.tipo==="justificante"?"justificante":x.tipo==="boleta"?"boleta":"constancia")+" fue denegada"+(x.resp&&x.resp.motivo?": "+x.resp.motivo:".");
+    else t="✔ Control escolar atendió tu solicitud de "+(x.tipo==="boleta"?"boleta de estudios ("+x.periodo+")":"constancia de estudios")+". Acude a Control escolar por tu documento.";
+    return '<div class="mod" style="cursor:default;margin-bottom:8px;'+(nuevo?'border-color:var(--brand)':'')+'"><span style="color:var(--ink);font-weight:'+(nuevo?'650':'400')+'">'+esc(t)+'</span><span class="hint">'+esc(fd((x.resp&&x.resp.fecha)||String(x.creada).slice(0,10)))+'</span>'+(btn?'<div class="bar" style="margin:6px 0 0">'+btn+'</div>':'')+'</div>'}).join("")+(n?'<div class="bar" style="margin:4px 0 0"><button data-lee="1">Marcar como leídas</button></div>':''):'<p class="hint">Aquí te avisamos cuando Control escolar responda tus solicitudes.</p>');
+}
+function solicitudesPor(){
+  var L=solLista().sort(function(a,b){return String(b.creada).localeCompare(String(a.creada))});
+  return '<h2 style="margin-top:16px">Mis solicitudes</h2><div class="bar"><button class="p" data-nsol="1">Nueva solicitud</button></div>'+(L.length?'<div class="wrap"><table style="min-width:560px"><thead><tr><th>Fecha</th><th>Solicitud</th><th>Detalle</th><th>Estado</th></tr></thead><tbody>'+L.map(function(x){return '<tr><td>'+esc(fd(String(x.creada).slice(0,10)))+'</td><td>'+esc(SOLTIPO[x.tipo])+'</td><td style="white-space:normal;min-width:180px">'+esc(solResumen(x))+'</td><td>'+solEtiqueta(x)+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Puedes solicitar un justificante de faltas (con tu comprobante médico), tu boleta de estudios o una constancia. Control escolar te avisará aquí.</p>');
+}
+function abreSol(){
+  var s=S[0];if(!s)return;
+  $("soTipo").value="justificante";$("soDes").value=today();$("soHas").value=today();$("soMot").innerHTML=JMOT.map(function(m){return '<option>'+esc(m)+'</option>'}).join("");
+  $("soNota").value="";$("soFile").value="";$("soDest").value="";$("soTC").value="simple";
+  var ps=perDe(s.id).slice().reverse();$("soPer").innerHTML=ps.length?ps.map(function(p){return '<option>'+esc(p)+'</option>'}).join(""):'<option value="">Aún no tienes calificaciones</option>';
+  $("soMsg").textContent="";soCampos();$("dSo").showModal();
+}
+function soCampos(){var t=$("soTipo").value;$("soJ").hidden=t!=="justificante";$("soB").hidden=t!=="boleta";$("soC").hidden=t!=="constancia"}
+$("soTipo").onchange=soCampos;
+$("soCan").onclick=function(){$("dSo").close()};
+$("soEnv").onclick=async function(){
+  var s=S[0],t=$("soTipo").value,msg=function(x,bad){$("soMsg").style.color=bad?"var(--bad)":"var(--ok)";$("soMsg").textContent=x};
+  if(!s)return;var doc={tipo:t,nota:$("soNota").value.trim()};
+  if(t==="justificante"){
+    if(!$("soDes").value||!$("soHas").value||$("soHas").value<$("soDes").value){msg("Revisa las fechas: la última no puede ser anterior a la primera.",true);return}
+    var F=Array.prototype.slice.call($("soFile").files||[]);
+    if(!F.length){msg("Anexa tu comprobante médico (o el documento que respalda tu falta).",true);return}
+    if(F.length>3){msg("Puedes anexar hasta 3 archivos.",true);return}
+    for(var i=0;i<F.length;i++){
+      if(!/\.(pdf|jpe?g|png)$/i.test(F[i].name||"")){msg("«"+F[i].name+"»: el archivo debe ser PDF, JPG o PNG.",true);return}
+      if(F[i].size>10*1024*1024){msg("«"+F[i].name+"» pesa más de 10 MB.",true);return}
+    }
+    doc.desde=$("soDes").value;doc.hasta=$("soHas").value;doc.motivo=$("soMot").value;doc.docs=[];doc._F=F;
+  }else if(t==="boleta"){if(!$("soPer").value){msg("Aún no tienes calificaciones registradas para pedir una boleta.",true);return}doc.periodo=$("soPer").value}
+  else{doc.tipoC=$("soTC").value;doc.dest=$("soDest").value.trim()}
+  var b=this;b.disabled=true;
+  try{
+    if(doc._F){
+      if(!(await assetsLib()))throw new Error("No se pueden subir archivos en esta sesión.");
+      for(var j=0;j<doc._F.length;j++){msg("Subiendo "+doc._F[j].name+"…");var up=await ASSETS.upload(doc._F[j],{privado:true,categoria:"solicitud"});doc.docs.push(up.id)}
+      delete doc._F;
+    }
+    var id=uid();msg("Enviando tu solicitud…");await DBH.doc("solicitudes/"+id).set(doc);
+    var r=await DBH.doc("solicitudes/"+id).get();if(r.exists)SOL[id]=r.data();
+    $("dSo").close();renderPor();
+  }catch(e){msg((e&&(e.code||e.message))||"No se pudo enviar tu solicitud.",true)}
+  b.disabled=false;
+};
+/* ===== Justificante: QR de validación ===== */
+function qrJust(a){return appUrl()+"#j."+a.num+"."+chkTxt("J|"+a.num+"|"+a.sid+"|"+a.desde+"|"+a.hasta)}
+function buscaJust(num){var f=String(num||"").trim().toUpperCase();return Object.keys(JUS||{}).map(function(k){return JUS[k]}).find(function(a){return String(a.num).toUpperCase()===f})||null}
+function verJust(num,code){
+  var a=buscaJust(num),h;
+  if(ROL==="docente")h=rcBanner("bad","No tienes permiso para verificar justificantes.");
+  else if(!a)h=rcBanner("bad","No se encontró un justificante con ese folio.")+'<p class="hint" style="margin-top:8px">El justificante puede ser falso.</p>';
+  else{
+    var malo=code&&code!==chkTxt("J|"+a.num+"|"+a.sid+"|"+a.desde+"|"+a.hasta);
+    h=(malo?rcBanner("bad","Los datos del código QR no coinciden con el registro. El justificante puede estar alterado."):a.estado!=="Aprobado"?rcBanner("warn","El justificante existe, pero su estado es: "+a.estado+"."):rcBanner("ok","Justificante auténtico y vigente."))+rcTabla([["Folio",a.num],["Alumno",a.nombre],["Matrícula",a.mat],["Plan de estudios",a.plan],["Grupo",a.grupo||""],["Faltas justificadas",rangoJu(a)],["Fecha de emisión",fd(a.fecha)]]);
+  }
+  $("rcRes").innerHTML=h;$("dRc").showModal();
+}
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}
@@ -5809,7 +6107,7 @@ $("usL").onclick=async function(e){
     else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC}).catch(function(){});
     rebuild();
   },onErr);
-  [["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+  [["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
     DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(c[0]==="calif"||c[0]==="constancias")render();if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
   DBH.collection("gastos").onSnapshot(function(s){G={};s.docs.forEach(function(d){G[d.id]=d.data()});if(!$("vGa").hidden)renderCaja()},onErr);

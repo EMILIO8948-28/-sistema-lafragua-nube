@@ -19,5 +19,9 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_planeacion.py` · planeación y puntos de evaluación del docente, privacidad entre docentes, calendario escolar y que no haya identificadores repetidos (33).
 - `test_revision.py` · resumen del plan de estudios, quitar materias (una, varias y con autorización) y revisión de planeaciones por el encargado (38).
 - `test_carga_json.py` · carga del plan y los contenidos desde el archivo .json (con y sin materias ya cargadas) (26). Usa el archivo de Pedagogía de `/mnt/user-data/uploads` o de `outputs`; adáptalo a tu ruta.
+- `test_precarga.py` · precarga automática del plan de Pedagogía al arrancar: una sola vez, sin pisar lo existente (13).
+- `test_historial.py` · calificaciones anteriores por alumno y por CSV, sin cobros de extraordinario, periodos y permisos (32).
+- `test_boleta_qr.py` · QR de la boleta: verificación pública, PDF, lectura con cámara (necesita `opencv-python` y `numpy`) y verificación dentro de la aplicación (28).
+- `test_solicitudes.py` · solicitudes del alumno (justificante, boleta, constancia), atención de Control escolar, notificaciones del alumno, QR del justificante y privacidad (59).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

@@ -91,6 +91,15 @@ input,select{font:inherit;padding:10px;border:1px solid var(--line);border-radiu
       h=(pend?sello("warn","!","Recibo encontrado","El recibo existe en la base de datos, pero es una <b>transferencia pendiente de confirmar</b> en el banco."):sello("ok","✔","Documento auténtico","Este <b>recibo de pago</b> fue emitido por Universidad Lafragua y existe en su base de datos."))+
         tabla([["Documento","Recibo de pago"],["Folio",j.folio],["Origen",j.origen],["Nombre",j.nombre],["Monto",mx(j.monto)],["Fecha",fd(j.fecha)],["Forma de pago",j.metodo],["Estado",j.estado]])+
         '<div class="nota">Compara el folio, el nombre, el monto y la fecha con los del recibo que tienes. Si algún dato no coincide, el recibo pudo haber sido alterado.</div>';
+    }else if(j.tipo==="justificante"){
+      h=sello("ok","✔","Documento auténtico","Este <b>justificante de inasistencia</b> fue emitido por Universidad Lafragua y está vigente en su base de datos.")+
+        tabla([["Documento",j.titulo],["Folio",j.folio],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Grupo",j.grupo],["Faltas justificadas",j.desde===j.hasta?fd(j.desde):fd(j.desde)+" al "+fd(j.hasta)],["Fecha de emisión",fd(j.emitido)]])+
+        '<div class="nota">Compara el nombre, el folio y las fechas con los del justificante que tienes. Si algún dato no coincide, el documento pudo haber sido alterado.</div>';
+    }else if(j.tipo==="boleta"){
+      h=sello("ok","✔","Documento auténtico","Esta <b>boleta de calificaciones</b> fue emitida por Universidad Lafragua y existe en su base de datos.")+
+        tabla([["Documento",j.titulo],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Periodo",j.periodo],["Cuatrimestre",j.cuatrimestre],["Grupo",j.grupo],["Promedio del cuatrimestre",j.promedio],["Fecha de emisión",fd(j.emitida)]])+
+        '<div class="sec"><h2>Calificaciones registradas</h2><dl>'+j.materias.map(function(x){return '<dt>'+esc(x.asignatura)+(x.docente?'<br><span style="font-size:12px">'+esc(x.docente)+'</span>':'')+'</dt><dd>'+(x.cal==null?"—":Number(x.cal).toFixed(1))+' · '+esc(x.estatus)+'</dd>'}).join("")+'</dl></div>'+
+        '<div class="nota">Las calificaciones mostradas son las registradas actualmente en el sistema. Compáralas con las de la boleta que tienes: si alguna no coincide, el documento pudo haber sido alterado o corregido después de emitirse.</div>';
     }else if(j.tipo==="credencial"){
       h=(j.vigente?sello("ok","✔","Credencial auténtica y vigente","Esta credencial de estudiante existe en la base de datos de Universidad Lafragua."):sello("warn","!",j.egresado?"Credencial auténtica · persona egresada":"Credencial auténtica · vigencia terminada",j.egresado?"La persona ya aparece como egresada.":"La vigencia de esta credencial ya terminó."))+
         tabla([["Documento","Credencial de estudiante"],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Vigencia",fd(j.vigencia)]]);
@@ -98,12 +107,12 @@ input,select{font:inherit;padding:10px;border:1px solid var(--line);border-radiu
     res.innerHTML=h;marca(j);
   }
   function verifica(){
-    var m=/^#([vca])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(location.hash||"");
+    var m=/^#([vcabj])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(location.hash||"");
     if(!m){res.innerHTML=sello("warn","⌖","Escanea el código QR","Escanea el código QR de un documento de la institución para comprobar que es auténtico, o usa el formulario de abajo.");document.getElementById("man").open=true;return}
-    var t=m[1],id=m[2],p=m[3].split("."),code,vig="";
-    if(t==="a"){vig=p[0]||"";code=p[1]||""}else code=p[0]||"";
+    var t=m[1],id=m[2],p=m[3].split("."),code,vig="",fec="";
+    if(t==="a"){vig=p[0]||"";code=p[1]||""}else if(t==="b"){vig=p[0]||"";fec=p[1]||"";code=p[2]||""}else code=p[0]||"";
     res.innerHTML='<div class="cargando">Verificando el documento…</div>';pie.hidden=true;
-    fetch("/api/verificar?t="+t+"&id="+encodeURIComponent(id)+"&c="+encodeURIComponent(code)+(vig?"&v="+encodeURIComponent(vig):""),{headers:{"Accept":"application/json"}})
+    fetch("/api/verificar?t="+t+"&id="+encodeURIComponent(id)+"&c="+encodeURIComponent(code)+(vig?"&v="+encodeURIComponent(vig):"")+(fec?"&f="+encodeURIComponent(fec):""),{headers:{"Accept":"application/json"}})
       .then(function(r){return r.json().catch(function(){return {ok:false,motivo:"No se pudo leer la respuesta del servidor."}})})
       .then(pinta).catch(function(){res.innerHTML=sello("bad","✖","Sin conexión","No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.")});
   }

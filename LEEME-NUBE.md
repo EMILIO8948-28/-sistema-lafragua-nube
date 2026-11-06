@@ -51,3 +51,7 @@ Cuando te entregue una versión nueva, sube los archivos cambiados al repositori
 
 ## Dirección de los códigos QR (opcional)
 Los recibos, constancias y credenciales llevan un código QR que abre la página pública `/verificar` de este sistema. Por defecto usa la dirección desde la que se usa el sistema. Si quieres fijar una dirección (por ejemplo, tu dominio propio), agrega en Render > Environment la variable `LF_URL_PUBLICA` con la dirección completa, por ejemplo `https://sistema.tuescuela.edu.mx` (sin diagonal final).
+
+
+## Precarga de planes de estudio (opcional)
+La carpeta `precarga/` trae el plan de Pedagogía con sus 47 asignaturas y sus contenidos. Al publicar esta versión, el sistema los carga solo, una única vez, si Pedagogía aún no tiene materias. Si ya tenía materias, no toca nada. Para desactivarlo, agrega en Render > Environment la variable `LF_SIN_PRECARGA` con el valor `1`.

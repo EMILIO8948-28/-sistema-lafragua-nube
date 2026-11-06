@@ -2,7 +2,7 @@
 (function(){
   "use strict";
   /* Los QR impresos con la dirección del sistema (#c., #v., #a.) abren la verificación pública, sin iniciar sesión */
-  if(/^#[vca]\.[A-Za-z0-9_~-]+\.[A-Za-z0-9_~.-]+$/.test(location.hash||"")&&location.pathname!=="/verificar"){location.replace("/verificar"+location.hash)}
+  if(/^#[vcabj]\.[A-Za-z0-9_~-]+\.[A-Za-z0-9_~.-]+$/.test(location.hash||"")&&location.pathname!=="/verificar"){location.replace("/verificar"+location.hash)}
   var CAB={"x-lafragua":"1"},YO=null,CONSULTA=false;
   function aviso401(){if(window.__lf401)return;window.__lf401=1;alert("Tu sesión terminó. Vuelve a iniciar sesión.");location.reload()}
   function api(met,ruta,cuerpo,extra,reint){

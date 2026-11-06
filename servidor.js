@@ -66,6 +66,7 @@ const q = {
   listaBor: db.prepare("SELECT * FROM borrados WHERE estado != 'borrador' ORDER BY creado DESC LIMIT 200"),
   limpiaBor: db.prepare("DELETE FROM borrados WHERE estado = 'borrador' AND creado < ?"),
   archRef: db.prepare('SELECT 1 FROM docs WHERE data LIKE ? LIMIT 1'),
+  cuentaArch: db.prepare('SELECT COUNT(*) AS n FROM archivos WHERE dueno = ? AND creado > ?'),
   setForzar: db.prepare('UPDATE usuarios SET forzar = ? WHERE u = ?'),
   setAlumno: db.prepare('UPDATE usuarios SET alumno = ? WHERE u = ?'),
   setTemporal: db.prepare('UPDATE usuarios SET temporal = ? WHERE u = ?'),
@@ -194,6 +195,8 @@ function filtraAlumno(s, col, id, data, ctx) {
     case 'students': { if (id !== sid) return null; const o = {}; CAMPOS_ALUMNO.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'ledger': { if (id !== sid) return null; return { pagos: (data.pagos || []).map(g => { const o = Object.assign({}, g); delete o.by; delete o.confPor; return o; }) }; }
     case 'calif': case 'constancias': case 'egresados': case 'fotos': return id === sid ? data : null;
+    case 'solicitudes': return data.sid === sid ? data : null;
+    case 'justificantes': { if (data.sid !== sid || data.estado !== 'Aprobado') return null; const o = {}; ['id', 'num', 'sid', 'nombre', 'mat', 'plan', 'sexo', 'grupo', 'fecha', 'desde', 'hasta', 'motivo', 'estado', 'solicitud'].forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'grupos': return (data.alumnos || []).includes(sid) ? Object.assign({}, data, { alumnos: [sid] }) : null;
     case 'materias': return ctx.grupos.some(g => g.d.plan === data.plan && g.d.per === data.per && g.d.cuat === data.cuat) ? data : null;
     case 'docentes': return ctx.docIds.has(id) ? { nombre: data.nombre, esp: data.esp || '' } : null;
@@ -204,6 +207,7 @@ function filtraAlumno(s, col, id, data, ctx) {
 }
 function eventoAlumno(s, c, id) {
   if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos'].includes(c)) return id === s.alumno;
+  if (c === 'solicitudes' || c === 'justificantes') { const r = q.uno.get(c, id || ''); if (!r) return false; try { return JSON.parse(r.data).sid === s.alumno; } catch (e) { return false; } }
   if (['grupos', 'materias', 'docentes', 'catalogo'].includes(c)) return true;
   if (c === 'config') return id === 'plans' || id === 'app';
   return false;
@@ -216,6 +220,7 @@ function puedeLeer(s, col, id) {
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
   if (col === 'planeaciones') return P.escolar === 'editar' || (!!(P.docente && P.docente !== 'none') && esPlaneacionPropia(s, id));
+  if (col === 'solicitudes') return P.escolar === 'editar';
   if (col === 'config') {
     if (id === 'nomina') return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].nomina);
     if (id === 'plans') return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].plans);
@@ -230,6 +235,7 @@ function puedeEscribir(s, col, id) {
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
   if (col === 'planeaciones' && P.escolar !== 'editar') return P.docente === 'editar' && esPlaneacionPropia(s, id);
+  if (col === 'solicitudes') return P.escolar === 'editar';
   if (col === 'config') return id === 'nomina' && P.nomina_doc === 'editar';
   return Object.keys(P).some(m => P[m] === 'editar' && MODULOS[m] && MODULOS[m].E.includes(col));
 }
@@ -345,6 +351,51 @@ function vistaBorrado(b) {
   return { id: b.id, u: b.u, nombre: b.nombre, creado: new Date(b.creado).toISOString(), estado, via: b.via || '', descripcion: b.descripcion, resueltoPor: b.resuelto_por || '', resuelto: b.resuelto ? new Date(b.resuelto).toISOString() : '', motivo: b.motivo || '', expira: b.expira ? new Date(b.expira).toISOString() : '', ops: JSON.parse(b.ops || '[]') };
 }
 
+/* ---------- Solicitudes de los alumnos (justificante, boleta, constancia) ----------
+   El alumno solo puede crear solicitudes propias en estado «pendiente» y marcarlas como leídas; la respuesta la da Control escolar. */
+const MOTIVOS_JUST = ['Enfermedad', 'Cita médica', 'Asunto familiar', 'Trámite personal o laboral', 'Otro'];
+const fechaOk = f => /^\d{4}-\d{2}-\d{2}$/.test(f) && !isNaN(Date.parse(f + 'T00:00:00Z'));
+const txt = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, n);
+async function guardaSolicitudAlumno(s, req, res, id, m) {
+  let c; try { c = JSON.parse((await leeCuerpo(req, 30000)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
+  if (!c || typeof c !== 'object' || Array.isArray(c)) return responde(res, 400, { error: 'Se esperaba un objeto' });
+  const previo = q.uno.get('solicitudes', id);
+  if (previo) {
+    const d = JSON.parse(previo.data);
+    if (d.sid !== s.alumno) return responde(res, 403, { error: 'No es tu solicitud.' });
+    if (m !== 'PATCH' || Object.keys(c).some(k => k !== 'leida') || typeof c.leida !== 'boolean') return responde(res, 403, { error: 'Solo puedes marcar tus notificaciones como leídas.' });
+    d.leida = c.leida; q.pon.run('solicitudes', id, JSON.stringify(d), Date.now()); difunde('solicitudes', id); return responde(res, 200, { ok: true });
+  }
+  if (m !== 'PUT') return responde(res, 403, { error: 'No tienes permiso para hacer esto.' });
+  const st = q.uno.get('students', s.alumno); if (!st) return responde(res, 400, { error: 'No se encontró tu registro de alumno.' });
+  const al = JSON.parse(st.data), ahora = Date.now(), hoy = new Date(ahora).toISOString().slice(0, 10);
+  const mias = q.lista.all('solicitudes').map(r => JSON.parse(r.data)).filter(d => d.sid === s.alumno);
+  if (mias.filter(d => d.estado === 'pendiente').length >= 5) return responde(res, 429, { error: 'Ya tienes 5 solicitudes pendientes. Espera a que Control escolar las atienda.' });
+  if (mias.filter(d => Date.parse(d.creada) > ahora - 86400000).length >= 10) return responde(res, 429, { error: 'Hiciste demasiadas solicitudes hoy. Inténtalo mañana.' });
+  const tipo = txt(c.tipo, 20);
+  if (!['justificante', 'boleta', 'constancia'].includes(tipo)) return responde(res, 400, { error: 'Tipo de solicitud no válido.' });
+  const d = { id, tipo, sid: s.alumno, nombre: al.nombre || '', mat: al.mat || '', plan: al.programa || al.carrera || '', creada: new Date(ahora).toISOString(), estado: 'pendiente', leida: false, nota: txt(c.nota, 300) };
+  if (tipo === 'justificante') {
+    const dias = 86400000, f = Date.parse(hoy + 'T00:00:00Z');
+    if (!fechaOk(c.desde) || !fechaOk(c.hasta) || c.hasta < c.desde) return responde(res, 400, { error: 'Revisa las fechas de las faltas.' });
+    if (Date.parse(c.desde + 'T00:00:00Z') < f - 90 * dias || Date.parse(c.hasta + 'T00:00:00Z') > f + 30 * dias) return responde(res, 400, { error: 'Las fechas deben estar dentro de los últimos 90 días o los próximos 30.' });
+    if (!MOTIVOS_JUST.includes(c.motivo)) return responde(res, 400, { error: 'Elige el motivo de tu falta.' });
+    const ids = Array.isArray(c.docs) ? c.docs.map(x => String((x && x.id) || x)).slice(0, 3) : [];
+    const docs = ids.map(i => { const a = ID_ARCH.test(i) ? q.uArch.get(i) : null; return a && a.dueno === s.u && a.cat === 'solicitud' ? { id: i, name: a.nombre, size: a.tamano, type: a.tipo } : null; });
+    if (!docs.length || docs.some(x => !x)) return responde(res, 400, { error: 'Anexa tu comprobante (PDF, JPG o PNG).' });
+    Object.assign(d, { desde: c.desde, hasta: c.hasta, motivo: c.motivo, docs });
+  } else if (tipo === 'boleta') {
+    if (!/^(Sep–Dic|Ene–Abr|May–Ago) \d{4}$/.test(String(c.periodo || ''))) return responde(res, 400, { error: 'Elige el periodo de tu boleta.' });
+    d.periodo = c.periodo;
+  } else {
+    if (!['simple', 'promedio'].includes(c.tipoC)) return responde(res, 400, { error: 'Elige el tipo de constancia.' });
+    d.tipoC = c.tipoC; d.dest = txt(c.dest, 120);
+  }
+  q.pon.run('solicitudes', id, JSON.stringify(d), ahora); difunde('solicitudes', id);
+  audita(s.u, req, 'Solicitud de alumno', tipo + ' · ' + d.nombre);
+  return responde(res, 200, { ok: true });
+}
+
 /* ---------- Eventos en tiempo real ---------- */
 function difunde(c, id) { const m = 'data: ' + JSON.stringify({ c, id }) + '\n\n'; clientes.forEach(cl => { if (!puedeLeer(cl.s, c, id)) return; try { cl.res.write(m); } catch (e) { clientes.delete(cl); } }); }
 const candados = new Map();
@@ -430,11 +481,12 @@ let SETUP_AUTO = '';
 /* ---------- Verificación pública de documentos (el QR de recibos, constancias y credenciales) ----------
    Cualquiera que lea el código QR puede comprobar que el documento es auténtico, sin iniciar sesión.
    Solo responde si el código del QR coincide con el registro, y devuelve únicamente lo que ya trae el documento impreso. */
+const CAL_APROBATORIA = 8;   // calificación aprobatoria mínima (la misma que MINAP en la pantalla)
 const ORDINAL = ['', 'primer', 'segundo', 'tercer', 'cuarto', 'quinto', 'sexto', 'séptimo', 'octavo', 'noveno', 'décimo', 'undécimo', 'duodécimo'];
 function chkTxt(t) { t = String(t); let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return ('00000000' + h.toString(16)).slice(-8); }
 function enmascara(m) { m = String(m || ''); return m.length > 3 ? '•'.repeat(m.length - 3) + m.slice(-3) : m; }
 function hoyISO() { const d = new Date(Date.now() - 6 * 3600000); return d.toISOString().slice(0, 10); }   // hora del centro de México
-function verificaDoc(t, id, code, vig) {
+function verificaDoc(t, id, code, vig, fecha) {
   const no = { ok: false, motivo: 'No se encontró un documento que coincida con este código. Si tienes el documento en papel, puede no ser auténtico.' };
   const nombreAl = sid => { const r = q.uno.get('students', sid); return r ? JSON.parse(r.data) : null; };
   if (t === 'c') {
@@ -456,6 +508,27 @@ function verificaDoc(t, id, code, vig) {
     if (h) { if (code !== chkTxt(h.g.folio + '|' + Number(h.g.monto).toFixed(2) + '|' + h.g.fecha)) return no; return dentro('Titulaciones', [h.d.nombre, h.d.apPat, h.d.apMat].filter(Boolean).join(' '), h.g.folio, h.g.monto, h.g.fecha, h.g.metodo, h.g.estado); }
     h = buscar('acuerdo286', d => d.pagos || []);
     if (h) { if (code !== chkTxt(h.g.folio + '|' + Number(h.g.monto).toFixed(2) + '|' + h.g.fecha)) return no; return dentro('Acuerdo 286', [h.d.nombre, h.d.apPat, h.d.apMat].filter(Boolean).join(' '), h.g.folio, h.g.monto, h.g.fecha, h.g.metodo, h.g.estado); }
+    return no;
+  }
+  if (t === 'b') {
+    if (code !== chkTxt('B|' + id + '|' + vig + '|' + fecha)) return no;
+    const a = nombreAl(id); if (!a) return no;
+    const per = (vig[0] === 'S' ? 'Sep–Dic ' : vig[0] === 'E' ? 'Ene–Abr ' : 'May–Ago ') + vig.slice(1);
+    const rc = q.uno.get('calif', id), items = (rc ? (JSON.parse(rc.data).items || []) : []).filter(x => x.per === per);
+    if (!items.length) return { ok: false, motivo: 'El sistema no tiene calificaciones registradas de ese alumno en ese periodo. La boleta puede no ser auténtica.' };
+    const grupo = q.lista.all('grupos').map(r => JSON.parse(r.data)).find(g => g.per === per && Array.isArray(g.alumnos) && g.alumnos.includes(id));
+    const con = items.filter(x => x.cal != null), prom = con.length ? Math.round(con.reduce((t2, x) => t2 + x.cal, 0) / con.length * 10) / 10 : null;
+    const cuat = (items.find(x => x.cuat) || {}).cuat || (grupo && grupo.cuat) || '';
+    return { ok: true, tipo: 'boleta', titulo: 'Boleta de calificaciones', nombre: a.nombre, matricula: enmascara(a.mat), plan: a.programa || a.carrera || '', periodo: per, cuatrimestre: cuat ? String(cuat) : '', grupo: grupo ? String(grupo.num || '') : '', emitida: fecha.slice(0, 4) + '-' + fecha.slice(4, 6) + '-' + fecha.slice(6, 8), promedio: prom === null ? null : prom.toFixed(1), materias: items.slice().sort((x, y) => String(x.mat).localeCompare(String(y.mat))).map(x => ({ asignatura: x.mat, docente: x.doc || '', cal: x.cal == null ? null : x.cal, estatus: x.cal == null ? 'En curso' : (x.cal >= CAL_APROBATORIA ? 'Aprobada' : 'Reprobada') })) };
+  }
+  if (t === 'j') {
+    for (const r of q.lista.all('justificantes')) {
+      const x = JSON.parse(r.data);
+      if (String(x.num).toUpperCase() !== id.toUpperCase()) continue;
+      if (code !== chkTxt('J|' + x.num + '|' + x.sid + '|' + x.desde + '|' + x.hasta)) return no;
+      if (x.estado !== 'Aprobado') return { ok: false, motivo: 'Este justificante existe, pero ya no está vigente en el sistema.' };
+      return { ok: true, tipo: 'justificante', titulo: 'Justificante de inasistencia', folio: x.num, nombre: x.nombre, matricula: enmascara(x.mat), plan: x.plan || '', grupo: x.grupo || '', desde: x.desde, hasta: x.hasta, emitido: x.fecha || '' };
+    }
     return no;
   }
   if (t === 'a') {
@@ -480,10 +553,10 @@ async function api(req, res, partes) {
   if (tipo === 'verificar' && m === 'GET') {
     if (limite('ver|' + ip, 60, 60000)) return responde(res, 429, { ok: false, motivo: 'Demasiadas consultas. Espera un minuto e inténtalo de nuevo.' });
     falla('ver|' + ip, 60000);
-    const u = new URL(req.url, 'http://x').searchParams, t = u.get('t') || '', id = u.get('id') || '', code = (u.get('c') || '').toLowerCase(), vig = u.get('v') || '';
-    if (!/^[vca]$/.test(t) || !/^[A-Za-z0-9_~-]{1,60}$/.test(id) || !/^[0-9a-f]{8}$/.test(code) || (t === 'a' && !/^\d{8}$/.test(vig))) return responde(res, 400, { ok: false, motivo: 'El código no es válido.' });
+    const u = new URL(req.url, 'http://x').searchParams, t = u.get('t') || '', id = u.get('id') || '', code = (u.get('c') || '').toLowerCase(), vig = u.get('v') || '', fechaB = u.get('f') || '';
+    if (!/^[vcabj]$/.test(t) || !/^[A-Za-z0-9_~-]{1,60}$/.test(id) || !/^[0-9a-f]{8}$/.test(code) || (t === 'a' && !/^\d{8}$/.test(vig)) || (t === 'b' && (!/^[SEM]\d{4}$/.test(vig) || !/^\d{8}$/.test(fechaB)))) return responde(res, 400, { ok: false, motivo: 'El código no es válido.' });
     res.setHeader('Cache-Control', 'no-store');
-    return responde(res, 200, Object.assign({ consultado: new Date().toISOString() }, verificaDoc(t, id, code, vig)));
+    return responde(res, 200, Object.assign({ consultado: new Date().toISOString() }, verificaDoc(t, id, code, vig, fechaB)));
   }
   if (tipo === 'login' && m === 'POST') {
     const c = await leeJSON(req), u = String(c.u || '').trim().toLowerCase(), clave = typeof c.clave === 'string' ? c.clave : '';
@@ -523,7 +596,7 @@ async function api(req, res, partes) {
   }
   if (tipo === 'col' && m === 'GET' && NOMBRE_OK.test(a || '')) {
     if (s.rol === 'alumno') {
-      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'grupos', 'materias', 'docentes', 'catalogo'].includes(a)) return responde(res, 200, { docs: [] });
+      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes'].includes(a)) return responde(res, 200, { docs: [] });
       const ctx = contextoAlumno(s), docs = [];
       q.lista.all(a).forEach(r => { const d = filtraAlumno(s, a, r.id, JSON.parse(r.data), ctx); if (d) docs.push({ id: r.id, data: d }); });
       return responde(res, 200, { docs });
@@ -534,6 +607,7 @@ async function api(req, res, partes) {
   if (tipo === 'doc' && NOMBRE_OK.test(a || '') && NOMBRE_OK.test(b || '')) {
     if (m === 'GET' && s.rol === 'alumno') { const r0 = q.uno.get(a, b), d0 = r0 ? filtraAlumno(s, a, b, JSON.parse(r0.data), contextoAlumno(s)) : null; return responde(res, 200, d0 ? { exists: true, data: d0 } : { exists: false, data: null }); }
     if (m === 'GET') { if (!puedeLeer(s, a, b)) return responde(res, 200, { exists: false, data: null }); const r = q.uno.get(a, b); return responde(res, 200, r ? { exists: true, data: reduce(s, a, JSON.parse(r.data)) } : { exists: false, data: null }); }
+    if (s.rol === 'alumno' && a === 'solicitudes' && (m === 'PUT' || m === 'PATCH')) return guardaSolicitudAlumno(s, req, res, b, m);
     if (m === 'PUT' || m === 'PATCH' || m === 'DELETE') {
       if (!puedeEscribir(s, a, b)) { audita(s.u, req, 'Escritura denegada', m + ' ' + a + '/' + b); return responde(res, 403, { error: 'No tienes permiso para hacer esto.' }); }
       if (m === 'DELETE') { const r0 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'DELETE', col: a, id: b, viejo: r0 ? JSON.parse(r0.data) : null })) return; q.borra.run(a, b); difunde(a, b); return responde(res, 200, { ok: true }); }
@@ -566,11 +640,17 @@ async function api(req, res, partes) {
   }
   if (tipo === 'archivo') {
     const privSolicitado = req.headers['x-privado'] === '1';
-    if (m === 'DELETE') { const inf = q.uArch.get(a || ''); if (!puedeArchivos(s, !!(inf && inf.privado))) return responde(res, 403, { error: 'No tienes permiso para quitar archivos.' }); if (inf && inf.privado && s.rol !== 'admin' && inf.dueno !== s.u && !(inf.cat === 'planeacion' ? nivel(s, 'escolar') === 'editar' : nivel(s, 'expedientes') === 'editar')) return responde(res, 403, { error: 'Ese archivo no es tuyo.' }); }
+    if (m === 'DELETE') { const inf = q.uArch.get(a || ''); if (!puedeArchivos(s, !!(inf && inf.privado))) return responde(res, 403, { error: 'No tienes permiso para quitar archivos.' }); if (inf && inf.privado && s.rol !== 'admin' && inf.dueno !== s.u && !((inf.cat === 'planeacion' || inf.cat === 'solicitud') ? nivel(s, 'escolar') === 'editar' : nivel(s, 'expedientes') === 'editar')) return responde(res, 403, { error: 'Ese archivo no es tuyo.' }); }
+    else if (s.rol === 'alumno') {
+      /* Un alumno solo puede anexar comprobantes (PDF, JPG o PNG, hasta 10 MB) a sus solicitudes */
+      if (m !== 'POST' || a || !privSolicitado || req.headers['x-categoria'] !== 'solicitud') return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
+      if (!/^(application\/pdf|image\/jpeg|image\/png)/.test(String(req.headers['content-type'] || ''))) return responde(res, 400, { error: 'El archivo debe ser PDF, JPG o PNG.' });
+      if (q.cuentaArch.get(s.u, Date.now() - 86400000).n >= 20) return responde(res, 429, { error: 'Subiste demasiados archivos hoy. Inténtalo mañana.' });
+    }
     else if (!puedeArchivos(s, privSolicitado)) return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
     if (m === 'DELETE' && ID_ARCH.test(a || '') && s.rol !== 'admin') { const inf2 = q.uArch.get(a); if (q.archRef.get('%' + a + '%') && protegeBorrado(s, req, res, { accion: 'ARCHIVO', col: 'archivo', id: a, descripcion: 'Eliminar el archivo «' + ((inf2 && inf2.nombre) || a) + '»' })) return; }
-    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (req.headers['x-categoria'] === 'planeacion' ? 'planeacion' : '');
-    if (m === 'POST' && !a) { const buf = await leeCuerpo(req, 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id, sizeBytes: buf.length }); }
+    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (['planeacion', 'solicitud'].includes(req.headers['x-categoria']) ? req.headers['x-categoria'] : '');
+    if (m === 'POST' && !a) { const buf = await leeCuerpo(req, s.rol === 'alumno' ? 10 * 1024 * 1024 : 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id, sizeBytes: buf.length }); }
     if (ID_ARCH.test(a || '')) {
       if (m === 'PUT') { const buf = await leeCuerpo(req, 26 * 1024 * 1024); fs.writeFileSync(path.join(ARCH, a), buf); q.ponArch.run(a, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id: a, sizeBytes: buf.length }); }
       if (m === 'DELETE') { try { fs.unlinkSync(path.join(ARCH, a)); } catch (e) {} q.bArch.run(a); return responde(res, 200, { ok: true }); }
@@ -723,7 +803,7 @@ const servidor = http.createServer(async (req, res) => {
       const id = ruta.slice(7), f = path.join(ARCH, id);
       if (!ID_ARCH.test(id) || !fs.existsSync(f)) { res.writeHead(404); return res.end('No encontrado'); }
       const info = q.uArch.get(id) || {};
-      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || (info.cat === 'planeacion' ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
+      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || ((info.cat === 'planeacion' || info.cat === 'solicitud') ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
       if (info.privado && !verPriv) { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Este archivo es confidencial: solo lo puede ver el Administrador.'); }
       res.writeHead(200, { 'Content-Type': info.tipo || 'application/octet-stream', 'Content-Disposition': "inline; filename*=UTF-8''" + encodeURIComponent(info.nombre || id), 'Cache-Control': 'private, no-store' });
       return fs.createReadStream(f).pipe(res);
@@ -739,6 +819,39 @@ const servidor = http.createServer(async (req, res) => {
   }
 });
 servidor.on('error', e => { console.error(e.code === 'EADDRINUSE' ? 'El puerto ' + PUERTO + ' ya está en uso.' : e); process.exit(1); });
+/* ---------- Precarga de planes de estudio ----------
+   Los archivos .json de la carpeta «precarga» (el mismo formato de «Cargar contenido de las materias») se aplican UNA sola vez,
+   al arrancar, y solo a los planes que todavía no tienen asignaturas. Nunca reemplazan ni borran lo que ya existe, y si después
+   quitas materias no vuelven a aparecer. Para desactivarla: variable de entorno LF_SIN_PRECARGA=1. */
+function precarga() {
+  if (ENV.LF_SIN_PRECARGA === '1') return;
+  const dir = path.join(__dirname, 'precarga');
+  if (!fs.existsSync(dir)) return;
+  for (const f of fs.readdirSync(dir).filter(x => /^[A-Za-z0-9_.-]+\.json$/.test(x)).sort()) {
+    const marca = 'precarga-' + f.replace(/\.json$/, '');
+    if (q.uno.get('meta', marca)) continue;
+    let D; try { D = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { continue; }
+    if (!D || D.app !== 'colegiaturas-universidad-lafragua' || !D.colecciones || !D.colecciones.catalogo) continue;
+    const hechos = [], omitidos = [];
+    for (const k of Object.keys(D.colecciones.catalogo)) {
+      if (!NOMBRE_OK.test(k)) continue;
+      const cat = D.colecciones.catalogo[k], previo = q.uno.get('catalogo', k);
+      if (previo && ((JSON.parse(previo.data).items) || []).length) { omitidos.push(k); continue; }
+      let n = 0;
+      for (const it of (cat.items || [])) {
+        const cd = D.contenidos && D.contenidos[it.id];
+        if (cd && cd.txt && NOMBRE_OK.test(String(it.id)) && !q.uno.get('contenidos', String(it.id))) { q.pon.run('contenidos', String(it.id), JSON.stringify({ txt: String(cd.txt), pdf: null, ts: new Date().toISOString(), byn: 'Carga inicial del programa de estudios' }), Date.now()); n++; }
+      }
+      q.pon.run('catalogo', k, JSON.stringify(cat), Date.now());
+      hechos.push(k + ' (' + (cat.items || []).length + ' asignaturas, ' + n + ' contenidos)');
+    }
+    q.pon.run('meta', marca, JSON.stringify({ fecha: new Date().toISOString(), cargados: hechos, omitidos }), Date.now());
+    audita('sistema', null, 'Precarga de plan de estudios', f + ': ' + (hechos.join('; ') || 'nada que cargar') + (omitidos.length ? ' · ya tenían materias: ' + omitidos.join(', ') : ''));
+    if (hechos.length) console.log('Precarga aplicada:', f, hechos.join('; '));
+  }
+}
+try { precarga(); } catch (e) { console.error('No se pudo aplicar la precarga:', e.message); }
+
 servidor.listen(PUERTO, '0.0.0.0', () => {
   console.log('Sistema escolar Lafragua (nube) escuchando en el puerto ' + PUERTO + '. Datos en ' + DATOS);
   if (q.nUsr.get().n === 0) {

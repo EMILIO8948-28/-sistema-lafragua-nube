@@ -1,7 +1,7 @@
 import subprocess,time,json,os,urllib.request,shutil
 from playwright.sync_api import sync_playwright
 PORT=3092;B='http://127.0.0.1:%d'%PORT;TOK='tok-cj-123'
-ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata22',LF_SETUP_TOKEN=TOK)
+ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata22',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1')
 os.system('rm -rf /tmp/nbdata22 /tmp/cj && mkdir -p /tmp/nbdata22 /tmp/cj')
 SRC='/mnt/user-data/uploads/carga_pedagogia_plan_y_contenidos.json'
 if not os.path.exists(SRC):SRC='/mnt/user-data/outputs/carga_pedagogia_plan_y_contenidos.json'

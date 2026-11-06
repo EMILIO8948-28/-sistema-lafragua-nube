@@ -64,7 +64,7 @@ with sync_playwright() as pw:
     cd=b.new_context(viewport={'width':1100,'height':900});cd.set_default_timeout(15000);pd=pagina(cd);pd.goto(B+'/');W(pd,"typeof sesion==='function'&&document.body.classList.contains('locked')")
     pd.fill('#lgU','doc1');pd.fill('#lgP','clave-doc1-123');pd.click('#lgGo');W(pd,"typeof APP!=='undefined'&&APP!==null&&MOD==='doc'&&misClases().length>=2")
     ok('mensaje_de_asistencia_en_mis_asignaturas','La asistencia vale un 20 % sobre el valor de la calificación' in pd.inner_text('#vDoc'))
-    t=pd.inner_text('#dmL');ok('boton_y_estado_de_planeacion',pd.locator('#dmL [data-pl]').count()==2 and t.count('Falta la planeación')==2 and 'Planeación y evaluación' in t)
+    t=pd.inner_text('#dmL');ok('boton_y_estado_de_planeacion',pd.locator('#dmL [data-pl]').count()==2 and t.count('Falta la planeación')==2 and 'Planeación' in t)
     pd.locator('#dmL tr:has-text("Modelos de enseñanza") [data-pl]').click();pd.wait_for_selector('#dPn[open]')
     ok('dialogo_con_mensaje_y_titulo','La asistencia vale un 20 % sobre el valor de la calificación' in pd.inner_text('#dPn') and 'Modelos de enseñanza' in pd.inner_text('#plT') and 'Mtra. Uno' in pd.inner_text('#plS'))
     ok('puntos_previos_se_muestran',pd.locator('#plCrit input[data-f="nom"]').count()==1 and pd.input_value('#plCrit input[data-f="nom"]')=='Examen')

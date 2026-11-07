@@ -39,7 +39,7 @@ with sync_playwright() as pw:
     pg.set_input_files('#pFileJ','/tmp/cj/roto.json');pg.wait_for_timeout(300);ok('rechaza_json_roto','no es un JSON válido' in pg.inner_text('#pJMsg'))
     pg.set_input_files('#pFileJ','/tmp/cj/otro.json');pg.wait_for_timeout(300);ok('rechaza_otro_archivo','no es una carga del plan' in pg.inner_text('#pJMsg') and pg.is_hidden('#pJBar'))
     pg.set_input_files('#pFileJ','/tmp/cj/sin_catalogo.json');pg.wait_for_timeout(300);ok('rechaza_respaldo_sin_plan','no es una carga del plan' in pg.inner_text('#pJMsg'))
-    pg.set_input_files('#pFileJ','/tmp/cj/plan_raro.json');pg.wait_for_timeout(300);ok('plan_desconocido','Ningún plan' in pg.inner_text('#pJMsg') and 'Astrología' in pg.inner_text('#pJMsg') and pg.is_hidden('#pJBar'))
+    pg.set_input_files('#pFileJ','/tmp/cj/plan_raro.json');pg.wait_for_timeout(300);ok('plan_desconocido_se_ofrece_crearlo','Se crearán los planes nuevos' in pg.inner_text('#pJMsg') and 'Astrología' in pg.inner_text('#pJMsg') and pg.is_visible('#pJBar') and not pg.evaluate("PL.some(function(p){return p.k==='Astrología'})"));pg.click('#pJNo')
     # ---- primera carga ----
     shutil.copy(SRC,'/tmp/cj/carga.json')
     pg.set_input_files('#pFileJ','/tmp/cj/carga.json');pg.wait_for_selector('#pJBar:not([hidden])')

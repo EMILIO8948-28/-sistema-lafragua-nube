@@ -110,7 +110,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
 </div>
 <div id="vEsc" hidden>
-  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button></div>
+  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button><button data-et="T">Títulos en resguardo</button></div>
   <div id="eA">
     <div class="bar">
       <input id="aq" class="grow" type="search" placeholder="Buscar por nombre, matrícula o plan de estudios" aria-label="Buscar alumno">
@@ -125,6 +125,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
   <div id="eP" hidden>
     <div class="bar need-admin">
+      <button id="pNuevo">Nuevo plan de estudios</button>
       <button class="p" id="pImpJ">Cargar contenido de las materias (archivo .json)</button>
       <input id="pFileJ" type="file" accept=".json,application/json" hidden>
     </div>
@@ -213,7 +214,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
       <select id="juEst" aria-label="Estado"><option value="">Todos los estados</option><option>Pendiente</option><option>Aprobado</option><option>Rechazado</option></select>
       <button class="p need-admin" id="juNew">Nuevo justificante</button>
     </div>
-    <div class="wrap"><table style="min-width:760px"><thead><tr><th>Folio</th><th>Alumno</th><th>Plan de estudios</th><th>Fechas de las faltas</th><th>Motivo</th><th>Estado</th><th>Documento</th></tr></thead><tbody id="juTb"></tbody></table></div>
+    <div class="wrap"><table style="min-width:700px"><thead><tr><th>Folio</th><th>Alumno</th><th>Plan de estudios</th><th>Fechas de las faltas</th><th>Motivo</th><th>Estado</th><th>Documento</th></tr></thead><tbody id="juTb"></tbody></table></div>
   </div>
   <div id="eR" hidden>
     <p class="hint">Genera las credenciales de estudiante con los datos de cada alumno: fotografía, nombre, matrícula, plan de estudios, grupo y fecha de ingreso, y en el reverso la dirección de la escuela y el contacto de emergencia.</p>
@@ -230,6 +231,22 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <div class="bar"><button class="p" id="crPdf">Generar credenciales (PDF)</button></div>
     <p class="hint" id="crMsg" style="min-height:1.4em"></p>
     <div id="crPrev"></div>
+  </div>
+  <div id="eT" hidden>
+    <p class="hint">Aquí llevas el control de los títulos y demás documentos originales que la escuela conserva en resguardo: de quién son, qué documento es, dónde está guardado, cuándo se recibió y cuándo se entregó a su titular, con su constancia de recepción y su acta de entrega.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px">
+      <div class="mod" style="cursor:default"><span class="hint">En resguardo</span><b id="rsC1" style="font-size:24px">0</b></div>
+      <div class="mod" style="cursor:default"><span class="hint">Entregados</span><b id="rsC2" style="font-size:24px">0</b></div>
+      <div class="mod" style="cursor:default"><span class="hint">Total registrados</span><b id="rsC3" style="font-size:24px">0</b></div>
+    </div>
+    <div class="bar">
+      <input id="rsQ" placeholder="Buscar por nombre, matrícula o folio" aria-label="Buscar" style="flex:1;min-width:200px">
+      <select id="rsEst" aria-label="Estado"><option value="">Todos los estados</option><option value="resguardo">En resguardo</option><option value="entregado">Entregados</option></select>
+      <select id="rsPl" aria-label="Plan"></select><select id="rsTipo" aria-label="Documento"></select>
+    </div>
+    <div class="bar"><button class="p need-admin" id="rsNew">Registrar documento en resguardo</button><button class="need-admin" id="rsZip">Cargar escaneos (ZIP)</button><button id="rsCsv">Exportar CSV</button></div>
+    <p class="hint" id="rsRowMsg" style="min-height:1.4em"></p><input id="rsRowFile" type="file" hidden accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+    <div class="wrap"><table style="min-width:700px"><thead><tr><th>Folio</th><th>Alumno</th><th>Documento</th><th>Estado</th><th></th></tr></thead><tbody id="rsTb"></tbody></table></div>
   </div>
   <div id="eS" hidden>
     <p class="hint">Aquí llegan las solicitudes que hacen los alumnos desde su portal. Los <b>justificantes</b> se aprueban o se deniegan (al aprobar se genera el justificante con su folio y su QR, y el alumno lo descarga en su portal). De las <b>boletas</b> y <b>constancias</b> solo recibes el aviso para elaborarlas aquí mismo y marcarlas como atendidas.</p>
@@ -381,6 +398,8 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="wrap"><table style="min-width:980px"><thead><tr><th></th><th>Fecha</th><th>Folio del recibo</th><th>Origen</th><th>Nombre</th><th>Concepto</th><th>Referencia</th><th class="n">Monto</th><th>Estado</th></tr></thead><tbody id="vrTb"></tbody></table></div>
 </div>
 <div id="vA2" hidden>
+  <div id="a2Tabs" class="bar"><button class="p" data-a2t="I">Inscripciones</button><button data-a2t="C">Certificados en resguardo</button></div>
+  <div id="a2PanI">
   <p class="hint">Procesos de bachillerato por Acuerdo 286. Cada inscripción lleva su ficha, sus documentos en escala de grises, la fecha y el promedio de la evaluación, el envío del trámite, el certificado y su plan de 8 pagos.</p>
   <div class="bar">
     <input id="a2Bus" class="grow" type="search" placeholder="Buscar por nombre, folio o teléfono" aria-label="Buscar inscripción">
@@ -388,6 +407,23 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <button class="p need-admin" id="a2New">Nueva inscripción</button>
   </div>
   <div class="wrap"><table style="min-width:860px"><thead><tr><th>Folio</th><th>Alumno</th><th>Documentos</th><th>Evaluación</th><th>Trámite</th><th>Pagos</th><th>Certificado</th></tr></thead><tbody id="a2Tb"></tbody></table></div>
+  </div>
+  <div id="a2PanC" hidden>
+    <p class="hint">Aquí llevas el control de los certificados de bachillerato por Acuerdo 286 que la escuela conserva en resguardo: de quién son, dónde están guardados, cuándo se recibieron y cuándo se entregaron a su titular, con su constancia de recepción y su acta de entrega.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px">
+      <div class="mod" style="cursor:default"><span class="hint">En resguardo</span><b id="rgC1" style="font-size:24px">0</b></div>
+      <div class="mod" style="cursor:default"><span class="hint">Entregados</span><b id="rgC2" style="font-size:24px">0</b></div>
+      <div class="mod" style="cursor:default"><span class="hint">Total registrados</span><b id="rgC3" style="font-size:24px">0</b></div>
+    </div>
+    <div class="bar">
+      <input id="rgQ" placeholder="Buscar por nombre, folio de inscripción o folio" aria-label="Buscar" style="flex:1;min-width:200px">
+      <select id="rgEst" aria-label="Estado"><option value="">Todos los estados</option><option value="resguardo">En resguardo</option><option value="entregado">Entregados</option></select>
+      <select id="rgTipo" aria-label="Documento"></select>
+    </div>
+    <div class="bar"><button class="p need-admin" id="rgNew">Registrar certificado en resguardo</button><button class="need-admin" id="rgZip">Cargar escaneos (ZIP)</button><button id="rgCsv">Exportar CSV</button></div>
+    <p class="hint" id="rgRowMsg" style="min-height:1.4em"></p><input id="rgRowFile" type="file" hidden accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+    <div class="wrap"><table style="min-width:700px"><thead><tr><th>Folio</th><th>Alumno</th><th>Documento</th><th>Estado</th><th></th></tr></thead><tbody id="rgTb"></tbody></table></div>
+  </div>
 </div>
 <div id="vTit" hidden>
   <p class="hint">Trámites de titulación por experiencia laboral. Cada uno lleva su grado, su costo, los documentos del proceso con su revisión, los documentos obtenidos y los abonos a cuenta.</p>
@@ -473,6 +509,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <input id="q" class="grow" type="search" placeholder="Buscar por nombre, matrícula o carrera" aria-label="Buscar">
   <button class="p need-admin" id="bNew">Nuevo alumno</button>
   <button id="bPl" class="need-admin">Costos y planes</button>
+  <button id="bCob" class="need-admin">Cobranza y avisos</button>
   <button id="bUs" class="need-admin">Usuarios</button>
   <button id="bBk" class="need-admin">Respaldo</button>
   <button id="bImp" class="need-admin">Importar CSV</button>
@@ -853,6 +890,151 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <div class="bar" style="justify-content:flex-end;margin:0"><button class="p" id="dxCls">Cerrar</button></div>
    </dialog>
 
+   <dialog id="dNP" style="width:min(560px,96vw)">
+     <h2>Nuevo plan de estudios</h2>
+     <p class="hint">Crea una licenciatura, maestría u otro programa. Aparecerá en todos los módulos donde se elige un plan: alumnos, inscripción, grupos, calendario, calificaciones, pagos, constancias, credenciales, egresados y más.</p>
+     <div class="row">
+       <label class="full">Nombre del plan<input id="npNom" maxlength="80" placeholder="Ej. Ingeniería en Sistemas"></label>
+       <label>Número de colegiaturas (mensualidades)<input id="npN" type="number" min="0" max="60" step="1" value="36"></label>
+       <label>Colegiatura mensual ($)<input id="npCol" type="number" min="0" step="0.01" value="1300"></label>
+       <label>Inscripción ($)<input id="npIns" type="number" min="0" step="0.01" value="800"></label>
+       <label>Reinscripción ($)<input id="npRein" type="number" min="0" step="0.01" value="800"></label>
+       <label>Titulación ($)<input id="npTit" type="number" min="0" step="0.01" value="23000"></label>
+     </div>
+     <p class="hint" id="npDur" style="font-weight:600;color:var(--ink)"></p>
+     <label class="hint" style="display:block;color:var(--ink)">Materias del plan (opcional): archivo .json o .csv<input id="npFile" type="file" accept=".json,.csv,application/json,text/csv"></label>
+     <p class="hint" id="npMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="npCan">Cancelar</button><button class="p" id="npOk">Crear plan</button></div>
+   </dialog>
+
+   <dialog id="dRs" style="width:min(620px,96vw)">
+     <h2 id="rsT">Registrar documento en resguardo</h2>
+     <div class="row">
+       <label class="full">Alumno (escribe su matrícula o su nombre y elígelo de la lista)<input id="rsAl" list="rsAlL" placeholder="Ej. 20230101 — Ana López"><datalist id="rsAlL"></datalist></label>
+       <label>Documento<select id="rsTp"></select></label>
+       <label>Número o folio del documento<input id="rsDf" maxlength="60"></label>
+       <label>Fecha de expedición (opcional)<input id="rsFx" type="date"></label>
+       <label>Fecha en que se recibió<input id="rsFr" type="date"></label>
+       <label class="full">Ubicación en el archivo (caja, archivero, estante…)<input id="rsUb" maxlength="80" placeholder="Ej. Archivero 2, cajón 3"></label>
+       <label class="full">Observaciones<input id="rsNt" maxlength="200"></label>
+       <label class="full">Escaneo del documento (opcional: PDF, JPG o PNG, hasta 10 MB)<input id="rsFile" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"></label>
+     </div>
+     <p class="hint" id="rsAr"></p><p class="hint" id="rsMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="rsCan">Cancelar</button><button class="p" id="rsOk">Guardar</button></div>
+   </dialog>
+
+   <dialog id="dRsZ" style="width:min(720px,96vw)">
+     <h2>Cargar escaneos desde un archivo ZIP</h2>
+     <p class="hint">Sube un archivo ZIP con los escaneos (PDF, JPG o PNG, de hasta 10 MB cada uno). Nombra cada archivo con la <b>matrícula</b> del alumno; si quieres indicar el documento, agrega una palabra: <b>20230101_titulo.pdf</b>, <b>20230101-cedula.jpg</b>, <b>20230101 certificado.pdf</b> o <b>20230101_acta.pdf</b>. Antes de cargar verás qué se hará con cada archivo.</p>
+     <div class="row">
+       <label class="full">Archivo ZIP<input id="rsZFile" type="file" accept=".zip,application/zip,application/x-zip-compressed"></label>
+       <label class="hint" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:flex-start;color:var(--ink)"><input id="rsZCrea" type="checkbox" checked style="width:auto;margin-top:3px"><span>Si el alumno todavía no tiene el documento en resguardo, <b>crear el registro</b> con estos datos:</span></label>
+       <label>Fecha de recepción<input id="rsZFr" type="date"></label>
+       <label>Ubicación en el archivo (opcional)<input id="rsZUb" maxlength="80"></label>
+       <label class="hint" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input id="rsZRep" type="checkbox" style="width:auto"> Reemplazar los escaneos que ya estén cargados</label>
+     </div>
+     <div id="rsZRes"></div>
+     <p class="hint" id="rsZMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="rsZCan">Cerrar</button><button class="p" id="rsZOk" hidden>Cargar</button></div>
+   </dialog>
+
+   <dialog id="dRg" style="width:min(620px,96vw)">
+     <h2 id="rgT">Registrar certificado en resguardo</h2>
+     <div class="row">
+       <label class="full">Inscripción (escribe su folio B286 o el nombre del alumno y elígela de la lista)<input id="rgAl" list="rgAlL" placeholder="Ej. B286-000012 — Ana López"><datalist id="rgAlL"></datalist></label>
+       <label>Documento<select id="rgTp"></select></label>
+       <label>Folio del certificado<input id="rgDf" maxlength="60"></label>
+       <label>Fecha de expedición (opcional)<input id="rgFx" type="date"></label>
+       <label>Fecha en que se recibió<input id="rgFr" type="date"></label>
+       <label class="full">Ubicación en el archivo (caja, archivero, estante…)<input id="rgUb" maxlength="80" placeholder="Ej. Archivero 2, cajón 3"></label>
+       <label class="full">Observaciones<input id="rgNt" maxlength="200"></label>
+       <label class="full" id="rgUsaW" hidden style="display:none"><span class="hint" style="display:flex;flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input id="rgUsa" type="checkbox" checked style="width:auto"> Usar el certificado que ya está cargado en la inscripción como escaneo</span></label>
+       <label class="full">Escaneo del certificado (opcional: PDF, JPG o PNG, hasta 10 MB)<input id="rgFile" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"></label>
+     </div>
+     <p class="hint" id="rgAr"></p><p class="hint" id="rgMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="rgCan">Cancelar</button><button class="p" id="rgOk">Guardar</button></div>
+   </dialog>
+
+   <dialog id="dRgE" style="width:min(560px,96vw)">
+     <h2>Entregar certificado</h2><p class="hint" id="rgEI"></p>
+     <div class="row">
+       <label>Fecha de entrega<input id="rgEF" type="date"></label>
+       <label>Recibe<select id="rgEQ"><option value="titular">El titular</option><option value="autorizado">Persona autorizada por el titular</option></select></label>
+       <label class="full">Nombre completo de quien recibe<input id="rgEN" maxlength="100"></label>
+       <label>Identificación que presenta<select id="rgEIt"></select></label>
+       <label>Número de la identificación<input id="rgENm" maxlength="40"></label>
+       <label class="full">Observaciones (opcional)<input id="rgENt" maxlength="200"></label>
+     </div>
+     <label class="hint" style="display:flex;flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input id="rgEPdf" type="checkbox" checked style="width:auto"> Descargar el acta de entrega para firmarla</label>
+     <p class="hint" id="rgEMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="rgECan">Cancelar</button><button class="p" id="rgEOk">Registrar entrega</button></div>
+   </dialog>
+
+   <dialog id="dRgH" style="width:min(560px,96vw)"><h2 id="rgHT"></h2><div id="rgHL"></div><div class="bar" style="justify-content:flex-end;margin:10px 0 0"><button class="p" id="rgHCls">Cerrar</button></div></dialog>
+
+   <dialog id="dRgZ" style="width:min(720px,96vw)">
+     <h2>Cargar escaneos desde un archivo ZIP</h2>
+     <p class="hint">Sube un archivo ZIP con los escaneos (PDF, JPG o PNG, de hasta 10 MB cada uno). Nombra cada archivo con el <b>folio de la inscripción</b> (B286-000012) o con el nombre completo del alumno; si quieres indicar el documento, agrega una palabra: <b>B286-000012_parcial.pdf</b> o <b>B286-000012-duplicado.pdf</b> (sin palabra es el certificado de bachillerato). Antes de cargar verás qué se hará con cada archivo.</p>
+     <div class="row">
+       <label class="full">Archivo ZIP<input id="rgZFile" type="file" accept=".zip,application/zip,application/x-zip-compressed"></label>
+       <label class="hint" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:flex-start;color:var(--ink)"><input id="rgZCrea" type="checkbox" checked style="width:auto;margin-top:3px"><span>Si la inscripción todavía no tiene el certificado en resguardo, <b>crear el registro</b> con estos datos:</span></label>
+       <label>Fecha de recepción<input id="rgZFr" type="date"></label>
+       <label>Ubicación en el archivo (opcional)<input id="rgZUb" maxlength="80"></label>
+       <label class="hint" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input id="rgZRep" type="checkbox" style="width:auto"> Reemplazar los escaneos que ya estén cargados</label>
+     </div>
+     <div id="rgZRes"></div>
+     <p class="hint" id="rgZMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="rgZCan">Cerrar</button><button class="p" id="rgZOk" hidden>Cargar</button></div>
+   </dialog>
+
+   <dialog id="dCob" style="width:min(1000px,98vw)">
+     <h2>Cobranza y avisos de adeudo</h2>
+     <p class="hint">Cuando un alumno con acceso a la plataforma debe <b id="cbUmbT">2</b> colegiaturas vencidas, se le envía un aviso a su portal pidiéndole amablemente que pase a Control escolar. Si no hace al menos un abono después de tres avisos, se bloquea su usuario y contraseña; al intentar entrar verá que su acceso se bloqueó por falta de pago y que, de no regularizarse, podría proceder una baja temporal.</p>
+     <div id="cbAviso" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:10px" hidden><b>La cobranza automática está desactivada</b><span>No se envía ningún aviso ni se bloquea ningún acceso. La tabla es una vista previa de lo que pasaría al activarla.</span></div>
+     <details style="margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">Configuración</summary>
+       <div class="row" style="margin-top:8px">
+         <label class="hint" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input id="cbAct" type="checkbox" style="width:auto"> <b>Cobranza automática activada</b></label>
+         <label>Colegiaturas vencidas para iniciar los avisos<input id="cbUmb" type="number" min="1" max="12" step="1" value="2"></label>
+         <label>Día límite de pago de cada mes<input id="cbDia" type="number" min="1" max="28" step="1" value="10"></label>
+         <label>Días entre un aviso y el siguiente<input id="cbInt" type="number" min="1" max="60" step="1" value="7"></label>
+         <label>Días de plazo después del tercer aviso<input id="cbGra" type="number" min="1" max="60" step="1" value="7"></label>
+         <label>Días sin nuevos avisos tras un abono<input id="cbRei" type="number" min="0" max="365" step="1" value="30"></label>
+       </div>
+       <div class="bar" style="margin:6px 0 0"><button class="p" id="cbGuardar">Guardar configuración</button></div>
+     </details>
+     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px">
+       <div class="mod" style="cursor:default"><span class="hint">Con adeudo para aviso</span><b id="cbC1" style="font-size:24px">0</b></div>
+       <div class="mod" style="cursor:default"><span class="hint">En proceso de aviso</span><b id="cbC2" style="font-size:24px">0</b></div>
+       <div class="mod" style="cursor:default"><span class="hint">Bloqueados</span><b id="cbC3" style="font-size:24px">0</b></div>
+     </div>
+     <div class="bar"><input id="cbQ" placeholder="Buscar por nombre o matrícula" aria-label="Buscar" style="flex:1;min-width:180px"><select id="cbEst" aria-label="Mostrar"><option value="">Con adeudo o en proceso</option><option value="avis">En proceso de aviso</option><option value="bloq">Bloqueados</option><option value="exe">Exentos</option><option value="todos">Todos los alumnos con acceso</option></select><button id="cbRev" class="need-admin">Revisar ahora</button></div>
+     <p class="hint" id="cbMsg" style="min-height:1.4em"></p>
+     <div class="wrap" style="max-height:340px;overflow:auto"><table style="min-width:720px"><thead><tr><th>Alumno</th><th>Adeudo vencido</th><th>Estado</th><th></th></tr></thead><tbody id="cbTb"></tbody></table></div>
+     <div class="bar" style="justify-content:flex-end;margin:10px 0 0"><button class="p" id="cbCerrar">Cerrar</button></div>
+   </dialog>
+
+   <dialog id="dCbEx" style="width:min(460px,96vw)"><h2>Exentar de la cobranza</h2><p class="hint" id="cbExT"></p>
+     <label>Motivo (por ejemplo, convenio de pago o beca en trámite)<input id="cbExM" maxlength="160"></label>
+     <p class="hint" id="cbExMsg" style="min-height:1.4em;color:var(--bad)"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="cbExCan">Cancelar</button><button class="p" id="cbExOk">Exentar</button></div></dialog>
+
+   <dialog id="dRsE" style="width:min(560px,96vw)">
+     <h2>Entregar documento</h2><p class="hint" id="rsEI"></p>
+     <div class="row">
+       <label>Fecha de entrega<input id="rsEF" type="date"></label>
+       <label>Recibe<select id="rsEQ"><option value="titular">El titular</option><option value="autorizado">Persona autorizada por el titular</option></select></label>
+       <label class="full">Nombre completo de quien recibe<input id="rsEN" maxlength="100"></label>
+       <label>Identificación que presenta<select id="rsEIt"></select></label>
+       <label>Número de la identificación<input id="rsENm" maxlength="40"></label>
+       <label class="full">Observaciones (opcional)<input id="rsENt" maxlength="200"></label>
+     </div>
+     <label class="hint" style="display:flex;flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input id="rsEPdf" type="checkbox" checked style="width:auto"> Descargar el acta de entrega para firmarla</label>
+     <p class="hint" id="rsEMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="rsECan">Cancelar</button><button class="p" id="rsEOk">Registrar entrega</button></div>
+   </dialog>
+
+   <dialog id="dRsH" style="width:min(560px,96vw)"><h2 id="rsHT"></h2><div id="rsHL"></div><div class="bar" style="justify-content:flex-end;margin:10px 0 0"><button class="p" id="rsHCls">Cerrar</button></div></dialog>
+
    <dialog id="dSo" style="width:min(560px,96vw)">
      <h2>Nueva solicitud</h2>
      <div class="row"><label class="full">¿Qué necesitas?<select id="soTipo"><option value="justificante">Justificante de faltas</option><option value="boleta">Boleta de estudios</option><option value="constancia">Constancia de estudios</option></select></label></div>
@@ -1172,6 +1354,7 @@ var PL0=[
  {k:"Psicología",n:36,col:1300,ins:800,rein:800,tit:23000},
  {k:"Enfermería",n:42,col:1800,ins:800,rein:800,tit:28000},
  {k:"Arquitectura",n:42,col:1300,ins:800,rein:800,tit:23000},
+ {k:"Ingeniería Industrial",n:36,col:1350,ins:1000,rein:1000,tit:23000},
  {k:"Maestría en Educación",n:16,col:1800,ins:800,rein:800,tit:25000},
  {k:"Doctorado",n:0,col:0,ins:0,rein:0,tit:30000}];
 function loadPlans(){try{var r=localStorage.getItem(KEY+"-plans");if(r){var x=JSON.parse(r);x.forEach(function(p){if(!(p.ins>0)&&!(p.rein>0)){p.ins=800;p.rein=800}});PL0.forEach(function(d){var q=x.find(function(p){return p.k===d.k});if(!q)x.push(JSON.parse(JSON.stringify(d)));else if((!(q.tit>0)&&d.tit>0)||(d.k==="Enfermería"&&q.tit===23000))q.tit=d.tit});return x}}catch(e){}return JSON.parse(JSON.stringify(PL0))}
@@ -1942,7 +2125,7 @@ function etab(t){
   var pe=permiso("escolar")!=="none",pc=permiso("constancias")!=="none";
   if(!pe&&pc)t="N";
   if(pe&&(t==="R"||t==="H"||t==="S")&&permiso("escolar")!=="editar")t="A";
-  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S"].forEach(function(k){$("e"+k).hidden=k!==t});
+  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S","T"].forEach(function(k){$("e"+k).hidden=k!==t});
   var rt=t==="N"?mayorRol(efectivoRol("escolar"),efectivoRol("constancias")):efectivoRol("escolar");if(MOD==="esc"&&rt&&rt!==ROL)setRol(rt);
   Array.prototype.forEach.call($("eTabs").querySelectorAll("button"),function(b){
     var k=b.dataset.et;b.className=k===t?"p":"";
@@ -1951,7 +2134,7 @@ function etab(t){
   renderEsc();
 }
 $("eTabs").onclick=function(e){var t=e.target.dataset.et;if(t)etab(t)};
-function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
+function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="T")renderRes();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
 /* ---- Alumnos ---- */
 function renderAl(){
   setOpts($("ap"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
@@ -2176,7 +2359,13 @@ async function importCatalogo(R){
   var H=R[0].map(function(h){return nz(h)});function ix(n){return H.indexOf(n)}
   var iP=ix("plan"),iC=ix("cuatrimestre"),iK=ix("clave"),iN=ix("asignatura"),iCr=ix("creditos"),iH=ix("horas");
   if(iP<0||iC<0||iN<0)return {err:"El archivo debe tener las columnas plan, cuatrimestre y asignatura en la primera fila."};
-  var por={},add=0,act=0,omit=0;
+  var por={},add=0,act=0,omit=0,nuevos={};
+  R.slice(1).forEach(function(r){var nm=String(r[iP]||"").replace(/\s+/g," ").trim(),cu0=parseInt(r[iC],10);if(nm&&!matchPlan(nm)&&cu0>=1&&cu0<=12&&(r[iN]||"").trim()){var kk=nz(nm);nuevos[kk]=nuevos[kk]||{k:nm,mx:0};if(cu0>nuevos[kk].mx)nuevos[kk].mx=cu0}});
+  var lista=Object.keys(nuevos).map(function(k){return nuevos[k]});
+  if(lista.length&&esAdminReal()&&confirm("El archivo trae planes que todavía no existen: "+lista.map(function(x){return x.k}).join(", ")+".\n\n¿Crearlos ahora? Se crean con "+lista.map(function(x){return planPorDefecto(x.k,x.mx).n}).join(", ")+" colegiaturas de $1,300 (se ajustan después en Control de pagos > Costos y planes).")){
+    for(var q=0;q<lista.length;q++)await crearPlan(planPorDefecto(lista[q].k,lista[q].mx),true);
+    rebuild();
+  }
   R.slice(1).forEach(function(r){
     var pl=matchPlan(r[iP]),cu=parseInt(r[iC],10),nom=(r[iN]||"").trim();
     if(!pl||!nom||!(cu>=1&&cu<=12)){omit++;return}
@@ -4029,58 +4218,115 @@ function renderCred(){
   $("crPrev").innerHTML=L.length?credHTML(L[0]):"";
 }
 function credHTML(s,vigIn,solo){
-  var g=grupoReciente(s.id),f=FOT[s.id]&&FOT[s.id].d,vig=vigIn||$("crVig").value;
-  var base='width:342px;height:216px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;color:#1b2a3a;position:relative;font-family:Figtree,system-ui,sans-serif;flex:none';
-  var frente='<div style="'+base+'"><div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:3px solid #0f6b63"><img src="'+LOGO_C+'" style="height:30px" alt=""><div><div style="font-weight:700;color:#0f6b63;font-size:13px;line-height:1.1">'+esc(uni().toUpperCase())+'</div><div style="font-size:9px;color:#555">Credencial de estudiante</div></div></div>'+
-    '<div style="display:flex;gap:10px;padding:8px 10px">'+(f?'<img src="'+f+'" style="width:78px;height:98px;object-fit:cover;border:1px solid #999" alt="">':'<div style="width:78px;height:98px;border:1px solid #999;background:#eee;display:flex;align-items:center;justify-content:center;font-size:9px;color:#777">Fotografía</div>')+
-    '<div style="font-size:10px;line-height:1.3"><div style="font-weight:700;font-size:12px;line-height:1.15">'+esc(String(s.nombre).toUpperCase())+'</div><div style="color:#666;font-size:8px;margin-top:4px">MATRÍCULA</div><div style="font-weight:700;font-size:13px">'+esc(s.mat)+'</div><div style="color:#666;font-size:8px;margin-top:3px">PLAN DE ESTUDIOS</div><div>'+esc(planDe(s))+'</div><div style="color:#666;font-size:8px;margin-top:3px">'+(g?'GRUPO '+esc(String(g.num)):'INGRESO')+'</div><div>'+(g?esc(String(g.num))+' · ':'')+'sept. '+esc(String(s.ingreso||""))+'</div></div></div>'+
-    '<div style="position:absolute;left:0;right:0;bottom:0;background:#0f6b63;color:#fff;font-size:10px;padding:4px 10px">Vigencia: '+esc(vig?fd(vig):"—")+'</div></div>';
-  var atras='<div style="'+base+';padding:10px;font-size:9px;line-height:1.4"><div style="height:6px;background:#0f6b63;margin:-10px -10px 8px"></div><div style="color:#555">'+esc(DIR1+". "+DIR2+".")+'</div><p style="margin:8px 0 0">Esta credencial es personal e intransferible. Si la encuentra, favor de entregarla en Control escolar.</p>'+
-    '<div style="position:absolute;left:12px;bottom:14px;text-align:center;font-size:7px;color:#555;line-height:1.1">'+qrSVG(qrCred(s,vig),"84px")+'<div>Verifique esta credencial</div></div>'+
-    '<div style="margin-left:96px;margin-top:6px">'+(s.tut||s.tutTel?'<div><b>En caso de emergencia:</b> '+esc([s.tut,s.tutTel].filter(Boolean).join(" · "))+'</div>':'')+(s.tel?'<div><b>Teléfono del alumno:</b> '+esc(s.tel)+'</div>':'')+'</div>'+
-    '<div style="position:absolute;left:100px;right:12px;bottom:12px;display:flex;justify-content:space-between;font-size:8px;color:#555"><div style="border-top:1px solid #888;width:48%;padding-top:2px;text-align:center">Firma del alumno</div><div style="border-top:1px solid #888;width:48%;padding-top:2px;text-align:center">Control escolar</div></div></div>';
+  var g=grupoReciente(s.id),f=FOT[s.id]&&FOT[s.id].d,vig=vigIn||$("crVig").value,OL="#48522e",GO="#b9994a",INK="#21281c",GR="#696e64",CR="#f4f2e9";
+  var base='width:342px;height:216px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;color:'+INK+';position:relative;font-family:Figtree,system-ui,sans-serif;flex:none';
+  var logoBox=function(l){return '<div style="position:absolute;left:'+l+'px;top:12px;width:52px;height:48px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center"><img src="'+LOGO_C+'" style="width:47px;height:42px;object-fit:contain" alt=""></div>'};
+  var foto=f?'<img src="'+f+'" style="width:100%;height:100%;object-fit:cover;object-position:center 30%" alt="">':'<svg viewBox="0 0 92 92" width="100%" height="100%"><rect width="92" height="92" fill="#edf0eb"/><circle cx="46" cy="38" r="17" fill="#bdc4b8"/><ellipse cx="46" cy="92" rx="31" ry="26" fill="#bdc4b8"/></svg>';
+  var frente='<div style="'+base+'">'+
+    '<div style="position:absolute;left:0;top:0;bottom:0;width:68px;background:'+OL+'"></div><div style="position:absolute;left:68px;top:0;bottom:0;width:2.4px;background:'+GO+'"></div>'+logoBox(8)+
+    '<div style="position:absolute;left:0;width:68px;top:78px;bottom:6px;display:flex;align-items:center;justify-content:center"><span style="writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-weight:700;font-size:7.5px;letter-spacing:1.1px;white-space:nowrap">'+esc(uni().toUpperCase())+'</span></div>'+
+    '<div style="position:absolute;left:94px;top:44px;width:92px;height:92px;border-radius:50%;overflow:hidden;border:3px solid '+GO+';box-sizing:border-box">'+foto+'</div>'+
+    '<div style="position:absolute;left:200px;top:24px;width:132px">'+
+      '<div style="font-size:7px;letter-spacing:1px;color:'+GO+'">CREDENCIAL DE ESTUDIANTE</div>'+
+      '<div style="font-weight:800;font-size:'+(String(s.nombre).length>40?'9.5':String(s.nombre).length>26?'11.5':'14')+'px;line-height:1.15;margin-top:7px">'+esc(String(s.nombre).toUpperCase())+'</div>'+
+      '<div style="display:inline-block;width:92px;text-align:center;background:'+OL+';color:#fff;font-weight:700;font-size:12px;letter-spacing:.5px;border-radius:5px;padding:4px 0;margin-top:6px">'+esc(s.mat)+'</div>'+
+      '<div style="font-size:6px;letter-spacing:.6px;color:'+GR+';margin-top:7px">PLAN DE ESTUDIOS</div><div style="font-weight:700;font-size:10px;line-height:1.15">'+esc(planDe(s))+'</div>'+
+      '<div style="font-size:6px;letter-spacing:.6px;color:'+GR+';margin-top:5px">'+(g?'GRUPO':'INGRESO')+'</div><div style="font-size:9px">'+(g?esc(String(g.num))+' · ':'')+'sept. '+esc(String(s.ingreso||""))+'</div></div>'+
+    '<div style="position:absolute;left:70.4px;right:0;top:188.8px;height:1.6px;background:'+GO+'"></div>'+
+    '<div style="position:absolute;left:70.4px;right:0;top:191px;bottom:0;background:'+CR+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:8.5px;letter-spacing:1px;color:'+OL+'">VIGENCIA&nbsp;&nbsp;'+esc(vig?fd(vig):"—")+'</div></div>';
+  var atras='<div style="'+base+'">'+
+    '<div style="position:absolute;left:274.4px;top:0;bottom:0;right:0;background:'+OL+'"></div><div style="position:absolute;left:274.4px;top:0;bottom:0;width:2.4px;background:'+GO+'"></div>'+logoBox(282.4).replace("left:282.4px","left:282px")+
+    '<div style="position:absolute;left:20px;top:24px;width:112px;height:112px;background:#fff;border:1px solid #d7d7cd;box-sizing:border-box;display:flex;align-items:center;justify-content:center">'+qrSVG(qrCred(s,vig),"104px")+'</div>'+
+    '<div style="position:absolute;left:20px;width:112px;top:141px;text-align:center;font-size:6.5px;color:'+GR+'">Escanee para verificar</div>'+
+    '<div style="position:absolute;left:152px;top:30px;width:116px;font-size:9px;line-height:1.25">'+
+      (s.tut||s.tutTel?'<div style="font-size:6.5px;font-weight:700;letter-spacing:.4px;color:'+OL+'">EN CASO DE EMERGENCIA</div><div style="margin-bottom:7px">'+esc([s.tut,s.tutTel].filter(Boolean).join(" · "))+'</div>':'')+
+      (s.tel?'<div style="font-size:6.5px;font-weight:700;letter-spacing:.4px;color:'+OL+'">TELÉFONO DEL ALUMNO</div><div style="margin-bottom:7px">'+esc(s.tel)+'</div>':'')+'</div>'+
+    '<div style="position:absolute;left:152px;top:127px;width:112px;font-size:6.5px;line-height:1.3;color:'+GR+'">Esta credencial es personal e intransferible. Si la encuentra, favor de entregarla en Control escolar.</div>'+
+    '<div style="position:absolute;left:152px;width:104px;top:172px;border-top:1px solid '+GR+';padding-top:3px;text-align:center;font-size:6.5px;color:'+GR+'">Firma del alumno</div>'+
+    '<div style="position:absolute;left:20px;bottom:9px;font-size:5.5px;color:'+GR+'">'+esc(DIR1+". "+DIR2+".")+'</div></div>';
   return (solo?'':'<p class="hint" style="margin:0 0 6px">Vista previa ('+esc(s.nombre)+')</p>')+'<div style="display:flex;gap:12px;flex-wrap:wrap">'+frente+atras+'</div>';
 }
 ["crAlc","crAl","crGr","crPl","crSoloFoto"].forEach(function(i){$(i).onchange=renderCred});
 $("crQ").oninput=renderCred;$("crVig").onchange=renderCred;
 /* ---- PDF ---- */
+/* ===== Credencial: diseño horizontal con franja lateral (verde olivo y dorado del logotipo) ===== */
+var CR_OL=[72,82,46],CR_GO=[185,153,74],CR_INK=[33,40,28],CR_GR=[105,110,100],FOTC={};
+function fotoCirc(durl){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){try{var c=document.createElement("canvas");c.width=c.height=360;var x=c.getContext("2d");x.beginPath();x.arc(180,180,180,0,Math.PI*2);x.clip();var r=Math.max(360/im.width,360/im.height),w=im.width*r,h=im.height*r;x.drawImage(im,(360-w)/2,(360-h)*0.3,w,h);res(c.toDataURL("image/png"))}catch(e){res(null)}};
+    im.onerror=function(){res(null)};im.src=durl;
+  });
+}
+async function fotosCirc(L){
+  for(var i=0;i<L.length;i++){
+    var f=FOT[L[i].id]&&FOT[L[i].id].d;if(!f)continue;
+    var k=L[i].id+"|"+f.length;if(FOTC[k]!==undefined)continue;
+    FOTC[k]=await fotoCirc(f);
+  }
+}
+function credFotoCirc(s){var f=FOT[s.id]&&FOT[s.id].d;return f?FOTC[s.id+"|"+f.length]||null:null}
 function credFrente(d,x0,y0,s,vig){
-  var W=85.6,H=54,g=grupoReciente(s.id),f=FOT[s.id]&&FOT[s.id].d;
-  try{d.addImage(LOGO_C,"PNG",x0+3,y0+1.6,9*LOGO_R,9)}catch(e){}
-  d.setTextColor(15,107,99);d.setFont("helvetica","bold");d.setFontSize(8.5);d.text(uni().toUpperCase(),x0+3+9*LOGO_R+2.5,y0+5.6);
-  d.setTextColor(90,90,90);d.setFont("helvetica","normal");d.setFontSize(5.5);d.text("Credencial de estudiante",x0+3+9*LOGO_R+2.5,y0+9);
-  d.setFillColor(15,107,99);d.rect(x0,y0+11.4,W,0.9,"F");
-  d.setDrawColor(150,150,150);d.setLineWidth(0.2);d.rect(x0+4,y0+15,22,28);
-  if(f){try{d.addImage(f,"JPEG",x0+4,y0+15,22,28)}catch(e){}}else{d.setFontSize(5.5);d.setTextColor(120,120,120);d.text("Fotografía",x0+15,y0+29.5,{align:"center"})}
-  var tx=x0+30,tw=W-34,y=y0+17.5;
-  d.setTextColor(27,42,58);d.setFont("helvetica","bold");d.setFontSize(8);
-  var nl=d.splitTextToSize(String(s.nombre).toUpperCase(),tw).slice(0,2);nl.forEach(function(l){d.text(l,tx,y);y+=3.4});
-  y+=0.8;
-  function campo(lab,val,big){d.setFont("helvetica","normal");d.setFontSize(4.8);d.setTextColor(110,110,110);d.text(lab,tx,y);y+=2.9;d.setFont("helvetica",big?"bold":"normal");d.setFontSize(big?8.5:6);d.setTextColor(27,42,58);
-    var ls=d.splitTextToSize(String(val),tw).slice(0,2);ls.forEach(function(l){d.text(l,tx,y);y+=big?3.4:2.8});y+=1}
-  campo("MATRÍCULA",s.mat,true);campo("PLAN DE ESTUDIOS",planDe(s));
-  campo(g?"GRUPO":"INGRESO",(g?g.num+" · ":"")+"sept. "+(s.ingreso||""));
-  d.setFillColor(15,107,99);d.rect(x0,y0+H-6,W,6,"F");
-  d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.setFontSize(6.5);d.text("Vigencia: "+(vig?fd(vig):"—"),x0+4,y0+H-2.2);
+  var W=85.6,H=54,g=grupoReciente(s.id),OL=CR_OL,GO=CR_GO,INK=CR_INK,GR=CR_GR;
+  d.setFillColor(255,255,255);d.rect(x0,y0,W,H,"F");
+  d.setFillColor(OL[0],OL[1],OL[2]);d.rect(x0,y0,17,H,"F");
+  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.6);d.line(x0+17,y0,x0+17,y0+H);
+  d.setFillColor(255,255,255);d.roundedRect(x0+2,y0+3,13,12,1.4,1.4,"F");
+  try{d.addImage(LOGO_C,"PNG",x0+2.6,y0+3.6,11.8,10.5)}catch(e){}
+  /* nombre de la universidad en vertical, letra por letra */
+  var T=uni().toUpperCase(),fs=5.8,sp=0.28,tot;
+  d.setFont("helvetica","bold");d.setFontSize(fs);d.setTextColor(255,255,255);
+  function medir(){var t=0;T.split("").forEach(function(c){t+=d.getTextWidth(c)+sp});return t-sp}
+  tot=medir();if(tot>31){fs=fs*31/tot;d.setFontSize(fs);tot=medir()}
+  var yy=y0+35.5+tot/2;T.split("").forEach(function(c){d.text(c,x0+10.8,yy,{angle:90});yy-=d.getTextWidth(c)+sp});
+  /* fotografía circular */
+  var cx=x0+35,cy=y0+22.5,rr=11.5,fc=credFotoCirc(s);
+  if(fc){try{d.addImage(fc,"PNG",cx-rr,cy-rr,rr*2,rr*2)}catch(e){fc=null}}
+  if(!fc){d.setFillColor(237,240,235);d.circle(cx,cy,rr,"F");d.setFillColor(189,196,184);d.circle(cx,cy-2.5,4.1,"F");d.ellipse(cx,cy+6.4,6.3,3.9,"F")}
+  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.7);d.circle(cx,cy,rr,"S");
+  /* datos */
+  var x=x0+50,tw=W-50-3.5;
+  d.setFont("helvetica","normal");d.setFontSize(4.4);d.setTextColor(GO[0],GO[1],GO[2]);d.text("CREDENCIAL DE ESTUDIANTE",x,y0+8);
+  var NM=String(s.nombre).toUpperCase(),cfg=[[9.2,2,4.2],[7.4,2,3.4],[6.2,3,2.9]],nl,ci;
+  d.setFont("helvetica","bold");
+  for(ci=0;ci<cfg.length;ci++){d.setFontSize(cfg[ci][0]);nl=d.splitTextToSize(NM,tw);if(nl.length<=cfg[ci][1])break}
+  if(ci>=cfg.length)ci=cfg.length-1;
+  d.setTextColor(INK[0],INK[1],INK[2]);nl.slice(0,cfg[ci][1]).forEach(function(l,i){d.text(l,x,y0+14.4+i*cfg[ci][2])});
+  d.setFillColor(OL[0],OL[1],OL[2]);d.roundedRect(x,y0+21.8,23,6.4,1.2,1.2,"F");
+  d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.setFontSize(String(s.mat).length>10?6.5:8);d.text(String(s.mat),x+11.5,y0+26.2,{align:"center"});
+  d.setFont("helvetica","normal");d.setFontSize(4.2);d.setTextColor(GR[0],GR[1],GR[2]);d.text("PLAN DE ESTUDIOS",x,y0+32.4);
+  var pl=planDe(s),pf=6.6;d.setFont("helvetica","bold");d.setFontSize(pf);if(d.getTextWidth(pl)>tw){pf=5.4;d.setFontSize(pf)}
+  d.setTextColor(INK[0],INK[1],INK[2]);d.text(d.splitTextToSize(pl,tw)[0],x,y0+35.6);
+  d.setFont("helvetica","normal");d.setFontSize(4.2);d.setTextColor(GR[0],GR[1],GR[2]);d.text(g?"GRUPO":"INGRESO",x,y0+39.8);
+  d.setFontSize(5.8);d.setTextColor(INK[0],INK[1],INK[2]);d.text((g?g.num+" · ":"")+"sept. "+(s.ingreso||""),x,y0+43);
+  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.4);d.line(x0+17,y0+47.2,x0+W,y0+47.2);
+  d.setFillColor(244,242,233);d.rect(x0+17,y0+47.8,W-17,6.2,"F");
+  d.setFont("helvetica","bold");d.setFontSize(5.6);d.setTextColor(OL[0],OL[1],OL[2]);d.text("VIGENCIA  "+(vig?fd(vig):"—"),x0+17+(W-17)/2,y0+51.6,{align:"center"});
   d.setTextColor(0,0,0);
 }
 function credReverso(d,x0,y0,s,vig){
-  var W=85.6,H=54;
-  d.setFillColor(15,107,99);d.rect(x0,y0,W,3,"F");
-  var y=y0+8;d.setTextColor(70,70,70);d.setFont("helvetica","normal");d.setFontSize(5.8);
-  d.text(DIR1+".",x0+4,y);y+=2.8;d.text(DIR2+".",x0+4,y);y+=5;
-  d.setTextColor(27,42,58);d.setFontSize(6);
-  d.splitTextToSize("Esta credencial es personal e intransferible. Si la encuentra, favor de entregarla en Control escolar.",W-8).forEach(function(l){d.text(l,x0+4,y);y+=2.9});
-  try{qrPDF(d,qrCred(s,vig),x0+4,y0+25,24);d.setFont("helvetica","normal");d.setFontSize(4.6);d.setTextColor(90,90,90);d.text("Verifique esta credencial",x0+16,y0+52.2,{align:"center"})}catch(e){}
-  y=y0+27;var tx=x0+32,tw=W-36;d.setTextColor(27,42,58);d.setFontSize(6);
-  if(s.tut||s.tutTel){d.setFont("helvetica","bold");d.text("En caso de emergencia:",tx,y);y+=2.9;d.setFont("helvetica","normal");d.splitTextToSize([s.tut,s.tutTel].filter(Boolean).join(" · "),tw).slice(0,2).forEach(function(l){d.text(l,tx,y);y+=2.9})}
-  if(s.tel){d.setFont("helvetica","bold");d.text("Teléfono del alumno:",tx,y);y+=2.9;d.setFont("helvetica","normal");d.text(String(s.tel),tx,y);y+=2.9}
-  var yl=y0+H-8;d.setDrawColor(100,100,100);d.setLineWidth(0.2);d.line(x0+32,yl,x0+57,yl);d.line(x0+60,yl,x0+82,yl);
-  d.setFontSize(5);d.setTextColor(100,100,100);d.text("Firma del alumno",x0+44.5,yl+2.6,{align:"center"});d.text("Control escolar",x0+71,yl+2.6,{align:"center"});
+  var W=85.6,H=54,OL=CR_OL,GO=CR_GO,INK=CR_INK,GR=CR_GR;
+  d.setFillColor(255,255,255);d.rect(x0,y0,W,H,"F");
+  d.setFillColor(OL[0],OL[1],OL[2]);d.rect(x0+68.6,y0,17,H,"F");
+  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.6);d.line(x0+68.6,y0,x0+68.6,y0+H);
+  d.setFillColor(255,255,255);d.roundedRect(x0+70.6,y0+3,13,12,1.4,1.4,"F");
+  try{d.addImage(LOGO_C,"PNG",x0+71.2,y0+3.6,11.8,10.5)}catch(e){}
+  d.setFillColor(255,255,255);d.setDrawColor(215,215,205);d.setLineWidth(0.15);d.rect(x0+5,y0+6,28,28,"FD");
+  try{qrPDF(d,qrCred(s,vig),x0+5,y0+6,28)}catch(e){}
+  d.setFont("helvetica","normal");d.setFontSize(4.6);d.setTextColor(GR[0],GR[1],GR[2]);d.text("Escanee para verificar",x0+19,y0+37,{align:"center"});
+  var x=x0+38,y=y0+9,tw=29;
+  function bloque(lab,val){d.setFont("helvetica","bold");d.setFontSize(4.8);d.setTextColor(OL[0],OL[1],OL[2]);d.text(lab,x,y);y+=3.4;d.setFont("helvetica","normal");d.setFontSize(5.8);d.setTextColor(INK[0],INK[1],INK[2]);d.splitTextToSize(String(val),tw).slice(0,2).forEach(function(l){d.text(l,x,y);y+=2.8});y+=2.2}
+  if(s.tut||s.tutTel)bloque("EN CASO DE EMERGENCIA",[s.tut,s.tutTel].filter(Boolean).join(" · "));
+  if(s.tel)bloque("TELÉFONO DEL ALUMNO",s.tel);
+  d.setFont("helvetica","normal");d.setFontSize(4.4);d.setTextColor(GR[0],GR[1],GR[2]);
+  d.splitTextToSize("Esta credencial es personal e intransferible. Si la encuentra, favor de entregarla en Control escolar.",tw).forEach(function(l,i){d.text(l,x,y0+31.8+i*2.2)});
+  d.setDrawColor(GR[0],GR[1],GR[2]);d.setLineWidth(0.2);d.line(x,y0+43,x0+64,y0+43);d.setFontSize(4.4);d.text("Firma del alumno",x+13,y0+45.8,{align:"center"});
+  d.setFontSize(3.7);d.text(DIR1+". "+DIR2+".",x0+5,y0+50.4);
   d.setTextColor(0,0,0);
 }
-function credencialesPDF(L,vig,modo,nom){
+async function credencialesPDF(L,vig,modo,nom){
   var J=pdfLib();if(!J||!L.length)return;
+  await fotosCirc(L);
   var W=85.6,H=54;
   if(modo==="tarjeta"){
     var d=new J.jsPDF({unit:"mm",format:[W,H],orientation:"landscape"});
@@ -4654,8 +4900,8 @@ function verCred(sid,vig,code){
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
 /* ===== Respaldo completo (datos y archivos) ===== */
-var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","solicitudes","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs"];
-var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT"];
+var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs"];
+var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioR","meta/folioRC","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT"];
 var BKLAST=null;
 function leeCol(n){
   return new Promise(function(res,rej){
@@ -5288,7 +5534,7 @@ $("poBody").onclick=function(e){
   else if(e.target.dataset&&e.target.dataset.rc){var g=(s.pagos||[]).find(function(x){return x.id===e.target.dataset.rc});if(g)recFormalPDF(s,g)}
   else if(e.target.dataset&&e.target.dataset.nsol)abreSol();
   else if(e.target.dataset&&e.target.dataset.dj){var jj=JUS[e.target.dataset.dj];if(jj)justificantePDF(jj)}
-  else if(e.target.dataset&&e.target.dataset.lee){solNoLeidas().forEach(function(x){DBH.doc("solicitudes/"+x.id).update({leida:true}).then(function(){SOL[x.id]=Object.assign({},SOL[x.id],{leida:true});renderPor()}).catch(function(){})})}
+  else if(e.target.dataset&&e.target.dataset.lee){solNoLeidas().forEach(function(x){DBH.doc("solicitudes/"+x.id).update({leida:true}).then(function(){SOL[x.id]=Object.assign({},SOL[x.id],{leida:true});renderPor()}).catch(function(){})});aviNoLeidos().forEach(function(x){DBH.doc("avisos/"+x.id).update({leida:true}).then(function(){AVI[x.id]=Object.assign({},AVI[x.id],{leida:true});renderPor()}).catch(function(){})})}
 };
 /* ---- Accesos de alumnos (solo Administrador; requiere el servidor de la nube) ---- */
 var AANEW=[];
@@ -5570,12 +5816,12 @@ function renderPlan(){
   setOpts($("pCuatF"),'<option value="">Todos los cuatrimestres ('+it.length+')</option>'+cs.map(function(c){var n=it.filter(function(x){return x.cuat===c}).length;return '<option value="'+c+'">Cuatrimestre '+c+' ('+n+(n===1?' materia':' materias')+')</option>'}).join(""));
   var cfv=$("pCuatF").value,csv=cfv?cs.filter(function(c){return String(c)===cfv}):cs;
   $("pResumen").innerHTML=resumenPlanes(plan);
-  $("pRes").textContent=plan+": "+it.length+(it.length===1?" asignatura":" asignaturas")+" en "+cs.length+(cs.length===1?" cuatrimestre":" cuatrimestres")+(ncu?" (el plan tiene "+ncu+")":"")+(cfv?" · mostrando el cuatrimestre "+cfv:" · mostrando todos");
+  $("pRes").textContent=plan+": "+it.length+(it.length===1?" asignatura":" asignaturas")+" en "+cs.length+(cs.length===1?" cuatrimestre":" cuatrimestres")+(ncu?" (el plan tiene "+(pl.n%4===2?(ncu-1)+" cuatrimestres y medio":ncu)+")":"")+(cfv?" · mostrando el cuatrimestre "+cfv:" · mostrando todos");
   var ns=pSelIds(plan).length;
   $("pSelBar").hidden=!ed||!ns;$("pDelSel").textContent=PDELC==="sel"?"Confirmar: quitar "+ns+(ns===1?" asignatura":" asignaturas"):"Quitar seleccionadas ("+ns+")";$("pDelSel").className=PDELC==="sel"?"p":"d";
   $("pLista").innerHTML=it.length?csv.map(function(c){
     var fila=it.filter(function(x){return x.cuat===c}),todas=fila.every(function(x){return PSEL[x.id]});
-    return '<h2 style="margin-top:14px">Cuatrimestre '+c+' <span class="hint" style="font-weight:400">· '+fila.length+(fila.length===1?" asignatura":" asignaturas")+'</span></h2><div class="wrap"><table style="min-width:600px"><thead><tr><th style="width:34px">'+(ed?'<input type="checkbox" data-sc="'+c+'" aria-label="Elegir todas las del cuatrimestre '+c+'" style="width:auto"'+(todas?' checked':'')+'>':'')+'</th><th>Clave</th><th>Asignatura</th><th class="n">Créditos</th><th class="n">Horas/sem.</th><th>Contenido</th><th></th></tr></thead><tbody>'+
+    return '<h2 style="margin-top:14px">Cuatrimestre '+c+(pl&&c===ncu&&pl.n%4===2?' <span class="tag parcial">Medio cuatrimestre</span>':'')+' <span class="hint" style="font-weight:400">· '+fila.length+(fila.length===1?" asignatura":" asignaturas")+'</span></h2><div class="wrap"><table style="min-width:600px"><thead><tr><th style="width:34px">'+(ed?'<input type="checkbox" data-sc="'+c+'" aria-label="Elegir todas las del cuatrimestre '+c+'" style="width:auto"'+(todas?' checked':'')+'>':'')+'</th><th>Clave</th><th>Asignatura</th><th class="n">Créditos</th><th class="n">Horas/sem.</th><th>Contenido</th><th></th></tr></thead><tbody>'+
       fila.map(function(x){return '<tr><td>'+(ed?'<input type="checkbox" data-sel="'+attr(x.id)+'" aria-label="Elegir '+attr(x.nom)+'" style="width:auto"'+(PSEL[x.id]?' checked':'')+'>':'')+'</td><td>'+esc(x.clave||"")+'</td><td>'+esc(x.nom)+'</td><td class="n">'+(x.cred==null?"":x.cred)+'</td><td class="n">'+(x.hrs==null?"":x.hrs)+'</td><td>'+(x.ct?'<span class="tag pagado">Texto</span> ':'')+(x.pdf?'<span class="tag parcial">PDF</span>':'')+'</td><td><button data-ct="'+x.id+'">Contenido</button> <button class="need-admin" data-ep="'+x.id+'">Editar</button> <button class="d need-admin" data-dp="'+x.id+'">'+(PDELC===x.id?"Confirmar":"Quitar")+'</button></td></tr>'}).join("")+'</tbody></table></div>'}).join(""):
     '<p class="hint" style="margin-top:12px">Este plan aún no tiene asignaturas. Agrégalas una por una o cárgalas desde un CSV.</p>';
 }
@@ -5699,43 +5945,50 @@ $("hPlGo").onclick=function(){ir("esc");etab("D")};
 var PJ=null;
 function pJm(t,bad){$("pJMsg").textContent=t;$("pJMsg").style.color=bad?"var(--bad)":"var(--ok)"}
 function pJResumen(D){
-  var r={planes:[],omitidos:[],nuevas:0,actualizadas:0,conContenido:0,reemplaza:0};
+  var r={planes:[],omitidos:[],crear:[],nuevas:0,actualizadas:0,conContenido:0,reemplaza:0};
   Object.keys(D.colecciones.catalogo).forEach(function(k){
-    var c=D.colecciones.catalogo[k],pl=matchPlan(c.plan||k);
-    if(!pl){r.omitidos.push(c.plan||k);return}
-    var items=catItems(pl.k),n=0,a=0;
-    (c.items||[]).forEach(function(it){
+    var c=D.colecciones.catalogo[k],pl=matchPlan(c.plan||k),its=c.items||[],items,n=0,a=0;
+    if(!pl){
+      if(!esAdminReal()||!String(c.plan||k).trim()){r.omitidos.push(c.plan||k);return}
+      var mx=0;its.forEach(function(it){if(it.cuat>mx)mx=it.cuat});
+      r.crear.push(planPorDefecto(String(c.plan||k).replace(/\s+/g," ").trim(),mx,c.config));items=[];
+    }else items=catItems(pl.k);
+    its.forEach(function(it){
       var x=items.find(function(y){return (it.clave&&y.clave&&nz(y.clave)===nz(it.clave))||nz(y.nom)===nz(it.nom)});
       if(x){a++;if(x.ct)r.reemplaza++}else n++;
       if(D.contenidos&&D.contenidos[it.id]&&D.contenidos[it.id].txt)r.conContenido++;
     });
-    r.nuevas+=n;r.actualizadas+=a;r.planes.push(pl.k);
+    r.nuevas+=n;r.actualizadas+=a;r.planes.push(pl?pl.k:(c.plan||k));
   });
   return r;
 }
 $("pImpJ").onclick=function(){if(ROL==="admin")$("pFileJ").click()};
+function pJPrepara(txt){
+  var D;try{D=JSON.parse(txt)}catch(e){pJm("El archivo no es un JSON válido.",true);return}
+  if(!D||D.app!=="colegiaturas-universidad-lafragua"||!D.colecciones||!D.colecciones.catalogo||!Object.keys(D.colecciones.catalogo).length){pJm("Este archivo no es una carga del plan de estudios de la plataforma.",true);$("pJBar").hidden=true;PJ=null;return}
+  var r=pJResumen(D);
+  if(!r.planes.length){pJm("Ningún plan del archivo se puede cargar"+(r.omitidos.length?" ("+r.omitidos.join(", ")+": solo el Administrador puede crear planes nuevos)":"")+".",true);$("pJBar").hidden=true;PJ=null;return}
+  PJ=D;
+  pJm("Se cargarán "+(r.nuevas+r.actualizadas)+" asignaturas de "+r.planes.join(", ")+" con "+r.conContenido+" contenidos: "+r.nuevas+" nuevas y "+r.actualizadas+" que ya existen (se les agrega el contenido sin duplicarlas)."+(r.crear.length?" Se crearán los planes nuevos: "+r.crear.map(function(p){return "«"+p.k+"» ("+durTxt(p.n)+", colegiatura de $"+p.col+")"}).join("; ")+"; sus costos se ajustan después en Control de pagos > Costos y planes.":"")+(r.reemplaza?" "+r.reemplaza+" ya tenían contenido y se reemplazará.":"")+(r.omitidos.length?" No se cargará: "+r.omitidos.join(", ")+" (plan no reconocido).":"")+" Pulsa «Confirmar carga» para continuar.",false);
+  $("pJBar").hidden=false;
+}
 $("pFileJ").onchange=function(){
   var f=this.files[0];this.value="";if(!f||ROL!=="admin")return;
-  var rd=new FileReader();
-  rd.onload=function(){
-    var D;try{D=JSON.parse(rd.result)}catch(e){pJm("El archivo no es un JSON válido.",true);return}
-    if(!D||D.app!=="colegiaturas-universidad-lafragua"||!D.colecciones||!D.colecciones.catalogo||!Object.keys(D.colecciones.catalogo).length){pJm("Este archivo no es una carga del plan de estudios de la plataforma.",true);$("pJBar").hidden=true;PJ=null;return}
-    var r=pJResumen(D);
-    if(!r.planes.length){pJm("Ningún plan del archivo coincide con los planes de la plataforma"+(r.omitidos.length?" ("+r.omitidos.join(", ")+")":"")+".",true);$("pJBar").hidden=true;PJ=null;return}
-    PJ=D;
-    pJm("Se cargarán "+(r.nuevas+r.actualizadas)+" asignaturas de "+r.planes.join(", ")+" con "+r.conContenido+" contenidos: "+r.nuevas+" nuevas y "+r.actualizadas+" que ya existen (se les agrega el contenido sin duplicarlas)."+(r.reemplaza?" "+r.reemplaza+" ya tenían contenido y se reemplazará.":"")+(r.omitidos.length?" No se cargará: "+r.omitidos.join(", ")+" (plan no reconocido).":"")+" Pulsa «Confirmar carga» para continuar.",false);
-    $("pJBar").hidden=false;
-  };
-  rd.readAsText(f);
+  var rd=new FileReader();rd.onload=function(){pJPrepara(String(rd.result))};rd.readAsText(f);
 };
 $("pJNo").onclick=function(){PJ=null;$("pJBar").hidden=true;pJm("")};
 $("pJOk").onclick=async function(){
   if(ROL!=="admin"||!PJ)return;var D=PJ,b=this;b.disabled=true;$("pJNo").disabled=true;
-  var tot={nuevas:0,act:0,cont:0},hecho=0,total=0;
+  var tot={nuevas:0,act:0,cont:0,planes:[]},hecho=0,total=0;
   Object.keys(D.colecciones.catalogo).forEach(function(k){total+=((D.colecciones.catalogo[k].items)||[]).length});
   try{
     for(var k in D.colecciones.catalogo){
-      var c=D.colecciones.catalogo[k],pl=matchPlan(c.plan||k);if(!pl)continue;
+      var c=D.colecciones.catalogo[k],pl=matchPlan(c.plan||k);
+      if(!pl){
+        if(!esAdminReal()||!String(c.plan||k).trim())continue;
+        var mx=0;(c.items||[]).forEach(function(it){if(it.cuat>mx)mx=it.cuat});
+        pl=await crearPlan(planPorDefecto(String(c.plan||k).replace(/\s+/g," ").trim(),mx,c.config),true);tot.planes.push(pl.k);
+      }
       var items=catItems(pl.k).map(function(x){return Object.assign({},x)}),usados={};items.forEach(function(x){usados[x.id]=1});
       var its=c.items||[];
       for(var i=0;i<its.length;i++){
@@ -5753,10 +6006,67 @@ $("pJOk").onclick=async function(){
       await guardaCat(pl.k,items);
     }
     PJ=null;$("pJBar").hidden=true;
-    pJm("Listo: "+(tot.nuevas+tot.act)+" asignaturas cargadas ("+tot.nuevas+" nuevas y "+tot.act+" actualizadas) y "+tot.cont+" contenidos cargados.",false);
+    pJm("Listo: "+(tot.nuevas+tot.act)+" asignaturas cargadas ("+tot.nuevas+" nuevas y "+tot.act+" actualizadas) y "+tot.cont+" contenidos cargados."+(tot.planes.length?" Planes nuevos creados: "+tot.planes.join(", ")+".":""),false);
+    if(tot.planes.length)rebuild();
     renderPlan();
   }catch(e){pJm("No se pudo terminar la carga ("+((e&&(e.code||e.message))||"error")+"). Lo ya cargado se conserva; puedes volver a intentarlo.",true)}
   b.disabled=false;$("pJNo").disabled=false;
+};
+/* ===== Nuevo plan de estudios y carga de planes desde archivo ===== */
+function esAdminReal(){return BASEROL==="admin"&&ROL==="admin"}
+function durTxt(n){
+  n=parseInt(n,10);if(!(n>=0))return "";
+  if(n===0)return "Sin colegiaturas mensuales (por ejemplo, un programa que no se cobra por mensualidades).";
+  var t=n%4===0?(n/4)+(n===4?" cuatrimestre":" cuatrimestres"):n%4===2?Math.floor(n/4)+" cuatrimestres y medio":n+" colegiaturas",a=Math.floor(n/12),m=n%12;
+  return t+" · "+(a?a+(a===1?" año":" años"):"")+(a&&m?" y ":"")+(m?m+(m===1?" mes":" meses"):"");
+}
+function planPorDefecto(nombre,maxCuat,cfg){
+  cfg=cfg||{};
+  var n=cfg.n!=null?cfg.n:Math.max(4,(maxCuat||9)*4);
+  return {k:nombre,n:n,col:cfg.col!=null?cfg.col:1300,ins:cfg.ins!=null?cfg.ins:800,rein:cfg.rein!=null?cfg.rein:800,tit:cfg.tit!=null?cfg.tit:23000};
+}
+function planExiste(nombre){return PL.some(function(p){return nz(p.k)===nz(nombre)||slug(p.k)===slug(nombre)})}
+async function crearPlan(p,sinRefrescar){
+  if(!esAdminReal())throw new Error("Solo el Administrador puede crear planes de estudio.");
+  if(planExiste(p.k))throw new Error("Ya existe un plan con ese nombre.");
+  PL.push(p);savePlans();
+  await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC});
+  fillPlans();if(!sinRefrescar)rebuild();
+  return p;
+}
+function abreNP(){
+  if(!esAdminReal()){alert("Solo el Administrador puede crear planes de estudio.");return}
+  $("npNom").value="";$("npN").value="36";$("npCol").value="1300";$("npIns").value="800";$("npRein").value="800";$("npTit").value="23000";$("npFile").value="";$("npMsg").textContent="";$("npDur").textContent=durTxt(36);
+  $("dNP").showModal();
+}
+$("pNuevo").onclick=abreNP;
+$("npN").oninput=function(){$("npDur").textContent=durTxt(this.value)};
+$("npCan").onclick=function(){$("dNP").close()};
+function validaNP(){
+  var k=$("npNom").value.replace(/\s+/g," ").trim(),n=parseInt($("npN").value,10),v=function(i){return parseFloat($(i).value)};
+  if(k.length<3)return {e:"Escribe el nombre del plan (mínimo 3 letras)."};
+  if(planExiste(k))return {e:"Ya existe un plan con ese nombre."};
+  if(!(n>=0&&n<=60))return {e:"El número de colegiaturas va de 0 a 60 (36 = 3 años; 42 = 3 años y medio)."};
+  var col=v("npCol"),ins=v("npIns"),rein=v("npRein"),tit=v("npTit");
+  if([col,ins,rein,tit].some(function(x){return isNaN(x)||x<0}))return {e:"Los costos deben ser números mayores o iguales a 0."};
+  return {p:{k:k,n:n,col:col,ins:ins,rein:rein,tit:tit}};
+}
+$("npOk").onclick=async function(){
+  var msg=function(t,bad){$("npMsg").style.color=bad?"var(--bad)":"var(--ok)";$("npMsg").textContent=t};
+  var r=validaNP();if(r.e){msg(r.e,true);return}
+  var f=$("npFile").files[0],b=this;b.disabled=true;
+  try{
+    var txt=f?await f.text():null;
+    await crearPlan(r.p);
+    $("dNP").close();$("pPlan").value=r.p.k;$("pCuatF").value="";renderPlan();
+    var pre="Plan «"+r.p.k+"» creado ("+durTxt(r.p.n)+"). Ya aparece en todos los módulos; sus costos se pueden ajustar en Control de pagos > Costos y planes.";
+    pJm(pre,false);
+    if(txt!==null){
+      if(/^\s*\{/.test(txt)){pJPrepara(txt);$("pJMsg").textContent=pre+" "+$("pJMsg").textContent}
+      else{var R=parseCSV(txt);if(R.length<2){pJm("El archivo de materias no tiene filas.",true)}else{var x=await importCatalogo(R);if(x.err)pJm(x.err,true);else{renderPlan();pJm("Plan «"+r.p.k+"» creado y "+x.add+" asignaturas cargadas ("+x.act+" actualizadas).",false)}}}
+    }
+  }catch(e){msg((e&&(e.code||e.message))||"No se pudo crear el plan.",true)}
+  b.disabled=false;
 };
 /* ===== Calificaciones anteriores (historial de alumnos que ya venían avanzados) ===== */
 var HIDX={},HSID=null,HIMP=null;
@@ -5929,8 +6239,8 @@ $("hSoGo").onclick=function(){ir("esc");etab("S")};
 /* ---- Portal del alumno ---- */
 function solNoLeidas(){return solLista().filter(function(x){return x.estado!=="pendiente"&&x.leida!==true})}
 function notifPor(){
-  var R=solLista().filter(function(x){return x.estado!=="pendiente"}).sort(function(a,b){return String((b.resp&&b.resp.fecha)||"").localeCompare(String((a.resp&&a.resp.fecha)||""))||String(b.creada).localeCompare(String(a.creada))}).slice(0,12),n=solNoLeidas().length;
-  return '<h2 style="margin-top:16px">Notificaciones'+(n?' <span class="tag parcial">'+n+(n===1?" nueva":" nuevas")+'</span>':'')+'</h2>'+(R.length?R.map(function(x){
+  var R=solLista().filter(function(x){return x.estado!=="pendiente"}).sort(function(a,b){return String((b.resp&&b.resp.fecha)||"").localeCompare(String((a.resp&&a.resp.fecha)||""))||String(b.creada).localeCompare(String(a.creada))}).slice(0,12),n=solNoLeidas().length+aviNoLeidos().length,hayAv=aviLista().length>0;
+  return '<h2 style="margin-top:16px">Notificaciones'+(n?' <span class="tag parcial">'+n+(n===1?" nueva":" nuevas")+'</span>':'')+'</h2>'+avisosPor()+(R.length||hayAv?R.map(function(x){
     var j=x.justId&&JUS[x.justId],nuevo=x.leida!==true,t,btn="";
     if(x.estado==="aprobada"){t="✔ Tu justificante "+(j?j.num+" ":"")+"fue aprobado (faltas: "+rangoJu(x)+").";if(j)btn='<button class="p" data-dj="'+attr(x.justId)+'">Descargar justificante (PDF)</button>'}
     else if(x.estado==="denegada")t="✖ Tu solicitud de "+(x.tipo==="justificante"?"justificante":x.tipo==="boleta"?"boleta":"constancia")+" fue denegada"+(x.resp&&x.resp.motivo?": "+x.resp.motivo:".");
@@ -6053,6 +6363,674 @@ function fusTexto(m){
   var gs=gruposDeMat(m);
   return '<br><span class="tag parcial">Fusionada con '+esc(f.plan)+'</span> <span class="hint">cuat. '+f.cuat+' · «'+esc(f.nom)+'»'+(gs.length?' · Grupos: '+gs.map(function(g){return esc(g.num)+' ('+esc(g.plan)+', '+alumnosGr(g).length+')'}).join(" + "):'')+'</span>';
 }
+/* ===== Títulos y documentos en resguardo ===== */
+var RSG={},RSEDIT=null,RSDEL=null,RSIDX={},RSCB="padding:5px 9px;font-size:12px";
+var RSTIPOS=["Título profesional","Cédula profesional","Certificado de estudios","Acta de examen profesional","Otro documento"];
+var RSIDS=["INE","Pasaporte","Licencia de conducir","Cédula profesional","Otra identificación oficial"];
+function rsLista(){return Object.keys(RSG).map(function(k){return Object.assign({id:k},RSG[k])})}
+function rsNum(n){return "R-"+String(n).padStart(6,"0")}
+function rsTag(r){return r.estado==="entregado"?'<span class="tag pagado" style="white-space:nowrap">Entregado</span>':'<span class="tag parcial" style="white-space:nowrap">En resguardo</span>'}
+function renderRes(){
+  if(!$("rsTb"))return;
+  var L=rsLista(),q=nz($("rsQ").value),fe=$("rsEst").value,fp=$("rsPl").value,ft=$("rsTipo").value;
+  setOpts($("rsPl"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
+  setOpts($("rsTipo"),'<option value="">Todos los documentos</option>'+RSTIPOS.map(function(t){return '<option>'+esc(t)+'</option>'}).join(""));
+  var en=L.filter(function(r){return r.estado!=="entregado"}).length;
+  $("rsC1").textContent=en;$("rsC2").textContent=L.length-en;$("rsC3").textContent=L.length;
+  var F=L.filter(function(r){return (!fe||r.estado===fe)&&(!fp||r.plan===fp)&&(!ft||r.tipo===ft)&&(!q||nz([r.nombre,r.mat,r.num,r.docFolio].join(" ")).indexOf(q)>-1)}).sort(function(a,b){return String(b.num).localeCompare(String(a.num))});
+  $("rsTb").innerHTML=F.length?F.map(function(r){
+    var ed=r.estado==="entregado";
+    return '<tr><td><b>'+esc(r.num)+'</b></td><td style="white-space:normal;max-width:165px">'+esc(r.nombre)+'<br><span class="hint">'+esc(r.mat)+' · '+esc(r.plan)+'</span></td><td>'+esc(r.tipo)+(r.docFolio?'<br><span class="hint">Folio/núm. '+esc(r.docFolio)+'</span>':'')+(r.fechaExp?'<br><span class="hint">Expedido '+esc(fd(r.fechaExp))+'</span>':'')+'<br><span class="hint">Recibido '+esc(fd(r.fechaRec))+' · '+esc(r.ubic||"sin ubicación")+'</span></td><td style="white-space:normal;max-width:150px">'+rsTag(r)+(ed&&r.entrega?'<br><span class="hint">'+esc(fd(r.entrega.fecha))+'<br>'+esc(r.entrega.receptor)+'</span>':'')+'</td>'+
+      '<td style="white-space:normal;min-width:215px"><div style="display:flex;flex-wrap:wrap;gap:5px">'+
+      (r.archivo?'<a href="/_blob/'+attr(r.archivo.id)+'" target="_blank" rel="noopener" class="need-admin" title="Ver el escaneo del documento" style="'+RSCB+';border:1px solid var(--line);border-radius:8px;text-decoration:none;color:inherit;background:var(--surface);font-weight:500">Escaneo</a>':'')+
+      '<button class="need-admin'+(r.archivo?'':' p')+'" style="'+RSCB+'" title="Subir el escaneo del documento a este registro" data-rf="'+attr(r.id)+'">'+(r.archivo?"Cambiar escaneo":"Cargar escaneo")+'</button>'+
+      '<button style="'+RSCB+'" title="Ver los movimientos" data-rh="'+attr(r.id)+'">Historial</button>'+
+      '<button class="need-admin" style="'+RSCB+'" title="Constancia de recepción en resguardo (PDF)" data-rr="'+attr(r.id)+'">Constancia</button>'+
+      (ed?'<button class="need-admin" style="'+RSCB+'" title="Acta de entrega (PDF)" data-rn="'+attr(r.id)+'">Acta</button>':'<button class="p need-admin" style="'+RSCB+'" data-re="'+attr(r.id)+'">Entregar</button>')+
+      '<button class="need-admin" style="'+RSCB+'" data-rv="'+attr(r.id)+'">Editar</button>'+
+      (ed&&esAdminReal()?'<button class="need-admin" style="'+RSCB+'" title="Deshacer la entrega (corrección)" data-ru="'+attr(r.id)+'">Deshacer</button>':'')+
+      '<button class="d need-admin" style="'+RSCB+'" data-rx="'+attr(r.id)+'">'+(RSDEL===r.id?"Confirmar":"Quitar")+'</button></div></td></tr>'}).join(""):vacio(5,L.length?"Ningún documento coincide con la búsqueda.":"Aún no hay documentos en resguardo.");
+}
+["rsQ","rsEst","rsPl","rsTipo"].forEach(function(i){$(i).oninput=renderRes;$(i).onchange=renderRes});
+/* ---- registro y edición ---- */
+function rsAlumnos(){
+  var L=S.slice().sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))});RSIDX={};
+  $("rsAlL").innerHTML=L.map(function(s){var k=s.mat+" — "+s.nombre;RSIDX[k]=s.id;return '<option value="'+attr(k)+'">'}).join("");
+}
+function abreRs(id){
+  if(ROL!=="admin")return;
+  var r=id?RSG[id]:null;RSEDIT=id||null;rsAlumnos();
+  $("rsT").textContent=r?"Editar documento en resguardo":"Registrar documento en resguardo";
+  $("rsAl").value=r?r.mat+" — "+r.nombre:"";$("rsAl").disabled=!!r;
+  $("rsTp").innerHTML=RSTIPOS.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("rsTp").value=r?r.tipo:RSTIPOS[0];
+  $("rsDf").value=r?r.docFolio||"":"";$("rsFx").value=r?r.fechaExp||"":"";$("rsFr").value=r?r.fechaRec||today():today();$("rsUb").value=r?r.ubic||"":"";$("rsNt").value=r?r.notas||"":"";$("rsFile").value="";
+  $("rsAr").textContent=r&&r.archivo?"Escaneo cargado: "+r.archivo.name+" (si eliges otro archivo, se reemplaza)":"";
+  $("rsMsg").textContent="";$("dRs").showModal();
+}
+$("rsNew").onclick=function(){abreRs(null)};
+$("rsCan").onclick=function(){$("dRs").close()};
+$("rsOk").onclick=async function(){
+  var msg=function(t,bad){$("rsMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rsMsg").textContent=t};
+  var old=RSEDIT?RSG[RSEDIT]:null,sid=old?old.sid:RSIDX[$("rsAl").value],s=sid&&S.find(function(x){return x.id===sid});
+  if(!s){msg("Elige al alumno de la lista (escribe su matrícula o su nombre).",true);return}
+  var tipo=$("rsTp").value,df=$("rsDf").value.trim(),fx=$("rsFx").value,fr=$("rsFr").value,ub=$("rsUb").value.trim(),nt=$("rsNt").value.trim(),f=$("rsFile").files[0];
+  if(!fr){msg("Indica la fecha en que se recibió el documento.",true);return}
+  if(fr>today()){msg("La fecha de recepción no puede ser futura.",true);return}
+  if(fx&&fx>today()){msg("La fecha de expedición no puede ser futura.",true);return}
+  if(rsLista().some(function(x){return x.id!==RSEDIT&&x.sid===sid&&x.tipo===tipo&&nz(x.docFolio||"")===nz(df)&&x.estado!=="entregado"}))
+    {msg("Ese alumno ya tiene ese documento en resguardo (mismo tipo y folio).",true);return}
+  if(f){
+    if(!/\.(pdf|jpe?g|png)$/i.test(f.name)){msg("El escaneo debe ser PDF, JPG o PNG.",true);return}
+    if(f.size>10*1024*1024){msg("El escaneo pesa más de 10 MB.",true);return}
+  }
+  var b=this;b.disabled=true;
+  try{
+    var arch=old&&old.archivo||null;
+    if(f){if(!(await assetsLib()))throw new Error("No se pueden subir archivos en esta sesión.");var up=await ASSETS.upload(f,{privado:true,categoria:"resguardo"});arch={id:up.id,name:f.name,size:up.sizeBytes||f.size}}
+    var ahora=new Date().toISOString(),por=APP?APP.name:"";
+    if(old){
+      var d=Object.assign({},old);delete d.id;
+      Object.assign(d,{tipo:tipo,docFolio:df,fechaExp:fx,fechaRec:fr,ubic:ub,notas:nt,archivo:arch,mov:(old.mov||[]).concat([{f:ahora,a:"Datos corregidos"+(f?" y escaneo reemplazado":""),p:por}])});
+      await DBH.doc("resguardos/"+RSEDIT).set(d);RSG[RSEDIT]=d;
+    }else{
+      var num=rsNum(await folios(1,"meta/folioR")),id=uid();
+      var d2={num:num,sid:sid,nombre:s.nombre,mat:s.mat,plan:planDe(s),sexo:s.sexo||"",tipo:tipo,docFolio:df,fechaExp:fx,fechaRec:fr,ubic:ub,notas:nt,archivo:arch,estado:"resguardo",recibe:por,mov:[{f:ahora,a:"Recibido en resguardo",p:por,n:ub?"Ubicación: "+ub:""}]};
+      await DBH.doc("resguardos/"+id).set(d2);RSG[id]=d2;
+    }
+    $("dRs").close();renderRes();
+  }catch(e){msg((e&&(e.code||e.message))||"No se pudo guardar.",true)}
+  b.disabled=false;
+};
+/* ---- entrega ---- */
+var RSENT=null;
+function abreRsE(id){
+  if(ROL!=="admin")return;var r=RSG[id];if(!r)return;RSENT=id;
+  $("rsEI").textContent=r.num+" · "+r.tipo+(r.docFolio?" "+r.docFolio:"")+" · "+r.nombre+" ("+r.mat+")";
+  $("rsEF").value=today();$("rsEQ").value="titular";$("rsEN").value=r.nombre;$("rsEIt").innerHTML=RSIDS.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("rsENm").value="";$("rsENt").value="";$("rsEMsg").textContent="";$("dRsE").showModal();
+}
+$("rsEQ").onchange=function(){$("rsEN").value=this.value==="titular"&&RSENT?RSG[RSENT].nombre:""};
+$("rsECan").onclick=function(){$("dRsE").close()};
+$("rsEOk").onclick=async function(){
+  var msg=function(t,bad){$("rsEMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rsEMsg").textContent=t};
+  var r=RSENT&&RSG[RSENT];if(!r||r.estado==="entregado")return;
+  var fe=$("rsEF").value,rc=$("rsEN").value.replace(/\s+/g," ").trim(),idn=$("rsENm").value.trim();
+  if(!fe||fe>today()){msg(!fe?"Indica la fecha de entrega.":"La fecha de entrega no puede ser futura.",true);return}
+  if(fe<r.fechaRec){msg("La entrega no puede ser anterior a la recepción ("+fd(r.fechaRec)+").",true);return}
+  if(rc.length<3){msg("Escribe el nombre completo de quien recibe.",true);return}
+  if(idn.length<3){msg("Anota el número de la identificación que presenta.",true);return}
+  var b=this;b.disabled=true;
+  try{
+    var por=APP?APP.name:"",d=Object.assign({},r);delete d.id;
+    d.estado="entregado";d.entrega={fecha:fe,receptor:rc,quien:$("rsEQ").value,idTipo:$("rsEIt").value,idNum:idn,nota:$("rsENt").value.trim(),por:por};
+    d.mov=(r.mov||[]).concat([{f:new Date().toISOString(),a:"Entregado a "+rc+($("rsEQ").value==="titular"?" (titular)":" (persona autorizada)"),p:por,n:$("rsEIt").value+" "+idn}]);
+    await DBH.doc("resguardos/"+RSENT).set(d);RSG[RSENT]=d;$("dRsE").close();renderRes();
+    if($("rsEPdf").checked)acuseEntregaPDF(d);
+  }catch(e){msg((e&&(e.code||e.message))||"No se pudo guardar.",true)}
+  b.disabled=false;
+};
+/* ---- tabla: acciones ---- */
+$("rsTb").onclick=async function(e){
+  var d=e.target.dataset;
+  if(d.rh){var r=RSG[d.rh];if(!r)return;$("rsHT").textContent="Historial · "+r.num+" · "+r.nombre;$("rsHL").innerHTML=(r.mov||[]).slice().reverse().map(function(m){return '<div class="pay"><span>'+esc(m.a)+(m.n?' <small>'+esc(m.n)+'</small>':'')+'</span><span class="hint">'+esc(String(m.f).slice(0,10).split("-").reverse().join("/"))+' · '+esc(m.p||"")+'</span></div>'}).join("")||'<p class="hint">Sin movimientos.</p>';$("dRsH").showModal();return}
+  if(ROL!=="admin")return;
+  if(d.rf)return rfElige("s",d.rf);
+  if(d.rv)return abreRs(d.rv);
+  if(d.re)return abreRsE(d.re);
+  if(d.rr){if(RSG[d.rr])acuseRecepcionPDF(RSG[d.rr]);return}
+  if(d.rn){if(RSG[d.rn])acuseEntregaPDF(RSG[d.rn]);return}
+  if(d.ru&&esAdminReal()){
+    var r2=RSG[d.ru];if(!r2||r2.estado!=="entregado")return;
+    var x=Object.assign({},r2);delete x.id;x.estado="resguardo";delete x.entrega;x.mov=(r2.mov||[]).concat([{f:new Date().toISOString(),a:"Entrega deshecha (corrección)",p:APP?APP.name:""}]);
+    try{await DBH.doc("resguardos/"+d.ru).set(x);RSG[d.ru]=x;renderRes()}catch(er){dberr(er)}return;
+  }
+  if(d.rx){
+    if(RSDEL!==d.rx){RSDEL=d.rx;renderRes();clearTimeout(rsT);rsT=setTimeout(function(){RSDEL=null;renderRes()},8000);return}
+    clearTimeout(rsT);RSDEL=null;
+    try{await DBH.doc("resguardos/"+d.rx).delete();delete RSG[d.rx];renderRes()}catch(er){dberr(er)}
+  }
+};
+var rsT=null;
+$("rsHCls").onclick=function(){$("dRsH").close()};
+$("rsCsv").onclick=function(){
+  var L=["folio_resguardo,matricula,nombre,plan,documento,numero_documento,fecha_expedicion,fecha_recepcion,ubicacion,estado,fecha_entrega,recibio,identificacion"];
+  rsLista().sort(function(a,b){return String(a.num).localeCompare(String(b.num))}).forEach(function(r){var e=r.entrega||{};L.push([r.num,r.mat,r.nombre,r.plan,r.tipo,r.docFolio||"",r.fechaExp||"",r.fechaRec||"",r.ubic||"",r.estado==="entregado"?"Entregado":"En resguardo",e.fecha||"",e.receptor||"",e.idTipo?e.idTipo+" "+e.idNum:""].map(csvq).join(","))});
+  saveFile("documentos-en-resguardo-"+today()+".csv","\uFEFF"+L.join("\r\n")+"\r\n");
+};
+/* ===== Títulos en resguardo: cargar los escaneos desde un archivo ZIP ===== */
+var RSKW=[["titulo","Título profesional"],["cedula","Cédula profesional"],["certificado","Certificado de estudios"],["acta","Acta de examen profesional"]],RSZE=[],RSZP=[],RSZZ=null;
+function rsTipoDe(base){var n=nz(base);for(var i=0;i<RSKW.length;i++)if(n.indexOf(RSKW[i][0])>-1)return RSKW[i][1];return ""}
+function rsAlDe(base){
+  var hit=S.filter(function(s){var m=String(s.mat||"").trim();if(!m)return false;return new RegExp("(^|[^0-9A-Za-z])"+m.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"([^0-9A-Za-z]|$)","i").test(base)});
+  if(hit.length===1)return {s:hit[0]};if(hit.length>1)return {err:"el nombre del archivo coincide con varias matrículas"};
+  var nb=nz(base),h2=S.filter(function(s){var nn=nz(s.nombre);return nn.length>=8&&nb.indexOf(nn)>-1});
+  if(h2.length===1)return {s:h2[0]};if(h2.length>1)return {err:"el nombre coincide con varios alumnos"};
+  return {err:"no se encontró al alumno (el archivo debe llevar su matrícula)"};
+}
+function abreRsZ(){
+  if(ROL!=="admin")return;
+  RSZE=[];RSZP=[];RSZZ=null;$("rsZFile").value="";$("rsZRes").innerHTML="";$("rsZMsg").textContent="";$("rsZOk").hidden=true;$("rsZFr").value=today();$("rsZUb").value="";$("rsZCrea").checked=true;$("rsZRep").checked=false;$("dRsZ").showModal();
+}
+function rsZPlan(){
+  var crea=$("rsZCrea").checked,rep=$("rsZRep").checked,P=[],vistos={};
+  RSZE.forEach(function(e){
+    var it={nombre:e.name,e:e};
+    if(!/\.(pdf|jpe?g|png)$/i.test(e.name)){it.a="omitir";it.m="solo se cargan PDF, JPG o PNG";P.push(it);return}
+    if(e.size>10*1024*1024){it.a="omitir";it.m="pesa más de 10 MB";P.push(it);return}
+    var base=e.name.replace(/^.*\//,"").replace(/\.[^.]+$/,""),r=rsAlDe(base);
+    if(r.err){it.a="omitir";it.m=r.err;P.push(it);return}
+    var s=r.s,tp=rsTipoDe(base);it.s=s;
+    var abiertos=rsLista().filter(function(x){return x.sid===s.id&&x.estado!=="entregado"}),cand=tp?abiertos.filter(function(x){return x.tipo===tp}):abiertos,rg=null;
+    if(cand.length>1){it.a="omitir";it.m="tiene varios documentos en resguardo; agrega la palabra del documento al nombre (titulo, cedula, certificado o acta)";P.push(it);return}
+    if(cand.length===1)rg=cand[0];
+    var tipoFinal=tp||(rg&&rg.tipo)||RSTIPOS[0],clave=s.id+"|"+tipoFinal;
+    if(vistos[clave]){it.a="omitir";it.m="ya viene otro escaneo del mismo documento en el ZIP";P.push(it);return}
+    if(rg){
+      if(rg.archivo&&!rep){it.a="omitir";it.m=rg.num+" ya tiene escaneo (activa «Reemplazar» para sustituirlo)";P.push(it);return}
+      it.a=rg.archivo?"reemplazar":"adjuntar";it.rg=rg;it.tipo=tipoFinal;
+    }else{
+      if(!crea){it.a="omitir";it.m="no tiene registro en resguardo (activa «Crear el registro» para darlo de alta)";P.push(it);return}
+      it.a="crear";it.tipo=tipoFinal;
+    }
+    vistos[clave]=1;P.push(it);
+  });
+  RSZP=P;
+  var n={adjuntar:0,reemplazar:0,crear:0,omitir:0};P.forEach(function(x){n[x.a]++});
+  $("rsZRes").innerHTML='<div class="mod" style="cursor:default;margin-top:10px"><b>Resumen de la lectura</b><span>'+P.length+(P.length===1?" archivo":" archivos")+' en el ZIP: '+n.adjuntar+' se adjuntan a un registro, '+n.crear+' registros nuevos'+(n.reemplazar?', '+n.reemplazar+' escaneos se reemplazan':'')+' y '+n.omitir+' se omiten.</span></div>'+
+    '<div class="wrap" style="margin-top:8px;max-height:260px;overflow:auto"><table style="min-width:560px"><thead><tr><th>Archivo</th><th>Alumno</th><th>Qué se hará</th></tr></thead><tbody>'+P.map(function(x){
+      var q=x.a==="omitir"?'<span class="hint" style="color:var(--bad)">Se omite: '+esc(x.m)+'</span>':x.a==="crear"?'Crear registro de «'+esc(x.tipo)+'» y adjuntar el escaneo':x.a==="reemplazar"?'Reemplazar el escaneo de '+esc(x.rg.num)+' ('+esc(x.tipo)+')':'Adjuntar a '+esc(x.rg.num)+' ('+esc(x.tipo)+')';
+      return '<tr><td style="white-space:normal;max-width:210px">'+esc(x.nombre)+'</td><td style="white-space:normal">'+(x.s?esc(x.s.nombre)+'<br><span class="hint">'+esc(x.s.mat)+'</span>':'—')+'</td><td style="white-space:normal">'+q+'</td></tr>'}).join("")+'</tbody></table></div>';
+  var h=P.length-n.omitir;$("rsZOk").hidden=!h;$("rsZOk").textContent="Cargar "+h+(h===1?" escaneo":" escaneos");
+}
+$("rsZip").onclick=abreRsZ;
+$("rsZCan").onclick=function(){$("dRsZ").close()};
+$("rsZCrea").onchange=function(){if(RSZE.length)rsZPlan()};$("rsZRep").onchange=function(){if(RSZE.length)rsZPlan()};
+$("rsZFile").onchange=async function(){
+  var f=this.files[0],msg=function(t,bad){$("rsZMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rsZMsg").textContent=t};
+  RSZE=[];RSZP=[];$("rsZRes").innerHTML="";$("rsZOk").hidden=true;msg("");if(!f)return;
+  if(!/\.zip$/i.test(f.name)){msg("Solo se aceptan archivos ZIP. Si tu archivo es RAR o 7z, conviértelo a ZIP.",true);return}
+  if(f.size>200*1024*1024){msg("El ZIP pesa más de 200 MB; divídelo en partes.",true);return}
+  try{
+    var Z=await cargaZip();if(!Z){msg("No se pudo cargar el lector de archivos ZIP.",true);return}
+    RSZZ=await Z.loadAsync(f);
+    RSZE=Object.keys(RSZZ.files).map(function(k){return RSZZ.files[k]}).filter(function(e){return !e.dir&&!/^__MACOSX\//.test(e.name)&&!/(^|\/)\.[^/]*$/.test(e.name)&&!/(^|\/)Thumbs\.db$/i.test(e.name)}).map(function(e){return {name:e.name,size:(e._data&&e._data.uncompressedSize)||0,z:e}});
+    if(!RSZE.length){msg("El ZIP no trae archivos.",true);return}
+    if(RSZE.length>400){msg("El ZIP trae más de 400 archivos; divídelo en partes.",true);RSZE=[];return}
+    rsZPlan();
+  }catch(e){msg("No se pudo leer el ZIP: está dañado o no es un ZIP válido.",true)}
+};
+$("rsZOk").onclick=async function(){
+  if(ROL!=="admin"||!RSZP.length)return;
+  var b=this,msg=function(t,bad){$("rsZMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rsZMsg").textContent=t};
+  var L=RSZP.filter(function(x){return x.a!=="omitir"}),fr=$("rsZFr").value,ub=$("rsZUb").value.trim();
+  if(L.some(function(x){return x.a==="crear"})&&(!fr||fr>today())){msg("Indica una fecha de recepción válida para los registros nuevos.",true);return}
+  b.disabled=true;$("rsZCan").disabled=true;var ok=0,nuevos=0,fallos=[],por=APP?APP.name:"";
+  try{
+    if(!(await assetsLib()))throw new Error("No se pueden subir archivos en esta sesión.");
+    for(var i=0;i<L.length;i++){
+      var x=L[i];msg("Cargando "+(i+1)+" de "+L.length+": "+x.nombre+"…");
+      try{
+        var blob=await x.e.z.async("blob"),nom=x.nombre.replace(/^.*\//,""),file=new File([blob],nom,{type:/\.pdf$/i.test(nom)?"application/pdf":/\.png$/i.test(nom)?"image/png":"image/jpeg"});
+        var up=await ASSETS.upload(file,{privado:true,categoria:"resguardo"}),arch={id:up.id,name:nom,size:up.sizeBytes||file.size},ahora=new Date().toISOString();
+        if(x.a==="crear"){
+          var s=x.s,num=rsNum(await folios(1,"meta/folioR")),id=uid();
+          var d={num:num,sid:s.id,nombre:s.nombre,mat:s.mat,plan:planDe(s),sexo:s.sexo||"",tipo:x.tipo,docFolio:"",fechaExp:"",fechaRec:fr,ubic:ub,notas:"",archivo:arch,estado:"resguardo",recibe:por,mov:[{f:ahora,a:"Recibido en resguardo (carga desde ZIP)",p:por,n:nom}]};
+          await DBH.doc("resguardos/"+id).set(d);RSG[id]=d;nuevos++;
+        }else{
+          var r=x.rg,d2=Object.assign({},r);delete d2.id;d2.archivo=arch;d2.mov=(r.mov||[]).concat([{f:ahora,a:x.a==="reemplazar"?"Escaneo reemplazado (carga desde ZIP)":"Escaneo cargado desde ZIP",p:por,n:nom}]);
+          await DBH.doc("resguardos/"+r.id).set(d2);RSG[r.id]=d2;
+        }
+        ok++;
+      }catch(er){fallos.push(x.nombre+" ("+((er&&(er.code||er.message))||"error")+")")}
+    }
+    renderRes();
+    $("rsZOk").hidden=true;$("rsZRes").innerHTML="";RSZE=[];RSZP=[];
+    msg("Listo: "+ok+(ok===1?" escaneo cargado":" escaneos cargados")+(nuevos?" ("+nuevos+" registros nuevos)":"")+"."+(fallos.length?" No se pudieron cargar "+fallos.length+": "+fallos.slice(0,3).join("; ")+(fallos.length>3?"…":""):""),!!fallos.length&&!ok);
+  }catch(e){msg((e&&(e.code||e.message))||"No se pudo terminar la carga.",true)}
+  b.disabled=false;$("rsZCan").disabled=false;
+};
+/* ---- PDF ---- */
+function rsPDFBase(r,titulotxt,nom){
+  var J=pdfLib();if(!J)return null;
+  var d=new J.jsPDF({unit:"mm",format:"a4"}),y=titulo(d,titulotxt);
+  d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(0,0,0);d.text("Folio de resguardo: "+r.num,195,22,{align:"right"});
+  return {d:d,y:70};
+}
+function rsFirmas(d,y,izq,der){
+  d.setDrawColor(90,90,90);d.setLineWidth(0.3);d.line(20,y,90,y);d.line(120,y,190,y);
+  d.setFont("helvetica","normal");d.setFontSize(9);d.setTextColor(90,90,90);d.text(izq,55,y+5,{align:"center"});d.text(der,155,y+5,{align:"center"});
+  return y;
+}
+function acuseRecepcionPDF(r){
+  var B=rsPDFBase(r,"Constancia de recepción en resguardo");if(!B)return;var d=B.d,y=B.y;
+  var f=r.sexo==="Femenino",m=r.sexo==="Masculino",art=f?"la C.":m?"el C.":"el(la) C.";
+  d.setFont("helvetica","normal");d.setFontSize(10);d.text("Tejupilco de Hidalgo, Estado de México, a "+fechaLarga(r.fechaRec)+".",195,y,{align:"right"});y+=16;
+  d.setFont("helvetica","bold");d.setFontSize(11);d.text("A QUIEN CORRESPONDA:",15,y);y+=12;
+  d.setFont("helvetica","normal");d.setFontSize(11);
+  var t=d.splitTextToSize("Universidad Lafragua hace constar que recibió, y mantiene en resguardo en el archivo de Control escolar, el siguiente documento original perteneciente a "+art+" "+String(r.nombre).toUpperCase()+", con matrícula "+r.mat+", del plan de estudios de "+r.plan+":",180);d.text(t,15,y);y+=t.length*6.2+5;
+  [["Documento",r.tipo],["Número o folio del documento",r.docFolio||"—"],["Fecha de expedición",r.fechaExp?fd(r.fechaExp):"—"],["Fecha de recepción",fd(r.fechaRec)],["Ubicación en el archivo",r.ubic||"—"],["Recibió",r.recibe||"Control escolar"]].forEach(function(p){
+    d.setFont("helvetica","bold");d.text(p[0]+":",25,y);d.setFont("helvetica","normal");d.text(d.splitTextToSize(String(p[1]),95)[0],85,y);y+=7});
+  y+=6;t=d.splitTextToSize("El documento será entregado únicamente a su titular o a la persona que él autorice por escrito, previa identificación oficial vigente, y de la entrega quedará constancia firmada.",180);d.text(t,15,y);y+=t.length*6.2+16;
+  d.setFont("helvetica","bold");d.text("ATENTAMENTE",105,y,{align:"center"});y+=30;
+  rsFirmas(d,y,"Control escolar","Titular (enterado)");
+  d.setDrawColor(160,160,160);d.rect(160,y-34,32,32);d.setFontSize(8);d.setTextColor(90,90,90);d.text("Sello",176,y-2,{align:"center"});
+  d.setFontSize(8);d.text(DIR1+". "+DIR2+".",105,285,{align:"center"});
+  saveFile("resguardo-"+r.num+"-"+r.mat+".pdf",d.output("arraybuffer"));
+}
+function acuseEntregaPDF(r){
+  var e=r.entrega;if(!e)return;
+  var B=rsPDFBase(r,"Acta de entrega de documento en resguardo");if(!B)return;var d=B.d,y=B.y;
+  d.setFont("helvetica","normal");d.setFontSize(10);d.text("Tejupilco de Hidalgo, Estado de México, a "+fechaLarga(e.fecha)+".",195,y,{align:"right"});y+=16;
+  d.setFont("helvetica","bold");d.setFontSize(11);d.text("A QUIEN CORRESPONDA:",15,y);y+=12;
+  d.setFont("helvetica","normal");d.setFontSize(11);
+  var quien=e.quien==="titular"?"el titular del documento":"persona autorizada por el titular";
+  var ps=["Universidad Lafragua hace constar que el día "+fechaLarga(e.fecha)+" entregó a "+String(e.receptor).toUpperCase()+", "+quien+", quien se identificó con "+e.idTipo+" número "+e.idNum+", el siguiente documento original, que se encontraba en resguardo desde el "+fechaLarga(r.fechaRec)+":"];
+  var t=d.splitTextToSize(ps[0],180);d.text(t,15,y);y+=t.length*6.2+5;
+  [["Documento",r.tipo],["Número o folio del documento",r.docFolio||"—"],["A nombre de",String(r.nombre).toUpperCase()],["Matrícula y plan",r.mat+" · "+r.plan],["Folio de resguardo",r.num]].forEach(function(p){
+    d.setFont("helvetica","bold");d.text(p[0]+":",25,y);d.setFont("helvetica","normal");d.text(d.splitTextToSize(String(p[1]),95)[0],85,y);y+=7});
+  y+=6;if(e.nota){t=d.splitTextToSize("Observaciones: "+e.nota,180);d.text(t,15,y);y+=t.length*6.2+3}
+  t=d.splitTextToSize("Quien recibe manifiesta haber revisado el documento y recibirlo de conformidad, por lo que la escuela queda libre de su guarda y custodia.",180);d.text(t,15,y);y+=t.length*6.2+44;
+  rsFirmas(d,y,"Recibí de conformidad ("+e.receptor+")","Entregó: Control escolar");
+  d.setDrawColor(160,160,160);d.rect(160,y-34,32,32);d.setFontSize(8);d.setTextColor(90,90,90);d.text("Sello",176,y-2,{align:"center"});
+  d.setFontSize(8);d.text(DIR1+". "+DIR2+".",105,285,{align:"center"});
+  saveFile("entrega-"+r.num+"-"+r.mat+".pdf",d.output("arraybuffer"));
+}
+function rgAls(){return Object.keys(A2||{}).map(function(k){var t=A2[k];return {id:t.id||k,mat:t.num,nombre:nom2(t),plan:A2PROG,sexo:t.sexo||"",cert:t.cert||null}}).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))})}
+/* ===== Títulos y documentos en resguardo ===== */
+var RGD={},A2PAN="I",RGEDIT=null,RGDEL=null,RGIDX={},RGCB="padding:5px 9px;font-size:12px";
+var RGTIPOS=["Certificado de bachillerato","Certificado parcial","Duplicado del certificado","Otro documento"];
+var RGIDS=["INE","Pasaporte","Licencia de conducir","Cédula profesional","Otra identificación oficial"];
+function rgLista(){return Object.keys(RGD).map(function(k){return Object.assign({id:k},RGD[k])})}
+function rgNum(n){return "RC-"+String(n).padStart(6,"0")}
+function rgTag(r){return r.estado==="entregado"?'<span class="tag pagado" style="white-space:nowrap">Entregado</span>':'<span class="tag parcial" style="white-space:nowrap">En resguardo</span>'}
+function renderRg(){
+  if(!$("rgTb"))return;
+  var L=rgLista(),q=nz($("rgQ").value),fe=$("rgEst").value,ft=$("rgTipo").value;
+  setOpts($("rgTipo"),'<option value="">Todos los documentos</option>'+RGTIPOS.map(function(t){return '<option>'+esc(t)+'</option>'}).join(""));
+  var en=L.filter(function(r){return r.estado!=="entregado"}).length;
+  $("rgC1").textContent=en;$("rgC2").textContent=L.length-en;$("rgC3").textContent=L.length;
+  var F=L.filter(function(r){return (!fe||r.estado===fe)&&(!ft||r.tipo===ft)&&(!q||nz([r.nombre,r.mat,r.num,r.docFolio].join(" ")).indexOf(q)>-1)}).sort(function(a,b){return String(b.num).localeCompare(String(a.num))});
+  $("rgTb").innerHTML=F.length?F.map(function(r){
+    var ed=r.estado==="entregado";
+    return '<tr><td><b>'+esc(r.num)+'</b></td><td style="white-space:normal;max-width:165px">'+esc(r.nombre)+'<br><span class="hint">'+esc(r.mat)+'</span></td><td>'+esc(r.tipo)+(r.docFolio?'<br><span class="hint">Folio/núm. '+esc(r.docFolio)+'</span>':'')+(r.fechaExp?'<br><span class="hint">Expedido '+esc(fd(r.fechaExp))+'</span>':'')+'<br><span class="hint">Recibido '+esc(fd(r.fechaRec))+' · '+esc(r.ubic||"sin ubicación")+'</span></td><td style="white-space:normal;max-width:150px">'+rgTag(r)+(ed&&r.entrega?'<br><span class="hint">'+esc(fd(r.entrega.fecha))+'<br>'+esc(r.entrega.receptor)+'</span>':'')+'</td>'+
+      '<td style="white-space:normal;min-width:215px"><div style="display:flex;flex-wrap:wrap;gap:5px">'+
+      (r.archivo?'<a href="/_blob/'+attr(r.archivo.id)+'" target="_blank" rel="noopener" class="need-admin" title="Ver el escaneo del documento" style="'+RGCB+';border:1px solid var(--line);border-radius:8px;text-decoration:none;color:inherit;background:var(--surface);font-weight:500">Escaneo</a>':'')+
+      '<button class="need-admin'+(r.archivo?'':' p')+'" style="'+RGCB+'" title="Subir el escaneo del certificado a este registro" data-rf="'+attr(r.id)+'">'+(r.archivo?"Cambiar certificado":"Cargar certificado")+'</button>'+
+      '<button style="'+RGCB+'" title="Ver los movimientos" data-rh="'+attr(r.id)+'">Historial</button>'+
+      '<button class="need-admin" style="'+RGCB+'" title="Constancia de recepción en resguardo (PDF)" data-rr="'+attr(r.id)+'">Constancia</button>'+
+      (ed?'<button class="need-admin" style="'+RGCB+'" title="Acta de entrega (PDF)" data-rn="'+attr(r.id)+'">Acta</button>':'<button class="p need-admin" style="'+RGCB+'" data-re="'+attr(r.id)+'">Entregar</button>')+
+      '<button class="need-admin" style="'+RGCB+'" data-rv="'+attr(r.id)+'">Editar</button>'+
+      (ed&&esAdminReal()?'<button class="need-admin" style="'+RGCB+'" title="Deshacer la entrega (corrección)" data-ru="'+attr(r.id)+'">Deshacer</button>':'')+
+      '<button class="d need-admin" style="'+RGCB+'" data-rx="'+attr(r.id)+'">'+(RGDEL===r.id?"Confirmar":"Quitar")+'</button></div></td></tr>'}).join(""):vacio(5,L.length?"Ningún documento coincide con la búsqueda.":"Aún no hay certificados en resguardo.");
+}
+["rgQ","rgEst","rgTipo"].forEach(function(i){$(i).oninput=renderRg;$(i).onchange=renderRg});
+/* ---- registro y edición ---- */
+function rgAlumnos(){
+  var L=rgAls().sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))});RGIDX={};
+  $("rgAlL").innerHTML=L.map(function(s){var k=s.mat+" — "+s.nombre;RGIDX[k]=s.id;return '<option value="'+attr(k)+'">'}).join("");
+}
+function abreRg(id){
+  if(ROL!=="admin")return;
+  var r=id?RGD[id]:null;RGEDIT=id||null;rgAlumnos();
+  $("rgT").textContent=r?"Editar certificado en resguardo":"Registrar certificado en resguardo";
+  $("rgAl").value=r?r.mat+" — "+r.nombre:"";$("rgAl").disabled=!!r;rgUsaVis();
+  $("rgTp").innerHTML=RGTIPOS.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("rgTp").value=r?r.tipo:RGTIPOS[0];
+  $("rgDf").value=r?r.docFolio||"":"";$("rgFx").value=r?r.fechaExp||"":"";$("rgFr").value=r?r.fechaRec||today():today();$("rgUb").value=r?r.ubic||"":"";$("rgNt").value=r?r.notas||"":"";$("rgFile").value="";
+  $("rgAr").textContent=r&&r.archivo?"Escaneo cargado: "+r.archivo.name+" (si eliges otro archivo, se reemplaza)":"";
+  $("rgMsg").textContent="";$("dRg").showModal();
+}
+$("rgNew").onclick=function(){abreRg(null)};
+$("rgCan").onclick=function(){$("dRg").close()};
+$("rgOk").onclick=async function(){
+  var msg=function(t,bad){$("rgMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rgMsg").textContent=t};
+  var old=RGEDIT?RGD[RGEDIT]:null,sid=old?old.sid:RGIDX[$("rgAl").value],s=sid&&rgAls().find(function(x){return x.id===sid});
+  if(!s){msg("Elige la inscripción de la lista (escribe su folio B286 o el nombre del alumno).",true);return}
+  var tipo=$("rgTp").value,df=$("rgDf").value.trim(),fx=$("rgFx").value,fr=$("rgFr").value,ub=$("rgUb").value.trim(),nt=$("rgNt").value.trim(),f=$("rgFile").files[0];
+  if(!fr){msg("Indica la fecha en que se recibió el documento.",true);return}
+  if(fr>today()){msg("La fecha de recepción no puede ser futura.",true);return}
+  if(fx&&fx>today()){msg("La fecha de expedición no puede ser futura.",true);return}
+  if(rgLista().some(function(x){return x.id!==RGEDIT&&x.sid===sid&&x.tipo===tipo&&nz(x.docFolio||"")===nz(df)&&x.estado!=="entregado"}))
+    {msg("Esa inscripción ya tiene ese certificado en resguardo (mismo tipo y folio).",true);return}
+  if(f){
+    if(!/\.(pdf|jpe?g|png)$/i.test(f.name)){msg("El escaneo debe ser PDF, JPG o PNG.",true);return}
+    if(f.size>10*1024*1024){msg("El escaneo pesa más de 10 MB.",true);return}
+  }
+  var b=this;b.disabled=true;
+  try{
+    var arch=old&&old.archivo||null;if(!old&&!f&&$("rgUsa").checked&&s.cert)arch={id:s.cert.id,name:s.cert.name||"certificado",size:s.cert.size||0};
+    if(f){if(!(await assetsLib()))throw new Error("No se pueden subir archivos en esta sesión.");var up=await ASSETS.upload(f,{privado:true,categoria:"certificado"});arch={id:up.id,name:f.name,size:up.sizeBytes||f.size}}
+    var ahora=new Date().toISOString(),por=APP?APP.name:"";
+    if(old){
+      var d=Object.assign({},old);delete d.id;
+      Object.assign(d,{tipo:tipo,docFolio:df,fechaExp:fx,fechaRec:fr,ubic:ub,notas:nt,archivo:arch,mov:(old.mov||[]).concat([{f:ahora,a:"Datos corregidos"+(f?" y escaneo reemplazado":""),p:por}])});
+      await DBH.doc("resguardos286/"+RGEDIT).set(d);RGD[RGEDIT]=d;
+    }else{
+      var num=rgNum(await folios(1,"meta/folioRC")),id=uid();
+      var d2={num:num,sid:sid,nombre:s.nombre,mat:s.mat,plan:s.plan,sexo:s.sexo||"",tipo:tipo,docFolio:df,fechaExp:fx,fechaRec:fr,ubic:ub,notas:nt,archivo:arch,estado:"resguardo",recibe:por,mov:[{f:ahora,a:"Recibido en resguardo",p:por,n:ub?"Ubicación: "+ub:""}]};
+      await DBH.doc("resguardos286/"+id).set(d2);RGD[id]=d2;
+    }
+    $("dRg").close();renderRg();
+  }catch(e){msg((e&&(e.code||e.message))||"No se pudo guardar.",true)}
+  b.disabled=false;
+};
+/* ---- entrega ---- */
+var RGENT=null;
+function abreRgE(id){
+  if(ROL!=="admin")return;var r=RGD[id];if(!r)return;RGENT=id;
+  $("rgEI").textContent=r.num+" · "+r.tipo+(r.docFolio?" "+r.docFolio:"")+" · "+r.nombre+" ("+r.mat+")";
+  $("rgEF").value=today();$("rgEQ").value="titular";$("rgEN").value=r.nombre;$("rgEIt").innerHTML=RGIDS.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("rgENm").value="";$("rgENt").value="";$("rgEMsg").textContent="";$("dRgE").showModal();
+}
+$("rgEQ").onchange=function(){$("rgEN").value=this.value==="titular"&&RGENT?RGD[RGENT].nombre:""};
+$("rgECan").onclick=function(){$("dRgE").close()};
+$("rgEOk").onclick=async function(){
+  var msg=function(t,bad){$("rgEMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rgEMsg").textContent=t};
+  var r=RGENT&&RGD[RGENT];if(!r||r.estado==="entregado")return;
+  var fe=$("rgEF").value,rc=$("rgEN").value.replace(/\s+/g," ").trim(),idn=$("rgENm").value.trim();
+  if(!fe||fe>today()){msg(!fe?"Indica la fecha de entrega.":"La fecha de entrega no puede ser futura.",true);return}
+  if(fe<r.fechaRec){msg("La entrega no puede ser anterior a la recepción ("+fd(r.fechaRec)+").",true);return}
+  if(rc.length<3){msg("Escribe el nombre completo de quien recibe.",true);return}
+  if(idn.length<3){msg("Anota el número de la identificación que presenta.",true);return}
+  var b=this;b.disabled=true;
+  try{
+    var por=APP?APP.name:"",d=Object.assign({},r);delete d.id;
+    d.estado="entregado";d.entrega={fecha:fe,receptor:rc,quien:$("rgEQ").value,idTipo:$("rgEIt").value,idNum:idn,nota:$("rgENt").value.trim(),por:por};
+    d.mov=(r.mov||[]).concat([{f:new Date().toISOString(),a:"Entregado a "+rc+($("rgEQ").value==="titular"?" (titular)":" (persona autorizada)"),p:por,n:$("rgEIt").value+" "+idn}]);
+    await DBH.doc("resguardos286/"+RGENT).set(d);RGD[RGENT]=d;$("dRgE").close();renderRg();
+    if($("rgEPdf").checked)acuseEntregaCertPDF(d);
+  }catch(e){msg((e&&(e.code||e.message))||"No se pudo guardar.",true)}
+  b.disabled=false;
+};
+/* ---- tabla: acciones ---- */
+$("rgTb").onclick=async function(e){
+  var d=e.target.dataset;
+  if(d.rh){var r=RGD[d.rh];if(!r)return;$("rgHT").textContent="Historial · "+r.num+" · "+r.nombre;$("rgHL").innerHTML=(r.mov||[]).slice().reverse().map(function(m){return '<div class="pay"><span>'+esc(m.a)+(m.n?' <small>'+esc(m.n)+'</small>':'')+'</span><span class="hint">'+esc(String(m.f).slice(0,10).split("-").reverse().join("/"))+' · '+esc(m.p||"")+'</span></div>'}).join("")||'<p class="hint">Sin movimientos.</p>';$("dRgH").showModal();return}
+  if(ROL!=="admin")return;
+  if(d.rf)return rfElige("g",d.rf);
+  if(d.rv)return abreRg(d.rv);
+  if(d.re)return abreRgE(d.re);
+  if(d.rr){if(RGD[d.rr])acuseRecepcionCertPDF(RGD[d.rr]);return}
+  if(d.rn){if(RGD[d.rn])acuseEntregaCertPDF(RGD[d.rn]);return}
+  if(d.ru&&esAdminReal()){
+    var r2=RGD[d.ru];if(!r2||r2.estado!=="entregado")return;
+    var x=Object.assign({},r2);delete x.id;x.estado="resguardo";delete x.entrega;x.mov=(r2.mov||[]).concat([{f:new Date().toISOString(),a:"Entrega deshecha (corrección)",p:APP?APP.name:""}]);
+    try{await DBH.doc("resguardos286/"+d.ru).set(x);RGD[d.ru]=x;renderRg()}catch(er){dberr(er)}return;
+  }
+  if(d.rx){
+    if(RGDEL!==d.rx){RGDEL=d.rx;renderRg();clearTimeout(rgT);rgT=setTimeout(function(){RGDEL=null;renderRg()},8000);return}
+    clearTimeout(rgT);RGDEL=null;
+    try{await DBH.doc("resguardos286/"+d.rx).delete();delete RGD[d.rx];renderRg()}catch(er){dberr(er)}
+  }
+};
+var rgT=null;
+$("rgHCls").onclick=function(){$("dRgH").close()};
+$("rgCsv").onclick=function(){
+  var L=["folio_resguardo,folio_inscripcion,nombre,plan,documento,folio_certificado,fecha_expedicion,fecha_recepcion,ubicacion,estado,fecha_entrega,recibio,identificacion"];
+  rgLista().sort(function(a,b){return String(a.num).localeCompare(String(b.num))}).forEach(function(r){var e=r.entrega||{};L.push([r.num,r.mat,r.nombre,r.plan,r.tipo,r.docFolio||"",r.fechaExp||"",r.fechaRec||"",r.ubic||"",r.estado==="entregado"?"Entregado":"En resguardo",e.fecha||"",e.receptor||"",e.idTipo?e.idTipo+" "+e.idNum:""].map(csvq).join(","))});
+  saveFile("certificados-en-resguardo-"+today()+".csv","\uFEFF"+L.join("\r\n")+"\r\n");
+};
+
+/* ===== Títulos en resguardo: cargar los escaneos desde un archivo ZIP ===== */
+var RGKW=[["parcial","Certificado parcial"],["duplicado","Duplicado del certificado"]],RGZE=[],RGZP=[],RGZZ=null;
+function rgTipoDe(base){var n=nz(base);for(var i=0;i<RGKW.length;i++)if(n.indexOf(RGKW[i][0])>-1)return RGKW[i][1];return ""}
+function rgAlDe(base){
+  var hit=rgAls().filter(function(s){var m=String(s.mat||"").trim();if(!m)return false;return new RegExp("(^|[^0-9A-Za-z])"+m.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"([^0-9A-Za-z]|$)","i").test(base)});
+  if(hit.length===1)return {s:hit[0]};if(hit.length>1)return {err:"el nombre del archivo coincide con varias inscripciones"};
+  var nb=nz(base),h2=rgAls().filter(function(s){var nn=nz(s.nombre);return nn.length>=8&&nb.indexOf(nn)>-1});
+  if(h2.length===1)return {s:h2[0]};if(h2.length>1)return {err:"el nombre coincide con varios alumnos"};
+  return {err:"no se encontró la inscripción (el archivo debe llevar su folio B286 o el nombre del alumno)"};
+}
+function abreRgZ(){
+  if(ROL!=="admin")return;
+  RGZE=[];RGZP=[];RGZZ=null;$("rgZFile").value="";$("rgZRes").innerHTML="";$("rgZMsg").textContent="";$("rgZOk").hidden=true;$("rgZFr").value=today();$("rgZUb").value="";$("rgZCrea").checked=true;$("rgZRep").checked=false;$("dRgZ").showModal();
+}
+function rgZPlan(){
+  var crea=$("rgZCrea").checked,rep=$("rgZRep").checked,P=[],vistos={};
+  RGZE.forEach(function(e){
+    var it={nombre:e.name,e:e};
+    if(!/\.(pdf|jpe?g|png)$/i.test(e.name)){it.a="omitir";it.m="solo se cargan PDF, JPG o PNG";P.push(it);return}
+    if(e.size>10*1024*1024){it.a="omitir";it.m="pesa más de 10 MB";P.push(it);return}
+    var base=e.name.replace(/^.*\//,"").replace(/\.[^.]+$/,""),r=rgAlDe(base);
+    if(r.err){it.a="omitir";it.m=r.err;P.push(it);return}
+    var s=r.s,tp=rgTipoDe(base);it.s=s;
+    var abiertos=rgLista().filter(function(x){return x.sid===s.id&&x.estado!=="entregado"}),cand=tp?abiertos.filter(function(x){return x.tipo===tp}):abiertos,rg=null;
+    if(cand.length>1){it.a="omitir";it.m="tiene varios documentos en resguardo; agrega la palabra del documento al nombre (titulo, cedula, certificado o acta)";P.push(it);return}
+    if(cand.length===1)rg=cand[0];
+    var tipoFinal=tp||(rg&&rg.tipo)||RGTIPOS[0],clave=s.id+"|"+tipoFinal;
+    if(vistos[clave]){it.a="omitir";it.m="ya viene otro escaneo del mismo documento en el ZIP";P.push(it);return}
+    if(rg){
+      if(rg.archivo&&!rep){it.a="omitir";it.m=rg.num+" ya tiene escaneo (activa «Reemplazar» para sustituirlo)";P.push(it);return}
+      it.a=rg.archivo?"reemplazar":"adjuntar";it.rg=rg;it.tipo=tipoFinal;
+    }else{
+      if(!crea){it.a="omitir";it.m="no tiene registro en resguardo (activa «Crear el registro» para darlo de alta)";P.push(it);return}
+      it.a="crear";it.tipo=tipoFinal;
+    }
+    vistos[clave]=1;P.push(it);
+  });
+  RGZP=P;
+  var n={adjuntar:0,reemplazar:0,crear:0,omitir:0};P.forEach(function(x){n[x.a]++});
+  $("rgZRes").innerHTML='<div class="mod" style="cursor:default;margin-top:10px"><b>Resumen de la lectura</b><span>'+P.length+(P.length===1?" archivo":" archivos")+' en el ZIP: '+n.adjuntar+' se adjuntan a un registro, '+n.crear+' registros nuevos'+(n.reemplazar?', '+n.reemplazar+' escaneos se reemplazan':'')+' y '+n.omitir+' se omiten.</span></div>'+
+    '<div class="wrap" style="margin-top:8px;max-height:260px;overflow:auto"><table style="min-width:560px"><thead><tr><th>Archivo</th><th>Alumno</th><th>Qué se hará</th></tr></thead><tbody>'+P.map(function(x){
+      var q=x.a==="omitir"?'<span class="hint" style="color:var(--bad)">Se omite: '+esc(x.m)+'</span>':x.a==="crear"?'Crear registro de «'+esc(x.tipo)+'» y adjuntar el escaneo':x.a==="reemplazar"?'Reemplazar el escaneo de '+esc(x.rg.num)+' ('+esc(x.tipo)+')':'Adjuntar a '+esc(x.rg.num)+' ('+esc(x.tipo)+')';
+      return '<tr><td style="white-space:normal;max-width:210px">'+esc(x.nombre)+'</td><td style="white-space:normal">'+(x.s?esc(x.s.nombre)+'<br><span class="hint">'+esc(x.s.mat)+'</span>':'—')+'</td><td style="white-space:normal">'+q+'</td></tr>'}).join("")+'</tbody></table></div>';
+  var h=P.length-n.omitir;$("rgZOk").hidden=!h;$("rgZOk").textContent="Cargar "+h+(h===1?" escaneo":" escaneos");
+}
+$("rgZip").onclick=abreRgZ;
+$("rgZCan").onclick=function(){$("dRgZ").close()};
+$("rgZCrea").onchange=function(){if(RGZE.length)rgZPlan()};$("rgZRep").onchange=function(){if(RGZE.length)rgZPlan()};
+$("rgZFile").onchange=async function(){
+  var f=this.files[0],msg=function(t,bad){$("rgZMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rgZMsg").textContent=t};
+  RGZE=[];RGZP=[];$("rgZRes").innerHTML="";$("rgZOk").hidden=true;msg("");if(!f)return;
+  if(!/\.zip$/i.test(f.name)){msg("Solo se aceptan archivos ZIP. Si tu archivo es RAR o 7z, conviértelo a ZIP.",true);return}
+  if(f.size>200*1024*1024){msg("El ZIP pesa más de 200 MB; divídelo en partes.",true);return}
+  try{
+    var Z=await cargaZip();if(!Z){msg("No se pudo cargar el lector de archivos ZIP.",true);return}
+    RGZZ=await Z.loadAsync(f);
+    RGZE=Object.keys(RGZZ.files).map(function(k){return RGZZ.files[k]}).filter(function(e){return !e.dir&&!/^__MACOSX\//.test(e.name)&&!/(^|\/)\.[^/]*$/.test(e.name)&&!/(^|\/)Thumbs\.db$/i.test(e.name)}).map(function(e){return {name:e.name,size:(e._data&&e._data.uncompressedSize)||0,z:e}});
+    if(!RGZE.length){msg("El ZIP no trae archivos.",true);return}
+    if(RGZE.length>400){msg("El ZIP trae más de 400 archivos; divídelo en partes.",true);RGZE=[];return}
+    rgZPlan();
+  }catch(e){msg("No se pudo leer el ZIP: está dañado o no es un ZIP válido.",true)}
+};
+$("rgZOk").onclick=async function(){
+  if(ROL!=="admin"||!RGZP.length)return;
+  var b=this,msg=function(t,bad){$("rgZMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rgZMsg").textContent=t};
+  var L=RGZP.filter(function(x){return x.a!=="omitir"}),fr=$("rgZFr").value,ub=$("rgZUb").value.trim();
+  if(L.some(function(x){return x.a==="crear"})&&(!fr||fr>today())){msg("Indica una fecha de recepción válida para los registros nuevos.",true);return}
+  b.disabled=true;$("rgZCan").disabled=true;var ok=0,nuevos=0,fallos=[],por=APP?APP.name:"";
+  try{
+    if(!(await assetsLib()))throw new Error("No se pueden subir archivos en esta sesión.");
+    for(var i=0;i<L.length;i++){
+      var x=L[i];msg("Cargando "+(i+1)+" de "+L.length+": "+x.nombre+"…");
+      try{
+        var blob=await x.e.z.async("blob"),nom=x.nombre.replace(/^.*\//,""),file=new File([blob],nom,{type:/\.pdf$/i.test(nom)?"application/pdf":/\.png$/i.test(nom)?"image/png":"image/jpeg"});
+        var up=await ASSETS.upload(file,{privado:true,categoria:"certificado"}),arch={id:up.id,name:nom,size:up.sizeBytes||file.size},ahora=new Date().toISOString();
+        if(x.a==="crear"){
+          var s=x.s,num=rgNum(await folios(1,"meta/folioRC")),id=uid();
+          var d={num:num,sid:s.id,nombre:s.nombre,mat:s.mat,plan:s.plan,sexo:s.sexo||"",tipo:x.tipo,docFolio:"",fechaExp:"",fechaRec:fr,ubic:ub,notas:"",archivo:arch,estado:"resguardo",recibe:por,mov:[{f:ahora,a:"Recibido en resguardo (carga desde ZIP)",p:por,n:nom}]};
+          await DBH.doc("resguardos286/"+id).set(d);RGD[id]=d;nuevos++;
+        }else{
+          var r=x.rg,d2=Object.assign({},r);delete d2.id;d2.archivo=arch;d2.mov=(r.mov||[]).concat([{f:ahora,a:x.a==="reemplazar"?"Escaneo reemplazado (carga desde ZIP)":"Escaneo cargado desde ZIP",p:por,n:nom}]);
+          await DBH.doc("resguardos286/"+r.id).set(d2);RGD[r.id]=d2;
+        }
+        ok++;
+      }catch(er){fallos.push(x.nombre+" ("+((er&&(er.code||er.message))||"error")+")")}
+    }
+    renderRg();
+    $("rgZOk").hidden=true;$("rgZRes").innerHTML="";RGZE=[];RGZP=[];
+    msg("Listo: "+ok+(ok===1?" escaneo cargado":" escaneos cargados")+(nuevos?" ("+nuevos+" registros nuevos)":"")+"."+(fallos.length?" No se pudieron cargar "+fallos.length+": "+fallos.slice(0,3).join("; ")+(fallos.length>3?"…":""):""),!!fallos.length&&!ok);
+  }catch(e){msg((e&&(e.code||e.message))||"No se pudo terminar la carga.",true)}
+  b.disabled=false;$("rgZCan").disabled=false;
+};
+
+function rgUsaVis(){var id=RGEDIT?null:RGIDX[$("rgAl").value],t=id&&A2[id],v=!!(t&&t.cert&&!$("rgFile").value);$("rgUsaW").hidden=!v;$("rgUsaW").style.display=v?"":"none"}
+$("rgAl").oninput=rgUsaVis;$("rgFile").onchange=rgUsaVis;
+
+function rgPDFBase(r,titulotxt){
+  var J=pdfLib();if(!J)return null;
+  var d=new J.jsPDF({unit:"mm",format:"a4"}),y=titulo(d,titulotxt);
+  d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(0,0,0);d.text("Folio de resguardo: "+r.num,195,22,{align:"right"});
+  return {d:d,y:70};
+}
+function rgFirmas(d,y,izq,der){
+  d.setDrawColor(90,90,90);d.setLineWidth(0.3);d.line(20,y,90,y);d.line(120,y,190,y);
+  d.setFont("helvetica","normal");d.setFontSize(9);d.setTextColor(90,90,90);d.text(izq,55,y+5,{align:"center"});d.text(der,155,y+5,{align:"center"});
+}
+function acuseRecepcionCertPDF(r){
+  var B=rgPDFBase(r,"Constancia de recepción de certificado en resguardo");if(!B)return;var d=B.d,y=B.y;
+  var f=r.sexo==="Femenino",m=r.sexo==="Masculino",art=f?"la C.":m?"el C.":"el(la) C.";
+  d.setFont("helvetica","normal");d.setFontSize(10);d.text("Tejupilco de Hidalgo, Estado de México, a "+fechaLarga(r.fechaRec)+".",195,y,{align:"right"});y+=16;
+  d.setFont("helvetica","bold");d.setFontSize(11);d.text("A QUIEN CORRESPONDA:",15,y);y+=12;
+  d.setFont("helvetica","normal");d.setFontSize(11);
+  var t=d.splitTextToSize("Universidad Lafragua hace constar que recibió, y mantiene en resguardo en el archivo de Control escolar, el siguiente certificado original perteneciente a "+art+" "+String(r.nombre).toUpperCase()+", con folio de inscripción "+r.mat+", del programa de "+r.plan+":",180);d.text(t,15,y);y+=t.length*6.2+5;
+  [["Documento",r.tipo],["Folio del certificado",r.docFolio||"—"],["Fecha de expedición",r.fechaExp?fd(r.fechaExp):"—"],["Fecha de recepción",fd(r.fechaRec)],["Ubicación en el archivo",r.ubic||"—"],["Recibió",r.recibe||"Control escolar"]].forEach(function(p){
+    d.setFont("helvetica","bold");d.text(p[0]+":",25,y);d.setFont("helvetica","normal");d.text(d.splitTextToSize(String(p[1]),95)[0],85,y);y+=7});
+  y+=6;t=d.splitTextToSize("El certificado será entregado únicamente a su titular o a la persona que él autorice por escrito, previa identificación oficial vigente, y de la entrega quedará constancia firmada.",180);d.text(t,15,y);y+=t.length*6.2+16;
+  d.setFont("helvetica","bold");d.text("ATENTAMENTE",105,y,{align:"center"});y+=30;
+  rgFirmas(d,y,"Control escolar","Titular (enterado)");
+  d.setDrawColor(160,160,160);d.rect(160,y-34,32,32);d.setFontSize(8);d.setTextColor(90,90,90);d.text("Sello",176,y-2,{align:"center"});
+  d.setFontSize(8);d.text(DIR1+". "+DIR2+".",105,285,{align:"center"});
+  saveFile("resguardo-certificado-"+r.num+"-"+String(r.mat).replace(/[^A-Za-z0-9]+/g,"")+".pdf",d.output("arraybuffer"));
+}
+function acuseEntregaCertPDF(r){
+  var e=r.entrega;if(!e)return;
+  var B=rgPDFBase(r,"Acta de entrega de certificado en resguardo");if(!B)return;var d=B.d,y=B.y;
+  d.setFont("helvetica","normal");d.setFontSize(10);d.text("Tejupilco de Hidalgo, Estado de México, a "+fechaLarga(e.fecha)+".",195,y,{align:"right"});y+=16;
+  d.setFont("helvetica","bold");d.setFontSize(11);d.text("A QUIEN CORRESPONDA:",15,y);y+=12;
+  d.setFont("helvetica","normal");d.setFontSize(11);
+  var quien=e.quien==="titular"?"el titular del certificado":"persona autorizada por el titular";
+  var t=d.splitTextToSize("Universidad Lafragua hace constar que el día "+fechaLarga(e.fecha)+" entregó a "+String(e.receptor).toUpperCase()+", "+quien+", quien se identificó con "+e.idTipo+" número "+e.idNum+", el siguiente certificado original, que se encontraba en resguardo desde el "+fechaLarga(r.fechaRec)+":",180);d.text(t,15,y);y+=t.length*6.2+5;
+  [["Documento",r.tipo],["Folio del certificado",r.docFolio||"—"],["A nombre de",String(r.nombre).toUpperCase()],["Inscripción y programa",r.mat+" · "+r.plan],["Folio de resguardo",r.num]].forEach(function(p){
+    d.setFont("helvetica","bold");d.text(p[0]+":",25,y);d.setFont("helvetica","normal");d.text(d.splitTextToSize(String(p[1]),95)[0],85,y);y+=7});
+  y+=6;if(e.nota){t=d.splitTextToSize("Observaciones: "+e.nota,180);d.text(t,15,y);y+=t.length*6.2+3}
+  t=d.splitTextToSize("Quien recibe manifiesta haber revisado el certificado y recibirlo de conformidad, por lo que la escuela queda libre de su guarda y custodia.",180);d.text(t,15,y);y+=t.length*6.2+44;
+  rgFirmas(d,y,"Recibí de conformidad ("+e.receptor+")","Entregó: Control escolar");
+  d.setDrawColor(160,160,160);d.rect(160,y-34,32,32);d.setFontSize(8);d.setTextColor(90,90,90);d.text("Sello",176,y-2,{align:"center"});
+  d.setFontSize(8);d.text(DIR1+". "+DIR2+".",105,285,{align:"center"});
+  saveFile("entrega-certificado-"+r.num+"-"+String(r.mat).replace(/[^A-Za-z0-9]+/g,"")+".pdf",d.output("arraybuffer"));
+}
+function a2Tab(t){
+  A2PAN=t;$("a2PanI").hidden=t!=="I";$("a2PanC").hidden=t!=="C";
+  Array.prototype.forEach.call($("a2Tabs").querySelectorAll("button"),function(b){b.className=b.dataset.a2t===t?"p":""});
+  if(t==="C")renderRg();
+}
+$("a2Tabs").onclick=function(e){var t=e.target.dataset.a2t;if(t)a2Tab(t)};
+var _renderA2=renderA2;renderA2=function(){_renderA2();if(A2PAN==="C")renderRg()};
+
+/* ===== Cargar el escaneo directamente en cada registro (títulos y certificados) ===== */
+var RFROW={s:null,g:null};
+function rfElige(mod,id){if(ROL!=="admin")return;RFROW[mod]=id;var f=$(mod==="s"?"rsRowFile":"rgRowFile");f.value="";f.click()}
+async function rfSube(mod,file){
+  var msg=$(mod==="s"?"rsRowMsg":"rgRowMsg"),G=mod==="s"?RSG:RGD,col=mod==="s"?"resguardos/":"resguardos286/",cat=mod==="s"?"resguardo":"certificado",id=RFROW[mod],r=id&&G[id];
+  var say=function(t,bad){msg.style.color=bad?"var(--bad)":"var(--ok)";msg.textContent=t};
+  if(!r||!file)return;
+  if(!/\.(pdf|jpe?g|png)$/i.test(file.name)){say("El escaneo debe ser PDF, JPG o PNG.",true);return}
+  if(file.size>10*1024*1024){say("El escaneo pesa más de 10 MB.",true);return}
+  say("Cargando «"+file.name+"» en "+r.num+"…");
+  try{
+    if(!(await assetsLib()))throw new Error("No se pueden subir archivos en esta sesión.");
+    var up=await ASSETS.upload(file,{privado:true,categoria:cat}),d=Object.assign({},r),por=APP?APP.name:"";delete d.id;
+    d.archivo={id:up.id,name:file.name,size:up.sizeBytes||file.size};
+    d.mov=(r.mov||[]).concat([{f:new Date().toISOString(),a:r.archivo?"Escaneo reemplazado":"Escaneo cargado",p:por,n:file.name}]);
+    await DBH.doc(col+id).set(d);G[id]=d;
+    if(mod==="s")renderRes();else renderRg();
+    say("Listo: el escaneo «"+file.name+"» quedó cargado en "+r.num+".");
+  }catch(e){say((e&&(e.code||e.message))||"No se pudo cargar el escaneo.",true)}
+}
+$("rsRowFile").onchange=function(){rfSube("s",this.files[0])};
+$("rgRowFile").onchange=function(){rfSube("g",this.files[0])};
+/* ===== Cobranza y avisos de adeudo (requiere el servidor de la nube) ===== */
+var COBV=null,AVI={};
+function cbApi(met,url,cuerpo){
+  return fetch(url,{method:met,headers:{"x-lafragua":"1","Content-Type":"application/json"},credentials:"same-origin",body:cuerpo===undefined?undefined:JSON.stringify(cuerpo)}).then(function(r){return r.json().catch(function(){return {}}).then(function(j){return {ok:r.ok,status:r.status,j:j}})});
+}
+function cbMsg(t,bad){$("cbMsg").style.color=bad?"var(--bad)":"var(--ok)";$("cbMsg").textContent=t}
+async function abreCob(){
+  $("cbMsg").textContent="";$("cbTb").innerHTML="";COBV=null;$("dCob").showModal();
+  var adm=esAdminReal();["cbAct","cbUmb","cbDia","cbInt","cbGra","cbRei","cbGuardar"].forEach(function(i){$(i).disabled=!adm});$("cbRev").hidden=!adm;
+  await cargaCob();
+}
+async function cargaCob(){
+  try{
+    var r=await cbApi("GET","/api/cobranza/vista");
+    if(!r.ok){cbMsg(r.status===404||r.status===0?"Esta función está disponible en la plataforma en la nube.":(r.j.error||"No se pudo cargar la información."),true);return}
+    COBV=r.j;var c=r.j.cfg;
+    $("cbAct").checked=!!c.activa;$("cbUmb").value=c.umbral;$("cbDia").value=c.diaLimite;$("cbInt").value=c.intervaloDias;$("cbGra").value=c.graciaDias;$("cbRei").value=c.reinicioDias;
+    renderCob();
+  }catch(e){cbMsg("Esta función está disponible en la plataforma en la nube.",true)}
+}
+function cbEstado(f,c){
+  if(f.exento)return '<span class="tag">Exento</span><br><span class="hint">'+esc(f.motivoExento==="manual"&&f.exentoInfo?f.exentoInfo.motivo:f.motivoExento)+'</span>';
+  if(f.estado==="bloqueado")return '<span class="tag sin">Bloqueado</span><br><span class="hint">desde '+esc(fd(f.bloqueadoEn))+'</span>';
+  if(f.estado==="avisando"){
+    var av=f.avisos||[],u=av[av.length-1],nota=av.length>=3?'bloqueo el '+fd(addDias(av[2].fecha,c.graciaDias)):'siguiente aviso el '+fd(addDias(u.fecha,c.intervaloDias));
+    return '<span class="tag parcial">Aviso '+av.length+' de 3</span><br><span class="hint">'+esc(av.map(function(a){return fd(a.fecha)}).join(" · "))+'<br>'+esc(nota)+'</span>';
+  }
+  if(f.accion==="inicio")return '<span class="tag parcial">'+(c.activa?'Recibirá el aviso 1':'Recibiría el aviso 1')+'</span>';
+  if(f.adeudo.n>=c.umbral&&f.cerrado)return '<span class="tag pagado">Regularizando</span><br><span class="hint">Hizo un abono el '+esc(fd(f.cerrado.fecha))+'; nuevos avisos a partir del '+esc(fd(addDias(f.cerrado.fecha,c.reinicioDias)))+'</span>';
+  if(f.adeudo.n>0)return '<span class="hint">Debe '+f.adeudo.n+(f.adeudo.n===1?' colegiatura':' colegiaturas')+(f.adeudo.n<c.umbral?'; aún no llega a '+c.umbral:'')+'</span>';
+  return '<span class="tag pagado">Al corriente</span>';
+}
+function renderCob(){
+  if(!COBV)return;
+  var c=COBV.cfg,F=COBV.filas,q=nz($("cbQ").value),fe=$("cbEst").value;
+  $("cbAviso").hidden=!!c.activa;
+  var con=F.filter(function(f){return f.adeudo.n>=c.umbral&&!f.exento}).length,av=F.filter(function(f){return f.estado==="avisando"}).length,bl=F.filter(function(f){return f.estado==="bloqueado"}).length;
+  $("cbC1").textContent=con;$("cbC2").textContent=av;$("cbC3").textContent=bl;$("cbUmbT").textContent=c.umbral;
+  var L=F.filter(function(f){
+    var okE=fe==="bloq"?f.estado==="bloqueado":fe==="avis"?f.estado==="avisando":fe==="exe"?f.exento:fe==="todos"?true:(f.adeudo.n>0||f.estado!=="ok"||f.exento);
+    return okE&&(!q||nz(f.nombre+" "+f.mat).indexOf(q)>-1)}).sort(function(a,b){return (b.estado==="bloqueado")-(a.estado==="bloqueado")||b.adeudo.n-a.adeudo.n||String(a.nombre).localeCompare(String(b.nombre))});
+  var adm=esAdminReal();
+  $("cbTb").innerHTML=L.length?L.map(function(f){
+    return '<tr><td style="white-space:normal;max-width:200px">'+esc(f.nombre)+'<br><span class="hint">'+esc(f.mat)+' · '+esc(f.plan)+'</span></td>'+
+      '<td style="white-space:normal">'+(f.adeudo.n?'<b>'+f.adeudo.n+(f.adeudo.n===1?' colegiatura':' colegiaturas')+'</b> · '+esc(mx.format(f.adeudo.total))+'<br><span class="hint">'+esc(f.adeudo.meses.map(function(m){return m.c.replace(/^Colegiatura /,"")}).join(", "))+'</span>':'<span class="hint">Sin adeudo vencido</span>')+'</td>'+
+      '<td style="white-space:normal">'+cbEstado(f,c)+'</td>'+
+      '<td style="white-space:normal;min-width:150px"><div style="display:flex;flex-wrap:wrap;gap:5px">'+
+      (f.estado==="bloqueado"?'<button class="p need-admin" style="'+RSCB+'" data-cbd="'+attr(f.sid)+'">Desbloquear</button>':'')+
+      (adm?(f.exentoInfo?'<button style="'+RSCB+'" data-cbq="'+attr(f.sid)+'">Quitar exención</button>':'<button style="'+RSCB+'" data-cbx="'+attr(f.sid)+'">Exentar</button>'):'')+
+      '</div></td></tr>'}).join(""):vacio(4,F.length?"Ningún alumno coincide con el filtro.":"Aún no hay alumnos con acceso a la plataforma.");
+}
+$("bCob").onclick=abreCob;$("cbCerrar").onclick=function(){$("dCob").close()};
+$("cbQ").oninput=renderCob;$("cbEst").onchange=renderCob;
+$("cbGuardar").onclick=async function(){
+  if(!esAdminReal())return;
+  var act=$("cbAct").checked,n=function(i,lo,hi){var v=parseInt($(i).value,10);return v>=lo&&v<=hi?v:null};
+  var d={activa:act,umbral:n("cbUmb",1,12),diaLimite:n("cbDia",1,28),intervaloDias:n("cbInt",1,60),graciaDias:n("cbGra",1,60),reinicioDias:n("cbRei",0,365)};
+  if(Object.keys(d).some(function(k){return d[k]===null}))return cbMsg("Revisa los números: umbral de 1 a 12, día límite de 1 a 28, días entre avisos y de plazo de 1 a 60, pausa de 0 a 365.",true);
+  var antes=COBV&&COBV.cfg.activa;
+  if(act&&!antes){
+    var nuevos=COBV?COBV.filas.filter(function(f){return f.accion==="inicio"}).length:0;
+    if(!confirm("Al activar la cobranza automática, la plataforma enviará avisos a los alumnos con "+d.umbral+" o más colegiaturas vencidas ("+nuevos+" recibirían hoy su primer aviso) y, si no pasan a Control escolar, bloqueará su acceso. ¿Activarla?"))return;
+  }
+  try{await DBH.doc("config/cobranza").set(d);cbMsg(act?"Guardado. La cobranza automática está activada.":"Guardado. La cobranza automática está desactivada.");await new Promise(function(r){setTimeout(r,300)});await cargaCob()}catch(e){cbMsg((e&&(e.code||e.message))||"No se pudo guardar.",true)}
+};
+$("cbRev").onclick=async function(){
+  var b=this;b.disabled=true;
+  try{var r=await cbApi("POST","/api/cobranza/accion",{accion:"evaluar"});if(!r.ok)cbMsg(r.j.error||"No se pudo ejecutar la revisión.",true);else{cbMsg("Revisión lista: "+r.j.acciones+(r.j.acciones===1?" acción realizada.":" acciones realizadas."));await cargaCob()}}catch(e){cbMsg("No se pudo conectar con el servidor.",true)}
+  b.disabled=false;
+};
+var CBEX=null;
+$("cbTb").onclick=async function(e){
+  var d=e.target.dataset;if(!d)return;
+  if(d.cbd){var r=await cbApi("POST","/api/cobranza/accion",{accion:"desbloquear",sid:d.cbd});if(!r.ok)cbMsg(r.j.error||"No se pudo desbloquear.",true);else{cbMsg("Acceso desbloqueado.");await cargaCob()}}
+  else if(d.cbq){var r2=await cbApi("POST","/api/cobranza/accion",{accion:"quitar-exencion",sid:d.cbq});if(!r2.ok)cbMsg(r2.j.error||"No se pudo quitar la exención.",true);else{cbMsg("Exención retirada.");await cargaCob()}}
+  else if(d.cbx){CBEX=d.cbx;var f=COBV.filas.find(function(x){return x.sid===CBEX});$("cbExT").textContent=f?f.nombre+" ("+f.mat+")":"";$("cbExM").value="";$("cbExMsg").textContent="";$("dCbEx").showModal()}
+};
+$("cbExCan").onclick=function(){$("dCbEx").close()};
+$("cbExOk").onclick=async function(){
+  var m=$("cbExM").value.trim();if(m.length<3){$("cbExMsg").textContent="Escribe el motivo de la exención.";return}
+  var r=await cbApi("POST","/api/cobranza/accion",{accion:"exentar",sid:CBEX,motivo:m});
+  if(!r.ok){$("cbExMsg").textContent=r.j.error||"No se pudo exentar.";return}
+  $("dCbEx").close();cbMsg("Alumno exento de la cobranza.");await cargaCob();
+};
+/* ---- Avisos de adeudo en el portal del alumno ---- */
+function aviLista(){return Object.keys(AVI||{}).map(function(k){return Object.assign({id:k},AVI[k])}).sort(function(a,b){return String(b.creada).localeCompare(String(a.creada))})}
+function aviNoLeidos(){return aviLista().filter(function(x){return x.leida!==true})}
+function avisosPor(){
+  return aviLista().slice(0,8).map(function(x){
+    var nuevo=x.leida!==true,adeudo=x.tipo==="adeudo";
+    return '<div class="mod" style="cursor:default;margin-bottom:8px;'+(adeudo&&nuevo?'border-color:var(--warn)':nuevo?'border-color:var(--brand)':'')+'"><b style="color:var(--ink)">'+(adeudo?'⚠ ':'')+esc(x.titulo)+(nuevo?' <span class="tag parcial">Nuevo</span>':'')+'</b><span style="color:var(--ink)">'+esc(x.mensaje)+'</span>'+
+      (adeudo&&x.meses&&x.meses.length?'<div class="wrap" style="margin-top:6px"><table style="min-width:340px"><thead><tr><th>Concepto</th><th class="n">Pendiente</th></tr></thead><tbody>'+x.meses.map(function(m){return '<tr><td>'+esc(m.c)+'</td><td class="n">'+esc(mx.format(m.rem))+'</td></tr>'}).join("")+'<tr><td><b>Total</b></td><td class="n"><b>'+esc(mx.format(x.total))+'</b></td></tr></tbody></table></div>':'')+
+      '<span class="hint">'+esc(fd(x.fecha))+'</span></div>'}).join("");
+}
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}
@@ -6158,13 +7136,17 @@ $("usL").onclick=async function(e){
   DBH.collection("students").onSnapshot(function(s){ST={};s.docs.forEach(function(d){ST[d.id]=d.data()});rebuild()},onErr);
   DBH.collection("ledger").onSnapshot(function(s){LG={};s.docs.forEach(function(d){LG[d.id]=d.data()});rebuild()},onErr);
   DBH.doc("config/plans").onSnapshot(function(d){
-    if(d.exists&&d.data().plans)PL=JSON.parse(JSON.stringify(d.data().plans));
+    if(d.exists&&d.data().plans){
+      PL=JSON.parse(JSON.stringify(d.data().plans));
+      var falt=PL0.filter(function(x){return !PL.some(function(p){return p.k===x.k})});
+      if(falt.length){falt.forEach(function(x){PL.push(JSON.parse(JSON.stringify(x)))});if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:d.data().extra||EXTRA,cons:d.data().cons||CONSC}).catch(function(){})}
+    }
     if(d.exists&&d.data().extra)EXTRA=JSON.parse(JSON.stringify(d.data().extra));
     if(d.exists&&d.data().cons)CONSC=JSON.parse(JSON.stringify(d.data().cons));
     else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC}).catch(function(){});
     rebuild();
   },onErr);
-  [["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+  [["avisos",function(d){AVI=d;if(MOD==="por")renderPor()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
     DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(c[0]==="calif"||c[0]==="constancias")render();if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
   DBH.collection("gastos").onSnapshot(function(s){G={};s.docs.forEach(function(d){G[d.id]=d.data()});if(!$("vGa").hidden)renderCaja()},onErr);

@@ -24,5 +24,11 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_boleta_qr.py` · QR de la boleta: verificación pública, PDF, lectura con cámara (necesita `opencv-python` y `numpy`) y verificación dentro de la aplicación (28).
 - `test_solicitudes.py` · solicitudes del alumno (justificante, boleta, constancia), atención de Control escolar, notificaciones del alumno, QR del justificante y privacidad (59).
 - `test_fusion.py` · fusión de grupos de dos licenciaturas: calendario, docente, calificaciones por plan, portal y Control escolar (30).
+- `test_credencial.py` · credencial nueva: PDF (tarjeta y hoja carta), foto circular, nombre largo, vista previa y portal (15). Usa `/tmp/cred_replay.py` para el registro de dibujo; adáptalo a tu ruta.
+- `test_plan_nuevo.py` · crear planes nuevos (diálogo y archivos), que aparezcan en todos los módulos y sesiones, plan predeterminado que no llegaba y permisos (31).
+- `test_resguardos.py` · títulos en resguardo: registro, edición, entrega, acuses en PDF, filtros, CSV, permisos y autorización para quitar (47).
+- `test_resguardos_zip.py` · carga de escaneos de resguardo desde un ZIP: asignación por matrícula, nombre y palabra, reemplazo, registros nuevos y permisos (33).
+- `test_cert_resguardo.py` · certificados en resguardo de Acuerdo 286: registro, certificado ya cargado, entrega, acuses, ZIP, permisos del módulo y autorización para quitar (37).
+- `test_cobranza.py` · avisos de adeudo y bloqueo por falta de pago: cálculo de colegiaturas vencidas, tres avisos, abonos, bloqueo, mensaje al iniciar sesión, desbloqueo, pausas, exenciones y permisos (56). Usa un reloj simulado (`LF_RELOJ_ARCHIVO`).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

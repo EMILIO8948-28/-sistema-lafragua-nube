@@ -11,7 +11,7 @@
     if(!u||!p){$("lgE").textContent="Escribe tu usuario y tu contraseña.";return}
     $("lgGo").disabled=true;
     try{var r=await llama("POST","/api/login",{u:u,clave:p});
-      if(!r.ok){$("lgE").textContent=r.j.error||"No se pudo iniciar sesión.";$("lgP").value="";}
+      if(!r.ok){var le=$("lgE");le.textContent=r.j.error||"No se pudo iniciar sesión.";le.style.cssText=r.j.bloqueado?"padding:12px;border:1px solid var(--bad);border-radius:8px;background:rgba(180,40,40,.08);color:#8a1c1c;font-weight:600;line-height:1.45":"";$("lgP").value="";}
       else{location.reload();return}
     }catch(e){$("lgE").textContent="No se pudo conectar con el servidor."}
     $("lgGo").disabled=false;

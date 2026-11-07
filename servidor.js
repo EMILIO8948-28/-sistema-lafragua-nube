@@ -136,6 +136,7 @@ function sesionDe(req) {
   const s = q.getSes.get(sha(t)), ahora = Date.now(); if (!s) return null;
   if (s.expira < ahora || ahora - s.ultimo > IDLE_MS) { q.borSes.run(s.token); return null; }
   const u = q.usr.get(s.u); if (!u) { q.borSes.run(s.token); return null; }
+  if (u.rol === 'alumno' && bloqueadoPorPago(u.alumno)) { q.borSes.run(s.token); return null; }
   if (ahora - s.ultimo > 60000) q.tocaSes.run(ahora, s.token);
   const modulos = parseModulos(u.modulos);
   return { u: u.u, name: u.nombre, rol: u.rol, doc: u.doc || '', modulos, perm: permisosDe(u.rol, modulos), alumno: u.alumno || '', forzar: !!u.forzar, _token: s.token };
@@ -151,15 +152,15 @@ const listaUsuarios = () => q.usrs.all().map(x => publicoUsuario(x));
    Cada usuario tiene un nivel por módulo: "ver" (solo lectura) o "editar" (lectura y escritura).
    L = colecciones que lee; E = colecciones que además escribe cuando el nivel es "editar". */
 const MODULOS = {
-  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias'], E: ['ledger', 'meta', 'constancias'], plans: true },
+  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'cobranza', 'avisos'], E: ['ledger', 'meta', 'constancias'], plans: true },
   corte:        { L: ['gastos', 'cortes', 'ledger', 'students'], E: ['gastos', 'cortes'], plans: true },
   estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'egresados'], E: [], plans: true, nomina: true },
   ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
   inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
-  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta', 'planeaciones'], plans: true, archivos: true },
+  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'resguardos'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos'], plans: true, archivos: true },
   constancias:  { L: ['constancias', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
   acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
-  a286:         { L: ['acuerdo286'], E: ['acuerdo286', 'meta'], archivos: true },
+  a286:         { L: ['acuerdo286', 'resguardos286'], E: ['acuerdo286', 'meta', 'resguardos286'], archivos: true },
   titulaciones: { L: ['titulaciones'], E: ['titulaciones', 'meta'], archivos: true },
   nomina_doc:   { L: ['nomina', 'docentes', 'materias'], E: ['nomina', 'meta'], nomina: true, nominaE: true },
   nomina_adm:   { L: ['empleados', 'nomina_admin'], E: ['empleados', 'nomina_admin', 'meta'] },
@@ -201,7 +202,7 @@ function filtraAlumno(s, col, id, data, ctx) {
     case 'students': { if (id !== sid) return null; const o = {}; CAMPOS_ALUMNO.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'ledger': { if (id !== sid) return null; return { pagos: (data.pagos || []).map(g => { const o = Object.assign({}, g); delete o.by; delete o.confPor; return o; }) }; }
     case 'calif': case 'constancias': case 'egresados': case 'fotos': return id === sid ? data : null;
-    case 'solicitudes': return data.sid === sid ? data : null;
+    case 'solicitudes': case 'avisos': return data.sid === sid ? data : null;
     case 'justificantes': { if (data.sid !== sid || data.estado !== 'Aprobado') return null; const o = {}; ['id', 'num', 'sid', 'nombre', 'mat', 'plan', 'sexo', 'grupo', 'fecha', 'desde', 'hasta', 'motivo', 'estado', 'solicitud'].forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'grupos': return (data.alumnos || []).includes(sid) ? Object.assign({}, data, { alumnos: [sid] }) : null;
     case 'materias': return ctx.grupos.some(g => materiaDeGrupo(data, g.d)) ? data : null;
@@ -213,7 +214,7 @@ function filtraAlumno(s, col, id, data, ctx) {
 }
 function eventoAlumno(s, c, id) {
   if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos'].includes(c)) return id === s.alumno;
-  if (c === 'solicitudes' || c === 'justificantes') { const r = q.uno.get(c, id || ''); if (!r) return false; try { return JSON.parse(r.data).sid === s.alumno; } catch (e) { return false; } }
+  if (c === 'solicitudes' || c === 'justificantes' || c === 'avisos') { const r = q.uno.get(c, id || ''); if (!r) return false; try { return JSON.parse(r.data).sid === s.alumno; } catch (e) { return false; } }
   if (['grupos', 'materias', 'docentes', 'catalogo'].includes(c)) return true;
   if (c === 'config') return id === 'plans' || id === 'app';
   return false;
@@ -249,7 +250,7 @@ function puedeArchivos(s, privado) {
   if (s.rol === 'alumno') return false;
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
-  if (privado) return P.expedientes === 'editar' || P.docente === 'editar' || P.escolar === 'editar';
+  if (privado) return P.expedientes === 'editar' || P.docente === 'editar' || P.escolar === 'editar' || P.a286 === 'editar';
   return Object.keys(P).some(m => P[m] === 'editar' && MODULOS[m] && MODULOS[m].archivos && !MODULOS[m].privados);
 }
 const CAMPOS_DOCENTE = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'sexo', 'nuevo'];
@@ -571,6 +572,7 @@ async function api(req, res, partes) {
     let ok = false;
     if (usr) ok = claveOk(clave, usr); else hashClave(clave, 'sin-usuario-sal');
     if (!ok) { falla('ip|' + ip, 900000); falla('u|' + ip + '|' + u, 900000); audita(u, req, 'Inicio de sesión fallido'); await dormir(400); return responde(res, 401, { error: 'Usuario o contraseña incorrectos.' }); }
+    if (usr.rol === 'alumno' && bloqueadoPorPago(usr.alumno)) { intentos.delete('u|' + ip + '|' + u); audita(usr.u, req, 'Inicio de sesión rechazado: acceso bloqueado por falta de pago'); return responde(res, 403, { error: MSG_BLOQUEO, bloqueado: true }); }
     intentos.delete('u|' + ip + '|' + u); nuevaSesion(req, res, usr.u); audita(usr.u, req, 'Inicio de sesión');
     return responde(res, 200, { usuario: publicoUsuario(usr) });
   }
@@ -602,7 +604,7 @@ async function api(req, res, partes) {
   }
   if (tipo === 'col' && m === 'GET' && NOMBRE_OK.test(a || '')) {
     if (s.rol === 'alumno') {
-      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes'].includes(a)) return responde(res, 200, { docs: [] });
+      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes', 'avisos'].includes(a)) return responde(res, 200, { docs: [] });
       const ctx = contextoAlumno(s), docs = [];
       q.lista.all(a).forEach(r => { const d = filtraAlumno(s, a, r.id, JSON.parse(r.data), ctx); if (d) docs.push({ id: r.id, data: d }); });
       return responde(res, 200, { docs });
@@ -614,9 +616,10 @@ async function api(req, res, partes) {
     if (m === 'GET' && s.rol === 'alumno') { const r0 = q.uno.get(a, b), d0 = r0 ? filtraAlumno(s, a, b, JSON.parse(r0.data), contextoAlumno(s)) : null; return responde(res, 200, d0 ? { exists: true, data: d0 } : { exists: false, data: null }); }
     if (m === 'GET') { if (!puedeLeer(s, a, b)) return responde(res, 200, { exists: false, data: null }); const r = q.uno.get(a, b); return responde(res, 200, r ? { exists: true, data: reduce(s, a, JSON.parse(r.data)) } : { exists: false, data: null }); }
     if (s.rol === 'alumno' && a === 'solicitudes' && (m === 'PUT' || m === 'PATCH')) return guardaSolicitudAlumno(s, req, res, b, m);
+    if (s.rol === 'alumno' && a === 'avisos' && m === 'PATCH') return guardaAvisoLeido(s, req, res, b);
     if (m === 'PUT' || m === 'PATCH' || m === 'DELETE') {
       if (!puedeEscribir(s, a, b)) { audita(s.u, req, 'Escritura denegada', m + ' ' + a + '/' + b); return responde(res, 403, { error: 'No tienes permiso para hacer esto.' }); }
-      if (m === 'DELETE') { const r0 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'DELETE', col: a, id: b, viejo: r0 ? JSON.parse(r0.data) : null })) return; q.borra.run(a, b); difunde(a, b); return responde(res, 200, { ok: true }); }
+      if (m === 'DELETE') { const r0 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'DELETE', col: a, id: b, viejo: r0 ? JSON.parse(r0.data) : null })) return; q.borra.run(a, b); difunde(a, b); cobHook(a, b); return responde(res, 200, { ok: true }); }
       let cuerpo; try { cuerpo = JSON.parse((await leeCuerpo(req, 6 * 1024 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
       if (cuerpo === null || typeof cuerpo !== 'object' || Array.isArray(cuerpo)) return responde(res, 400, { error: 'Se esperaba un objeto' });
       let nuevo = cuerpo; if (m === 'PATCH') { const r = q.uno.get(a, b); nuevo = Object.assign(r ? JSON.parse(r.data) : {}, cuerpo); }
@@ -633,7 +636,7 @@ async function api(req, res, partes) {
         const rc = q.uno.get(a, b), vc = rc ? JSON.parse(rc.data) : {}, rp = q.uno.get('planeaciones', b);
         if (rp && JSON.stringify(vc.items || []) !== JSON.stringify(nuevo.items || [])) { const dp = JSON.parse(rp.data); if (dp.estado === 'aprobada' || dp.estado === 'denegada') { dp.estado = 'pendiente'; delete dp.revisor; delete dp.revFecha; delete dp.motivo; reabre = dp; } }
       }
-      q.pon.run(a, b, JSON.stringify(nuevo), Date.now()); difunde(a, b);
+      q.pon.run(a, b, JSON.stringify(nuevo), Date.now()); difunde(a, b); cobHook(a, b);
       if (reabre) { q.pon.run('planeaciones', b, JSON.stringify(reabre), Date.now()); difunde('planeaciones', b); }
       return responde(res, 200, { ok: true });
     }
@@ -646,7 +649,7 @@ async function api(req, res, partes) {
   }
   if (tipo === 'archivo') {
     const privSolicitado = req.headers['x-privado'] === '1';
-    if (m === 'DELETE') { const inf = q.uArch.get(a || ''); if (!puedeArchivos(s, !!(inf && inf.privado))) return responde(res, 403, { error: 'No tienes permiso para quitar archivos.' }); if (inf && inf.privado && s.rol !== 'admin' && inf.dueno !== s.u && !((inf.cat === 'planeacion' || inf.cat === 'solicitud') ? nivel(s, 'escolar') === 'editar' : nivel(s, 'expedientes') === 'editar')) return responde(res, 403, { error: 'Ese archivo no es tuyo.' }); }
+    if (m === 'DELETE') { const inf = q.uArch.get(a || ''); if (!puedeArchivos(s, !!(inf && inf.privado))) return responde(res, 403, { error: 'No tienes permiso para quitar archivos.' }); if (inf && inf.privado && s.rol !== 'admin' && inf.dueno !== s.u && !(inf.cat === 'certificado' ? nivel(s, 'a286') === 'editar' : (inf.cat === 'planeacion' || inf.cat === 'solicitud' || inf.cat === 'resguardo') ? nivel(s, 'escolar') === 'editar' : nivel(s, 'expedientes') === 'editar')) return responde(res, 403, { error: 'Ese archivo no es tuyo.' }); }
     else if (s.rol === 'alumno') {
       /* Un alumno solo puede anexar comprobantes (PDF, JPG o PNG, hasta 10 MB) a sus solicitudes */
       if (m !== 'POST' || a || !privSolicitado || req.headers['x-categoria'] !== 'solicitud') return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
@@ -655,7 +658,7 @@ async function api(req, res, partes) {
     }
     else if (!puedeArchivos(s, privSolicitado)) return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
     if (m === 'DELETE' && ID_ARCH.test(a || '') && s.rol !== 'admin') { const inf2 = q.uArch.get(a); if (q.archRef.get('%' + a + '%') && protegeBorrado(s, req, res, { accion: 'ARCHIVO', col: 'archivo', id: a, descripcion: 'Eliminar el archivo «' + ((inf2 && inf2.nombre) || a) + '»' })) return; }
-    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (['planeacion', 'solicitud'].includes(req.headers['x-categoria']) ? req.headers['x-categoria'] : '');
+    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (['planeacion', 'solicitud', 'resguardo', 'certificado'].includes(req.headers['x-categoria']) ? req.headers['x-categoria'] : '');
     if (m === 'POST' && !a) { const buf = await leeCuerpo(req, s.rol === 'alumno' ? 10 * 1024 * 1024 : 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id, sizeBytes: buf.length }); }
     if (ID_ARCH.test(a || '')) {
       if (m === 'PUT') { const buf = await leeCuerpo(req, 26 * 1024 * 1024); fs.writeFileSync(path.join(ARCH, a), buf); q.ponArch.run(a, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id: a, sizeBytes: buf.length }); }
@@ -734,6 +737,7 @@ async function api(req, res, partes) {
     const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(s.u, usr.nombre, usr.rol, usr.doc, salt, hashClave(c.nueva, salt), usr.creado, usr.modulos || null); q.borSesUmenos.run(s.u, s._token); q.setForzar.run(0, s.u); q.setTemporal.run(null, s.u);
     audita(s.u, req, 'Cambió su contraseña'); return responde(res, 200, { ok: true });
   }
+  if (tipo === 'cobranza') return rutaCobranza(s, req, res, m, a);
   if (tipo === 'borrados') {
     if (m === 'GET' && !a) {
       if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
@@ -809,7 +813,7 @@ const servidor = http.createServer(async (req, res) => {
       const id = ruta.slice(7), f = path.join(ARCH, id);
       if (!ID_ARCH.test(id) || !fs.existsSync(f)) { res.writeHead(404); return res.end('No encontrado'); }
       const info = q.uArch.get(id) || {};
-      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || ((info.cat === 'planeacion' || info.cat === 'solicitud') ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
+      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || (info.cat === 'certificado' ? nivel(sBlob, 'a286') === 'editar' : (info.cat === 'planeacion' || info.cat === 'solicitud' || info.cat === 'resguardo') ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
       if (info.privado && !verPriv) { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Este archivo es confidencial: solo lo puede ver el Administrador.'); }
       res.writeHead(200, { 'Content-Type': info.tipo || 'application/octet-stream', 'Content-Disposition': "inline; filename*=UTF-8''" + encodeURIComponent(info.nombre || id), 'Cache-Control': 'private, no-store' });
       return fs.createReadStream(f).pipe(res);
@@ -856,6 +860,201 @@ function precarga() {
     if (hechos.length) console.log('Precarga aplicada:', f, hechos.join('; '));
   }
 }
+
+let cobUltimaCorrida = '';
+/* ---------- Cobranza: avisos de adeudo y bloqueo del acceso por falta de pago ----------
+   Cuando un alumno con acceso a la plataforma debe `umbral` colegiaturas vencidas (2 por defecto), se le envía un aviso a su portal pidiéndole que
+   pase a Control escolar; si pasados los plazos no hace ni un abono tras tres avisos, se bloquea su usuario. Solo actúa si el Administrador la activa. */
+const TZ_MX = 'America/Mexico_City';
+const fmtFechaMx = new Intl.DateTimeFormat('en-CA', { timeZone: TZ_MX, year: 'numeric', month: '2-digit', day: '2-digit' });
+/* Solo para pruebas: LF_RELOJ_ARCHIVO apunta a un archivo con la fecha simulada (AAAA-MM-DD) */
+const RELOJ_PRUEBA = ENV.LF_RELOJ_ARCHIVO || '';
+const hoyMx = ms => { if (RELOJ_PRUEBA && !ms) { try { const t = fs.readFileSync(RELOJ_PRUEBA, 'utf8').trim(); if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t; } catch (e) {} } return fmtFechaMx.format(new Date(ms || Date.now())); };
+const horaMx = () => RELOJ_PRUEBA ? 12 : parseInt(new Intl.DateTimeFormat('en-GB', { timeZone: TZ_MX, hour: '2-digit', hourCycle: 'h23' }).format(new Date()), 10);
+const sumaDias = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const dineroMx = n => '$' + Number(n).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fechaLargaMx = iso => new Date(iso + 'T12:00:00Z').toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const MESES_C = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+const COB0 = { activa: false, umbral: 2, diaLimite: 10, intervaloDias: 7, graciaDias: 7, reinicioDias: 30 };
+const MSG_BLOQUEO = 'Tu acceso a la plataforma se ha bloqueado por falta de pago. Para recuperarlo, pasa a Control escolar a regularizar tu situación. De no hacerlo, podría proceder una baja temporal.';
+function leeDoc(col, id) { const r = q.uno.get(col, id); if (!r) return null; try { return JSON.parse(r.data); } catch (e) { return null; } }
+function cobCfg() {
+  const c = Object.assign({}, COB0, leeDoc('config', 'cobranza') || {});
+  const n = (v, d, lo, hi) => { v = Math.floor(Number(v)); return Number.isFinite(v) ? Math.min(Math.max(v, lo), hi) : d; };
+  return { activa: c.activa === true, umbral: n(c.umbral, 2, 1, 12), diaLimite: n(c.diaLimite, 10, 1, 28), intervaloDias: n(c.intervaloDias, 7, 1, 60), graciaDias: n(c.graciaDias, 7, 1, 60), reinicioDias: n(c.reinicioDias, 30, 0, 365) };
+}
+const mesAnioC = (k, ing) => { const t = 8 + k - 1; return MESES_C[t % 12] + ' ' + (ing + Math.floor(t / 12)); };
+const cicloMx = hoy => { const y = +hoy.slice(0, 4), m = +hoy.slice(5, 7); return m >= 9 ? y : y - 1; };
+function fechaLimiteCol(k, ing, dia) { const t = 8 + k - 1, y = ing + Math.floor(t / 12), m = (t % 12) + 1; return y + '-' + String(m).padStart(2, '0') + '-' + String(dia).padStart(2, '0'); }
+/* Misma regla de cargos que la pantalla: inscripción, reinscripciones, colegiaturas mensuales, titulación, extraordinarios y constancias (con beca) */
+function cargosAlumnoSrv(st, planes, EXTRA, cal, con, hoy) {
+  const P = (planes || []).find(p => p.k === st.programa) || null;
+  let L = [];
+  if (!P) L.push({ id: 'c0', c: 'Colegiatura', m: st.total || 0 });
+  else {
+    const ing = st.ingreso || cicloMx(hoy), C = Math.ceil(P.n / 4); let k = 0;
+    if (st.nuevo !== false && P.ins > 0) L.push({ id: 'i', c: 'Inscripción', m: P.ins });
+    for (let q2 = 1; q2 <= C; q2++) {
+      if (q2 > 1 && P.rein > 0) L.push({ id: 'r' + q2, c: 'Reinscripción cuatrimestre ' + q2 + ' (' + mesAnioC(4 * (q2 - 1) + 1, ing) + ')', m: P.rein });
+      for (let i = 0; i < 4 && k < P.n; i++) { k++; L.push({ id: 'c' + k, c: 'Colegiatura ' + mesAnioC(k, ing), k, m: P.col }); }
+    }
+    if (P.tit > 0) L.push({ id: 't', c: 'Pago de derecho a título', m: P.tit });
+  }
+  if (EXTRA && EXTRA.costo > 0) (cal.items || []).filter(x => x.cal != null && x.cal < EXTRA.min && (!x.hist || x.exCobro)).forEach(x => L.push({ id: 'x' + x.mid, c: 'Examen extraordinario: ' + x.mat + ' (' + x.per + ')', m: EXTRA.costo }));
+  (con.items || []).forEach(x => L.push({ id: 'k' + x.id, c: 'Constancia de estudios (' + x.num + ')', m: x.monto }));
+  const b = st.beca;
+  if (b && b.monto > 0) L = L.map(x => /^Colegiatura/.test(x.c) ? Object.assign({}, x, { m: Math.max(Math.round((x.m - b.monto) * 100) / 100, 0) }) : x);
+  return L;
+}
+function restanteCargos(L, pagos) {
+  const rem = L.map(c => c.m), primero = () => rem.findIndex(r => r > 0.004);
+  (pagos || []).filter(g => g.estado !== 'pendiente').forEach(g => {
+    let amt = Number(g.monto) || 0; const pon = i => { const t = Math.min(amt, rem[i]); if (t <= 0.004) return; rem[i] -= t; amt -= t; };
+    (g.cc || []).forEach(lab => { if (amt > 0.004) { const i = L.findIndex(c => c.id === lab); if (i > -1) pon(i); } });
+    let j; while (amt > 0.004 && (j = primero()) > -1) pon(j);
+  });
+  return rem;
+}
+function planesYExtra() { const d = leeDoc('config', 'plans') || {}; return { planes: d.plans || [], extra: d.extra || { costo: 300, min: 8 } }; }
+function acuerdoVigenteSrv(sid, hoy, pagos) {
+  const conf = pid => { const g = pagos.find(p => p.id === pid); return !g || g.estado !== 'pendiente'; };
+  const ok = x => !!x.pagada && (!x.pid || conf(x.pid));
+  return q.lista.all('acuerdos').some(r => {
+    try { const a = JSON.parse(r.data); if (a.sid !== sid || a.cancelado) return false; const c = a.cuotas || []; if (c.length && c.every(ok)) return false; if (c.some(x => !ok(x) && x.fecha < hoy)) return false; return true; } catch (e) { return false; }
+  });
+}
+function adeudoDe(sid, hoy, cfg, pe) {
+  const st = leeDoc('students', sid); if (!st) return null;
+  const led = leeDoc('ledger', sid) || { pagos: [] }, cal = leeDoc('calif', sid) || { items: [] }, con = leeDoc('constancias', sid) || { items: [] };
+  const ing = st.ingreso || cicloMx(hoy), L = cargosAlumnoSrv(st, pe.planes, pe.extra, cal, con, hoy), rem = restanteCargos(L, led.pagos || []), meses = [];
+  L.forEach((c, i) => { if (c.k && rem[i] > 0.004) { const v = fechaLimiteCol(c.k, ing, cfg.diaLimite); if (v < hoy) meses.push({ c: c.c, rem: Math.round(rem[i] * 100) / 100, vence: v }); } });
+  return { st, pagos: led.pagos || [], n: meses.length, total: Math.round(meses.reduce((a, x) => a + x.rem, 0) * 100) / 100, meses };
+}
+function textoAviso(n, est, ad, cfg, hoy) {
+  const nom = String(est.nombre || '').trim().split(/\s+/)[0] || '', k = ad.n, lista = ad.meses.map(m => m.c.replace(/^Colegiatura /, '') + ': ' + dineroMx(m.rem)).join('; ');
+  const base = 'a la fecha tienes adeudo de ' + k + (k === 1 ? ' colegiatura' : ' colegiaturas') + ' (' + lista + '), por un total de ' + dineroMx(ad.total) + '.';
+  if (n === 1) return { titulo: 'Aviso de adeudo', mensaje: 'Hola, ' + nom + '. De acuerdo con nuestros registros, ' + base + ' Te pedimos amablemente que pases a Control escolar a realizar tu pago o, al menos, un abono para regularizar tu situación. ¡Gracias por tu apoyo!' };
+  if (n === 2) return { titulo: 'Recordatorio de adeudo (2 de 3)', mensaje: 'Hola, ' + nom + '. Te recordamos que ' + base + ' Aún no registramos tu pago ni un abono. Te invitamos amablemente a pasar a Control escolar para regularizar tu situación.' };
+  return { titulo: 'Último aviso de adeudo (3 de 3)', mensaje: 'Hola, ' + nom + '. Este es tu último aviso: ' + base + ' Si antes del ' + fechaLargaMx(sumaDias(hoy, cfg.graciaDias)) + ' no pasas a Control escolar a realizar al menos un abono, tu usuario y contraseña de la plataforma se bloquearán por falta de pago y, de no regularizar tu situación, podría proceder una baja temporal.' };
+}
+function guardaAviso(id, doc) { q.pon.run('avisos', id, JSON.stringify(doc), Date.now()); difunde('avisos', id); }
+function bloqueadoPorPago(sid) { if (!sid) return false; const d = leeDoc('cobranza', sid); return !!(d && d.estado === 'bloqueado'); }
+/* Evalúa a un alumno. opciones: { simular } no escribe nada; { alivio } solo permite cerrar avisos o desbloquear (cuando se registra un pago). Devuelve la acción propuesta/ejecutada. */
+function evaluaAlumnoCob(sid, ctx, op) {
+  op = op || {};
+  const { hoy, cfg, pe } = ctx, cuentas = q.usrDeAlumno.all(sid); if (!cuentas.length) return null;
+  const ad = adeudoDe(sid, hoy, cfg, pe); if (!ad) return null;
+  const previo = leeDoc('cobranza', sid), est = Object.assign({ sid, estado: 'ok', ciclo: 0, avisos: [] }, previo || {});
+  est.mat = ad.st.mat; est.nombre = ad.st.nombre; est.plan = ad.st.programa || ad.st.carrera || ''; est.adeudo = { n: ad.n, total: ad.total, meses: ad.meses }; est.revisado = hoy;
+  const eg = leeDoc('egresados', sid), egresado = !!(eg && !eg.revertido), acVig = !est.exento && !egresado && acuerdoVigenteSrv(sid, hoy, ad.pagos), exento = !!est.exento || egresado || acVig, motivoEx = est.exento ? 'manual' : egresado ? 'egresado' : acVig ? 'acuerdo de pago vigente' : '';
+  const abonoDesde = f => ad.pagos.some(g => g.estado !== 'rechazado' && Number(g.monto) > 0 && String(g.confFecha || g.fecha || '') >= f);
+  let accion = '';
+  if (est.estado === 'bloqueado') {
+    if (exento || ad.n < cfg.umbral) accion = 'desbloqueo:' + (exento ? 'exento' : 'al corriente');
+    else if (abonoDesde(est.bloqueadoEn || hoy)) accion = 'desbloqueo:abono';
+  } else if (est.estado === 'avisando') {
+    const av = est.avisos || [];
+    if (exento) accion = 'cierre:exento';
+    else if (ad.n < cfg.umbral) accion = 'cierre:al corriente';
+    else if (abonoDesde(est.inicio || hoy)) accion = 'cierre:abono';
+    else if (!op.alivio && av.length < 3 && hoy >= sumaDias(av[av.length - 1].fecha, cfg.intervaloDias)) accion = 'aviso';
+    else if (!op.alivio && av.length >= 3 && hoy >= sumaDias(av[2].fecha, cfg.graciaDias)) accion = 'bloqueo';
+  } else {
+    const pausa = est.cerrado && est.cerrado.fecha && hoy < sumaDias(est.cerrado.fecha, cfg.reinicioDias);
+    if (!op.alivio && !exento && ad.n >= cfg.umbral && !pausa && !abonoDesde(hoy)) accion = 'inicio';
+  }
+  const resumen = { sid, mat: est.mat, nombre: est.nombre, plan: est.plan, adeudo: est.adeudo, estado: est.estado, ciclo: est.ciclo, avisos: est.avisos, bloqueadoEn: est.bloqueadoEn || null, cerrado: est.cerrado || null, exento: exento, motivoExento: motivoEx, exentoInfo: est.exento || null, accion };
+  if (op.simular) return resumen;
+  const [tipo, motivo] = accion.split(':');
+  if (tipo === 'inicio') { est.estado = 'avisando'; est.ciclo = (previo ? previo.ciclo || 0 : 0) + 1; est.inicio = hoy; est.avisos = []; delete est.cerrado; }
+  if (tipo === 'inicio' || tipo === 'aviso') {
+    const n = (est.avisos || []).length + 1, t = textoAviso(n, est, ad, cfg, hoy), id = sid + '-' + est.ciclo + '-' + n;
+    guardaAviso(id, { sid, tipo: 'adeudo', n, ciclo: est.ciclo, fecha: hoy, creada: new Date().toISOString(), titulo: t.titulo, mensaje: t.mensaje, meses: ad.meses, total: ad.total, leida: false });
+    est.avisos = (est.avisos || []).concat([{ n, fecha: hoy, id }]); audita(null, null, 'Cobranza: aviso ' + n + ' de 3', est.mat + ' · ' + est.nombre + ' · adeuda ' + ad.n + ' colegiaturas');
+  } else if (tipo === 'bloqueo') {
+    est.estado = 'bloqueado'; est.bloqueadoEn = hoy; cuentas.forEach(c => q.borSesU.run(c.u));
+    audita(null, null, 'Cobranza: acceso bloqueado por falta de pago', est.mat + ' · ' + est.nombre);
+  } else if (tipo === 'cierre' || tipo === 'desbloqueo') {
+    const bloq = est.estado === 'bloqueado'; est.estado = 'ok'; est.cerrado = { fecha: hoy, motivo }; delete est.bloqueadoEn;
+    if (bloq) { guardaAviso(sid + '-' + est.ciclo + '-d' + Date.now(), { sid, tipo: 'info', n: 0, ciclo: est.ciclo, fecha: hoy, creada: new Date().toISOString(), titulo: 'Acceso restablecido', mensaje: 'Gracias por pasar a regularizar tu situación. Tu acceso a la plataforma está activo de nuevo.', leida: false }); audita(null, null, 'Cobranza: acceso restablecido (' + motivo + ')', est.mat + ' · ' + est.nombre); }
+  }
+  const previoTxt = previo ? JSON.stringify(previo) : '';
+  if (!previo && ad.n === 0 && !accion) return resumen;
+  if (JSON.stringify(est) !== previoTxt) { q.pon.run('cobranza', sid, JSON.stringify(est), Date.now()); difunde('cobranza', sid); }
+  resumen.estado = est.estado; resumen.avisos = est.avisos; resumen.bloqueadoEn = est.bloqueadoEn || null; resumen.cerrado = est.cerrado || null;
+  return resumen;
+}
+function ctxCobranza() { return { hoy: hoyMx(), cfg: cobCfg(), pe: planesYExtra() }; }
+function sidsConAcceso() { const set = new Set(); q.usrAlumno.all().forEach(u => { if (u.alumno) set.add(u.alumno); }); return [...set]; }
+function corridaCobranza(op) {
+  const ctx = ctxCobranza(), out = []; if (!ctx.cfg.activa && !(op && op.simular)) return { activa: false, acciones: [] };
+  sidsConAcceso().forEach(sid => { try { const r = evaluaAlumnoCob(sid, ctx, op); if (r && r.accion) out.push(r); } catch (e) { console.error('Cobranza (' + sid + '):', e.message); } });
+  return { activa: ctx.cfg.activa, acciones: out };
+}
+const cobPend = new Set(); let cobTodos = false, cobTimer = null;
+function cobHook(col, id) {
+  if (!['ledger', 'students', 'calif', 'constancias', 'acuerdos', 'config', 'egresados'].includes(col)) return;
+  if (col === 'config') { if (id !== 'plans' && id !== 'cobranza') return; cobTodos = true; if (id === 'cobranza') cobUltimaCorrida = ''; }
+  else if (col === 'acuerdos') { const a = leeDoc('acuerdos', id); if (a && a.sid) cobPend.add(a.sid); else cobTodos = true; }
+  else cobPend.add(id);
+  clearTimeout(cobTimer);
+  cobTimer = setTimeout(() => {
+    try {
+      const ctx = ctxCobranza(); if (!ctx.cfg.activa) { cobPend.clear(); cobTodos = false; return; }
+      const sids = cobTodos ? sidsConAcceso() : [...cobPend]; cobPend.clear(); cobTodos = false;
+      sids.forEach(sid => { try { evaluaAlumnoCob(sid, ctx, { alivio: true }); } catch (e) { console.error('Cobranza (' + sid + '):', e.message); } });
+    } catch (e) { console.error('Cobranza:', e.message); }
+  }, 2500); cobTimer.unref && cobTimer.unref();
+}
+function programaCobranza() {
+  const rev = () => { try { const hoy = hoyMx(); if (hoy !== cobUltimaCorrida && horaMx() >= 7) { cobUltimaCorrida = hoy; corridaCobranza({}); } } catch (e) { console.error('Cobranza:', e.message); } };
+  setTimeout(rev, 45000).unref(); setInterval(rev, 15 * 60000).unref();
+}
+function guardaAvisoLeido(s, req, res, id) {
+  return leeJSON(req).then(c => {
+    const d = leeDoc('avisos', id); if (!d || d.sid !== s.alumno) return responde(res, 403, { error: 'No es tu aviso.' });
+    if (!c || Object.keys(c).some(k => k !== 'leida') || typeof c.leida !== 'boolean') return responde(res, 403, { error: 'Solo puedes marcar tus avisos como leídos.' });
+    d.leida = c.leida; q.pon.run('avisos', id, JSON.stringify(d), Date.now()); difunde('avisos', id); return responde(res, 200, { ok: true });
+  });
+}
+async function rutaCobranza(s, req, res, m, a) {
+  const P = s.perm || {}, esAdm = s.rol === 'admin', ver = esAdm || (P.pagos && P.pagos !== 'none'), edita = esAdm || P.pagos === 'editar';
+  if (s.rol === 'alumno' || !ver) return responde(res, 403, { error: 'No tienes permiso para ver la cobranza.' });
+  if (m === 'GET' && a === 'vista') {
+    const ctx = ctxCobranza(), filas = [];
+    sidsConAcceso().forEach(sid => { try { const r = evaluaAlumnoCob(sid, ctx, { simular: true }); if (r) filas.push(r); } catch (e) {} });
+    return responde(res, 200, { cfg: ctx.cfg, hoy: ctx.hoy, filas });
+  }
+  if (m === 'POST' && a === 'accion') {
+    const c = await leeJSON(req), ac = String(c.accion || ''), sid = String(c.sid || ''), ctx = ctxCobranza(), hoy = ctx.hoy;
+    if (ac === 'evaluar') {
+      if (!esAdm) return responde(res, 403, { error: 'Solo el Administrador puede ejecutar la revisión.' });
+      if (!ctx.cfg.activa) return responde(res, 409, { error: 'La cobranza automática está desactivada.' });
+      const r = corridaCobranza({}); audita(s.u, req, 'Cobranza: revisión manual', r.acciones.length + ' acciones'); return responde(res, 200, { ok: true, acciones: r.acciones.length });
+    }
+    const st = leeDoc('students', sid); if (!st || !q.usrDeAlumno.all(sid).length) return responde(res, 404, { error: 'No se encontró al alumno o no tiene acceso a la plataforma.' });
+    const est = Object.assign({ sid, estado: 'ok', ciclo: 0, avisos: [] }, leeDoc('cobranza', sid) || {}); est.mat = st.mat; est.nombre = st.nombre;
+    if (ac === 'desbloquear') {
+      if (!edita) return responde(res, 403, { error: 'No tienes permiso para desbloquear.' });
+      if (est.estado !== 'bloqueado') return responde(res, 409, { error: 'Ese alumno no está bloqueado.' });
+      est.estado = 'ok'; est.cerrado = { fecha: hoy, motivo: 'desbloqueo manual (' + s.name + ')' }; delete est.bloqueadoEn;
+      guardaAviso(sid + '-' + est.ciclo + '-d' + Date.now(), { sid, tipo: 'info', n: 0, ciclo: est.ciclo, fecha: hoy, creada: new Date().toISOString(), titulo: 'Acceso restablecido', mensaje: 'Control escolar restableció tu acceso a la plataforma. Te recordamos pasar a regularizar tus pagos.', leida: false });
+      audita(s.u, req, 'Cobranza: acceso desbloqueado manualmente', st.mat + ' · ' + st.nombre);
+    } else if (ac === 'exentar') {
+      if (!esAdm) return responde(res, 403, { error: 'Solo el Administrador puede exentar a un alumno.' });
+      const motivo = String(c.motivo || '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, 160); if (motivo.length < 3) return responde(res, 400, { error: 'Escribe el motivo de la exención.' });
+      est.exento = { por: s.name, fecha: hoy, motivo }; if (est.estado !== 'ok') { est.estado = 'ok'; est.cerrado = { fecha: hoy, motivo: 'exención' }; delete est.bloqueadoEn; }
+      audita(s.u, req, 'Cobranza: alumno exento', st.mat + ' · ' + motivo);
+    } else if (ac === 'quitar-exencion') {
+      if (!esAdm) return responde(res, 403, { error: 'Solo el Administrador puede quitar la exención.' });
+      delete est.exento; audita(s.u, req, 'Cobranza: exención retirada', st.mat);
+    } else return responde(res, 400, { error: 'Acción no reconocida.' });
+    q.pon.run('cobranza', sid, JSON.stringify(est), Date.now()); difunde('cobranza', sid);
+    return responde(res, 200, { ok: true });
+  }
+  return responde(res, 404, { error: 'No existe.' });
+}
+
 try { precarga(); } catch (e) { console.error('No se pudo aplicar la precarga:', e.message); }
 
 servidor.listen(PUERTO, '0.0.0.0', () => {
@@ -864,7 +1063,7 @@ servidor.listen(PUERTO, '0.0.0.0', () => {
     if (!ENV.LF_SETUP_TOKEN) { SETUP_AUTO = crypto.randomBytes(9).toString('hex'); console.log('==> Aún no hay usuarios. Código de configuración inicial: ' + SETUP_AUTO + ' (usa la página /configurar)'); }
     else console.log('==> Aún no hay usuarios. Abre /configurar y usa el código de configuración de tus variables de entorno (LF_SETUP_TOKEN).');
   }
-  respaldoDiario(); setInterval(respaldoDiario, 3600000).unref(); aseguraLibs();
+  respaldoDiario(); setInterval(respaldoDiario, 3600000).unref(); aseguraLibs(); programaCobranza();
 });
 function cierra() { try { respaldar(); } catch (e) {} try { db.close(); } catch (e) {} process.exit(0); }
 process.on('SIGINT', cierra); process.on('SIGTERM', cierra);

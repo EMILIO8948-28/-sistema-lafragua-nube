@@ -1,0 +1,883 @@
+{
+ "app": "colegiaturas-universidad-lafragua",
+ "formato": 1,
+ "exportado": "2026-11-07T16:06:47.000Z",
+ "exportadoPor": "Carga del plan de estudios de Enfermería",
+ "colecciones": {
+  "catalogo": {
+   "enfermeria": {
+    "plan": "Enfermería",
+    "items": [
+     {
+      "id": "enf-anatomia-humana-i",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Anatomía humana I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-histologia",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Histología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-epidemiologia",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Epidemiología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-introduccion-a-la-enfermeria",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Introducción a la enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-fisiologia",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Fisiología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-tecnicas-de-investigacion",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Técnicas de investigación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-neurofisiologia",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Neurofisiología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-bioquimica",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Bioquímica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-microbiologia",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Microbiología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-tecnicas-formativas-en-enfermeria",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Técnicas formativas en enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-farmacologia",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Farmacología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-anatomia-humana-ii",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Anatomía humana II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-patologia-i",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Patología I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-etimologias-tecnicas-en-enfermeria",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Etimologías técnicas en enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-embriologia",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Embriología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-propedeutica-de-enfermeria",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Propedéutica de enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-radiologia",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Radiología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-microbiologia-ii",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Microbiología II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-bioestadistica",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Bioestadística",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermeria-comunitaria",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Enfermería comunitaria",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermera-materno-infantil-i",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Enfermera materno infantil I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-introduccion-al-primer-nivel-de-atencion-a-la-salud",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Introducción al primer nivel de atención a la salud",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-sociologia-y-salud",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Sociología y salud",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-patologia-ii",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Patología II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-salud-publica",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Salud pública",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-teorias-en-enfermeria",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Teorías en enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-ecologia-salud-y-agentes-patogenos",
+      "cuat": 6,
+      "clave": "",
+      "nom": "Ecología, salud y agentes patógenos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermera-materno-infantil-ii",
+      "cuat": 6,
+      "clave": "",
+      "nom": "Enfermera materno infantil II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-la-tecnologia-al-servicio-de-la-salud",
+      "cuat": 6,
+      "clave": "",
+      "nom": "La tecnología al servicio de la salud",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-psicologia-i",
+      "cuat": 6,
+      "clave": "",
+      "nom": "Psicología I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermeria-para-ginecologia",
+      "cuat": 6,
+      "clave": "",
+      "nom": "Enfermería para ginecología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-practica-clinica-i",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Práctica clínica I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermeria-y-salud-holistica",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Enfermería y salud holística",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermera-del-nino",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Enfermera del niño",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-psicologia-ii",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Psicología II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-nutricion-basica",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Nutrición básica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-crecimiento-y-desarrollo",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Crecimiento y desarrollo",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-dietoterapia",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Dietoterapia",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermeria-de-la-rehabilitacion",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Enfermería de la rehabilitación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-educacion-para-la-salud",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Educación para la salud",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermeria-geriatrica",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Enfermería geriátrica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-practica-clinica-ii",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Práctica clínica II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-investigacion-clinica-en-enfermeria",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Investigación clínica en enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermeria-quirurgica",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Enfermería quirúrgica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-salud-mental",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Salud mental",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-bioetica-y-legislacion-en-enfermeria",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Bioética y legislación en enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-docencia-en-enfermeria",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Docencia en enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermeria-y-tanatologia",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Enfermería y tanatología",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-administracion-y-enfermeria",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Administración y enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-cuidados-paliativos",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Cuidados paliativos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-gerencia-en-enfermeria",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Gerencia en enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-enfermeria-en-urgencias",
+      "cuat": 11,
+      "clave": "",
+      "nom": "Enfermería en urgencias",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-liderazgo-en-enfermeria",
+      "cuat": 11,
+      "clave": "",
+      "nom": "Liderazgo en enfermería",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "enf-seminario-de-tesis",
+      "cuat": 11,
+      "clave": "",
+      "nom": "Seminario de tesis",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     }
+    ]
+   }
+  }
+ },
+ "documentos": {},
+ "contenidos": {
+  "enf-anatomia-humana-i": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá la organización general del cuerpo humano y la estructura de los sistemas tegumentario, esquelético, muscular, cardiovascular y respiratorio, con la finalidad de identificar sus relaciones y fundamentar los cuidados de enfermería.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA ANATOMÍA HUMANA\n   1.1 Concepto, divisiones y ramas de la anatomía\n   1.2 Posición anatómica, planos, ejes y términos de dirección\n   1.3 Niveles de organización: célula, tejido, órgano, aparato y sistema\n   1.4 Regiones y cavidades corporales\n\n2. SISTEMA TEGUMENTARIO\n   2.1 Estructura de la piel: epidermis, dermis e hipodermis\n   2.2 Anexos cutáneos: pelo, uñas y glándulas\n   2.3 Funciones de la piel e importancia en el cuidado de enfermería\n\n3. SISTEMA ESQUELÉTICO\n   3.1 Estructura, clasificación y funciones de los huesos\n   3.2 Esqueleto axial y esqueleto apendicular\n   3.3 Articulaciones: clasificación, estructura y movimientos\n\n4. SISTEMA MUSCULAR\n   4.1 Tipos de tejido muscular y su estructura\n   4.2 Principales músculos de cabeza, cuello, tronco y extremidades\n   4.3 Origen, inserción y acción muscular\n   4.4 Músculos relacionados con la aplicación de inyecciones\n\n5. SISTEMA CARDIOVASCULAR\n   5.1 Corazón: situación, configuración externa e interna\n   5.2 Vascularización cardiaca y sistema de conducción\n   5.3 Arterias, venas y capilares principales\n   5.4 Circulación mayor, menor y porta\n\n6. SISTEMA RESPIRATORIO\n   6.1 Vías respiratorias superiores e inferiores\n   6.2 Pulmones, pleuras y mediastino\n   6.3 Músculos de la respiración y mecánica ventilatoria\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas con apoyo de modelos, láminas o material audiovisual\n• Prácticas de laboratorio o de taller supervisadas por el docente\n• Resolución de ejercicios y casos en el aula\n• Demostración y redemostración de procedimientos\n\nDe manera independiente\n• Elaboración de reportes de las prácticas realizadas\n• Investigación bibliográfica y elaboración de mapas conceptuales\n• Elaboración de un glosario de términos\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas de laboratorio o de taller: 30%\n• Reportes y tareas independientes: 20%\n• Exposición y participación: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-histologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno distinguirá la estructura microscópica de los tejidos y órganos del cuerpo humano, con la finalidad de relacionar su organización con la función y reconocer los cambios básicos que ocurren en la enfermedad.\n\nCONTENIDO TEMÁTICO\n1. LA CÉLULA Y SU ESTUDIO\n   1.1 Introducción a la histología y sus métodos de estudio\n   1.2 Manejo del microscopio óptico\n   1.3 Técnicas de obtención, fijación y tinción de muestras\n   1.4 Estructura general de la célula y organelos\n\n2. TEJIDO EPITELIAL\n   2.1 Características generales y clasificación\n   2.2 Epitelios de revestimiento\n   2.3 Epitelios glandulares\n   2.4 Uniones intercelulares\n\n3. TEJIDO CONECTIVO\n   3.1 Células y matriz extracelular\n   3.2 Tejido conectivo laxo y denso\n   3.3 Tejido adiposo\n   3.4 Tejido cartilaginoso y tejido óseo\n   3.5 Sangre y médula ósea\n\n4. TEJIDO MUSCULAR\n   4.1 Músculo esquelético\n   4.2 Músculo cardiaco\n   4.3 Músculo liso\n\n5. TEJIDO NERVIOSO\n   5.1 Neurona y neuroglia\n   5.2 Fibras nerviosas y nervios\n   5.3 Sinapsis y ganglios\n\n6. HISTOLOGÍA DE ÓRGANOS Y SISTEMAS\n   6.1 Sistema circulatorio y linfático\n   6.2 Sistema digestivo\n   6.3 Sistema respiratorio\n   6.4 Sistema urinario\n   6.5 Piel y anexos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas con apoyo de modelos, láminas o material audiovisual\n• Prácticas de laboratorio o de taller supervisadas por el docente\n• Resolución de ejercicios y casos en el aula\n• Demostración y redemostración de procedimientos\n\nDe manera independiente\n• Elaboración de reportes de las prácticas realizadas\n• Investigación bibliográfica y elaboración de mapas conceptuales\n• Elaboración de un glosario de términos\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas de laboratorio o de taller: 30%\n• Reportes y tareas independientes: 20%\n• Exposición y participación: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-epidemiologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los conceptos y métodos básicos de la epidemiología, con la finalidad de analizar la distribución y los determinantes de las enfermedades en la población y proponer medidas de prevención y control.\n\nCONTENIDO TEMÁTICO\n1. GENERALIDADES DE LA EPIDEMIOLOGÍA\n   1.1 Concepto, objeto de estudio y usos de la epidemiología\n   1.2 Evolución histórica\n   1.3 Epidemiología descriptiva y analítica\n   1.4 Relación con la salud pública y la enfermería\n\n2. HISTORIA NATURAL DE LA ENFERMEDAD\n   2.1 Triada ecológica: agente, huésped y ambiente\n   2.2 Periodos prepatogénico y patogénico\n   2.3 Cadena epidemiológica\n   2.4 Niveles de prevención: primaria, secundaria y terciaria\n\n3. MEDICIÓN EN EPIDEMIOLOGÍA\n   3.1 Tasas, razones y proporciones\n   3.2 Incidencia y prevalencia\n   3.3 Mortalidad, morbilidad y letalidad\n   3.4 Indicadores de salud\n\n4. VIGILANCIA EPIDEMIOLÓGICA\n   4.1 Concepto y objetivos\n   4.2 Sistema Nacional de Vigilancia Epidemiológica\n   4.3 Notificación de enfermedades\n   4.4 Estudio de brotes y epidemias\n\n5. DISEÑOS DE ESTUDIOS EPIDEMIOLÓGICOS\n   5.1 Estudios descriptivos\n   5.2 Estudios de casos y controles\n   5.3 Estudios de cohorte\n   5.4 Estudios experimentales\n\n6. EPIDEMIOLOGÍA DE LAS ENFERMEDADES TRANSMISIBLES Y NO TRANSMISIBLES\n   6.1 Perfil epidemiológico de México\n   6.2 Enfermedades prevenibles por vacunación\n   6.3 Enfermedades crónico-degenerativas\n   6.4 Medidas de control y erradicación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-introduccion-a-la-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá la evolución, los fundamentos y el campo de acción de la enfermería, con la finalidad de reconocer su identidad profesional y su responsabilidad en el cuidado de la salud de las personas.\n\nCONTENIDO TEMÁTICO\n1. EVOLUCIÓN HISTÓRICA DE LA ENFERMERÍA\n   1.1 El cuidado en las civilizaciones antiguas\n   1.2 Etapas: doméstica, vocacional, técnica y profesional\n   1.3 Florence Nightingale y la enfermería moderna\n   1.4 Historia de la enfermería en México\n\n2. CONCEPTO Y FUNDAMENTOS DE LA ENFERMERÍA\n   2.1 Definiciones de enfermería\n   2.2 Metaparadigma: persona, salud, entorno y cuidado\n   2.3 Enfermería como ciencia, arte y profesión\n   2.4 Perfil del profesional de enfermería\n\n3. FUNCIONES Y CAMPOS DE ACCIÓN\n   3.1 Funciones asistencial, docente, administrativa y de investigación\n   3.2 Niveles de atención a la salud\n   3.3 Ámbitos de ejercicio profesional\n   3.4 Marco legal de la práctica: NOM-019-SSA3-2013\n\n4. PROCESO SALUD-ENFERMEDAD\n   4.1 Concepto de salud y enfermedad\n   4.2 Determinantes de la salud\n   4.3 Necesidades humanas básicas\n   4.4 Autocuidado y cuidado de enfermería\n\n5. ÉTICA Y VALORES PROFESIONALES\n   5.1 Valores de la profesión\n   5.2 Código de ética para las enfermeras y enfermeros de México\n   5.3 Responsabilidad y compromiso con la persona\n   5.4 Organizaciones profesionales de enfermería\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-fisiologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno explicará el funcionamiento normal de los principales sistemas del cuerpo humano y los mecanismos de regulación de la homeostasis, con la finalidad de interpretar las alteraciones que se presentan en la salud y la enfermedad.\n\nCONTENIDO TEMÁTICO\n1. FISIOLOGÍA CELULAR Y HOMEOSTASIS\n   1.1 Concepto de fisiología y homeostasis\n   1.2 Transporte a través de la membrana celular\n   1.3 Potenciales de membrana\n   1.4 Líquidos corporales y equilibrio hidroelectrolítico\n\n2. FISIOLOGÍA CARDIOVASCULAR\n   2.1 Propiedades del músculo cardiaco y ciclo cardiaco\n   2.2 Gasto cardiaco y presión arterial\n   2.3 Regulación de la circulación\n   2.4 Fisiología de la sangre y hemostasia\n\n3. FISIOLOGÍA RESPIRATORIA\n   3.1 Mecánica de la ventilación\n   3.2 Intercambio y transporte de gases\n   3.3 Regulación de la respiración\n   3.4 Equilibrio ácido-base\n\n4. FISIOLOGÍA RENAL\n   4.1 Formación de la orina\n   4.2 Regulación del volumen y de la osmolaridad\n   4.3 Regulación del pH y los electrolitos\n\n5. FISIOLOGÍA DIGESTIVA\n   5.1 Motilidad y secreciones del aparato digestivo\n   5.2 Digestión y absorción de nutrientes\n   5.3 Funciones del hígado y del páncreas exocrino\n\n6. FISIOLOGÍA ENDOCRINA Y DE LA REPRODUCCIÓN\n   6.1 Mecanismos de acción hormonal\n   6.2 Hipófisis, tiroides, suprarrenales y páncreas endocrino\n   6.3 Fisiología reproductiva masculina y femenina\n   6.4 Regulación de la glucosa y el metabolismo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-tecnicas-de-investigacion": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará las técnicas de búsqueda, análisis y presentación de información científica, con la finalidad de elaborar trabajos escritos y fundamentar su práctica profesional en fuentes confiables.\n\nCONTENIDO TEMÁTICO\n1. EL CONOCIMIENTO CIENTÍFICO\n   1.1 Tipos de conocimiento\n   1.2 Características de la ciencia y del método científico\n   1.3 Importancia de la investigación en enfermería\n\n2. TIPOS DE INVESTIGACIÓN\n   2.1 Investigación documental y de campo\n   2.2 Enfoques cuantitativo y cualitativo\n   2.3 Niveles: exploratoria, descriptiva y explicativa\n\n3. FUENTES DE INFORMACIÓN\n   3.1 Fuentes primarias, secundarias y terciarias\n   3.2 Bibliotecas y bases de datos científicas\n   3.3 Búsqueda y evaluación de la calidad de la información\n\n4. TÉCNICAS DE REGISTRO Y ANÁLISIS\n   4.1 Fichas bibliográficas y de trabajo\n   4.2 Resumen, síntesis y paráfrasis\n   4.3 Mapas conceptuales y cuadros comparativos\n   4.4 Citas y referencias en formato APA\n\n5. REDACCIÓN DE TRABAJOS ACADÉMICOS\n   5.1 Estructura del ensayo y del reporte de investigación\n   5.2 Reglas de ortografía y redacción\n   5.3 Prevención del plagio\n   5.4 Exposición oral de resultados\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal\n• Análisis crítico de artículos científicos\n• Taller de elaboración del protocolo o del documento de trabajo\n• Revisión y retroalimentación de avances\n\nDe manera independiente\n• Búsqueda de información y evidencia en bases de datos\n• Elaboración de fichas y reportes de lectura\n• Elaboración de los avances del protocolo o del trabajo escrito\n• Preparación de la exposición de resultados\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Análisis de artículos y tareas: 30%\n• Protocolo o avance de investigación: 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-neurofisiologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno explicará los mecanismos de funcionamiento del sistema nervioso, con la finalidad de relacionarlos con la conducta, las funciones corporales y las alteraciones neurológicas más frecuentes.\n\nCONTENIDO TEMÁTICO\n1. ORGANIZACIÓN GENERAL DEL SISTEMA NERVIOSO\n   1.1 Divisiones del sistema nervioso\n   1.2 Neurona y células de la glía\n   1.3 Barrera hematoencefálica y líquido cefalorraquídeo\n\n2. FISIOLOGÍA DE LA NEURONA\n   2.1 Potencial de reposo y potencial de acción\n   2.2 Conducción del impulso nervioso\n   2.3 Sinapsis y neurotransmisores\n   2.4 Integración de señales\n\n3. FISIOLOGÍA SENSORIAL\n   3.1 Receptores sensoriales\n   3.2 Sensibilidad somática, dolor y temperatura\n   3.3 Vías ascendentes\n   3.4 Vista, audición, olfato y gusto\n\n4. FISIOLOGÍA MOTORA\n   4.1 Médula espinal y reflejos\n   4.2 Control cortical y vías descendentes\n   4.3 Cerebelo y ganglios basales\n   4.4 Tono y postura\n\n5. SISTEMA NERVIOSO AUTÓNOMO\n   5.1 Divisiones simpática y parasimpática\n   5.2 Neurotransmisores y receptores\n   5.3 Control de funciones viscerales\n\n6. FUNCIONES SUPERIORES\n   6.1 Sueño y vigilia\n   6.2 Aprendizaje y memoria\n   6.3 Emociones y conducta\n   6.4 Lenguaje\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-bioquimica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá la estructura, función y metabolismo de las principales biomoléculas, con la finalidad de comprender los procesos químicos del organismo y su relación con la salud y la enfermedad.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA BIOQUÍMICA\n   1.1 Objeto de estudio e importancia en enfermería\n   1.2 El agua y las soluciones\n   1.3 Equilibrio ácido-base, pH y soluciones amortiguadoras\n\n2. CARBOHIDRATOS\n   2.1 Estructura y clasificación\n   2.2 Digestión y absorción\n   2.3 Glucólisis y ciclo de Krebs\n   2.4 Regulación de la glucemia\n\n3. LÍPIDOS\n   3.1 Estructura y clasificación\n   3.2 Lipoproteínas y transporte\n   3.3 Metabolismo de los ácidos grasos y del colesterol\n\n4. AMINOÁCIDOS Y PROTEÍNAS\n   4.1 Estructura y clasificación\n   4.2 Enzimas y su regulación\n   4.3 Metabolismo de las proteínas y ciclo de la urea\n\n5. ÁCIDOS NUCLEICOS\n   5.1 Estructura del ADN y del ARN\n   5.2 Replicación, transcripción y traducción\n   5.3 Mutaciones y enfermedades genéticas\n\n6. VITAMINAS, MINERALES Y BIOQUÍMICA CLÍNICA\n   6.1 Vitaminas liposolubles e hidrosolubles\n   6.2 Minerales y oligoelementos\n   6.3 Pruebas bioquímicas de uso clínico\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas con apoyo de modelos, láminas o material audiovisual\n• Prácticas de laboratorio o de taller supervisadas por el docente\n• Resolución de ejercicios y casos en el aula\n• Demostración y redemostración de procedimientos\n\nDe manera independiente\n• Elaboración de reportes de las prácticas realizadas\n• Investigación bibliográfica y elaboración de mapas conceptuales\n• Elaboración de un glosario de términos\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas de laboratorio o de taller: 30%\n• Reportes y tareas independientes: 20%\n• Exposición y participación: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-microbiologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno identificará las características de los microorganismos de importancia médica y las técnicas para su estudio y control, con la finalidad de aplicar medidas de prevención de las infecciones en la práctica de enfermería.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA MICROBIOLOGÍA\n   1.1 Historia y desarrollo de la microbiología\n   1.2 Clasificación de los microorganismos\n   1.3 Microorganismos y salud: flora normal e infección\n\n2. BACTERIOLOGÍA\n   2.1 Estructura y fisiología bacteriana\n   2.2 Tinciones y cultivo de bacterias\n   2.3 Principales bacterias patógenas\n   2.4 Mecanismos de patogenicidad\n\n3. VIROLOGÍA\n   3.1 Estructura y replicación viral\n   3.2 Principales virus patógenos\n   3.3 Vacunas y antivirales\n\n4. MICOLOGÍA Y PARASITOLOGÍA\n   4.1 Hongos de importancia médica\n   4.2 Protozoarios y helmintos parásitos del hombre\n   4.3 Ciclos biológicos y diagnóstico\n\n5. CONTROL DE LOS MICROORGANISMOS\n   5.1 Asepsia y antisepsia\n   5.2 Desinfección y esterilización\n   5.3 Agentes antimicrobianos y resistencia\n   5.4 Bioseguridad en el laboratorio\n\n6. INMUNOLOGÍA BÁSICA\n   6.1 Inmunidad innata y adquirida\n   6.2 Antígenos y anticuerpos\n   6.3 Hipersensibilidad e inmunizaciones\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas con apoyo de modelos, láminas o material audiovisual\n• Prácticas de laboratorio o de taller supervisadas por el docente\n• Resolución de ejercicios y casos en el aula\n• Demostración y redemostración de procedimientos\n\nDe manera independiente\n• Elaboración de reportes de las prácticas realizadas\n• Investigación bibliográfica y elaboración de mapas conceptuales\n• Elaboración de un glosario de términos\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas de laboratorio o de taller: 30%\n• Reportes y tareas independientes: 20%\n• Exposición y participación: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-tecnicas-formativas-en-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará técnicas de estudio, comunicación y trabajo colaborativo, con la finalidad de fortalecer su formación profesional y su desempeño en equipos de salud.\n\nCONTENIDO TEMÁTICO\n1. EL ESTUDIANTE DE ENFERMERÍA\n   1.1 Perfil de ingreso y de egreso\n   1.2 Plan de estudios y modelo educativo\n   1.3 Proyecto de vida y trayectoria académica\n\n2. TÉCNICAS DE ESTUDIO Y APRENDIZAJE\n   2.1 Estilos de aprendizaje\n   2.2 Organización del tiempo y hábitos de estudio\n   2.3 Lectura comprensiva, subrayado y notas\n   2.4 Organizadores gráficos\n\n3. COMUNICACIÓN EFECTIVA\n   3.1 Elementos y barreras de la comunicación\n   3.2 Comunicación verbal y no verbal\n   3.3 Escucha activa y asertividad\n   3.4 Comunicación con el paciente y la familia\n\n4. TRABAJO EN EQUIPO\n   4.1 Dinámicas de grupo\n   4.2 Roles y liderazgo en el equipo\n   4.3 Manejo de conflictos\n   4.4 Trabajo interdisciplinario en salud\n\n5. HABILIDADES PARA LA PRÁCTICA PROFESIONAL\n   5.1 Presentación personal y conducta profesional\n   5.2 Reglamento de prácticas clínicas\n   5.3 Bioseguridad y autocuidado\n   5.4 Uso de las tecnologías de la información\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-farmacologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará los principios y las características de los principales grupos de fármacos, con la finalidad de administrar los medicamentos de forma segura y vigilar sus efectos en el paciente.\n\nCONTENIDO TEMÁTICO\n1. PRINCIPIOS GENERALES DE FARMACOLOGÍA\n   1.1 Conceptos básicos y fuentes de los fármacos\n   1.2 Farmacocinética: absorción, distribución, metabolismo y excreción\n   1.3 Farmacodinamia y mecanismo de acción\n   1.4 Reacciones adversas e interacciones\n\n2. ADMINISTRACIÓN SEGURA DE MEDICAMENTOS\n   2.1 Vías de administración\n   2.2 Cálculo de dosis y diluciones\n   2.3 Los correctos de la administración\n   2.4 Registro y vigilancia de los efectos\n\n3. FÁRMACOS DEL SISTEMA NERVIOSO\n   3.1 Analgésicos, antiinflamatorios y anestésicos\n   3.2 Ansiolíticos, hipnóticos y antidepresivos\n   3.3 Anticonvulsivantes\n\n4. FÁRMACOS DE LOS APARATOS CARDIOVASCULAR Y RESPIRATORIO\n   4.1 Antihipertensivos, diuréticos y cardiotónicos\n   4.2 Anticoagulantes y antiagregantes\n   4.3 Broncodilatadores y antitusivos\n\n5. ANTIMICROBIANOS\n   5.1 Principios del tratamiento antibiótico\n   5.2 Principales grupos de antibióticos\n   5.3 Antivirales, antifúngicos y antiparasitarios\n\n6. OTROS GRUPOS FARMACOLÓGICOS\n   6.1 Hormonas e hipoglucemiantes\n   6.2 Fármacos del aparato digestivo\n   6.3 Vitaminas y soluciones\n   6.4 Medicamentos de alto riesgo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-anatomia-humana-ii": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá la estructura de los sistemas digestivo, urinario, reproductor, endocrino y nervioso y de los órganos de los sentidos, con la finalidad de localizar las estructuras y fundamentar la valoración y los procedimientos de enfermería.\n\nCONTENIDO TEMÁTICO\n1. SISTEMA DIGESTIVO\n   1.1 Cavidad bucal, faringe y esófago\n   1.2 Estómago e intestinos\n   1.3 Glándulas anexas: hígado, vesícula biliar y páncreas\n   1.4 Peritoneo y regiones abdominales\n\n2. SISTEMA URINARIO\n   2.1 Riñones: estructura y vascularización\n   2.2 Uréteres, vejiga y uretra\n   2.3 Diferencias anatómicas entre el hombre y la mujer\n\n3. SISTEMA REPRODUCTOR\n   3.1 Órganos reproductores masculinos\n   3.2 Órganos reproductores femeninos\n   3.3 Glándula mamaria\n\n4. SISTEMA ENDOCRINO Y SISTEMA LINFÁTICO\n   4.1 Hipófisis, tiroides, paratiroides y suprarrenales\n   4.2 Páncreas y gónadas\n   4.3 Vasos y órganos linfáticos: bazo y timo\n\n5. SISTEMA NERVIOSO\n   5.1 Encéfalo y meninges\n   5.2 Médula espinal\n   5.3 Nervios craneales y raquídeos\n   5.4 Sistema nervioso autónomo\n\n6. ÓRGANOS DE LOS SENTIDOS\n   6.1 Ojo y anexos\n   6.2 Oído externo, medio e interno\n   6.3 Olfato y gusto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas con apoyo de modelos, láminas o material audiovisual\n• Prácticas de laboratorio o de taller supervisadas por el docente\n• Resolución de ejercicios y casos en el aula\n• Demostración y redemostración de procedimientos\n\nDe manera independiente\n• Elaboración de reportes de las prácticas realizadas\n• Investigación bibliográfica y elaboración de mapas conceptuales\n• Elaboración de un glosario de términos\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas de laboratorio o de taller: 30%\n• Reportes y tareas independientes: 20%\n• Exposición y participación: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-patologia-i": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá los mecanismos generales de la enfermedad y las alteraciones básicas de las células y los tejidos, con la finalidad de interpretar las manifestaciones clínicas y fundamentar los cuidados de enfermería.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA PATOLOGÍA\n   1.1 Conceptos de salud, enfermedad y patología\n   1.2 Etiología, patogenia y morfología\n   1.3 Causas generales de la enfermedad\n\n2. LESIÓN Y MUERTE CELULAR\n   2.1 Adaptaciones celulares: atrofia, hipertrofia, hiperplasia y metaplasia\n   2.2 Lesión reversible e irreversible\n   2.3 Necrosis y apoptosis\n\n3. INFLAMACIÓN Y REPARACIÓN\n   3.1 Inflamación aguda y crónica\n   3.2 Mediadores y manifestaciones de la inflamación\n   3.3 Cicatrización de las heridas\n\n4. ALTERACIONES HEMODINÁMICAS\n   4.1 Edema y trastornos del líquido corporal\n   4.2 Hemorragia, trombosis y embolia\n   4.3 Isquemia, infarto y choque\n\n5. NEOPLASIAS\n   5.1 Diferencias entre tumores benignos y malignos\n   5.2 Biología del crecimiento tumoral y metástasis\n   5.3 Prevención y detección oportuna del cáncer\n\n6. INMUNOPATOLOGÍA Y GENÉTICA\n   6.1 Reacciones de hipersensibilidad\n   6.2 Enfermedades autoinmunes\n   6.3 Enfermedades genéticas y congénitas\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-etimologias-tecnicas-en-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno interpretará y empleará la terminología médica y de enfermería a partir de sus raíces, prefijos y sufijos grecolatinos, con la finalidad de comunicarse con precisión en los registros y en el equipo de salud.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA TERMINOLOGÍA MÉDICA\n   1.1 Importancia de las etimologías en el área de la salud\n   1.2 Orígenes del lenguaje médico: griego y latín\n   1.3 Reglas de formación y pronunciación de los términos\n\n2. PREFIJOS Y SUFIJOS\n   2.1 Prefijos de uso común en salud\n   2.2 Sufijos de diagnóstico, procedimiento y especialidad\n   2.3 Análisis de palabras compuestas\n\n3. RAÍCES GRIEGAS Y LATINAS\n   3.1 Raíces relacionadas con el cuerpo humano\n   3.2 Raíces de las enfermedades\n   3.3 Raíces de los procedimientos y de las especialidades\n\n4. TERMINOLOGÍA POR APARATOS Y SISTEMAS\n   4.1 Sistemas locomotor, cardiovascular y respiratorio\n   4.2 Sistemas digestivo, urinario y reproductor\n   4.3 Sistemas nervioso y endocrino\n\n5. TERMINOLOGÍA CLÍNICA Y DE ENFERMERÍA\n   5.1 Términos de la valoración y de los cuidados\n   5.2 Abreviaturas y siglas de uso hospitalario\n   5.3 Redacción de notas de enfermería con terminología correcta\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-embriologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno explicará el desarrollo humano desde la fecundación hasta el nacimiento, con la finalidad de reconocer las etapas normales y las principales alteraciones del desarrollo que requieren intervención de enfermería.\n\nCONTENIDO TEMÁTICO\n1. GAMETOGÉNESIS Y FECUNDACIÓN\n   1.1 Ciclo ovárico y ciclo menstrual\n   1.2 Espermatogénesis y ovogénesis\n   1.3 Fecundación y segmentación\n   1.4 Implantación\n\n2. DESARROLLO EMBRIONARIO\n   2.1 Primera, segunda y tercera semana\n   2.2 Capas germinativas y sus derivados\n   2.3 Periodo embrionario: organogénesis\n\n3. DESARROLLO FETAL\n   3.1 Desarrollo por trimestres\n   3.2 Crecimiento y maduración fetal\n   3.3 Líquido amniótico y cordón umbilical\n\n4. PLACENTA Y ANEXOS FETALES\n   4.1 Formación y estructura de la placenta\n   4.2 Funciones placentarias\n   4.3 Alteraciones de la placenta y de los anexos\n\n5. ALTERACIONES DEL DESARROLLO\n   5.1 Factores teratógenos\n   5.2 Malformaciones congénitas frecuentes\n   5.3 Prevención: ácido fólico y control prenatal\n   5.4 Embarazo múltiple\n\n6. PARTO Y ADAPTACIÓN NEONATAL\n   6.1 Factores que desencadenan el parto\n   6.2 Etapas del parto\n   6.3 Adaptación del recién nacido a la vida extrauterina\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-propedeutica-de-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno realizará la valoración física y la toma de signos vitales del paciente, con la finalidad de identificar sus necesidades de cuidado y registrar la información de forma ordenada y precisa.\n\nCONTENIDO TEMÁTICO\n1. VALORACIÓN DE ENFERMERÍA\n   1.1 El proceso de atención de enfermería: etapa de valoración\n   1.2 Entrevista y comunicación con el paciente\n   1.3 Historia clínica de enfermería y fuentes de datos\n   1.4 Registros de enfermería: NOM-004-SSA3-2012\n\n2. SIGNOS VITALES\n   2.1 Temperatura corporal\n   2.2 Pulso\n   2.3 Frecuencia respiratoria y saturación de oxígeno\n   2.4 Presión arterial\n   2.5 Somatometría: peso, talla e índice de masa corporal\n\n3. MÉTODOS DE EXPLORACIÓN FÍSICA\n   3.1 Inspección, palpación, percusión y auscultación\n   3.2 Preparación del paciente, del equipo y del entorno\n   3.3 Medidas de bioseguridad durante la exploración\n\n4. EXPLORACIÓN FÍSICA POR REGIONES Y SISTEMAS\n   4.1 Piel, cabeza y cuello\n   4.2 Tórax, corazón y pulmones\n   4.3 Abdomen\n   4.4 Sistema musculoesquelético y neurológico\n\n5. VALORACIÓN DE NECESIDADES Y DIAGNÓSTICO\n   5.1 Valoración por patrones funcionales\n   5.2 Identificación de problemas y diagnósticos de enfermería\n   5.3 Registro de los hallazgos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas con apoyo de modelos, láminas o material audiovisual\n• Prácticas de laboratorio o de taller supervisadas por el docente\n• Resolución de ejercicios y casos en el aula\n• Demostración y redemostración de procedimientos\n\nDe manera independiente\n• Elaboración de reportes de las prácticas realizadas\n• Investigación bibliográfica y elaboración de mapas conceptuales\n• Elaboración de un glosario de términos\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas de laboratorio o de taller: 30%\n• Reportes y tareas independientes: 20%\n• Exposición y participación: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-radiologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá los fundamentos de los estudios de imagen y las medidas de protección radiológica, con la finalidad de preparar al paciente y participar con seguridad en los procedimientos diagnósticos.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DE LA RADIOLOGÍA\n   1.1 Historia y descubrimiento de los rayos X\n   1.2 Producción y propiedades de la radiación\n   1.3 Equipo radiológico básico\n\n2. PROTECCIÓN RADIOLÓGICA\n   2.1 Efectos biológicos de la radiación\n   2.2 Principios de protección: tiempo, distancia y blindaje\n   2.3 Dosimetría y normatividad aplicable\n   2.4 Protección del paciente, la mujer embarazada y el personal\n\n3. ESTUDIOS RADIOLÓGICOS SIMPLES Y CON CONTRASTE\n   3.1 Radiografías de tórax, abdomen y esqueleto\n   3.2 Estudios con medio de contraste\n   3.3 Preparación del paciente y cuidados posteriores\n   3.4 Reacciones adversas al contraste\n\n4. OTROS ESTUDIOS DE IMAGEN\n   4.1 Ultrasonido\n   4.2 Tomografía axial computarizada\n   4.3 Resonancia magnética y medicina nuclear\n   4.4 Mamografía\n\n5. INTERPRETACIÓN BÁSICA Y PAPEL DE ENFERMERÍA\n   5.1 Identificación de las estructuras en las imágenes\n   5.2 Traslado y cuidado del paciente en el servicio de imagenología\n   5.3 Registro e identificación de los estudios\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-microbiologia-ii": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno relacionará los microorganismos patógenos con las infecciones más frecuentes por aparatos y sistemas y con las infecciones asociadas a la atención de la salud, con la finalidad de aplicar medidas de prevención, control y toma de muestras.\n\nCONTENIDO TEMÁTICO\n1. INFECCIONES DEL APARATO RESPIRATORIO Y DE LA PIEL\n   1.1 Agentes causales de las infecciones respiratorias\n   1.2 Infecciones de la piel y tejidos blandos\n   1.3 Tuberculosis\n\n2. INFECCIONES DEL APARATO DIGESTIVO Y URINARIO\n   2.1 Enfermedades diarreicas y gastroenteritis\n   2.2 Hepatitis virales\n   2.3 Infecciones de vías urinarias\n\n3. INFECCIONES DE TRANSMISIÓN SEXUAL Y SISTÉMICAS\n   3.1 Infección por VIH y sida\n   3.2 Sífilis, gonorrea y clamidiasis\n   3.3 Sepsis y bacteriemia\n   3.4 Infecciones del sistema nervioso\n\n4. INFECCIONES ASOCIADAS A LA ATENCIÓN DE LA SALUD\n   4.1 Concepto y epidemiología: NOM-045-SSA2-2005\n   4.2 Principales agentes y sitios de infección\n   4.3 Resistencia antimicrobiana\n   4.4 Precauciones estándar y por mecanismo de transmisión\n\n5. TOMA Y MANEJO DE MUESTRAS\n   5.1 Técnicas de toma de muestras clínicas\n   5.2 Conservación y transporte\n   5.3 Interpretación básica de cultivos y antibiogramas\n\n6. BIOSEGURIDAD Y RESIDUOS PELIGROSOS\n   6.1 Medidas de bioseguridad en el ámbito hospitalario\n   6.2 Manejo de residuos peligrosos biológico-infecciosos: NOM-087-SEMARNAT-SSA1-2002\n   6.3 Higiene de manos y barreras de protección\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas con apoyo de modelos, láminas o material audiovisual\n• Prácticas de laboratorio o de taller supervisadas por el docente\n• Resolución de ejercicios y casos en el aula\n• Demostración y redemostración de procedimientos\n\nDe manera independiente\n• Elaboración de reportes de las prácticas realizadas\n• Investigación bibliográfica y elaboración de mapas conceptuales\n• Elaboración de un glosario de términos\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas de laboratorio o de taller: 30%\n• Reportes y tareas independientes: 20%\n• Exposición y participación: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-bioestadistica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los métodos de la estadística descriptiva e inferencial, con la finalidad de organizar, analizar e interpretar datos de salud y apoyar la toma de decisiones.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA BIOESTADÍSTICA\n   1.1 Concepto e importancia en salud\n   1.2 Población, muestra y variables\n   1.3 Escalas de medición\n\n2. ESTADÍSTICA DESCRIPTIVA\n   2.1 Tablas de frecuencias\n   2.2 Gráficas: barras, histogramas, polígonos y sectores\n   2.3 Medidas de tendencia central\n   2.4 Medidas de dispersión\n\n3. PROBABILIDAD\n   3.1 Conceptos básicos\n   3.2 Reglas de probabilidad\n   3.3 Distribución binomial y distribución normal\n\n4. MUESTREO Y ESTIMACIÓN\n   4.1 Tipos de muestreo\n   4.2 Cálculo del tamaño de la muestra\n   4.3 Intervalos de confianza\n\n5. PRUEBAS DE HIPÓTESIS\n   5.1 Hipótesis nula y alterna\n   5.2 Pruebas t y chi cuadrada\n   5.3 Correlación y regresión simple\n\n6. INDICADORES Y ESTADÍSTICAS DE SALUD\n   6.1 Tasas de natalidad, mortalidad y fecundidad\n   6.2 Pirámides de población\n   6.3 Uso de paquetes de cómputo para el análisis de datos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermeria-comunitaria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los fundamentos de la atención primaria y los métodos de trabajo en la comunidad, con la finalidad de identificar necesidades de salud y participar en acciones de promoción y prevención con la familia y la población.\n\nCONTENIDO TEMÁTICO\n1. ATENCIÓN PRIMARIA A LA SALUD\n   1.1 Antecedentes: Alma-Ata y Ottawa\n   1.2 Estrategias y principios de la atención primaria\n   1.3 Promoción de la salud y prevención de la enfermedad\n\n2. LA COMUNIDAD Y SU DIAGNÓSTICO DE SALUD\n   2.1 Concepto y características de la comunidad\n   2.2 Metodología del diagnóstico de salud comunitario\n   2.3 Priorización de problemas y plan de intervención\n\n3. LA FAMILIA COMO UNIDAD DE CUIDADO\n   3.1 Estructura, funciones y ciclo vital de la familia\n   3.2 Valoración familiar: genograma y ecomapa\n   3.3 Visita domiciliaria\n\n4. PROGRAMAS DE SALUD COMUNITARIA\n   4.1 Vacunación y nutrición\n   4.2 Salud materno-infantil y planificación familiar\n   4.3 Control de enfermedades crónicas y zoonosis\n\n5. PARTICIPACIÓN COMUNITARIA\n   5.1 Trabajo con líderes y grupos de la comunidad\n   5.2 Educación para la salud en la comunidad\n   5.3 Evaluación de las intervenciones\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermera-materno-infantil-i": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería a la mujer durante el embarazo, el parto y el puerperio fisiológicos, con la finalidad de favorecer su bienestar y el del recién nacido y promover la lactancia materna.\n\nCONTENIDO TEMÁTICO\n1. SALUD SEXUAL Y REPRODUCTIVA\n   1.1 Aparato reproductor y ciclo reproductivo\n   1.2 Planificación familiar y métodos anticonceptivos\n   1.3 Preconcepción y salud reproductiva\n\n2. EMBARAZO NORMAL\n   2.1 Diagnóstico de embarazo y cambios fisiológicos\n   2.2 Control prenatal: NOM-007-SSA2-2016\n   2.3 Valoración obstétrica y somatometría\n   2.4 Educación a la gestante, nutrición y molestias comunes\n\n3. TRABAJO DE PARTO Y PARTO\n   3.1 Periodos del trabajo de parto\n   3.2 Mecanismo del parto y atención de la parturienta\n   3.3 Cuidados de enfermería en el parto\n   3.4 Alumbramiento y revisión del canal\n\n4. PUERPERIO FISIOLÓGICO\n   4.1 Cambios y evolución del puerperio\n   4.2 Cuidados inmediatos, mediatos y tardíos\n   4.3 Signos de alarma y educación para el alta\n\n5. LACTANCIA MATERNA\n   5.1 Fisiología de la lactancia\n   5.2 Técnica de amamantamiento y extracción de leche\n   5.3 Problemas frecuentes y apoyo a la madre\n\n6. RECIÉN NACIDO SANO\n   6.1 Valoración inmediata: Apgar y Silverman\n   6.2 Cuidados inmediatos y mediatos del recién nacido\n   6.3 Tamiz neonatal y esquema de vacunación inicial\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-introduccion-al-primer-nivel-de-atencion-a-la-salud": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá la organización del primer nivel de atención y sus programas prioritarios, con la finalidad de participar en la prestación de servicios de promoción, prevención y atención básica a la población.\n\nCONTENIDO TEMÁTICO\n1. EL SISTEMA NACIONAL DE SALUD\n   1.1 Estructura y funciones del sistema de salud en México\n   1.2 Instituciones públicas y privadas\n   1.3 Niveles de atención y referencia y contrarreferencia\n\n2. ORGANIZACIÓN DEL PRIMER NIVEL\n   2.1 Unidades de primer nivel: centros de salud y unidades de medicina familiar\n   2.2 Equipo de salud y funciones de enfermería\n   2.3 Modelo de atención integral de salud\n\n3. PROGRAMAS DE ATENCIÓN\n   3.1 Programa de vacunación universal\n   3.2 Programas de salud de la mujer, del niño y del adulto\n   3.3 Programas de atención a enfermedades crónicas\n\n4. ACCIONES DE PROMOCIÓN Y PREVENCIÓN\n   4.1 Cartilla nacional de salud\n   4.2 Detección oportuna de enfermedades\n   4.3 Saneamiento básico y educación para la salud\n\n5. REGISTROS Y SISTEMAS DE INFORMACIÓN\n   5.1 Expediente clínico en el primer nivel\n   5.2 Informes y registros de enfermería\n   5.3 Vigilancia epidemiológica en la unidad\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-sociologia-y-salud": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará la influencia de los factores sociales y culturales en la salud de las personas y la población, con la finalidad de brindar un cuidado de enfermería con sentido humano y respeto a la diversidad.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA SOCIOLOGÍA\n   1.1 Objeto y método de la sociología\n   1.2 Corrientes sociológicas principales\n   1.3 Sociología de la salud y de la medicina\n\n2. SOCIEDAD, CULTURA Y SALUD\n   2.1 Cultura, creencias y prácticas de salud\n   2.2 Interculturalidad y medicina tradicional\n   2.3 Diversidad y respeto a los pueblos indígenas\n\n3. DETERMINANTES SOCIALES DE LA SALUD\n   3.1 Pobreza, desigualdad y exclusión\n   3.2 Educación, trabajo y vivienda\n   3.3 Género y salud\n\n4. INSTITUCIONES SOCIALES Y SALUD\n   4.1 Familia, escuela y comunidad\n   4.2 Instituciones y políticas de salud en México\n   4.3 Migración y movilidad social\n\n5. EL PAPEL SOCIAL DE LA ENFERMERÍA\n   5.1 Rol de la enfermera en la sociedad\n   5.2 Responsabilidad social profesional\n   5.3 Acceso equitativo a los servicios de salud\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-patologia-ii": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá las alteraciones patológicas más frecuentes de los aparatos y sistemas, con la finalidad de relacionarlas con sus manifestaciones clínicas y fundamentar los cuidados de enfermería.\n\nCONTENIDO TEMÁTICO\n1. PATOLOGÍA CARDIOVASCULAR\n   1.1 Hipertensión arterial y aterosclerosis\n   1.2 Cardiopatía isquémica e infarto\n   1.3 Insuficiencia cardiaca\n   1.4 Enfermedad vascular periférica\n\n2. PATOLOGÍA RESPIRATORIA\n   2.1 Enfermedad pulmonar obstructiva crónica y asma\n   2.2 Neumonías y tuberculosis\n   2.3 Cáncer pulmonar\n   2.4 Insuficiencia respiratoria\n\n3. PATOLOGÍA DIGESTIVA Y HEPÁTICA\n   3.1 Enfermedad ácido-péptica y gastritis\n   3.2 Enfermedades inflamatorias intestinales\n   3.3 Hepatitis y cirrosis\n   3.4 Patología de vesícula y páncreas\n\n4. PATOLOGÍA RENAL Y ENDOCRINA\n   4.1 Insuficiencia renal y litiasis\n   4.2 Diabetes mellitus y sus complicaciones\n   4.3 Enfermedades de la tiroides y de las suprarrenales\n\n5. PATOLOGÍA DEL SISTEMA NERVIOSO\n   5.1 Enfermedad vascular cerebral\n   5.2 Epilepsia y enfermedades degenerativas\n   5.3 Traumatismos craneoencefálicos\n\n6. PATOLOGÍA DEL SISTEMA MUSCULOESQUELÉTICO Y DE LA SANGRE\n   6.1 Artritis y osteoporosis\n   6.2 Fracturas\n   6.3 Anemias y leucemias\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-salud-publica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará el campo de acción, las funciones y las políticas de la salud pública, con la finalidad de participar en acciones que protejan y mejoren la salud de la población.\n\nCONTENIDO TEMÁTICO\n1. CONCEPTO Y EVOLUCIÓN DE LA SALUD PÚBLICA\n   1.1 Definición y objeto de estudio\n   1.2 Historia de la salud pública en México\n   1.3 Funciones esenciales de la salud pública\n\n2. SISTEMA DE SALUD Y POLÍTICAS PÚBLICAS\n   2.1 Marco legal: Constitución y Ley General de Salud\n   2.2 Planes y programas nacionales de salud\n   2.3 Financiamiento y cobertura de los servicios\n\n3. PROMOCIÓN DE LA SALUD Y PREVENCIÓN\n   3.1 Cartas y conferencias de promoción de la salud\n   3.2 Estrategias de prevención y control de enfermedades\n   3.3 Salud ambiental y laboral\n\n4. SALUD DE GRUPOS ESPECÍFICOS\n   4.1 Salud materno-infantil\n   4.2 Salud del adolescente y del adulto mayor\n   4.3 Salud de los pueblos indígenas y de migrantes\n\n5. VIGILANCIA Y EMERGENCIAS EN SALUD PÚBLICA\n   5.1 Vigilancia epidemiológica y sanitaria\n   5.2 Emergencias, desastres y pandemias\n   5.3 Regulación y fomento sanitario\n\n6. EVALUACIÓN DE LOS SERVICIOS DE SALUD\n   6.1 Indicadores de calidad, eficiencia y cobertura\n   6.2 Calidad de la atención\n   6.3 Participación de enfermería en la salud pública\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-teorias-en-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará los principales modelos y teorías de enfermería, con la finalidad de fundamentar el cuidado profesional y aplicar el proceso de atención de enfermería con base en un marco teórico.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DEL CONOCIMIENTO EN ENFERMERÍA\n   1.1 Concepto de teoría, modelo y paradigma\n   1.2 Metaparadigma de enfermería\n   1.3 Niveles de teoría y su utilidad en la práctica\n\n2. EL PROCESO DE ATENCIÓN DE ENFERMERÍA\n   2.1 Etapas: valoración, diagnóstico, planeación, ejecución y evaluación\n   2.2 Taxonomías NANDA, NOC y NIC\n   2.3 Elaboración de planes de cuidados\n\n3. TEORÍAS DE LAS NECESIDADES Y DEL AUTOCUIDADO\n   3.1 Florence Nightingale: teoría del entorno\n   3.2 Virginia Henderson: necesidades humanas\n   3.3 Dorothea Orem: déficit de autocuidado\n\n4. TEORÍAS DE LA ADAPTACIÓN Y DE LAS RELACIONES INTERPERSONALES\n   4.1 Callista Roy: modelo de adaptación\n   4.2 Hildegard Peplau: relaciones interpersonales\n   4.3 Imogene King y Betty Neuman\n\n5. TEORÍAS DEL CUIDADO HUMANO\n   5.1 Jean Watson: cuidado transpersonal\n   5.2 Madeleine Leininger: cuidado transcultural\n   5.3 Patricia Benner: de novata a experta\n\n6. APLICACIÓN DE LAS TEORÍAS A LA PRÁCTICA\n   6.1 Selección de un modelo según la situación del paciente\n   6.2 Estudio de caso con enfoque teórico\n   6.3 Tendencias actuales de la teoría en enfermería\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-ecologia-salud-y-agentes-patogenos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará la relación entre el medio ambiente, los agentes patógenos y la salud de la población, con la finalidad de proponer medidas de saneamiento y prevención de riesgos.\n\nCONTENIDO TEMÁTICO\n1. ECOLOGÍA Y SALUD AMBIENTAL\n   1.1 Conceptos de ecología y ecosistema\n   1.2 Interacciones entre el ser humano y el ambiente\n   1.3 Salud ambiental y desarrollo sostenible\n\n2. CONTAMINACIÓN Y SALUD\n   2.1 Contaminación del agua, del aire y del suelo\n   2.2 Efectos de los contaminantes en la salud\n   2.3 Cambio climático y salud\n\n3. AGUA, ALIMENTOS Y RESIDUOS\n   3.1 Calidad y potabilización del agua\n   3.2 Higiene de los alimentos y enfermedades transmitidas por alimentos\n   3.3 Manejo de residuos sólidos y de aguas residuales\n\n4. VECTORES Y ZOONOSIS\n   4.1 Vectores de enfermedades: mosquitos, roedores y garrapatas\n   4.2 Dengue, paludismo y enfermedad de Chagas\n   4.3 Rabia y otras zoonosis\n   4.4 Medidas de control de vectores\n\n5. AGENTES PATÓGENOS Y ENFERMEDADES EMERGENTES\n   5.1 Agentes biológicos, físicos y químicos\n   5.2 Enfermedades emergentes y reemergentes\n   5.3 Medidas de prevención y de respuesta comunitaria\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermera-materno-infantil-ii": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería a la mujer con complicaciones del embarazo, el parto y el puerperio y al recién nacido de riesgo, con la finalidad de contribuir a disminuir la morbilidad y mortalidad materna y perinatal.\n\nCONTENIDO TEMÁTICO\n1. EMBARAZO DE ALTO RIESGO\n   1.1 Factores de riesgo obstétrico\n   1.2 Hemorragias de la primera y segunda mitad del embarazo\n   1.3 Estados hipertensivos: preeclampsia y eclampsia\n   1.4 Diabetes gestacional y otras enfermedades asociadas\n\n2. COMPLICACIONES DEL PARTO\n   2.1 Parto prematuro y ruptura prematura de membranas\n   2.2 Distocias y sufrimiento fetal\n   2.3 Parto instrumentado y cesárea\n   2.4 Emergencias obstétricas y código mater\n\n3. COMPLICACIONES DEL PUERPERIO\n   3.1 Hemorragia posparto\n   3.2 Infección puerperal\n   3.3 Cuidados posquirúrgicos de la cesárea\n   3.4 Depresión posparto\n\n4. RECIÉN NACIDO DE RIESGO\n   4.1 Prematurez y bajo peso al nacer\n   4.2 Asfixia perinatal y reanimación neonatal\n   4.3 Ictericia, infecciones y dificultad respiratoria neonatal\n\n5. CUIDADOS INTENSIVOS NEONATALES\n   5.1 Termorregulación e incubadoras\n   5.2 Alimentación y fototerapia\n   5.3 Participación de los padres: método canguro\n\n6. ATENCIÓN HUMANIZADA E INTERCULTURAL\n   6.1 Derechos de la mujer en la atención del parto\n   6.2 Atención con enfoque intercultural\n   6.3 Duelo perinatal\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-la-tecnologia-al-servicio-de-la-salud": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno empleará las tecnologías de la información y los equipos médicos de uso común, con la finalidad de mejorar la calidad y la seguridad de la atención y la gestión de la información en salud.\n\nCONTENIDO TEMÁTICO\n1. TECNOLOGÍAS DE LA INFORMACIÓN EN SALUD\n   1.1 Evolución de la tecnología aplicada a la salud\n   1.2 Herramientas ofimáticas y bases de datos científicas\n   1.3 Seguridad y protección de la información\n\n2. EXPEDIENTE CLÍNICO ELECTRÓNICO\n   2.1 Concepto y ventajas del expediente electrónico\n   2.2 Normatividad aplicable y protección de datos personales\n   2.3 Registro de las notas de enfermería en sistemas informáticos\n\n3. EQUIPO BIOMÉDICO DE USO FRECUENTE\n   3.1 Monitores de signos vitales y bombas de infusión\n   3.2 Ventiladores, desfibriladores y oxímetros\n   3.3 Mantenimiento preventivo y reporte de fallas\n\n4. TELEMEDICINA Y SALUD DIGITAL\n   4.1 Telemedicina, telesalud y teleenfermería\n   4.2 Aplicaciones móviles y dispositivos portátiles\n   4.3 Inteligencia artificial en la atención\n\n5. SEGURIDAD DEL PACIENTE Y TECNOLOGÍA\n   5.1 Metas internacionales de seguridad del paciente\n   5.2 Identificación del paciente y uso de códigos de barras\n   5.3 Ética en el uso de la tecnología\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-psicologia-i": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará los procesos psicológicos básicos y las etapas del desarrollo de la personalidad, con la finalidad de comprender la conducta humana y mejorar la relación con el paciente y su familia.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA PSICOLOGÍA\n   1.1 Objeto de estudio y corrientes de la psicología\n   1.2 Métodos de la psicología\n   1.3 Psicología de la salud\n\n2. PROCESOS PSICOLÓGICOS BÁSICOS\n   2.1 Sensación y percepción\n   2.2 Atención y memoria\n   2.3 Pensamiento e inteligencia\n   2.4 Aprendizaje\n\n3. MOTIVACIÓN Y EMOCIONES\n   3.1 Teorías de la motivación\n   3.2 Emociones básicas y su expresión\n   3.3 Estrés y mecanismos de afrontamiento\n\n4. PERSONALIDAD\n   4.1 Teorías de la personalidad\n   4.2 Factores que influyen en su desarrollo\n   4.3 Mecanismos de defensa\n\n5. PSICOLOGÍA DEL DESARROLLO\n   5.1 Infancia y adolescencia\n   5.2 Adultez y vejez\n   5.3 Familia y vínculos afectivos\n\n6. COMUNICACIÓN INTERPERSONAL EN SALUD\n   6.1 Relación enfermera-paciente\n   6.2 Empatía y escucha activa\n   6.3 Comunicación de noticias difíciles\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermeria-para-ginecologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería a la mujer con problemas ginecológicos y de salud sexual, con la finalidad de favorecer la detección oportuna, el tratamiento y la educación para la salud.\n\nCONTENIDO TEMÁTICO\n1. ANATOMÍA Y FISIOLOGÍA GINECOLÓGICA\n   1.1 Aparato genital femenino y mama\n   1.2 Ciclo menstrual y alteraciones\n   1.3 Valoración ginecológica de enfermería\n\n2. PLANIFICACIÓN FAMILIAR\n   2.1 Métodos anticonceptivos temporales y definitivos\n   2.2 Consejería en planificación familiar\n   2.3 Anticoncepción de emergencia\n\n3. INFECCIONES E INFECCIONES DE TRANSMISIÓN SEXUAL\n   3.1 Vaginitis y cervicitis\n   3.2 Infecciones de transmisión sexual en la mujer\n   3.3 Enfermedad pélvica inflamatoria\n   3.4 Prevención y consejería\n\n4. DETECCIÓN OPORTUNA DE CÁNCER\n   4.1 Cáncer cervicouterino: citología y prueba de VPH\n   4.2 Cáncer de mama: autoexploración, exploración clínica y mastografía\n   4.3 Cuidados de enfermería a la mujer oncológica\n\n5. CLIMATERIO Y MENOPAUSIA\n   5.1 Cambios fisiológicos\n   5.2 Manejo de los síntomas y osteoporosis\n   5.3 Salud sexual en la etapa del climaterio\n\n6. PROCEDIMIENTOS GINECOLÓGICOS Y CIRUGÍAS\n   6.1 Auxilio en la exploración y toma de muestras\n   6.2 Cuidados pre y posoperatorios ginecológicos\n   6.3 Violencia contra la mujer: NOM-046-SSA2-2005\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-practica-clinica-i": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno realizará los procedimientos básicos de enfermería en el cuidado de pacientes adultos, aplicando el proceso de atención de enfermería, con la finalidad de desarrollar habilidades técnicas, éticas y de seguridad en el ámbito hospitalario.\n\nCONTENIDO TEMÁTICO\n1. PREPARACIÓN PARA LA PRÁCTICA CLÍNICA\n   1.1 Reglamento y normas de la práctica clínica\n   1.2 Bioseguridad, lavado de manos y uso de equipo de protección\n   1.3 Estructura y funcionamiento del servicio hospitalario\n\n2. CUIDADOS BÁSICOS DEL PACIENTE\n   2.1 Admisión, traslado y egreso del paciente\n   2.2 Higiene y confort del paciente\n   2.3 Tendido de camas y movilización\n   2.4 Prevención de úlceras por presión\n\n3. VALORACIÓN Y SIGNOS VITALES EN LA PRÁCTICA\n   3.1 Toma y registro de signos vitales\n   3.2 Control de líquidos y balance hídrico\n   3.3 Somatometría y valoración física en el paciente hospitalizado\n\n4. ADMINISTRACIÓN DE MEDICAMENTOS\n   4.1 Vías oral, tópica, inhalada y parenteral\n   4.2 Preparación y cálculo de dosis\n   4.3 Medidas de seguridad en la medicación\n\n5. PROCEDIMIENTOS BÁSICOS\n   5.1 Curación de heridas y manejo de sondas\n   5.2 Cateterismo vesical y sondas nasogástricas\n   5.3 Oxigenoterapia y nebulizaciones\n   5.4 Toma de muestras\n\n6. REGISTROS Y PLAN DE CUIDADOS\n   6.1 Hoja de enfermería y notas de enfermería\n   6.2 Entrega y recepción de turno\n   6.3 Elaboración de un plan de cuidados\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermeria-y-salud-holistica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará el enfoque holístico del cuidado y las terapias complementarias, con la finalidad de integrar las dimensiones física, emocional, social y espiritual de la persona en su práctica profesional.\n\nCONTENIDO TEMÁTICO\n1. EL ENFOQUE HOLÍSTICO DE LA SALUD\n   1.1 Concepto de holismo y bienestar integral\n   1.2 Dimensiones de la persona: física, mental, social y espiritual\n   1.3 Fundamentos de la enfermería holística\n\n2. ESTRÉS, AUTOCUIDADO Y BIENESTAR\n   2.1 Estrés y sus manifestaciones\n   2.2 Estilos de vida saludables\n   2.3 Autocuidado del profesional de enfermería\n\n3. TÉCNICAS DE RELAJACIÓN\n   3.1 Respiración y relajación progresiva\n   3.2 Meditación y atención plena\n   3.3 Musicoterapia y visualización\n\n4. TERAPIAS COMPLEMENTARIAS\n   4.1 Medicina tradicional y herbolaria\n   4.2 Acupuntura, masaje terapéutico y aromaterapia\n   4.3 Evidencia científica y riesgos de las terapias complementarias\n\n5. ESPIRITUALIDAD Y CUIDADO\n   5.1 Valoración de las necesidades espirituales\n   5.2 Respeto a las creencias del paciente\n   5.3 Cuidado compasivo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermera-del-nino": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería al niño sano y enfermo, con la finalidad de promover su crecimiento y desarrollo, prevenir las enfermedades prevalentes de la infancia y atender a la familia durante la hospitalización.\n\nCONTENIDO TEMÁTICO\n1. VALORACIÓN PEDIÁTRICA\n   1.1 Entrevista a los padres y al niño\n   1.2 Exploración física y somatometría pediátrica\n   1.3 Signos vitales según la edad\n\n2. PROMOCIÓN DE LA SALUD INFANTIL\n   2.1 Esquema de vacunación\n   2.2 Lactancia y alimentación complementaria\n   2.3 Prevención de accidentes en la infancia: NOM-031-SSA2-1999\n\n3. ENFERMEDADES PREVALENTES DE LA INFANCIA\n   3.1 Infecciones respiratorias agudas\n   3.2 Enfermedades diarreicas y deshidratación\n   3.3 Desnutrición y obesidad infantil\n   3.4 Enfermedades exantemáticas\n\n4. EL NIÑO HOSPITALIZADO\n   4.1 Reacciones del niño y de la familia ante la hospitalización\n   4.2 Procedimientos pediátricos: venoclisis y toma de muestras\n   4.3 Cuidados del niño con cirugía\n\n5. ADMINISTRACIÓN DE MEDICAMENTOS EN PEDIATRÍA\n   5.1 Cálculo de dosis por peso y superficie corporal\n   5.2 Vías de administración y precauciones\n   5.3 Prevención de errores de medicación\n\n6. URGENCIAS Y MALTRATO INFANTIL\n   6.1 Atención de urgencias pediátricas\n   6.2 Reanimación pediátrica básica\n   6.3 Detección y manejo del maltrato infantil\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-psicologia-ii": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno identificará los principales trastornos de la conducta y las técnicas de intervención psicológica básica, con la finalidad de brindar apoyo emocional al paciente y su familia y cuidar su propia salud mental.\n\nCONTENIDO TEMÁTICO\n1. SALUD MENTAL Y CONDUCTA ANORMAL\n   1.1 Concepto de salud mental y normalidad\n   1.2 Criterios de clasificación de los trastornos mentales\n   1.3 Factores de riesgo y de protección\n\n2. TRASTORNOS MÁS FRECUENTES\n   2.1 Trastornos de ansiedad\n   2.2 Trastornos del estado de ánimo\n   2.3 Trastornos de la conducta alimentaria\n   2.4 Adicciones\n\n3. INTERVENCIÓN EN CRISIS\n   3.1 Concepto y tipos de crisis\n   3.2 Primeros auxilios psicológicos\n   3.3 Detección del riesgo suicida\n\n4. LA PERSONA ENFERMA Y SU FAMILIA\n   4.1 Reacciones psicológicas ante la enfermedad\n   4.2 Hospitalización, dolor y discapacidad\n   4.3 Apoyo a la familia del paciente\n\n5. COMUNICACIÓN TERAPÉUTICA\n   5.1 Técnicas de entrevista y de apoyo emocional\n   5.2 Manejo del paciente agresivo o con alteraciones de la conducta\n   5.3 Trabajo con grupos\n\n6. SALUD MENTAL DEL PERSONAL DE ENFERMERÍA\n   6.1 Estrés laboral y síndrome de desgaste profesional\n   6.2 Estrategias de afrontamiento\n   6.3 Cuidado emocional del cuidador\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-nutricion-basica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá los principios de la alimentación y la nutrición humanas, con la finalidad de evaluar el estado nutricional y promover una alimentación correcta en las diferentes etapas de la vida.\n\nCONTENIDO TEMÁTICO\n1. GENERALIDADES DE LA NUTRICIÓN\n   1.1 Conceptos de alimentación, nutrición y dieta\n   1.2 Leyes de la alimentación\n   1.3 Orientación alimentaria: Plato del Bien Comer y NOM-043-SSA2-2012\n\n2. MACRONUTRIENTES\n   2.1 Carbohidratos y fibra\n   2.2 Lípidos\n   2.3 Proteínas y calidad proteica\n\n3. MICRONUTRIENTES Y AGUA\n   3.1 Vitaminas liposolubles e hidrosolubles\n   3.2 Minerales y oligoelementos\n   3.3 Agua y electrolitos\n\n4. ENERGÍA Y REQUERIMIENTOS NUTRICIONALES\n   4.1 Metabolismo basal y gasto energético\n   4.2 Cálculo de requerimientos\n   4.3 Tablas de composición de alimentos\n\n5. EVALUACIÓN DEL ESTADO NUTRICIONAL\n   5.1 Métodos antropométricos y clínicos\n   5.2 Indicadores bioquímicos y dietéticos\n   5.3 Diagnóstico de sobrepeso, obesidad y desnutrición\n\n6. NUTRICIÓN EN LAS ETAPAS DE LA VIDA\n   6.1 Embarazo y lactancia\n   6.2 Infancia y adolescencia\n   6.3 Adulto y adulto mayor\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-crecimiento-y-desarrollo": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá los procesos de crecimiento y desarrollo del ser humano en sus distintas etapas, con la finalidad de valorar su normalidad e identificar oportunamente las desviaciones que requieren atención.\n\nCONTENIDO TEMÁTICO\n1. CONCEPTOS Y TEORÍAS DEL DESARROLLO\n   1.1 Crecimiento, desarrollo y maduración\n   1.2 Factores que influyen en el desarrollo\n   1.3 Teorías de Piaget, Erikson, Freud y Gesell\n\n2. ETAPAS PRENATAL Y NEONATAL\n   2.1 Desarrollo prenatal y factores de riesgo\n   2.2 Características del recién nacido\n   2.3 Reflejos y valoración neonatal\n\n3. LACTANTE Y PREESCOLAR\n   3.1 Desarrollo físico, motor y del lenguaje\n   3.2 Desarrollo cognitivo y social\n   3.3 Estimulación temprana\n\n4. ESCOLAR Y ADOLESCENTE\n   4.1 Crecimiento y desarrollo puberal\n   4.2 Desarrollo psicosocial y de la identidad\n   4.3 Riesgos y salud sexual en la adolescencia\n\n5. ADULTEZ Y VEJEZ\n   5.1 Desarrollo en la etapa adulta\n   5.2 Envejecimiento y cambios fisiológicos\n   5.3 Salud y calidad de vida en la vejez\n\n6. VALORACIÓN DEL CRECIMIENTO Y DEL DESARROLLO\n   6.1 Somatometría y curvas de crecimiento\n   6.2 Pruebas de tamizaje del desarrollo\n   6.3 Detección de retrasos y derivación oportuna\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-dietoterapia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los principios de la dietoterapia en el cuidado de los pacientes, con la finalidad de contribuir al tratamiento nutricional de las enfermedades y a la recuperación de la salud.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DE LA DIETOTERAPIA\n   1.1 Concepto y objetivos del tratamiento nutricional\n   1.2 Dietas normal y modificadas\n   1.3 Valoración y cálculo de la dieta\n\n2. DIETAS EN ENFERMEDADES METABÓLICAS\n   2.1 Diabetes mellitus\n   2.2 Obesidad y síndrome metabólico\n   2.3 Dislipidemias y gota\n\n3. DIETAS EN ENFERMEDADES CARDIOVASCULARES Y RENALES\n   3.1 Hipertensión arterial y cardiopatías\n   3.2 Insuficiencia renal y litiasis\n   3.3 Restricción de sodio, potasio y líquidos\n\n4. DIETAS EN ENFERMEDADES DIGESTIVAS\n   4.1 Gastritis y úlcera\n   4.2 Hepatopatías y pancreatitis\n   4.3 Enfermedades intestinales y alergias alimentarias\n\n5. SOPORTE NUTRICIONAL\n   5.1 Alimentación enteral: sondas y fórmulas\n   5.2 Nutrición parenteral\n   5.3 Cuidados de enfermería y complicaciones\n\n6. NUTRICIÓN EN SITUACIONES ESPECIALES\n   6.1 Paciente quirúrgico y quemado\n   6.2 Paciente oncológico\n   6.3 Educación nutricional al paciente y a su familia\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermeria-de-la-rehabilitacion": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería a personas con discapacidad o en proceso de rehabilitación, con la finalidad de favorecer su independencia, su integración social y su calidad de vida.\n\nCONTENIDO TEMÁTICO\n1. GENERALIDADES DE LA REHABILITACIÓN\n   1.1 Conceptos de deficiencia, discapacidad y minusvalía\n   1.2 Niveles de prevención y objetivos de la rehabilitación\n   1.3 Equipo multidisciplinario y papel de enfermería\n\n2. VALORACIÓN FUNCIONAL\n   2.1 Escalas de valoración de la independencia\n   2.2 Valoración de la movilidad y de la fuerza muscular\n   2.3 Plan de cuidados de rehabilitación\n\n3. MEDIOS Y AGENTES FÍSICOS\n   3.1 Termoterapia y crioterapia\n   3.2 Electroterapia y ultrasonido\n   3.3 Hidroterapia y masaje\n\n4. MOVILIZACIÓN Y AYUDAS TÉCNICAS\n   4.1 Posiciones y cambios posturales\n   4.2 Ejercicios pasivos y activos\n   4.3 Uso de bastones, andadores, sillas de ruedas, ortesis y prótesis\n\n5. REHABILITACIÓN EN CONDICIONES ESPECÍFICAS\n   5.1 Rehabilitación neurológica y del paciente con evento vascular cerebral\n   5.2 Rehabilitación cardiaca y respiratoria\n   5.3 Rehabilitación de lesiones musculoesqueléticas y amputados\n\n6. REINTEGRACIÓN SOCIAL Y DERECHOS\n   6.1 Derechos de las personas con discapacidad\n   6.2 Educación a la familia y al cuidador\n   6.3 Rehabilitación basada en la comunidad\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-educacion-para-la-salud": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno diseñará y aplicará programas de educación para la salud dirigidos a individuos, familias y grupos, con la finalidad de promover estilos de vida saludables y la participación en el cuidado de la salud.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DE LA EDUCACIÓN PARA LA SALUD\n   1.1 Concepto, objetivos y principios\n   1.2 Antecedentes y modelos de educación para la salud\n   1.3 Papel educador de la enfermera\n\n2. PROCESO DE ENSEÑANZA-APRENDIZAJE\n   2.1 Aprendizaje del adulto y del niño\n   2.2 Factores que influyen en el aprendizaje\n   2.3 Comunicación educativa\n\n3. DIAGNÓSTICO EDUCATIVO\n   3.1 Identificación de necesidades de aprendizaje\n   3.2 Características de la población destinataria\n   3.3 Establecimiento de objetivos educativos\n\n4. PLANEACIÓN DE PROGRAMAS EDUCATIVOS\n   4.1 Elaboración de cartas descriptivas\n   4.2 Selección de contenidos y de estrategias\n   4.3 Diseño de materiales didácticos\n\n5. TÉCNICAS Y MEDIOS DIDÁCTICOS\n   5.1 Técnicas individuales y grupales\n   5.2 Demostraciones, talleres y dinámicas\n   5.3 Uso de medios audiovisuales y digitales\n\n6. EVALUACIÓN DE LA EDUCACIÓN PARA LA SALUD\n   6.1 Indicadores de proceso, resultado e impacto\n   6.2 Instrumentos de evaluación\n   6.3 Seguimiento y retroalimentación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermeria-geriatrica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería al adulto mayor, con la finalidad de preservar su funcionalidad, su autonomía y su calidad de vida con respeto a su dignidad.\n\nCONTENIDO TEMÁTICO\n1. ENVEJECIMIENTO Y VEJEZ\n   1.1 Concepto de envejecimiento y teorías\n   1.2 Cambios fisiológicos por sistemas\n   1.3 Panorama demográfico y epidemiológico del envejecimiento\n\n2. VALORACIÓN GERIÁTRICA INTEGRAL\n   2.1 Valoración funcional, cognitiva, afectiva y social\n   2.2 Escalas de Katz, Barthel y Lawton\n   2.3 Valoración del riesgo de caídas y nutricional\n\n3. SÍNDROMES GERIÁTRICOS\n   3.1 Inmovilidad y úlceras por presión\n   3.2 Caídas, incontinencia y deterioro cognitivo\n   3.3 Delirium y depresión\n   3.4 Polifarmacia\n\n4. ENFERMEDADES FRECUENTES EN EL ADULTO MAYOR\n   4.1 Enfermedades crónico-degenerativas\n   4.2 Demencias y enfermedad de Parkinson\n   4.3 Cuidados de enfermería específicos\n\n5. PROMOCIÓN DE UN ENVEJECIMIENTO ACTIVO\n   5.1 Actividad física, nutrición y estimulación cognitiva\n   5.2 Prevención de accidentes y maltrato\n   5.3 Redes de apoyo y recreación\n\n6. ATENCIÓN INSTITUCIONAL Y CUIDADOS AL FINAL DE LA VIDA\n   6.1 Residencias y casas de día\n   6.2 Capacitación del cuidador primario\n   6.3 Aspectos éticos y legales en la atención al adulto mayor\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-practica-clinica-ii": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería a pacientes con alteraciones médicas y quirúrgicas, aplicando el proceso de atención de enfermería, con la finalidad de integrar los conocimientos y habilidades adquiridos y desarrollar el juicio clínico.\n\nCONTENIDO TEMÁTICO\n1. INTEGRACIÓN A LOS SERVICIOS DE HOSPITALIZACIÓN\n   1.1 Medicina interna, cirugía y especialidades\n   1.2 Organización del trabajo del equipo de enfermería\n   1.3 Metas internacionales de seguridad del paciente\n\n2. CUIDADO DEL PACIENTE CON ALTERACIONES CARDIORRESPIRATORIAS\n   2.1 Valoración y monitoreo hemodinámico\n   2.2 Oxigenoterapia, aspiración de secreciones y manejo de vía aérea\n   2.3 Cuidados del paciente con dolor torácico y disnea\n\n3. CUIDADO DEL PACIENTE CON ALTERACIONES METABÓLICAS Y RENALES\n   3.1 Control de glucemia y administración de insulina\n   3.2 Manejo de líquidos y electrolitos\n   3.3 Cuidados de sondas, drenajes y diálisis\n\n4. CUIDADO DEL PACIENTE QUIRÚRGICO\n   4.1 Preparación preoperatoria\n   4.2 Cuidados posoperatorios inmediatos y mediatos\n   4.3 Prevención de complicaciones\n\n5. PROCEDIMIENTOS ESPECIALIZADOS\n   5.1 Terapia intravenosa y transfusiones\n   5.2 Toma de electrocardiograma\n   5.3 Preparación y administración de hemoderivados\n\n6. PROCESO DE ATENCIÓN DE ENFERMERÍA Y ESTUDIO DE CASO\n   6.1 Elaboración del plan de cuidados individualizado\n   6.2 Presentación y defensa de un estudio de caso\n   6.3 Evaluación de los resultados del cuidado\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-investigacion-clinica-en-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno diseñará un protocolo de investigación clínica y analizará la evidencia científica disponible, con la finalidad de sustentar la práctica de enfermería basada en la mejor evidencia.\n\nCONTENIDO TEMÁTICO\n1. INVESTIGACIÓN Y ENFERMERÍA BASADA EN EVIDENCIA\n   1.1 Importancia de la investigación en la práctica clínica\n   1.2 Niveles de evidencia y grados de recomendación\n   1.3 Etapas de la enfermería basada en evidencia\n\n2. PLANTEAMIENTO DEL PROBLEMA\n   2.1 Identificación del problema clínico\n   2.2 Pregunta de investigación con formato PICO\n   2.3 Objetivos, hipótesis y justificación\n\n3. REVISIÓN DE LA LITERATURA\n   3.1 Búsqueda en bases de datos: PubMed, Cochrane y otras\n   3.2 Lectura crítica de artículos científicos\n   3.3 Elaboración del marco teórico y de las referencias\n\n4. DISEÑOS Y MÉTODOS DE INVESTIGACIÓN\n   4.1 Diseños cuantitativos y cualitativos\n   4.2 Población, muestra y variables\n   4.3 Instrumentos de recolección de datos\n\n5. ÉTICA DE LA INVESTIGACIÓN\n   5.1 Principios éticos y consentimiento informado\n   5.2 Comités de ética en investigación\n   5.3 Confidencialidad y publicación\n\n6. ANÁLISIS Y DIFUSIÓN DE RESULTADOS\n   6.1 Análisis de datos y presentación de resultados\n   6.2 Elaboración del informe y del artículo\n   6.3 Presentación oral y en cartel\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal\n• Análisis crítico de artículos científicos\n• Taller de elaboración del protocolo o del documento de trabajo\n• Revisión y retroalimentación de avances\n\nDe manera independiente\n• Búsqueda de información y evidencia en bases de datos\n• Elaboración de fichas y reportes de lectura\n• Elaboración de los avances del protocolo o del trabajo escrito\n• Preparación de la exposición de resultados\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Análisis de artículos y tareas: 30%\n• Protocolo o avance de investigación: 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermeria-quirurgica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería al paciente durante las etapas pre, trans y posoperatoria, con la finalidad de contribuir a la seguridad del procedimiento quirúrgico y a la recuperación del paciente.\n\nCONTENIDO TEMÁTICO\n1. ORGANIZACIÓN DEL SERVICIO QUIRÚRGICO\n   1.1 Estructura y áreas del quirófano\n   1.2 Funciones del equipo quirúrgico: instrumentista, circulante y anestesiólogo\n   1.3 Normas de conducta y circulación en el quirófano\n\n2. ASEPSIA Y ANTISEPSIA QUIRÚRGICA\n   2.1 Lavado quirúrgico de manos\n   2.2 Colocación de bata y guantes estériles\n   2.3 Preparación del campo operatorio\n   2.4 Control de la esterilización\n\n3. INSTRUMENTAL, MATERIAL Y EQUIPO\n   3.1 Clasificación del instrumental quirúrgico\n   3.2 Suturas y materiales de curación\n   3.3 Mesa de instrumental y conteo de gasas e instrumentos\n\n4. ANESTESIA Y POSICIONES QUIRÚRGICAS\n   4.1 Tipos de anestesia y cuidados de enfermería\n   4.2 Posiciones del paciente y prevención de lesiones\n   4.3 Monitoreo transoperatorio\n\n5. CUIDADOS PREOPERATORIOS Y POSOPERATORIOS\n   5.1 Valoración y preparación preoperatoria\n   5.2 Lista de verificación para una cirugía segura\n   5.3 Recuperación posanestésica\n   5.4 Complicaciones posoperatorias y manejo del dolor\n\n6. CIRUGÍAS MÁS FRECUENTES\n   6.1 Cirugía general y abdominal\n   6.2 Cirugía ortopédica y ginecobstétrica\n   6.3 Cirugía ambulatoria\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-salud-mental": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería a personas con trastornos mentales y a sus familias, con la finalidad de promover la salud mental y favorecer la recuperación y la reintegración social.\n\nCONTENIDO TEMÁTICO\n1. SALUD MENTAL Y PSIQUIATRÍA\n   1.1 Evolución de la atención psiquiátrica\n   1.2 Modelos de atención comunitaria\n   1.3 Marco legal: NOM-025-SSA2-2014 y Ley General de Salud\n\n2. VALORACIÓN DE LA SALUD MENTAL\n   2.1 Entrevista psiquiátrica y examen mental\n   2.2 Identificación de riesgos: agresión y suicidio\n   2.3 Diagnósticos de enfermería en salud mental\n\n3. TRASTORNOS MENTALES Y CUIDADOS DE ENFERMERÍA\n   3.1 Esquizofrenia y trastornos psicóticos\n   3.2 Trastornos del estado de ánimo\n   3.3 Trastornos de ansiedad y de la personalidad\n   3.4 Demencias y trastornos neurocognitivos\n\n4. ADICCIONES\n   4.1 Sustancias psicoactivas y sus efectos\n   4.2 Intoxicación y síndrome de abstinencia\n   4.3 Prevención y tratamiento\n\n5. TRATAMIENTO Y URGENCIAS PSIQUIÁTRICAS\n   5.1 Psicofarmacología y vigilancia de efectos adversos\n   5.2 Contención física y verbal\n   5.3 Intervención en crisis y urgencias psiquiátricas\n\n6. REHABILITACIÓN Y REINTEGRACIÓN SOCIAL\n   6.1 Programas de rehabilitación psicosocial\n   6.2 Apoyo y educación a la familia\n   6.3 Estigma y derechos de las personas con trastornos mentales\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-bioetica-y-legislacion-en-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los principios bioéticos y el marco legal de la práctica de enfermería, con la finalidad de actuar con responsabilidad profesional y respeto a los derechos de los pacientes.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DE LA BIOÉTICA\n   1.1 Ética, moral y bioética\n   1.2 Principios: autonomía, beneficencia, no maleficencia y justicia\n   1.3 Dilemas éticos en la práctica de enfermería\n\n2. CÓDIGOS Y DERECHOS\n   2.1 Código de ética para las enfermeras y enfermeros de México\n   2.2 Derechos de los pacientes\n   2.3 Derechos de las enfermeras y los enfermeros\n\n3. CONSENTIMIENTO INFORMADO Y CONFIDENCIALIDAD\n   3.1 Elementos del consentimiento informado\n   3.2 Secreto profesional y protección de datos personales\n   3.3 Voluntad anticipada\n\n4. MARCO LEGAL DE LA PRÁCTICA PROFESIONAL\n   4.1 Constitución, Ley General de Salud y su reglamento\n   4.2 Ley Reglamentaria del Artículo 5.º y cédula profesional\n   4.3 NOM-019-SSA3-2013 y NOM-004-SSA3-2012\n\n5. RESPONSABILIDAD PROFESIONAL\n   5.1 Tipos de responsabilidad: civil, penal, administrativa y ética\n   5.2 Negligencia, impericia e imprudencia\n   5.3 Comisión Nacional de Arbitraje Médico y su función\n\n6. TEMAS BIOÉTICOS ACTUALES\n   6.1 Inicio y final de la vida\n   6.2 Trasplante y donación de órganos\n   6.3 Investigación con seres humanos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-docencia-en-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los fundamentos de la didáctica en el diseño, la conducción y la evaluación de actividades de enseñanza, con la finalidad de participar en la formación de recursos humanos y en la educación continua del personal de salud.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DE LA DOCENCIA\n   1.1 Educación y pedagogía: conceptos básicos\n   1.2 Teorías del aprendizaje\n   1.3 La docencia en enfermería: perfil y funciones\n\n2. PLANEACIÓN DIDÁCTICA\n   2.1 Diseño curricular y programas de estudio\n   2.2 Elaboración de objetivos de aprendizaje\n   2.3 Planeación de una sesión de clase\n\n3. ESTRATEGIAS Y TÉCNICAS DE ENSEÑANZA\n   3.1 Técnicas expositivas, participativas y de simulación\n   3.2 Aprendizaje basado en problemas y en casos\n   3.3 Uso de tecnologías de la información en la docencia\n\n4. ENSEÑANZA EN EL ÁMBITO CLÍNICO\n   4.1 Tutoría y supervisión de las prácticas\n   4.2 Guías de observación y de retroalimentación\n   4.3 Ambiente de aprendizaje y ética docente\n\n5. EVALUACIÓN DEL APRENDIZAJE\n   5.1 Tipos y funciones de la evaluación\n   5.2 Elaboración de instrumentos: exámenes, rúbricas y listas de cotejo\n   5.3 Retroalimentación y mejora\n\n6. EDUCACIÓN CONTINUA\n   6.1 Capacitación del personal de enfermería\n   6.2 Diagnóstico de necesidades de capacitación\n   6.3 Diseño y evaluación de cursos y talleres\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermeria-y-tanatologia": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará el proceso de la muerte y del duelo y las técnicas de acompañamiento, con la finalidad de brindar apoyo humano a la persona en situación terminal, a su familia y a sí mismo como profesional.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN A LA TANATOLOGÍA\n   1.1 Concepto y objeto de estudio\n   1.2 La muerte en las diferentes culturas y épocas\n   1.3 Actitudes ante la muerte\n\n2. LA PERSONA EN SITUACIÓN TERMINAL\n   2.1 Reacciones emocionales: etapas de Kübler-Ross\n   2.2 Necesidades físicas, emocionales y espirituales\n   2.3 Comunicación con el paciente y la familia\n\n3. EL DUELO\n   3.1 Tipos de duelo y manifestaciones\n   3.2 Duelo normal y duelo complicado\n   3.3 Intervención en el duelo y tareas del doliente\n\n4. ACOMPAÑAMIENTO Y CUIDADO AL FINAL DE LA VIDA\n   4.1 Atención de enfermería en la agonía\n   4.2 Cuidados posmortem y entrega del cuerpo\n   4.3 Rituales y creencias religiosas y culturales\n\n5. ASPECTOS ÉTICOS Y LEGALES\n   5.1 Dignidad en la muerte y decisiones al final de la vida\n   5.2 Voluntad anticipada\n   5.3 Certificado de defunción y trámites\n\n6. CUIDADO DEL PROFESIONAL\n   6.1 Impacto emocional en el personal de salud\n   6.2 Duelo del cuidador\n   6.3 Estrategias de autocuidado\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-administracion-y-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los principios y el proceso administrativo en los servicios de enfermería, con la finalidad de organizar los recursos y contribuir a la calidad y la eficiencia de la atención.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DE LA ADMINISTRACIÓN\n   1.1 Concepto, evolución y teorías de la administración\n   1.2 Proceso administrativo\n   1.3 Administración de los servicios de enfermería\n\n2. PLANEACIÓN\n   2.1 Misión, visión y objetivos\n   2.2 Tipos de planes y programas\n   2.3 Toma de decisiones\n\n3. ORGANIZACIÓN\n   3.1 Estructuras y organigramas\n   3.2 Manuales de organización y de procedimientos\n   3.3 Delegación y distribución de funciones\n\n4. INTEGRACIÓN DE RECURSOS HUMANOS Y MATERIALES\n   4.1 Cálculo de personal de enfermería\n   4.2 Rol de turnos y asignación de pacientes\n   4.3 Control de medicamentos, material y equipo\n\n5. DIRECCIÓN\n   5.1 Liderazgo y motivación\n   5.2 Comunicación organizacional\n   5.3 Manejo de conflictos y trabajo en equipo\n\n6. CONTROL Y CALIDAD\n   6.1 Supervisión y evaluación del desempeño\n   6.2 Indicadores de calidad de la atención\n   6.3 Mejora continua y auditoría de los registros\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-cuidados-paliativos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería a pacientes con enfermedades que amenazan la vida y a sus familias, con la finalidad de aliviar el sufrimiento y mejorar su calidad de vida.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DE LOS CUIDADOS PALIATIVOS\n   1.1 Concepto, filosofía y principios\n   1.2 Historia del movimiento de cuidados paliativos\n   1.3 Marco legal: Ley General de Salud, Título Octavo Bis\n\n2. VALORACIÓN INTEGRAL DEL PACIENTE PALIATIVO\n   2.1 Valoración física, emocional, social y espiritual\n   2.2 Escalas de valoración funcional y de síntomas\n   2.3 Planeación avanzada de los cuidados\n\n3. CONTROL DEL DOLOR\n   3.1 Tipos y evaluación del dolor\n   3.2 Escalera analgésica de la OMS\n   3.3 Opioides: uso seguro y efectos adversos\n   3.4 Medidas no farmacológicas\n\n4. CONTROL DE OTROS SÍNTOMAS\n   4.1 Disnea, náuseas, vómito y estreñimiento\n   4.2 Fatiga, anorexia y caquexia\n   4.3 Ansiedad, delirium y agitación terminal\n   4.4 Cuidados de la piel y de la boca\n\n5. COMUNICACIÓN Y APOYO A LA FAMILIA\n   5.1 Comunicación de malas noticias\n   5.2 Soporte emocional y espiritual\n   5.3 Capacitación del cuidador primario\n\n6. ÚLTIMOS DÍAS DE VIDA\n   6.1 Reconocimiento de la fase de agonía\n   6.2 Sedación paliativa y decisiones al final de la vida\n   6.3 Acompañamiento en el duelo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-gerencia-en-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará las herramientas de la gerencia en la gestión de los servicios de enfermería, con la finalidad de optimizar los recursos, mejorar los resultados y garantizar la calidad y la seguridad de la atención.\n\nCONTENIDO TEMÁTICO\n1. GERENCIA EN SALUD\n   1.1 Concepto y diferencias con la administración\n   1.2 Competencias del gerente de enfermería\n   1.3 Organización de los servicios de salud\n\n2. PLANEACIÓN ESTRATÉGICA EN LOS SERVICIOS DE ENFERMERÍA\n   2.1 Diagnóstico situacional y análisis FODA\n   2.2 Diseño de planes y proyectos\n   2.3 Presupuesto y costos de los servicios\n\n3. GESTIÓN DEL TALENTO HUMANO\n   3.1 Reclutamiento, selección y capacitación\n   3.2 Evaluación del desempeño\n   3.3 Clima organizacional y desarrollo profesional\n\n4. GESTIÓN DE LA CALIDAD Y DE LA SEGURIDAD DEL PACIENTE\n   4.1 Modelos de calidad y acreditación\n   4.2 Indicadores de gestión del cuidado\n   4.3 Gestión de riesgos y eventos adversos\n\n5. TOMA DE DECISIONES Y NEGOCIACIÓN\n   5.1 Modelos de toma de decisiones\n   5.2 Negociación y resolución de conflictos\n   5.3 Comunicación gerencial\n\n6. INNOVACIÓN Y GESTIÓN DEL CAMBIO\n   6.1 Mejora continua de procesos\n   6.2 Uso de las tecnologías en la gestión\n   6.3 Gestión del cambio organizacional\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-enfermeria-en-urgencias": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proporcionará cuidados de enfermería a pacientes en situaciones de urgencia y emergencia, con la finalidad de intervenir de forma oportuna y segura en la preservación de la vida y la prevención de complicaciones.\n\nCONTENIDO TEMÁTICO\n1. ORGANIZACIÓN DE LOS SERVICIOS DE URGENCIAS\n   1.1 Estructura del servicio y de la red de atención prehospitalaria\n   1.2 Clasificación de pacientes: triage\n   1.3 Funciones del equipo de enfermería\n\n2. VALORACIÓN INICIAL Y SOPORTE VITAL\n   2.1 Valoración primaria y secundaria del paciente\n   2.2 Reanimación cardiopulmonar básica y avanzada\n   2.3 Manejo de vía aérea y uso del desfibrilador\n\n3. URGENCIAS MÉDICAS\n   3.1 Choque y estados de alteración de la conciencia\n   3.2 Urgencias cardiovasculares y respiratorias\n   3.3 Urgencias endocrinas: hipoglucemia y cetoacidosis\n   3.4 Intoxicaciones y envenenamientos\n\n4. TRAUMA Y URGENCIAS QUIRÚRGICAS\n   4.1 Atención inicial del paciente politraumatizado\n   4.2 Fracturas, hemorragias y traumatismo craneoencefálico\n   4.3 Quemaduras y lesiones por agentes físicos\n\n5. URGENCIAS OBSTÉTRICAS Y PEDIÁTRICAS\n   5.1 Hemorragia obstétrica y eclampsia\n   5.2 Urgencias respiratorias y deshidratación en el niño\n   5.3 Reanimación pediátrica y neonatal\n\n6. DESASTRES Y SITUACIONES ESPECIALES\n   6.1 Atención en desastres y múltiples víctimas\n   6.2 Traslado seguro del paciente\n   6.3 Aspectos éticos y legales en las urgencias\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Demostración y redemostración de procedimientos en el laboratorio de simulación\n• Práctica supervisada en unidades de atención de salud\n• Valoración de pacientes y aplicación del proceso de atención de enfermería\n• Discusión de casos clínicos en grupo\n\nDe manera independiente\n• Elaboración de planes de cuidados de enfermería\n• Registro de la práctica en una bitácora\n• Elaboración de un estudio de caso\n• Investigación de la normatividad y de las guías de práctica aplicables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen teórico: 25%\n• Desempeño en la práctica (guía de observación): 40%\n• Plan de cuidados o estudio de caso: 20%\n• Bitácora y reportes de práctica: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-liderazgo-en-enfermeria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará las teorías y habilidades del liderazgo en los equipos de enfermería, con la finalidad de influir positivamente en la calidad del cuidado, el trabajo colaborativo y el desarrollo profesional.\n\nCONTENIDO TEMÁTICO\n1. CONCEPTO Y TEORÍAS DEL LIDERAZGO\n   1.1 Liderazgo, autoridad y poder\n   1.2 Teorías de rasgos, conductuales y situacionales\n   1.3 Liderazgo transformacional y de servicio\n\n2. EL LÍDER DE ENFERMERÍA\n   2.1 Perfil y competencias del líder\n   2.2 Inteligencia emocional\n   2.3 Ética y valores del liderazgo\n\n3. COMUNICACIÓN Y MOTIVACIÓN\n   3.1 Comunicación asertiva y retroalimentación\n   3.2 Teorías de la motivación laboral\n   3.3 Reconocimiento y desarrollo del personal\n\n4. TRABAJO EN EQUIPO Y MANEJO DE CONFLICTOS\n   4.1 Formación y desarrollo de equipos de alto desempeño\n   4.2 Tipos de conflicto y estrategias de solución\n   4.3 Negociación y mediación\n\n5. LIDERAZGO Y CAMBIO\n   5.1 Gestión del cambio en las organizaciones de salud\n   5.2 Liderazgo en situaciones de crisis\n   5.3 Innovación y mejora de la práctica\n\n6. DESARROLLO PROFESIONAL Y POLÍTICO\n   6.1 Participación en gremios y asociaciones\n   6.2 Influencia en las políticas de salud\n   6.3 Plan de desarrollo profesional\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y situaciones de la práctica de enfermería en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "enf-seminario-de-tesis": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno elaborará y presentará su trabajo de tesis, con la finalidad de demostrar su capacidad de investigación y de aplicación del conocimiento al cuidado de la salud y de cumplir con el requisito de titulación.\n\nCONTENIDO TEMÁTICO\n1. ELECCIÓN Y DELIMITACIÓN DEL TEMA\n   1.1 Identificación de problemas de investigación en enfermería\n   1.2 Delimitación del tema y justificación\n   1.3 Asignación del asesor y calendario de trabajo\n\n2. PLANTEAMIENTO DEL PROBLEMA Y MARCO TEÓRICO\n   2.1 Pregunta, objetivos e hipótesis\n   2.2 Revisión de la literatura y construcción del marco teórico\n   2.3 Referencias en formato APA\n\n3. METODOLOGÍA\n   3.1 Tipo y diseño de investigación\n   3.2 Población, muestra y variables\n   3.3 Diseño y validación de instrumentos\n   3.4 Aspectos éticos\n\n4. TRABAJO DE CAMPO Y ANÁLISIS DE DATOS\n   4.1 Aplicación de los instrumentos\n   4.2 Procesamiento y análisis de los datos\n   4.3 Presentación de los resultados en tablas y gráficas\n\n5. DISCUSIÓN, CONCLUSIONES Y REDACCIÓN FINAL\n   5.1 Discusión de los resultados\n   5.2 Conclusiones y recomendaciones\n   5.3 Resumen, anexos y revisión del documento\n\n6. PRESENTACIÓN Y DEFENSA\n   6.1 Preparación de la presentación\n   6.2 Simulacro de la defensa\n   6.3 Requisitos y trámites de titulación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Asesoría grupal sobre el proceso de investigación y la redacción de la tesis\n• Revisión y retroalimentación de los avances\n• Exposición de los avances del proyecto ante el grupo\n• Simulacro de la defensa del trabajo\n\nDe manera independiente\n• Redacción de los capítulos del trabajo de tesis\n• Búsqueda y análisis de fuentes de información\n• Elaboración de los instrumentos y análisis de los datos\n• Preparación de la presentación para la defensa\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Avances de capítulos: 50%\n• Presentación de avances: 20%\n• Defensa del trabajo: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-07T15:57:41.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  }
+ },
+ "archivos": []
+}

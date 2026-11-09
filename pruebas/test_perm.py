@@ -29,7 +29,7 @@ with sync_playwright() as pw:
     pg.fill('#tk',TOK);pg.fill('#nm','Administrador');pg.fill('#us','admin');pg.fill('#pw','clave-segura-1');pg.fill('#p2','clave-segura-1');pg.click('#go');pg.wait_for_url(B+'/')
     W(pg,"typeof DBH!=='undefined'&&DBH!==null&&typeof APP!=='undefined'&&APP!==null&&ROL==='admin'")
     # ---- panel del administrador ----
-    ok('admin_ve_todos_los_mosaicos',all(pg.is_visible('#'+i) for i in ['mPag','mIns','mEsc','mAcu','mA2','mTit','mNom','mNa','mVer','mUsr']) and pg.is_hidden('#mDoc'))
+    ok('admin_ve_todos_los_mosaicos',all(pg.is_visible('#'+i) for i in ['mPag','mIns','mEsc','mAcu','mA2','mTit','mUsr']) and all(pg.is_hidden('#'+i) for i in ['mNom','mNa','mVer','mDoc']))
     pg.click('#mUsr');pg.wait_for_selector('#vUsr:not([hidden])');ok('abre_usuarios','Usuarios y permisos' in pg.inner_text('#ttl') and 'admin' in pg.inner_text('#usTb'))
     ok('admin_perfil_todos','Todos los módulos' in pg.inner_text('#usTb'))
     # docente para vincular
@@ -65,7 +65,7 @@ with sync_playwright() as pw:
     nuevo('Cuco Cuentas','cuco','clave-cuco-1','personalizado',{'estado':'ver','pagos':'ver'})
     W(pg,"USERS.some(u=>u.u==='cuco')")
     ok('usuarios_creados',pg.evaluate("USERS.length")==7)
-    t=pg.inner_text('#usTb');ok('lista_con_modulos','Control de pagos (editar)' in t and 'Nómina administrativa (editar)' in t and 'Estado de cuenta final (ver)' in t and 'Docente: Mtra. Laura Díaz' in t and 'Personalizado' in t)
+    t=pg.inner_text('#usTb');ok('lista_con_modulos','Finanzas · Pagos de alumnos (editar)' in t and 'Finanzas · Nómina administrativa (editar)' in t and 'Finanzas · Estado de cuenta final (ver)' in t and 'Docente: Mtra. Laura Díaz' in t and 'Personalizado' in t)
     # ---- editar: conservar contraseña y cambiar módulos ----
     pg.click('#usTb tr:has-text("rosa") [data-ed]');pg.wait_for_selector('#dUsr[open]');ok('editar_carga_datos',pg.input_value('#usNom')=='Rosa Caja' and pg.input_value('#usMods select[data-m="corte"]')=='editar' and pg.is_visible('#usUsu') and pg.evaluate("document.getElementById('usUsu').readOnly"))
     pg.select_option('#usMods select[data-m="acuerdos"]','none');pg.click('#usOk');W(pg,"!USERS.find(u=>u.u==='rosa').modulos.acuerdos")
@@ -106,7 +106,7 @@ with sync_playwright() as pw:
         cx=b.new_context();cx.set_default_timeout(9000);pg2=pagina(cx);pg2.goto(B+'/');W(pg2,"typeof sesion==='function'&&document.body.classList.contains('locked')")
         pg2.fill('#lgU',u);pg2.fill('#lgP',c);pg2.click('#lgGo');W(pg2,"typeof APP!=='undefined'&&APP!==null&&!document.body.classList.contains('locked')&&typeof S!=='undefined'");pg2.wait_for_timeout(500);return pg2
     def tiles(pg2):return sorted(pg2.evaluate("['mPag','mIns','mEsc','mAcu','mA2','mTit','mNom','mNa','mVer','mUsr','mDoc'].filter(function(i){return !document.getElementById(i).hidden})"))
-    pr=entra('rosa','clave-rosa-1');ok('rosa_mosaicos',tiles(pr)==['mEsc','mPag','mVer'])
+    pr=entra('rosa','clave-rosa-1');ok('rosa_mosaicos',tiles(pr)==['mEsc','mPag'])
     pr.click('#mPag');W(pr,"MOD==='pagos'");ok('rosa_pagos_rol_caja',pr.evaluate("ROL")=='caja' and pr.is_visible('#tGa') and pr.is_hidden('#tEf'))
     pr.click('#tGa');W(pr,"TAB==='ga'");ok('rosa_corte',pr.evaluate("ROL")=='caja')
     pr.evaluate("ir('esc')");W(pr,"MOD==='esc'");ok('rosa_escolar_solo_ver_y_constancias',pr.evaluate("ETAB")!=None and pr.is_visible('#eTabs [data-et=N]') and pr.is_hidden('#eTabs [data-et=R]'))
@@ -114,8 +114,8 @@ with sync_playwright() as pw:
     pr.click('#eTabs [data-et=D]');W(pr,"ETAB==='D'");ok('rosa_docentes_sin_expediente_ni_accesos',pr.evaluate("ROL")=='consulta' and pr.is_hidden('#dcAccAll') and 'Expediente' not in pr.inner_html('#dcTb') and 'Crear acceso' not in pr.inner_html('#dcTb'))
     pr.evaluate("ir('usr')");ok('rosa_no_entra_a_usuarios',pr.evaluate("MOD")=='home')
     pr.evaluate("ir('nom')");ok('rosa_no_entra_a_nomina',pr.evaluate("MOD")=='home')
-    pn=entra('nina','clave-nina-2');ok('nina_mosaicos',tiles(pn)==['mNa'])
-    pn.click('#mNa');W(pn,"MOD==='na'");ok('nina_nomina_rol_admin',pn.evaluate("ROL")=='admin' and pn.evaluate("BASEROL")=='consulta')
+    pn=entra('nina','clave-nina-2');ok('nina_mosaicos',tiles(pn)==['mPag'])
+    pn.click('#mPag');W(pn,"MOD==='na'");ok('nina_nomina_rol_admin',pn.evaluate("ROL")=='admin' and pn.evaluate("BASEROL")=='consulta')
     pn.click('#naT2');pn.evaluate("abreEmp(null)");pn.fill('#emNom','Pepe Admin');pn.fill('#emSal','9000');pn.click('#emSave');W(pn,"Object.values(EMP).some(e=>e.nombre==='Pepe Admin')");pn.click('#emCan')
     ok('nina_crea_empleado',pn.evaluate("Object.keys(EMP).length")==3)
     pn.click('#naT1');pn.evaluate("document.getElementById('naM').value='11';document.getElementById('naPer').value='M';renderNa()")
@@ -135,7 +135,7 @@ with sync_playwright() as pw:
     pc.click('#tEf');W(pc,"TAB==='ef'");pc.wait_for_selector('#efRes b');ok('cuco_estado_de_cuenta',pc.evaluate("ROL")=='admin' and 'Resultado' in pc.inner_text('#efRes'))
     # ---- el administrador cambia los módulos de Rosa y ella los ve al recargar ----
     pg.evaluate("ir('usr')");pg.click('#usTb tr:has-text("rosa") [data-ed]');pg.wait_for_selector('#dUsr[open]');pg.select_option('#usMods select[data-m="pagos"]','none');pg.select_option('#usMods select[data-m="corte"]','none');pg.select_option('#usMods select[data-m="ver"]','none');pg.select_option('#usMods select[data-m="nomina_doc"]','ver');pg.click('#usOk');W(pg,"USERS.find(u=>u.u==='rosa').perm&&USERS.find(u=>u.u==='rosa').perm.nomina_doc==='ver'")
-    pr.reload();W(pr,"typeof APP!=='undefined'&&APP!==null&&typeof S!=='undefined'&&!document.body.classList.contains('locked')");pr.wait_for_timeout(500);ok('rosa_nuevos_mosaicos',tiles(pr)==['mEsc','mNom'])
+    pr.reload();W(pr,"typeof APP!=='undefined'&&APP!==null&&typeof S!=='undefined'&&!document.body.classList.contains('locked')");pr.wait_for_timeout(500);ok('rosa_nuevos_mosaicos',tiles(pr)==['mEsc','mPag'])
     # ---- baja de usuarios ----
     pg.evaluate("ir('usr')");pg.click('#usTb tr:has-text("vera") [data-dl]');ok('baja_pide_confirmar','Confirmar' in pg.locator('#usTb tr:has-text("vera") [data-dl]').inner_text())
     pg.locator('#usTb tr:has-text("vera") [data-dl]').click();W(pg,"!USERS.some(u=>u.u==='vera')");ok('baja_elimina',ses['vera'].request.get(B+'/api/col/students').status==401)

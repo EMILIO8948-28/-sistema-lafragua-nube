@@ -510,7 +510,7 @@ function verificaDoc(t, id, code, vig, fecha) {
     const dentro = (origen, nombre, folio, monto, fecha, metodo, estado) => ({ ok: true, tipo: 'recibo', titulo: 'Recibo de pago', origen, folio, fecha, monto: Number(monto), metodo, nombre, estado: estado !== 'pendiente' ? 'Pago registrado' : 'Transferencia pendiente de confirmar' });
     const buscar = (coleccion, sacar) => { for (const r of q.lista.all(coleccion)) { const d = JSON.parse(r.data); for (const g of sacar(d)) { if (String(g.folio || '').toUpperCase() === id.toUpperCase()) return { r, d, g }; } } return null; };
     let h = buscar('ledger', d => d.pagos || []);
-    if (h) { if (code !== chkTxt(h.g.folio + '|' + Number(h.g.monto).toFixed(2) + '|' + h.g.fecha)) return no; const a = nombreAl(h.r.id); return dentro('Control de pagos', a ? a.nombre : '', h.g.folio, h.g.monto, h.g.fecha, h.g.metodo, h.g.estado); }
+    if (h) { if (code !== chkTxt(h.g.folio + '|' + Number(h.g.monto).toFixed(2) + '|' + h.g.fecha)) return no; const a = nombreAl(h.r.id); return dentro('Finanzas', a ? a.nombre : '', h.g.folio, h.g.monto, h.g.fecha, h.g.metodo, h.g.estado); }
     h = buscar('titulaciones', d => d.abonos || []);
     if (h) { if (code !== chkTxt(h.g.folio + '|' + Number(h.g.monto).toFixed(2) + '|' + h.g.fecha)) return no; return dentro('Titulaciones', [h.d.nombre, h.d.apPat, h.d.apMat].filter(Boolean).join(' '), h.g.folio, h.g.monto, h.g.fecha, h.g.metodo, h.g.estado); }
     h = buscar('acuerdo286', d => d.pagos || []);
@@ -845,15 +845,18 @@ function precarga() {
     const hechos = [], omitidos = [];
     for (const k of Object.keys(D.colecciones.catalogo)) {
       if (!NOMBRE_OK.test(k)) continue;
-      const cat = D.colecciones.catalogo[k], previo = q.uno.get('catalogo', k);
-      if (previo && ((JSON.parse(previo.data).items) || []).length) { omitidos.push(k); continue; }
+      let cat = D.colecciones.catalogo[k], clave = k;
+      /* Si el Administrador cambió el nombre de este plan, la carga se hace con el nombre nuevo */
+      try { const pl = q.uno.get('config', 'plans'), ren = (pl && JSON.parse(pl.data).ren) || {}; if (cat && ren[cat.plan]) { const nuevo = String(ren[cat.plan]), kn = nuevo.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); if (kn && NOMBRE_OK.test(kn)) { clave = kn; cat = Object.assign({}, cat, { plan: nuevo }); } } } catch (e) {}
+      const previo = q.uno.get('catalogo', clave);
+      if (previo && ((JSON.parse(previo.data).items) || []).length) { omitidos.push(clave); continue; }
       let n = 0;
       for (const it of (cat.items || [])) {
         const cd = D.contenidos && D.contenidos[it.id];
         if (cd && cd.txt && NOMBRE_OK.test(String(it.id)) && !q.uno.get('contenidos', String(it.id))) { q.pon.run('contenidos', String(it.id), JSON.stringify({ txt: String(cd.txt), pdf: null, ts: new Date().toISOString(), byn: 'Carga inicial del programa de estudios' }), Date.now()); n++; }
       }
-      q.pon.run('catalogo', k, JSON.stringify(cat), Date.now());
-      hechos.push(k + ' (' + (cat.items || []).length + ' asignaturas, ' + n + ' contenidos)');
+      q.pon.run('catalogo', clave, JSON.stringify(cat), Date.now());
+      hechos.push(clave + ' (' + (cat.items || []).length + ' asignaturas, ' + n + ' contenidos)');
     }
     q.pon.run('meta', marca, JSON.stringify({ fecha: new Date().toISOString(), cargados: hechos, omitidos }), Date.now());
     audita('sistema', null, 'Precarga de plan de estudios', f + ': ' + (hechos.join('; ') || 'nada que cargar') + (omitidos.length ? ' · ya tenían materias: ' + omitidos.join(', ') : ''));

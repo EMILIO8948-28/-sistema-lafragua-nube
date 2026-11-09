@@ -30,5 +30,9 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_resguardos_zip.py` · carga de escaneos de resguardo desde un ZIP: asignación por matrícula, nombre y palabra, reemplazo, registros nuevos y permisos (33).
 - `test_cert_resguardo.py` · certificados en resguardo de Acuerdo 286: registro, certificado ya cargado, entrega, acuses, ZIP, permisos del módulo y autorización para quitar (37).
 - `test_cobranza.py` · avisos de adeudo y bloqueo por falta de pago: cálculo de colegiaturas vencidas, tres avisos, abonos, bloqueo, mensaje al iniciar sesión, desbloqueo, pausas, exenciones y permisos (56). Usa un reloj simulado (`LF_RELOJ_ARCHIVO`).
+- `test_renombrar_plan.py` · cambio de nombre de un plan: actualiza todos los registros, mueve el catálogo, no reaparece el nombre anterior, alias en importaciones y precarga, volver al nombre original y permisos (31).
+- `test_tarifas.py` · tarifa por hora de los docentes: general, por plan, por docente y por asignatura en un mes, nóminas pagadas, recibo, renombrar un plan y permisos (29).
+- `test_finanzas.py` · módulo Finanzas: tarjeta del panel, secciones (pagos, verificación, nómina docente y administrativa), acceso según permisos, título y nombres en Usuarios y permisos (25).
+- `test_cuatrimestres.py` · cuatrimestres de cada plan: cambio desde Plan de estudios y desde Costos y planes, medios cuatrimestres, mínimo por grupos y asignaturas, aviso del efecto, recálculo de cobros y permisos (31).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

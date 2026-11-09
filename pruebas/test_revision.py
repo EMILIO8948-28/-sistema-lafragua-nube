@@ -132,7 +132,7 @@ with sync_playwright() as pw:
     ok('autorizacion_guardada',est() is not None and get('planeaciones/m3')['data']['estado']=='aprobada' and get('planeaciones/m3')['data']['revisor']=='Administrador' and '✔' in pg.inner_text('#rvMsg') or 'autorizada' in pg.inner_text('#rvMsg').lower())
     pd.click('#plCls');W(pd,"PLN.m3&&PLN.m3.estado==='aprobada'");ok('docente_ve_la_autorizacion','Planeación aprobada' in pd.inner_text('#dmL tr:has-text("Didáctica")'))
     # el docente corrige: vuelve a revisión
-    pd.locator('#dmL tr:has-text("Modelos de enseñanza") [data-pl]').click();pd.wait_for_selector('#dPn[open]');pd.set_input_files('#plUp','/tmp/plf/plan.pdf');W(pd,"(PLN.m1.files||[]).length>=3")
+    pd.locator('#dmL tr:has-text("Modelos de enseñanza") [data-pl]').click();pd.wait_for_selector('#dPn[open]');pd.set_input_files('#plUp','/tmp/plf/plan.pdf');W(pd,"(PLN.m1.files||[]).length>=3");W(pd,"PLN.m1.estado==='pendiente'");W(pd,"document.getElementById('plEst').innerText.indexOf('En revisión')>-1")
     ok('al_corregir_vuelve_a_revision',pd.evaluate("PLN.m1.estado")=='pendiente' and 'En revisión' in pd.inner_text('#plEst'))
     pd.click('#plCls')
     pg.click('#rvCls');pg.evaluate("ir('home')");W(pg,"planPend()>=1");ok('el_aviso_vuelve_a_aparecer',pg.is_visible('#hPl'))

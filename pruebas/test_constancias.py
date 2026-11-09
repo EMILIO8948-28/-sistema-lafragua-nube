@@ -75,7 +75,7 @@ with sync_playwright() as pw:
     st,j=pub('/api/verificar?t=c&id=C-999999&c='+cc('C-999999','1','x'));ok('pub_folio_inexistente',j['ok'] is False and 'No se encontró' in j['motivo'])
     ok('pub_entradas_invalidas',pub('/api/verificar?t=x&id=C-1&c=00000000')[0]==400 and pub('/api/verificar?t=c&id=C-1&c=zz')[0]==400 and pub('/api/verificar?t=c&id=%3Cscript%3E&c=00000000')[0]==400 and pub('/api/verificar?t=a&id=s1&c=00000000')[0]==400)
     st,j=pub('/api/verificar?t=v&id=R-000001&c='+chk('R-000001|1300.00|2026-09-05'))
-    ok('pub_recibo',j['ok'] and j['tipo']=='recibo' and j['nombre']=='Ana López Martínez' and j['monto']==1300 and j['estado']=='Pago registrado' and j['origen']=='Control de pagos')
+    ok('pub_recibo',j['ok'] and j['tipo']=='recibo' and j['nombre']=='Ana López Martínez' and j['monto']==1300 and j['estado']=='Pago registrado' and j['origen']=='Finanzas')
     st,j=pub('/api/verificar?t=v&id=R-000002&c='+chk('R-000002|1300.50|2026-10-06'));ok('pub_recibo_transferencia_pendiente',j['ok'] and j['estado']=='Transferencia pendiente de confirmar')
     st,j=pub('/api/verificar?t=v&id=RT-000001&c='+chk('RT-000001|500.00|2026-10-10'));ok('pub_recibo_titulacion',j['ok'] and j['origen']=='Titulaciones' and j['nombre']=='Luis Pérez Gil')
     st,j=pub('/api/verificar?t=v&id=R286-000001&c='+chk('R286-000001|1000.00|2026-10-11'));ok('pub_recibo_286',j['ok'] and j['origen']=='Acuerdo 286')

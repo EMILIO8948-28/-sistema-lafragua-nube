@@ -89,21 +89,22 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
 <p class="hint" id="dbmsg" style="color:var(--bad);margin:0 0 4px"></p>
 <p class="hint" id="warn" style="color:var(--warn)" hidden></p>
 <div class="bar" id="nav" hidden><button id="nHome">← Panel principal</button></div>
+<div class="bar" id="finTabs" hidden><button data-fm="pagos">Pagos de alumnos</button><button data-fm="ver">Verificación de pagos</button><button data-fm="nom">Nómina docente</button><button data-fm="na">Nómina administrativa</button></div>
 <div id="vHome">
   <p class="sub" id="hSal"></p>
   <div id="hSo" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:12px" hidden><b>📨 Solicitudes de alumnos por atender</b><span id="hSoT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hSoGo">Ver solicitudes</button></div></div>
   <div id="hPl" class="mod" style="cursor:default;border-color:var(--brand);margin-bottom:12px" hidden><b>📋 Planeaciones por revisar</b><span id="hPlT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hPlGo">Revisar planeaciones</button></div></div>
   <div id="hNot" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:12px" hidden><b>🔔 Solicitudes de eliminación por revisar</b><span id="hNotT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hNotGo">Revisar notificaciones</button></div></div>
   <div class="mods">
-    <button class="mod" id="mPag"><b>Control de pagos</b><span>Colegiaturas, recibos, becas, gastos y corte de caja.</span><span class="st" id="mPagS"></span></button>
+    <button class="mod" id="mPag"><b>Finanzas</b><span>Pagos de alumnos, verificación de transferencias, gastos y corte de caja, estado de cuenta final, nómina docente y nómina administrativa.</span><span class="st" id="mPagS"></span></button>
     <button class="mod" id="mIns"><b>Inscripción de alumnos</b><span>Nuevas admisiones: alta del alumno, grupo, pago de inscripción, ficha y recibo.</span><span class="st" id="mInsS"></span></button>
     <button class="mod" id="mDoc"><b>Mis asignaturas</b><span>Listas, contenido y calificaciones de las asignaturas que se te asignaron.</span><span class="st" id="mDocS"></span></button>
     <button class="mod" id="mTit"><b>Titulaciones por experiencia laboral</b><span>Trámites de titulación: datos, documentos, abonos y expediente en PDF.</span><span class="st" id="mTitS"></span></button>
-    <button class="mod" id="mNom"><b>Nómina docente</b><span>Pago mensual a docentes por asignatura y horas: $120 por hora, y $150 en Enfermería, maestría y doctorado.</span><span class="st" id="mNomS"></span></button>
-    <button class="mod" id="mNa"><b>Nómina administrativa</b><span>Sueldos del personal administrativo: empleados, periodos, bonos, descuentos y recibos. Cuenta como gasto en el corte de caja y en el estado de cuenta final.</span><span class="st" id="mNaS"></span></button>
+    <button class="mod" id="mNom" hidden data-fin="1"><b>Nómina docente</b><span>Pago mensual a docentes por asignatura y horas: $120 por hora, y $150 en Enfermería, maestría y doctorado.</span><span class="st" id="mNomS"></span></button>
+    <button class="mod" id="mNa" hidden data-fin="1"><b>Nómina administrativa</b><span>Sueldos del personal administrativo: empleados, periodos, bonos, descuentos y recibos. Cuenta como gasto en el corte de caja y en el estado de cuenta final.</span><span class="st" id="mNaS"></span></button>
     <button class="mod" id="mNot" hidden><b>Notificaciones</b><span>Cuando alguien del personal quiere borrar algo, te llega aquí para que lo apruebes o lo deniegues.</span><span class="st" id="mNotS"></span></button>
     <button class="mod" id="mUsr" hidden><b>Usuarios y permisos</b><span>Crea usuarios y decide a qué módulos entra cada uno y con qué privilegio: solo ver o editar.</span><span class="st" id="mUsrS"></span></button>
-    <button class="mod" id="mVer"><b>Verificación de pagos</b><span>Transferencias por verificar en la app del banco, según los recibos emitidos.</span><span class="st" id="mVerS"></span></button>
+    <button class="mod" id="mVer" hidden data-fin="1"><b>Verificación de pagos</b><span>Transferencias por verificar en la app del banco, según los recibos emitidos.</span><span class="st" id="mVerS"></span></button>
     <button class="mod" id="mA2"><b>Acuerdo 286</b><span>Bachillerato por Acuerdo 286: ficha de inscripción, documentos, evaluación, envío, certificado y pagos.</span><span class="st" id="mA2S"></span></button>
     <button class="mod" id="mAcu"><b>Acuerdos</b><span>Prórrogas y pagos en parcialidades con los alumnos.</span><span class="st" id="mAcuS"></span></button>
     <button class="mod" id="mEsc"><b>Control escolar</b><span>Alumnos, plan de estudios, grupos, calendario, calificaciones, docentes, egresados, constancias y credenciales.</span><span class="st" id="mEscS"></span></button>
@@ -120,12 +121,14 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
       <button class="need-admin" id="aTpl">Plantilla CSV</button>
       <input id="aMasFile" type="file" accept=".csv,text/csv" hidden>
     </div>
-    <p class="hint">Esta lista es la base de alumnos que también usa Control de pagos. Haz clic en un alumno para ver su ficha, asignaturas e historial académico.</p>
+    <p class="hint">Esta lista es la base de alumnos que también usa Finanzas. Haz clic en un alumno para ver su ficha, asignaturas e historial académico.</p>
     <div class="wrap"><table style="min-width:640px"><thead><tr><th></th><th>Matrícula</th><th>Alumno</th><th>Plan de estudios</th><th>Grupo</th><th>Sexo</th><th class="n">Edad</th><th class="n">Promedio</th></tr></thead><tbody id="aTb"></tbody></table></div>
   </div>
   <div id="eP" hidden>
     <div class="bar need-admin">
       <button id="pNuevo">Nuevo plan de estudios</button>
+      <button id="pRen">Cambiar nombre del plan</button>
+      <button id="pCu">Cambiar cuatrimestres del plan</button>
       <button class="p" id="pImpJ">Cargar contenido de las materias (archivo .json)</button>
       <input id="pFileJ" type="file" accept=".json,application/json" hidden>
     </div>
@@ -199,7 +202,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     </div>
   </div>
   <div id="eE" hidden>
-    <p class="hint">Pasan a esta lista, de forma automática, los alumnos que aprueban todas las asignaturas de su plan de estudios y tienen pagadas todas sus colegiaturas. Dejan de aparecer en la lista de alumnos de Control escolar, pero Control de pagos conserva su información, por ejemplo el derecho a título.</p>
+    <p class="hint">Pasan a esta lista, de forma automática, los alumnos que aprueban todas las asignaturas de su plan de estudios y tienen pagadas todas sus colegiaturas. Dejan de aparecer en la lista de alumnos de Control escolar, pero Finanzas conserva su información, por ejemplo el derecho a título.</p>
     <div class="bar"><input id="egBus" class="grow" type="search" placeholder="Buscar por nombre o matrícula" aria-label="Buscar egresado"><select id="egPlan" aria-label="Plan de estudios"></select></div>
     <h2>Egresados</h2>
     <div class="wrap"><table style="min-width:760px"><thead><tr><th></th><th>Matrícula</th><th>Egresado</th><th>Plan de estudios</th><th>Ingreso</th><th>Fecha de egreso</th><th class="n">Promedio</th><th>Derecho a título</th><th></th></tr></thead><tbody id="egTb"></tbody></table></div>
@@ -375,7 +378,8 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <label>Tarifa por hora ($)<input id="nmBase" type="number" min="0" step="1"></label>
     <label>Tarifa por hora en Enfermería, maestría y doctorado ($)<input id="nmEsp" type="number" min="0" step="1"></label>
   </div>
-  <div class="bar need-admin"><button id="nmTar">Guardar tarifas</button></div>
+  <div class="bar need-admin"><button id="nmTar">Guardar tarifas</button><button id="nmTarMas">Tarifas por plan y por docente</button></div>
+  <p class="hint">Estas dos son las tarifas generales. Para pagar distinto a un plan o a un docente usa «Tarifas por plan y por docente»; para un caso puntual, ajusta la tarifa en el detalle de cada docente.</p>
   <p class="hint" id="nmMsg" style="min-height:1.3em"></p>
   <p class="hint" id="nmRes" style="font-weight:600;color:var(--ink)"></p>
   <div class="wrap"><table style="min-width:640px"><thead><tr><th>Docente</th><th class="n">Asignaturas</th><th class="n">Horas</th><th class="n">Importe</th><th>Estado</th><th>Recibo</th></tr></thead><tbody id="nmTb"></tbody></table></div>
@@ -387,7 +391,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <input id="vrBus" class="grow" type="search" placeholder="Buscar por nombre, folio, referencia o matrícula" aria-label="Buscar transferencia">
     <input id="vrFolio" placeholder="Folio de recibo o constancia (R-000123, C-000045)" aria-label="Folio del recibo" style="max-width:300px"><button id="vrVerif">Verificar recibo</button>
     <select id="vrEst" aria-label="Estado"><option value="pend">Por verificar</option><option value="conf">Confirmados</option><option value="">Todos</option></select>
-    <select id="vrOri" aria-label="Origen"><option value="">Todos los orígenes</option><option value="led">Control de pagos</option><option value="tit">Titulaciones</option><option value="a2">Acuerdo 286</option></select>
+    <select id="vrOri" aria-label="Origen"><option value="">Todos los orígenes</option><option value="led">Finanzas</option><option value="tit">Titulaciones</option><option value="a2">Acuerdo 286</option></select>
   </div>
   <div class="bar">
     <button id="vrXls">Descargar lista (Excel)</button>
@@ -442,7 +446,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div id="dmL"></div>
 </div>
 <div id="vAcu" hidden>
-  <p class="hint">Prórrogas y pagos en parcialidades acordados con los alumnos. Cada parcialidad se cobra desde aquí y queda registrada en Control de pagos.</p>
+  <p class="hint">Prórrogas y pagos en parcialidades acordados con los alumnos. Cada parcialidad se cobra desde aquí y queda registrada en Finanzas.</p>
   <div class="bar">
     <input id="acBus" class="grow" type="search" placeholder="Buscar por alumno, matrícula o folio del acuerdo" aria-label="Buscar acuerdo">
     <select id="acEst" aria-label="Estado del acuerdo"><option value="">Todos los estados</option><option>Vigente</option><option>Vencido</option><option>Cumplido</option><option>Cancelado</option></select>
@@ -452,7 +456,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
 </div>
 <div id="vIns" hidden>
   <div id="inForm">
-    <p class="hint">Registra a un alumno de nuevo ingreso. Se da de alta en Control escolar y en Control de pagos, se asigna a su grupo y se registra el pago de inscripción.</p>
+    <p class="hint">Registra a un alumno de nuevo ingreso. Se da de alta en Control escolar y en Finanzas, se asigna a su grupo y se registra el pago de inscripción.</p>
     <h2>Datos del alumno</h2>
     <div class="row">
       <label class="full">Fotografía<span style="display:flex;gap:10px;align-items:center"><img id="inImg" alt="" style="width:72px;height:90px;object-fit:cover;border-radius:8px;background:var(--bg);border:1px solid var(--line);visibility:hidden"><input id="inFoto" type="file" accept="image/*"></span></label>
@@ -628,10 +632,10 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="bar" style="justify-content:space-between;margin:0"><button class="d need-admin" id="sDel">Eliminar alumno</button><span><button id="sCls">Cerrar</button> <button id="sSt">Estado de cuenta (PDF)</button> <button class="p need-cobro" id="sAdd">Agregar pago</button></span></div>
 </dialog>
 
-<dialog id="dPl" style="width:min(780px,96vw)">
+<dialog id="dPl" style="width:min(1060px,98vw)">
   <h2>Costos y planes</h2>
-  <p class="hint">Cada cuatrimestre son 4 colegiaturas y las reinscripciones se calculan solas. Los cambios se aplican a todos los alumnos del programa.</p>
-  <div class="wrap"><table style="min-width:640px"><thead><tr><th>Programa</th><th class="n">Colegiaturas</th><th class="n">Colegiatura mensual</th><th class="n">Inscripción</th><th class="n">Reinscripción</th><th class="n">Derecho a título</th><th class="n">Reinscripciones</th></tr></thead><tbody id="plB"></tbody></table></div>
+  <p class="hint">Cada cuatrimestre son 4 colegiaturas (un medio cuatrimestre lleva 2) y las reinscripciones se calculan solas. Puedes cambiar los cuatrimestres de cada programa; los cambios se aplican a todos los alumnos del programa.</p>
+  <div class="wrap"><table style="min-width:640px"><thead><tr><th>Programa</th><th class="n">Cuatrimestres</th><th class="n">Colegiatura mensual</th><th class="n">Inscripción</th><th class="n">Reinscripción</th><th class="n">Derecho a título</th></tr></thead><tbody id="plB"></tbody></table></div>
   <h2 style="margin-top:14px">Examen extraordinario</h2>
   <div class="row"><label>Costo ($)<input id="exCosto" type="number" min="0" step="0.01"></label><label>Se cobra si la calificación es menor a<input id="exMin" type="number" min="0" max="10" step="0.1"></label></div>
   <p class="hint">Se genera un cargo automático por cada asignatura con calificación menor a ese valor. Para pagarlo, elígelo en «Colegiatura o concepto que paga».</p>
@@ -787,7 +791,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <p class="hint">Se cargan cuando ya se hayan obtenido.</p>
     <div id="ttObt"></div>
     <h2 style="margin-top:14px">Abonos a cuenta</h2>
-    <p class="hint">Los abonos y sus recibos se registran solo aquí, en Titulaciones por experiencia laboral; no pasan a Control de pagos ni al corte de caja.</p>
+    <p class="hint">Los abonos y sus recibos se registran solo aquí, en Titulaciones por experiencia laboral; no pasan a Finanzas ni al corte de caja.</p>
     <p class="hint" id="ttRes"></p>
     <div id="ttAb"></div>
     <div class="need-admin">
@@ -895,7 +899,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <p class="hint">Crea una licenciatura, maestría u otro programa. Aparecerá en todos los módulos donde se elige un plan: alumnos, inscripción, grupos, calendario, calificaciones, pagos, constancias, credenciales, egresados y más.</p>
      <div class="row">
        <label class="full">Nombre del plan<input id="npNom" maxlength="80" placeholder="Ej. Ingeniería en Sistemas"></label>
-       <label>Número de colegiaturas (mensualidades)<input id="npN" type="number" min="0" max="60" step="1" value="36"></label>
+       <label>Cuatrimestres (usa .5 para medio cuatrimestre)<input id="npN" type="number" min="0" max="12" step="0.5" value="9"></label>
        <label>Colegiatura mensual ($)<input id="npCol" type="number" min="0" step="0.01" value="1300"></label>
        <label>Inscripción ($)<input id="npIns" type="number" min="0" step="0.01" value="800"></label>
        <label>Reinscripción ($)<input id="npRein" type="number" min="0" step="0.01" value="800"></label>
@@ -1017,6 +1021,46 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <label>Motivo (por ejemplo, convenio de pago o beca en trámite)<input id="cbExM" maxlength="160"></label>
      <p class="hint" id="cbExMsg" style="min-height:1.4em;color:var(--bad)"></p>
      <div class="bar" style="justify-content:flex-end;margin:0"><button id="cbExCan">Cancelar</button><button class="p" id="cbExOk">Exentar</button></div></dialog>
+
+   <dialog id="dNmT" style="width:min(820px,98vw)">
+     <h2>Tarifas por hora de los docentes</h2>
+     <p class="hint">Para cada asignatura se usa la primera tarifa que exista: la que ajustes en esa asignatura dentro de un mes, la del docente, la del plan y, por último, la tarifa general. Los cambios aplican a las nóminas que todavía no se han pagado; las ya pagadas no cambian.</p>
+     <h3 style="margin:10px 0 4px">Por plan de estudios</h3>
+     <div class="wrap"><table style="min-width:520px"><thead><tr><th>Plan</th><th class="n">Tarifa general que le toca</th><th class="n">Tarifa propia ($)</th></tr></thead><tbody id="nmtPl"></tbody></table></div>
+     <h3 style="margin:14px 0 4px">Por docente</h3>
+     <div class="bar"><input id="nmtQ" class="grow" type="search" placeholder="Buscar docente" aria-label="Buscar docente"></div>
+     <div class="wrap" style="max-height:260px;overflow:auto"><table style="min-width:420px"><thead><tr><th>Docente</th><th class="n">Tarifa propia ($)</th></tr></thead><tbody id="nmtDc"></tbody></table></div>
+     <p class="hint">Deja una casilla vacía para que se use la tarifa que le corresponde por el nivel siguiente.</p>
+     <p class="hint" id="nmtMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="nmtCan">Cancelar</button><button class="p" id="nmtGuarda">Guardar tarifas</button></div>
+   </dialog>
+
+   <dialog id="dCu" style="width:min(560px,96vw)">
+     <h2>Cuatrimestres del plan</h2>
+     <p class="hint">Cambia cuánto dura un plan de estudios. Cada cuatrimestre son 4 colegiaturas y se cobra una reinscripción al iniciar cada cuatrimestre después del primero; un medio cuatrimestre lleva 2 colegiaturas. Los cobros de los alumnos del plan se recalculan.</p>
+     <div class="row">
+       <label class="full">Plan<select id="cuPlan"></select></label>
+       <label class="full">Cuatrimestres (usa .5 para medio cuatrimestre)<input id="cuN" type="number" min="0" max="12" step="0.5"></label>
+     </div>
+     <p class="hint" id="cuDur" style="font-weight:600;color:var(--ink)"></p>
+     <p class="hint" id="cuImp" style="color:var(--ink)"></p>
+     <p class="hint" id="cuMin"></p>
+     <p class="hint" id="cuMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="cuCan">Cancelar</button><button class="p" id="cuOk">Guardar duración</button></div>
+   </dialog>
+
+   <dialog id="dRn" style="width:min(560px,96vw)">
+     <h2>Cambiar el nombre del plan</h2>
+     <p class="hint">El nombre nuevo se actualiza en todos los módulos y en los registros que ya existen: alumnos, grupos, calendario, materias, asignaturas del plan, calificaciones, constancias, justificantes, egresados, acuerdos de pago, resguardos y docentes. Conviene descargar un respaldo antes.</p>
+     <div class="row">
+       <label class="full">Plan<select id="rnPlan"></select></label>
+       <label class="full">Nombre nuevo<input id="rnNom" maxlength="80"></label>
+     </div>
+     <p class="hint" id="rnRes" style="font-weight:600;color:var(--ink)"></p>
+     <p class="hint" id="rnAviso" style="color:var(--bad)"></p>
+     <p class="hint" id="rnMsg" style="min-height:1.4em"></p>
+     <div class="bar" style="justify-content:flex-end;margin:0"><button id="rnCan">Cancelar</button><button class="p" id="rnOk">Cambiar nombre</button></div>
+   </dialog>
 
    <dialog id="dRsE" style="width:min(560px,96vw)">
      <h2>Entregar documento</h2><p class="hint" id="rsEI"></p>
@@ -1357,11 +1401,14 @@ var PL0=[
  {k:"Ingeniería Industrial",n:36,col:1350,ins:1000,rein:1000,tit:23000},
  {k:"Maestría en Educación",n:16,col:1800,ins:800,rein:800,tit:25000},
  {k:"Doctorado",n:0,col:0,ins:0,rein:0,tit:30000}];
-function loadPlans(){try{var r=localStorage.getItem(KEY+"-plans");if(r){var x=JSON.parse(r);x.forEach(function(p){if(!(p.ins>0)&&!(p.rein>0)){p.ins=800;p.rein=800}});PL0.forEach(function(d){var q=x.find(function(p){return p.k===d.k});if(!q)x.push(JSON.parse(JSON.stringify(d)));else if((!(q.tit>0)&&d.tit>0)||(d.k==="Enfermería"&&q.tit===23000))q.tit=d.tit});return x}}catch(e){}return JSON.parse(JSON.stringify(PL0))}
+function loadRen(){try{return JSON.parse(localStorage.getItem(KEY+"-ren")||"{}")||{}}catch(e){return {}}}
+var REN=loadRen();
+function saveRen(){try{localStorage.setItem(KEY+"-ren",JSON.stringify(REN))}catch(e){}}
+function loadPlans(){try{var r=localStorage.getItem(KEY+"-plans");if(r){var x=JSON.parse(r);x.forEach(function(p){if(!(p.ins>0)&&!(p.rein>0)){p.ins=800;p.rein=800}});PL0.forEach(function(d){var q=x.find(function(p){return p.k===d.k});if(!q&&!REN[d.k])x.push(JSON.parse(JSON.stringify(d)));else if((!(q.tit>0)&&d.tit>0)||(d.k==="Enfermería"&&q.tit===23000))q.tit=d.tit});return x}}catch(e){}return JSON.parse(JSON.stringify(PL0))}
 var PL=loadPlans();
 function savePlans(){try{localStorage.setItem(KEY+"-plans",JSON.stringify(PL))}catch(e){}}
 function nz(t){return String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim()}
-function matchPlan(t){var x=nz(t);if(!x)return null;return PL.find(function(p){var k=nz(p.k);return k===x||(x.length>=5&&k.indexOf(x)===0)})||null}
+function matchPlan(t){var x=nz(t);if(!x)return null;var p=PL.find(function(p){var k=nz(p.k);return k===x||(x.length>=5&&k.indexOf(x)===0)});if(p)return p;var o=Object.keys(REN||{}).find(function(k){return nz(k)===x});return o?(PL.find(function(q){return q.k===REN[o]})||null):null}
 function planOf(s){return PL.find(function(p){return p.k===s.programa})||null}
 /* Cargos del alumno: inscripción (nuevo ingreso), 4 colegiaturas por cuatrimestre, reinscripción al iniciar cada cuatrimestre siguiente, titulación */
 var MES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -1514,12 +1561,15 @@ function cicloAct(){var t=today();return +t.slice(5,7)>=9?+t.slice(0,4):+t.slice
 $("sIng").onchange=function(){var v=parseInt(this.value,10);if(v>=2000&&v<=2100){cur.ingreso=v;save();render();openSt(cur.id)}};
 /* ---- UI planes ---- */
 function fillPlans(){$("nIng").value=cicloAct();$("nCar").innerHTML=PL.map(function(p){return "<option>"+esc(p.k)+"</option>"}).join("")}
+function filaPl(p,i){return '<tr><td>'+esc(p.k)+'</td>'+["n","col","ins","rein","tit"].map(function(f){
+    return f==="n"?'<td class="n"><input type="number" min="0" max="12" step="0.5" data-i="'+i+'" data-f="cuat" data-o="'+p.n+'" value="'+cuatTxt(p.n)+'"><br><span class="hint" data-r="'+i+'">'+detCuat(p.n)+'</span></td>':'<td><input type="number" min="0" step="0.01" data-i="'+i+'" data-f="'+f+'" value="'+p[f]+'"></td>'}).join("")+'</tr>'}
+function detCuat(n){return n+" colegiaturas · "+Math.max(Math.ceil(n/4)-1,0)+" reinscripc."}
 function openPl(){
   $("exCosto").value=EXTRA.costo;$("exMin").value=EXTRA.min;$("exCons").value=CONSC.costo;
-  $("plB").innerHTML=PL.map(function(p,i){return "<tr><td>"+esc(p.k)+"</td>"+["n","col","ins","rein","tit"].map(function(f){
-    return '<td><input type="number" min="0" step="'+(f==="n"?1:0.01)+'" data-i="'+i+'" data-f="'+f+'" value="'+p[f]+'"></td>'}).join("")+'<td class="n">'+(Math.ceil(p.n/4)-1)+"</td></tr>"}).join("");
+  $("plB").innerHTML=PL.map(filaPl).join("");
   $("dPl").showModal();
 }
+$("plB").oninput=function(e){var d=e.target.dataset;if(d.f!=="cuat")return;var n=nDeCuat(e.target.value),c=this.querySelector('[data-r="'+d.i+'"]');if(c)c.textContent=n==null?"revisa el número":detCuat(n)};
 $("bPl").onclick=openPl;
 $("plCan").onclick=function(){$("dPl").close()};
 $("plOk").onclick=function(){
@@ -1853,10 +1903,22 @@ $("bDel").onclick=async function(){if(ROL!=="admin"||!cur)return;await updS(cur.
 $("sIng").onchange=async function(){var v=parseInt(this.value,10);if(ROL==="admin"&&cur&&v>=2000&&v<=2100){await updS(cur.id,{ingreso:v});openSt(cur.id)}};
 $("plOk").onclick=async function(){
   if(ROL!=="admin")return;
-  Array.prototype.forEach.call($("plB").querySelectorAll("input"),function(inp){PL[+inp.dataset.i][inp.dataset.f]=Math.max(parseFloat(inp.value)||0,0)});
+  var nuevos={},err="",cambios=[];
+  Array.prototype.forEach.call($("plB").querySelectorAll("input"),function(inp){
+    var i=+inp.dataset.i,f=inp.dataset.f,o=nuevos[i]=nuevos[i]||{};
+    if(f==="cuat"){
+      if(Math.abs(parseFloat(inp.value)-PL[i].n/4)<1e-9){o.n=PL[i].n;return}
+      var n=nDeCuat(inp.value);if(n==null){err=err||"Los cuatrimestres de «"+PL[i].k+"» van de 0 a 12 (usa .5 para medio cuatrimestre).";return}
+      o.n=n;if(n!==PL[i].n){err=err||errMinCuat(PL[i].k,n);cambios.push(PL[i].k+"|"+n)}
+    }else o[f]=Math.max(parseFloat(inp.value)||0,0);
+  });
+  if(err){alert(err);return}
+  if(cambios.length&&!confirm("¿Cambiar la duración de "+(cambios.length===1?"este plan":"estos planes")+"?\n\n"+cambios.map(function(c){var x=c.split("|");return impactoTxt(x[0],+x[1])}).join("\n\n")))return;
+  var previo=PL.map(function(p){return Object.assign({},p)});
+  PL.forEach(function(p,i){Object.assign(p,nuevos[i])});
   EXTRA={costo:Math.max(parseFloat($("exCosto").value)||0,0),min:Math.min(Math.max(parseFloat($("exMin").value)||0,0),10)};
   CONSC={costo:Math.max(parseFloat($("exCons").value)||0,0)};
-  try{await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC});$("dPl").close();rebuild()}catch(e){dberr(e)}
+  try{await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN});$("dPl").close();rebuild();if(MOD==="esc"&&ETAB==="P")renderPlan()}catch(e){PL.forEach(function(p,i){Object.assign(p,previo[i])});dberr(e)}
 };
 $("uni").oninput=null;
 $("uni").onchange=async function(){if(ROL!=="admin")return;try{await DBH.doc("config/app").set({uni:this.value.trim()})}catch(e){dberr(e)}};
@@ -1897,7 +1959,7 @@ $("bMig").onclick=async function(){
       s.pagos.forEach(function(g){var k=parseInt(String(g.folio||"").replace(/\D/g,""),10)||0;if(k>top)top=k});
     }
     var d=await DBH.doc("meta/folio").get();if(top>((d.exists&&d.data().n)||0))await DBH.doc("meta/folio").set({n:top});
-    await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC});
+    await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN});
     try{localStorage.setItem(KEY+"-migrado","1")}catch(e){}
     LEGACY=[];b.hidden=true;rebuild();alert("Listo: los datos ya están en la base compartida.");
   }catch(e){dberr(e)}
@@ -1996,6 +2058,14 @@ function vista(v){
   if(on&&ga){if(!$("cFec").value)$("cFec").value=today();$("gFec").value=today();cargaCierre();renderCaja()}
   if(on&&ef)renderEf();
 }
+var FIN=["pagos","ver","nom","na"];
+function finAcceso(){return FIN.some(function(v){return accesoVista(v)})}
+function irFin(){var v=FIN.find(function(x){return accesoVista(x)});ir(v||"home")}
+function renderFinTabs(m){
+  var on=FIN.indexOf(m)>-1;$("finTabs").hidden=!on;if(!on)return;
+  Array.prototype.forEach.call($("finTabs").querySelectorAll("button"),function(b){b.hidden=!accesoVista(b.dataset.fm);b.className=b.dataset.fm===m?"p":""});
+}
+$("finTabs").onclick=function(e){var v=e.target.dataset&&e.target.dataset.fm;if(v&&v!==MOD)ir(v)};
 function ir(m){
   if(typeof APP!=="undefined"&&APP&&APP.rol==="alumno")m="por";   /* los alumnos solo tienen su portal */
   if(m!=="home"&&!accesoVista(m))m="home";
@@ -2004,7 +2074,8 @@ function ir(m){
   $("vUsr").hidden=m!=="usr";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
   $("vHome").hidden=!home;$("vEsc").hidden=m!=="esc";$("vIns").hidden=m!=="ins";$("vAcu").hidden=m!=="acu";$("vDoc").hidden=m!=="doc";$("vTit").hidden=m!=="tit";$("vA2").hidden=m!=="a2";$("vVer").hidden=m!=="ver";$("vNom").hidden=m!=="nom";$("vNa").hidden=m!=="na";
   $("tabs").hidden=m!=="pagos";$("nav").hidden=home||m==="por";$("subt").hidden=m!=="pagos";$("warn").hidden=m!=="pagos";
-  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Control de pagos":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":"Control escolar"))))))))))));
+  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":"Control escolar"))))))))))));
+  if(FIN.indexOf(m)>-1)$("ttl").textContent="Finanzas";renderFinTabs(m);
   vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="por")renderPor();if(m==="not")cargaNot();
   if(home){if(typeof MODDEF!=="undefined"&&MODDEF)aplicaModulos();renderHome()}
 }
@@ -2078,14 +2149,15 @@ function renderHome(){
   if(typeof solBadge==="function")solBadge();
   var hoy=today(),np=0,mt=0;
   S.forEach(function(s){s.pagos.forEach(function(g){if(esConf(g)&&fechaCobro(g)===hoy){np++;mt+=g.monto}})});
-  var t=S.length+(S.length===1?" alumno":" alumnos");
-  if(ROL!=="consulta")t+=" · "+np+(np===1?" pago hoy":" pagos hoy");
-  if(ROL==="admin")t+=" · Cobrado hoy: "+mx.format(Math.round(mt*100)/100);
+  var tp=permiso("pagos")!=="none",t=tp?S.length+(S.length===1?" alumno":" alumnos"):"";
+  if(tp&&ROL!=="consulta")t+=" · "+np+(np===1?" pago hoy":" pagos hoy");
+  if(tp&&ROL==="admin")t+=" · Cobrado hoy: "+mx.format(Math.round(mt*100)/100);
   var nAs=Object.keys(CATA||{}).reduce(function(a,k){return a+(((CATA[k]||{}).items)||[]).length},0),nGr=Object.keys(GRP||{}).length;
   if($("mEscS"))$("mEscS").textContent=nAs+(nAs===1?" asignatura":" asignaturas")+" en los planes · "+nGr+(nGr===1?" grupo":" grupos");
   var pcf=pagoPend().length,pvr=verItems().filter(function(x){return !x.ok}).length;
-  $("mVerS").textContent=pvr?pvr+" por verificar":"Sin pendientes";if(ROL!=="consulta"&&pcf)t+=" · "+pcf+(pcf===1?" transferencia por confirmar":" transferencias por confirmar");
-  $("mPagS").textContent=t;
+  $("mVerS").textContent=pvr?pvr+" por verificar":"Sin pendientes";if(tp&&ROL!=="consulta"&&pcf)t+=" · "+pcf+(pcf===1?" transferencia por confirmar":" transferencias por confirmar");
+  var tf=t?[t]:[];if(permiso("ver")!=="none")tf.push(pvr?pvr+" por verificar":"Verificación sin pendientes");
+  $("mPagS").textContent=tf.join(" · ");
   var nn=S.filter(function(s){return s.nuevo!==false&&s.ingreso===cicloAct()}).length;
   var av=Object.keys(ACU||{}).map(function(k){return estAc(ACU[k])});
   $("mAcuS").textContent=av.filter(function(e){return e==="Vigente"}).length+" vigentes · "+av.filter(function(e){return e==="Vencido"}).length+" vencidos";
@@ -2094,10 +2166,10 @@ function renderHome(){
   $("mTitS").textContent=tl.length+(tl.length===1?" trámite":" trámites")+" · "+tl.filter(function(t){return t.iniciado}).length+" en proceso";
   var al2=Object.keys(A2||{}).map(function(k){return A2[k]});
   $("mA2S").textContent=al2.length+(al2.length===1?" inscrito":" inscritos")+" · "+al2.filter(function(t){return t.enviado}).length+" enviados";
-  if(permiso("nomina_doc")!=="none"||permiso("nomina_adm")!=="none"){var hn=new Date(),ny=hn.getFullYear(),nm=hn.getMonth()+1,nn=Object.keys(DOC||{}).filter(function(k){return filasNom(k,ny,nm).length}).length;$("mNomS").textContent=nn+(nn===1?" docente":" docentes")+" con clases en "+MESN[nm-1];var ne=Object.keys(EMP||{}).filter(function(k){return EMP[k].activo!==false}).length;$("mNaS").textContent=ne+(ne===1?" empleado activo":" empleados activos")}
+  if(permiso("nomina_doc")!=="none"||permiso("nomina_adm")!=="none"){var hn=new Date(),ny=hn.getFullYear(),nm=hn.getMonth()+1,nn=Object.keys(DOC||{}).filter(function(k){return filasNom(k,ny,nm).length}).length;$("mNomS").textContent=nn+(nn===1?" docente":" docentes")+" con clases en "+MESN[nm-1];var ne=Object.keys(EMP||{}).filter(function(k){return EMP[k].activo!==false}).length;$("mNaS").textContent=ne+(ne===1?" empleado activo":" empleados activos");var ex=[];if(permiso("nomina_doc")!=="none")ex.push($("mNomS").textContent);if(permiso("nomina_adm")!=="none")ex.push($("mNaS").textContent);if(ex.length)$("mPagS").textContent=($("mPagS").textContent?$("mPagS").textContent+" · ":"")+"Nómina: "+ex.join(" · ")}
   $("mInsS").textContent=nn+(nn===1?" alumno":" alumnos")+" de nuevo ingreso en el ciclo "+cicloAct();
 }
-$("mPag").onclick=function(){ir("pagos")};$("mIns").onclick=function(){ir("ins")};$("mAcu").onclick=function(){ir("acu")};$("mDoc").onclick=function(){ir("doc")};$("mTit").onclick=function(){ir("tit")};$("mA2").onclick=function(){ir("a2")};$("mVer").onclick=function(){ir("ver")};$("mNom").onclick=function(){ir("nom")};$("mNa").onclick=function(){ir("na")};$("mEsc").onclick=function(){ir("esc")};$("nHome").onclick=function(){ir("home")};
+$("mPag").onclick=irFin;$("mIns").onclick=function(){ir("ins")};$("mAcu").onclick=function(){ir("acu")};$("mDoc").onclick=function(){ir("doc")};$("mTit").onclick=function(){ir("tit")};$("mA2").onclick=function(){ir("a2")};$("mVer").onclick=function(){ir("ver")};$("mNom").onclick=function(){ir("nom")};$("mNa").onclick=function(){ir("na")};$("mEsc").onclick=function(){ir("esc")};$("nHome").onclick=function(){ir("home")};
 ir("home");
 /* ===== Control escolar: alumnos, calificaciones, calendario escolar y docentes ===== */
 var DOC={},MAT={},CAL={},FOT={},ETAB="A",EDM=null,EDD=null,ALID=null,ALFOTO=null,kDirty=false;
@@ -2362,7 +2434,7 @@ async function importCatalogo(R){
   var por={},add=0,act=0,omit=0,nuevos={};
   R.slice(1).forEach(function(r){var nm=String(r[iP]||"").replace(/\s+/g," ").trim(),cu0=parseInt(r[iC],10);if(nm&&!matchPlan(nm)&&cu0>=1&&cu0<=12&&(r[iN]||"").trim()){var kk=nz(nm);nuevos[kk]=nuevos[kk]||{k:nm,mx:0};if(cu0>nuevos[kk].mx)nuevos[kk].mx=cu0}});
   var lista=Object.keys(nuevos).map(function(k){return nuevos[k]});
-  if(lista.length&&esAdminReal()&&confirm("El archivo trae planes que todavía no existen: "+lista.map(function(x){return x.k}).join(", ")+".\n\n¿Crearlos ahora? Se crean con "+lista.map(function(x){return planPorDefecto(x.k,x.mx).n}).join(", ")+" colegiaturas de $1,300 (se ajustan después en Control de pagos > Costos y planes).")){
+  if(lista.length&&esAdminReal()&&confirm("El archivo trae planes que todavía no existen: "+lista.map(function(x){return x.k}).join(", ")+".\n\n¿Crearlos ahora? Se crean con "+lista.map(function(x){return planPorDefecto(x.k,x.mx).n}).join(", ")+" colegiaturas de $1,300 (se ajustan después en Finanzas > Costos y planes).")){
     for(var q=0;q<lista.length;q++)await crearPlan(planPorDefecto(lista[q].k,lista[q].mx),true);
     rebuild();
   }
@@ -2696,7 +2768,7 @@ function inPlanCambio(){
   $("inMon").value=ins>0?ins:"";
   var estabaOff=$("inPagar").disabled;
   $("inPagar").disabled=!(ins>0);if(!(ins>0))$("inPagar").checked=false;else if(estabaOff)$("inPagar").checked=true;
-  $("inMsg").textContent=ins>0?"":"El costo de inscripción de este plan está en $0. Captúralo en Control de pagos > Costos y planes para registrar el pago.";
+  $("inMsg").textContent=ins>0?"":"El costo de inscripción de este plan está en $0. Captúralo en Finanzas > Costos y planes para registrar el pago.";
 }
 function inReset(){
   INFOTO=null;INMAT=false;INLAST=null;
@@ -2881,7 +2953,7 @@ function grupoReciente(sid){
   return g;
 }
 function renderCons(){
-  $("nCosto").textContent=CONSC.costo>0?"Costo de la constancia: "+mx.format(CONSC.costo)+". Se cobra al generarla y queda registrado en Control de pagos.":"La constancia no tiene costo configurado ($0); se generará sin cobro.";
+  $("nCosto").textContent=CONSC.costo>0?"Costo de la constancia: "+mx.format(CONSC.costo)+". Se cobra al generarla y queda registrado en Finanzas.":"La constancia no tiene costo configurado ($0); se generará sin cobro.";
   var q=$("nQ").value.toLowerCase(),L=S.filter(function(s){return (s.mat+" "+s.nombre).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))});
   setOpts($("nAl"),'<option value="">'+(L.length?"Elige un alumno":"No hay alumnos que coincidan")+'</option>'+L.map(function(s){return '<option value="'+s.id+'">'+esc(s.mat+" · "+s.nombre)+'</option>'}).join(""));
   var s=S.find(function(x){return x.id===$("nAl").value});
@@ -2911,7 +2983,7 @@ $("nGen").onclick=async function(){
     $("nRes").hidden=false;$("nResT").textContent="Constancia "+num+" generada";
     $("nResS").textContent=s.nombre+(monto>0?" · Cobro registrado: "+mx.format(monto)+(p2?" · Recibo "+p2.folio:""):" · Sin cobro");
     var pend2=!!(p2&&!esConf(p2));$("nRec").hidden=$("nTik").hidden=!p2||pend2;
-    if(pend2)$("nResS").textContent+=" · Transferencia pendiente de confirmar: la constancia y el recibo se podrán descargar al confirmarla en Control de pagos";
+    if(pend2)$("nResS").textContent+=" · Transferencia pendiente de confirmar: la constancia y el recibo se podrán descargar al confirmarla en Finanzas";
     renderCons();if(!pend2)constanciaPDF(x);
   }catch(e){dberr(e)}
   b.disabled=false;
@@ -2921,7 +2993,7 @@ function nObj(){
   var s=S.find(function(y){return y.id===NRES.sid}),x=s&&((CONS[s.id]&&CONS[s.id].items)||[]).find(function(i){return i.id===NRES.cid});
   return x?{s:s,x:x,p:s.pagos.find(function(q){return q.id===x.pid})}:null;
 }
-$("nPdf").onclick=function(){var o=nObj();if(!o)return;if(o.p&&!esConf(o.p)){$("nResS").textContent="La transferencia sigue pendiente de confirmar en Control de pagos.";return}constanciaPDF(o.x)};
+$("nPdf").onclick=function(){var o=nObj();if(!o)return;if(o.p&&!esConf(o.p)){$("nResS").textContent="La transferencia sigue pendiente de confirmar en Finanzas.";return}constanciaPDF(o.x)};
 $("nRec").onclick=function(){var o=nObj();if(o&&o.p)recFormalPDF(o.s,o.p)};
 $("nTik").onclick=function(){var o=nObj();if(o&&o.p)printTicket(o.s,o.p)};
 var NCXC=null,NCXT=null;
@@ -2935,12 +3007,12 @@ $("nTb").onclick=async function(e){
   if(t.cx){
     var xc=it.find(function(i){return i.id===t.cx});if(!xc||ROL==="consulta")return;
     var mm=function(txt,bad){$("nMsg").textContent=txt;$("nMsg").style.color=bad?"var(--bad)":"var(--ok)"};
-    if(NCXC!==xc.id){NCXC=xc.id;clearTimeout(NCXT);NCXT=setTimeout(function(){NCXC=null;mm("");renderCons()},9000);mm("Se eliminará la constancia "+xc.num+" de "+s.nombre+". Su código QR dejará de ser válido. El cobro que se hizo por ella se queda en Control de pagos. Pulsa «Confirmar eliminación» para continuar.",true);renderCons();return}
+    if(NCXC!==xc.id){NCXC=xc.id;clearTimeout(NCXT);NCXT=setTimeout(function(){NCXC=null;mm("");renderCons()},9000);mm("Se eliminará la constancia "+xc.num+" de "+s.nombre+". Su código QR dejará de ser válido. El cobro que se hizo por ella se queda en Finanzas. Pulsa «Confirmar eliminación» para continuar.",true);renderCons();return}
     clearTimeout(NCXT);NCXC=null;
     try{await eliminaConstancia(s,xc);mm("La constancia "+xc.num+" se eliminó.")}catch(er){mm("No se pudo eliminar la constancia ("+((er&&(er.code||er.message))||"error")+").",true)}
     renderCons();return;
   }
-  if(t.cp){var x=it.find(function(i){return i.id===t.cp}),px=x&&s.pagos.find(function(q){return q.id===x.pid});if(x&&px&&!esConf(px)){$("nRes").hidden=false;$("nResT").textContent="Constancia "+x.num+" pendiente";$("nResS").textContent="Se podrá descargar cuando se confirme la transferencia en Control de pagos.";return}if(x)constanciaPDF(x)}
+  if(t.cp){var x=it.find(function(i){return i.id===t.cp}),px=x&&s.pagos.find(function(q){return q.id===x.pid});if(x&&px&&!esConf(px)){$("nRes").hidden=false;$("nResT").textContent="Constancia "+x.num+" pendiente";$("nResS").textContent="Se podrá descargar cuando se confirme la transferencia en Finanzas.";return}if(x)constanciaPDF(x)}
   if(t.cr){var x2=it.find(function(i){return i.id===t.cr}),p=x2&&s.pagos.find(function(q){return q.id===x2.pid});if(p)recFormalPDF(s,p)}
 };
 /* Marca de agua: el logotipo de la escuela, centrado y transparente, detrás del texto */
@@ -3102,7 +3174,7 @@ $("cbOk").onclick=async function(){
   }catch(e){dberr(e)}
   b.disabled=false;
 };
-/* En la ficha del alumno (Control de pagos): aviso de acuerdos vigentes */
+/* En la ficha del alumno (Finanzas): aviso de acuerdos vigentes */
 function acuUI(s){
   var A=ROL==="consulta"?[]:acDe(s.id).filter(function(a){var e=estAc(a);return e==="Vigente"||e==="Vencido"});
   $("sAcu").textContent=A.length?"Acuerdo de pago: "+A.map(function(a){return a.num+" ("+estAc(a).toLowerCase()+(proxFecha(a)?", próxima fecha "+fd(proxFecha(a)):"")+")"}).join(" · ")+". Las parcialidades se cobran en el módulo Acuerdos.":"";
@@ -4447,7 +4519,7 @@ function verItems(){
   var o=[];
   S.forEach(function(s){(s.pagos||[]).forEach(function(g){
     if(g.metodo!=="Transferencia")return;var ok=esConf(g);
-    o.push({src:"led",sid:s.id,pid:g.id,origen:"Control de pagos",nombre:s.nombre,ref0:s.mat,folio:g.folio||"",fecha:g.fecha,monto:g.monto,ref:g.ref||"",ok:ok,confFecha:g.confFecha||"",confRef:g.confRef||"",concepto:ok?(conc(alloc(s)[g.id])||"Pago"):(cargoLab(s,g.cc||[])||"Siguiente concepto pendiente")});
+    o.push({src:"led",sid:s.id,pid:g.id,origen:"Finanzas",nombre:s.nombre,ref0:s.mat,folio:g.folio||"",fecha:g.fecha,monto:g.monto,ref:g.ref||"",ok:ok,confFecha:g.confFecha||"",confRef:g.confRef||"",concepto:ok?(conc(alloc(s)[g.id])||"Pago"):(cargoLab(s,g.cc||[])||"Siguiente concepto pendiente")});
   })});
   Object.keys(TIT_||{}).forEach(function(k){var t=TIT_[k];(t.abonos||[]).forEach(function(a){
     if(a.metodo!=="Transferencia")return;
@@ -4543,9 +4615,12 @@ $("sAutOk").onclick=async function(){
 $("sAutCan").onclick=function(){PAUTH=null;$("sAut").hidden=true;$("sAutPw").value="";msgP("")};
 $("sAutPw").onkeydown=function(e){if(e.key==="Enter")$("sAutOk").onclick()};
 /* ===== Nómina docente: pago mensual por asignatura y horas ===== */
-var NOM={},NOMC={base:120,esp:150},NMD=null,NMEDIT={};
+var NOM={},NOMC={base:120,esp:150,planes:{},docentes:{}},NMD=null,NMEDIT={};
 var MESN=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-function tarifaPlan(plan){return /enfermer|maestr|doctor/.test(nz(plan))?NOMC.esp:NOMC.base}
+function tarifaRegla(plan){return /enfermer|maestr|doctor/.test(nz(plan))?NOMC.esp:NOMC.base}
+function tarifaPlan(plan){var o=(NOMC.planes||{})[plan];return o>0?o:tarifaRegla(plan)}
+function tarifaDe(did,plan){var d=(NOMC.docentes||{})[did];return d>0?d:tarifaPlan(plan)}
+function origenTarifa(did,plan){return ((NOMC.docentes||{})[did]>0)?"del docente":((NOMC.planes||{})[plan]>0)?"del plan":""}
 function pad2(n){return String(n).padStart(2,"0")}
 function mesKey(y,m){return y+"-"+pad2(m)}
 function perMes(y,m){return m>=9?"Sep–Dic "+y:m<=4?"Ene–Abr "+y:"May–Ago "+y}
@@ -4567,8 +4642,8 @@ function filasNom(did,y,m){
   var mes=mesKey(y,m),ov=((NOM[mes]||{}).filas)||{},per=perMes(y,m),sab=sabadosMes(y,m);
   return clasesDe(did).filter(function(c){return c.per===per}).map(function(c){
     var key=did+"|"+c.plan+"|"+nz(c.nom)+"|"+c.per,o=ov[key]||{};
-    var ses=o.ses!=null?o.ses:sab,hs=o.hrs!=null?o.hrs:horasSes(c.m),tf=tarifaPlan(c.plan),horas=r2(ses*hs);
-    return {key:key,nom:c.nom,plan:c.plan,cuat:c.cuat,sinHorario:!c.m,ses:ses,hrs:hs,horas:horas,tarifa:tf,importe:r2(horas*tf)};
+    var ses=o.ses!=null?o.ses:sab,hs=o.hrs!=null?o.hrs:horasSes(c.m),tb=tarifaDe(did,c.plan),tf=o.tar>0?o.tar:tb,horas=r2(ses*hs);
+    return {key:key,nom:c.nom,plan:c.plan,cuat:c.cuat,sinHorario:!c.m,ses:ses,hrs:hs,horas:horas,tarifa:tf,tarBase:tb,origen:o.tar>0&&o.tar!==tb?"ajustada en esta asignatura":origenTarifa(did,c.plan),importe:r2(horas*tf)};
   }).sort(function(a,b){return String(a.plan).localeCompare(String(b.plan))||String(a.nom).localeCompare(String(b.nom))});
 }
 function resumenNom(did,y,m){
@@ -4592,7 +4667,7 @@ $("nmTar").onclick=async function(){
   if(ROL!=="admin"||!DBH)return;
   var b=parseFloat($("nmBase").value),s2=parseFloat($("nmEsp").value);
   if(!(b>0)||!(s2>0)){$("nmMsg").textContent="Escribe las dos tarifas por hora.";return}
-  try{await DBH.doc("config/nomina").set({base:b,esp:s2});NOMC={base:b,esp:s2};renderNom();$("nmMsg").textContent="Tarifas guardadas. Se aplican a las nóminas que aún no se han pagado."}catch(e){dberr(e)}
+  try{await DBH.doc("config/nomina").set({base:b,esp:s2,planes:NOMC.planes||{},docentes:NOMC.docentes||{}});NOMC=Object.assign({},NOMC,{base:b,esp:s2});renderNom();$("nmMsg").textContent="Tarifas guardadas. Se aplican a las nóminas que aún no se han pagado."}catch(e){dberr(e)}
 };
 /* ---- Detalle de un docente en el mes ---- */
 function openNm(did){NMD=did;NMEDIT={};$("nmDMsg").textContent="";$("nmAnular").textContent="Anular pago";renderNmD();$("dNm").showModal()}
@@ -4600,8 +4675,8 @@ function renderNmD(){
   var s=nomSel(),r=resumenNom(NMD,s.y,s.m),ed=ROL==="admin"&&!r.pago;
   $("nmT").textContent="Nómina de "+DOC[NMD].nombre;
   $("nmS").textContent=MESN[s.m-1]+" "+s.y+" · "+perMes(s.y,s.m)+(r.pago?" · Pagado el "+fd(r.pago.fecha)+" · Folio "+r.pago.folio:"");
-  $("nmFilas").innerHTML='<div class="wrap"><table style="min-width:640px"><thead><tr><th>Asignatura</th><th class="n">Tarifa/hora</th><th class="n">Sesiones</th><th class="n">Horas por sesión</th><th class="n">Horas</th><th class="n">Importe</th></tr></thead><tbody>'+r.filas.map(function(f){
-    return '<tr><td>'+esc(f.nom)+'<br><span class="hint">'+esc(f.plan)+(f.sinHorario?' · sin horario en el calendario':'')+'</span></td><td class="n">'+mx.format(f.tarifa)+'</td><td class="n">'+(ed?'<input type="number" min="0" step="1" data-k="'+attr(f.key)+'" data-f="ses" value="'+f.ses+'" style="width:70px">':f.ses)+'</td><td class="n">'+(ed?'<input type="number" min="0" step="0.25" data-k="'+attr(f.key)+'" data-f="hrs" value="'+f.hrs+'" style="width:80px">':f.hrs)+'</td><td class="n" data-h="'+attr(f.key)+'">'+f.horas+'</td><td class="n" data-i="'+attr(f.key)+'"><b>'+mx.format(f.importe)+'</b></td></tr>'}).join("")+'</tbody></table></div>';
+  $("nmFilas").innerHTML='<div class="wrap"><table style="min-width:640px"><thead><tr><th>Asignatura</th><th class="n">Tarifa por hora ($)</th><th class="n">Sesiones</th><th class="n">Horas por sesión</th><th class="n">Horas</th><th class="n">Importe</th></tr></thead><tbody>'+r.filas.map(function(f){
+    return '<tr><td>'+esc(f.nom)+'<br><span class="hint">'+esc(f.plan)+(f.sinHorario?' · sin horario en el calendario':'')+'</span></td><td class="n" data-t="'+attr(f.key)+'">'+(ed?'<input type="number" min="0" step="1" data-k="'+attr(f.key)+'" data-f="tar" value="'+f.tarifa+'" style="width:80px"><br><span class="hint" data-o="'+attr(f.key)+'">'+esc(f.origen||"general")+'</span>':mx.format(f.tarifa)+(f.origen?'<br><span class="hint">'+esc(f.origen)+'</span>':''))+'</td><td class="n">'+(ed?'<input type="number" min="0" step="1" data-k="'+attr(f.key)+'" data-f="ses" value="'+f.ses+'" style="width:70px">':f.ses)+'</td><td class="n">'+(ed?'<input type="number" min="0" step="0.25" data-k="'+attr(f.key)+'" data-f="hrs" value="'+f.hrs+'" style="width:80px">':f.hrs)+'</td><td class="n" data-h="'+attr(f.key)+'">'+f.horas+'</td><td class="n" data-i="'+attr(f.key)+'"><b>'+mx.format(f.importe)+'</b></td></tr>'}).join("")+'</tbody></table></div>';
   $("nmTot").innerHTML='Horas: <b>'+r.horas+'</b> · Total a pagar: <b>'+mx.format(r.total)+'</b>';
   $("nmEd").hidden=!ed;$("nmPagoW").hidden=!!r.pago||ROL!=="admin";$("nmAnular").hidden=!r.pago||ROL!=="admin";
   $("nmPdf").textContent=r.pago?"Descargar recibo de nómina (PDF)":"Descargar desglose (PDF)";
@@ -4611,14 +4686,14 @@ $("nmFilas").oninput=function(e){
   var d=e.target.dataset;if(!d.k)return;
   var v=parseFloat(e.target.value);(NMEDIT[d.k]=NMEDIT[d.k]||{})[d.f]=isNaN(v)?0:v;
   var s=nomSel(),f=filasNomEdit(NMD,s.y,s.m),fila=f.find(function(x){return x.key===d.k}),tr=e.target.closest&&e.target.closest("tr");
-  if(fila&&tr){var h=tr.querySelector("[data-h]"),i=tr.querySelector("[data-i]");if(h)h.textContent=fila.horas;if(i)i.innerHTML="<b>"+mx.format(fila.importe)+"</b>"}
+  if(fila&&tr){var h=tr.querySelector("[data-h]"),i=tr.querySelector("[data-i]"),o=tr.querySelector("[data-o]");if(h)h.textContent=fila.horas;if(i)i.innerHTML="<b>"+mx.format(fila.importe)+"</b>";if(o)o.textContent=fila.origen||"general"}
   var th=r2(f.reduce(function(a,x){return a+x.horas},0)),tt=r2(f.reduce(function(a,x){return a+x.importe},0));
   $("nmTot").innerHTML='Horas: <b>'+th+'</b> · Total a pagar: <b>'+mx.format(tt)+'</b>';
 };
-function filasNomEdit(did,y,m){return filasNom(did,y,m).map(function(f){var e=NMEDIT[f.key];if(!e)return f;var ses=e.ses!=null?e.ses:f.ses,hs=e.hrs!=null?e.hrs:f.hrs,horas=r2(ses*hs);return Object.assign({},f,{ses:ses,hrs:hs,horas:horas,importe:r2(horas*f.tarifa)})})}
+function filasNomEdit(did,y,m){return filasNom(did,y,m).map(function(f){var e=NMEDIT[f.key];if(!e)return f;var ses=e.ses!=null?e.ses:f.ses,hs=e.hrs!=null?e.hrs:f.hrs,tf=e.tar!=null?(e.tar>0?e.tar:f.tarBase):f.tarifa,horas=r2(ses*hs);return Object.assign({},f,{ses:ses,hrs:hs,horas:horas,tarifa:tf,origen:tf!==f.tarBase?"ajustada en esta asignatura":origenTarifa(did,f.plan),importe:r2(horas*tf)})})}
 async function guardaNomDoc(extra){
   var s=nomSel(),mes=mesKey(s.y,s.m),old=NOM[mes]||{filas:{},pagos:{}},filas=Object.assign({},old.filas);
-  filasNomEdit(NMD,s.y,s.m).forEach(function(f){filas[f.key]={ses:f.ses,hrs:f.hrs}});
+  filasNomEdit(NMD,s.y,s.m).forEach(function(f){filas[f.key]=f.tarifa!==f.tarBase?{ses:f.ses,hrs:f.hrs,tar:f.tarifa}:{ses:f.ses,hrs:f.hrs}});
   var nd=Object.assign({},{mes:mes,filas:filas,pagos:old.pagos||{}},extra||{});
   await DBH.doc("nomina/"+mes).set(nd);NOM[mes]=nd;NMEDIT={};
 }
@@ -4664,7 +4739,7 @@ function dibujaReciboNom(d,did,ys,ms,nueva){
   if(r.pago){try{qrPDF(d,qrRecibo(r.pago.folio,r.pago.monto,r.pago.fecha),15,yq0,26);d.setFont("helvetica","normal");d.setFontSize(5.5);d.setTextColor(90,90,90);d.text("Verifique este recibo",28,yq0+29,{align:"center"});d.setTextColor(0,0,0)}catch(e){}}
   y=totales(d,yq0,[["Horas totales",String(th)],["Total a pagar",mx.format(tot)]]);if(r.pago)y=Math.max(y,yq0+30);
   d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(90,90,90);
-  d.text("Tarifa por hora: "+mx.format(NOMC.base)+"; para Enfermería, maestría y doctorado: "+mx.format(NOMC.esp)+". Las clases se imparten los sábados.",15,y+6);
+  d.text("Tarifa por hora aplicada a cada asignatura, según su plan o el convenio con el docente. Las clases se imparten los sábados.",15,y+6);
   if(r.pago){y+=26;if(y>262){d.addPage();y=40}d.setDrawColor(90,90,90);d.setLineWidth(0.3);d.line(20,y,90,y);d.line(120,y,190,y);d.setFontSize(8.5);d.text("Recibí (firma del docente)",55,y+4,{align:"center"});d.text(r.pago.byn?"Pagó: "+r.pago.byn:"Administración",155,y+4,{align:"center"})}
   return !!r.pago;
 }
@@ -4803,7 +4878,7 @@ function buscaRecibo(folio){
   function es(x){return String(x||"").toUpperCase()===f}
   S.some(function(s){return (s.pagos||[]).some(function(g){
     if(!es(g.folio))return false;var ok=esConf(g);
-    r={origen:"Control de pagos",nombre:s.nombre,ref0:"Matrícula "+s.mat,concepto:ok?(conc(alloc(s)[g.id])||"Pago"):(cargoLab(s,g.cc||[])||"Pago pendiente"),monto:g.monto,fecha:g.fecha,metodo:g.metodo,estado:ok?(g.estado==="confirmado"?"Pago confirmado":"Registrado"):"Transferencia pendiente de confirmar",folio:g.folio,pend:!ok};return true})});
+    r={origen:"Finanzas",nombre:s.nombre,ref0:"Matrícula "+s.mat,concepto:ok?(conc(alloc(s)[g.id])||"Pago"):(cargoLab(s,g.cc||[])||"Pago pendiente"),monto:g.monto,fecha:g.fecha,metodo:g.metodo,estado:ok?(g.estado==="confirmado"?"Pago confirmado":"Registrado"):"Transferencia pendiente de confirmar",folio:g.folio,pend:!ok};return true})});
   if(!r)Object.keys(TIT_||{}).some(function(k){var t=TIT_[k];return (t.abonos||[]).some(function(a){
     if(!es(a.folio))return false;var ok=esConf(a);
     r={origen:"Titulaciones",nombre:nomTit(t),ref0:"Trámite "+t.num,concepto:"Abono a cuenta · "+(TGRADOS[t.grado]||""),monto:a.monto,fecha:a.fecha,metodo:a.metodo,estado:ok?(a.estado==="confirmado"?"Pago confirmado":"Registrado"):"Transferencia pendiente de confirmar",folio:a.folio,pend:!ok};return true})});
@@ -5170,7 +5245,7 @@ $("naXls").onclick=function(){
   saveFile("nomina-administrativa-"+mesKey(s.y,s.m)+"-"+s.p+".xlsx",new Blob([X.write(wb,{bookType:"xlsx",type:"array",cellDates:true})],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
   $("naMsg").style.color="var(--ok)";$("naMsg").textContent="Nómina descargada en Excel.";
 };
-/* ---- Estado de cuenta final (Control de pagos) ---- */
+/* ---- Estado de cuenta final (Finanzas) ---- */
 function catIng(c){
   c=String(c||"");
   if(/^Saldo a favor/.test(c))return "Saldos a favor y anticipos";
@@ -5335,18 +5410,18 @@ $("dxDocs").onclick=async function(e){
 var BASEROL="consulta",PERMS={};
 var NIV3=[["none","Sin acceso"],["ver","Solo ver"],["editar","Editar"]];
 var MODDEF=[
-  ["pagos","Control de pagos","Cobros, recibos y estados de cuenta de los alumnos","caja","mPag",NIV3],
-  ["corte","Gastos y corte de caja","Gastos del día y cierre de caja (con Editar se captura el conteo a ciegas)","caja",null,NIV3],
-  ["estado","Estado de cuenta final","Ingresos, egresos y resultado del periodo (solo consulta; muestra los totales de dinero)","admin",null,[["none","Sin acceso"],["ver","Con acceso (solo consulta)"]]],
-  ["ver","Verificación de pagos","Confirmar las transferencias contra la app del banco","caja","mVer",NIV3],
+  ["pagos","Finanzas · Pagos de alumnos","Cobros, recibos y estados de cuenta de los alumnos","caja","mPag",NIV3],
+  ["corte","Finanzas · Gastos y corte de caja","Gastos del día y cierre de caja (con Editar se captura el conteo a ciegas)","caja",null,NIV3],
+  ["estado","Finanzas · Estado de cuenta final","Ingresos, egresos y resultado del periodo (solo consulta; muestra los totales de dinero)","admin",null,[["none","Sin acceso"],["ver","Con acceso (solo consulta)"]]],
+  ["ver","Finanzas · Verificación de pagos","Confirmar las transferencias contra la app del banco","caja","mVer",NIV3],
   ["inscripcion","Inscripción de alumnos","Alta de alumnos, grupo, pago de inscripción y ficha","admin","mIns",NIV3],
   ["escolar","Control escolar","Alumnos, plan de estudios, grupos, calendario, calificaciones, docentes, egresados, justificantes y credenciales","admin","mEsc",NIV3],
   ["constancias","Constancias de estudios","Generar y cobrar constancias (una pestaña de Control escolar)","caja",null,NIV3],
   ["acuerdos","Acuerdos de pago","Prórrogas y parcialidades","caja","mAcu",NIV3],
   ["a286","Acuerdo 286","Bachillerato por Acuerdo 286: inscripción, documentos, evaluación y pagos","admin","mA2",NIV3],
   ["titulaciones","Titulaciones por experiencia laboral","Procesos de titulación, documentos y abonos","admin","mTit",NIV3],
-  ["nomina_doc","Nómina docente","Pago a docentes por asignatura y horas","admin","mNom",NIV3],
-  ["nomina_adm","Nómina administrativa","Empleados y pago de sueldos del personal administrativo","admin","mNa",NIV3],
+  ["nomina_doc","Finanzas · Nómina docente","Pago a docentes por asignatura y horas","admin","mNom",NIV3],
+  ["nomina_adm","Finanzas · Nómina administrativa","Empleados y pago de sueldos del personal administrativo","admin","mNa",NIV3],
   ["docente","Mis asignaturas (sesión de docente)","Listas y calificaciones de un docente; requiere elegir a qué docente corresponde el usuario","docente","mDoc",[["none","Sin acceso"],["editar","Con acceso"]]],
   ["expedientes","Expedientes de docentes","Documentos personales y fotografía de los docentes (información confidencial)","admin",null,[["none","Sin acceso"],["editar","Con acceso"]]]
 ];
@@ -5398,7 +5473,8 @@ function aplicaModulos(){
     var t=m[4];if(!t||!$(t))return;
     var vis=permiso(m[0])!=="none";
     if(m[0]==="escolar")vis=permiso("escolar")!=="none"||permiso("constancias")!=="none";
-    if(m[0]==="pagos")vis=permiso("pagos")!=="none"||permiso("corte")!=="none"||permiso("estado")!=="none";
+    if(m[0]==="pagos")vis=finAcceso();
+    if(m[0]==="ver"||m[0]==="nomina_doc"||m[0]==="nomina_adm")vis=false;   /* viven dentro de Finanzas */
     if(m[0]==="docente")vis=vis&&!!(APP&&APP.doc);
     $(t).hidden=!vis;
   });
@@ -5969,7 +6045,7 @@ function pJPrepara(txt){
   var r=pJResumen(D);
   if(!r.planes.length){pJm("Ningún plan del archivo se puede cargar"+(r.omitidos.length?" ("+r.omitidos.join(", ")+": solo el Administrador puede crear planes nuevos)":"")+".",true);$("pJBar").hidden=true;PJ=null;return}
   PJ=D;
-  pJm("Se cargarán "+(r.nuevas+r.actualizadas)+" asignaturas de "+r.planes.join(", ")+" con "+r.conContenido+" contenidos: "+r.nuevas+" nuevas y "+r.actualizadas+" que ya existen (se les agrega el contenido sin duplicarlas)."+(r.crear.length?" Se crearán los planes nuevos: "+r.crear.map(function(p){return "«"+p.k+"» ("+durTxt(p.n)+", colegiatura de $"+p.col+")"}).join("; ")+"; sus costos se ajustan después en Control de pagos > Costos y planes.":"")+(r.reemplaza?" "+r.reemplaza+" ya tenían contenido y se reemplazará.":"")+(r.omitidos.length?" No se cargará: "+r.omitidos.join(", ")+" (plan no reconocido).":"")+" Pulsa «Confirmar carga» para continuar.",false);
+  pJm("Se cargarán "+(r.nuevas+r.actualizadas)+" asignaturas de "+r.planes.join(", ")+" con "+r.conContenido+" contenidos: "+r.nuevas+" nuevas y "+r.actualizadas+" que ya existen (se les agrega el contenido sin duplicarlas)."+(r.crear.length?" Se crearán los planes nuevos: "+r.crear.map(function(p){return "«"+p.k+"» ("+durTxt(p.n)+", colegiatura de $"+p.col+")"}).join("; ")+"; sus costos se ajustan después en Finanzas > Costos y planes.":"")+(r.reemplaza?" "+r.reemplaza+" ya tenían contenido y se reemplazará.":"")+(r.omitidos.length?" No se cargará: "+r.omitidos.join(", ")+" (plan no reconocido).":"")+" Pulsa «Confirmar carga» para continuar.",false);
   $("pJBar").hidden=false;
 }
 $("pFileJ").onchange=function(){
@@ -6029,24 +6105,25 @@ function planExiste(nombre){return PL.some(function(p){return nz(p.k)===nz(nombr
 async function crearPlan(p,sinRefrescar){
   if(!esAdminReal())throw new Error("Solo el Administrador puede crear planes de estudio.");
   if(planExiste(p.k))throw new Error("Ya existe un plan con ese nombre.");
+  if(REN[p.k]){delete REN[p.k];saveRen()}
   PL.push(p);savePlans();
-  await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC});
+  await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN});
   fillPlans();if(!sinRefrescar)rebuild();
   return p;
 }
 function abreNP(){
   if(!esAdminReal()){alert("Solo el Administrador puede crear planes de estudio.");return}
-  $("npNom").value="";$("npN").value="36";$("npCol").value="1300";$("npIns").value="800";$("npRein").value="800";$("npTit").value="23000";$("npFile").value="";$("npMsg").textContent="";$("npDur").textContent=durTxt(36);
+  $("npNom").value="";$("npN").value="9";$("npCol").value="1300";$("npIns").value="800";$("npRein").value="800";$("npTit").value="23000";$("npFile").value="";$("npMsg").textContent="";$("npDur").textContent=durTxt(36);
   $("dNP").showModal();
 }
 $("pNuevo").onclick=abreNP;
-$("npN").oninput=function(){$("npDur").textContent=durTxt(this.value)};
+$("npN").oninput=function(){var n=nDeCuat(this.value);$("npDur").textContent=n==null?"Escribe un número de 0 a 12 (usa .5 para medio cuatrimestre).":durTxt(n)};
 $("npCan").onclick=function(){$("dNP").close()};
 function validaNP(){
-  var k=$("npNom").value.replace(/\s+/g," ").trim(),n=parseInt($("npN").value,10),v=function(i){return parseFloat($(i).value)};
+  var k=$("npNom").value.replace(/\s+/g," ").trim(),n=nDeCuat($("npN").value),v=function(i){return parseFloat($(i).value)};
   if(k.length<3)return {e:"Escribe el nombre del plan (mínimo 3 letras)."};
   if(planExiste(k))return {e:"Ya existe un plan con ese nombre."};
-  if(!(n>=0&&n<=60))return {e:"El número de colegiaturas va de 0 a 60 (36 = 3 años; 42 = 3 años y medio)."};
+  if(n==null)return {e:"Los cuatrimestres van de 0 a 12 (usa .5 para medio cuatrimestre: 9 = 3 años; 10.5 = 3 años y medio)."};
   var col=v("npCol"),ins=v("npIns"),rein=v("npRein"),tit=v("npTit");
   if([col,ins,rein,tit].some(function(x){return isNaN(x)||x<0}))return {e:"Los costos deben ser números mayores o iguales a 0."};
   return {p:{k:k,n:n,col:col,ins:ins,rein:rein,tit:tit}};
@@ -6059,7 +6136,7 @@ $("npOk").onclick=async function(){
     var txt=f?await f.text():null;
     await crearPlan(r.p);
     $("dNP").close();$("pPlan").value=r.p.k;$("pCuatF").value="";renderPlan();
-    var pre="Plan «"+r.p.k+"» creado ("+durTxt(r.p.n)+"). Ya aparece en todos los módulos; sus costos se pueden ajustar en Control de pagos > Costos y planes.";
+    var pre="Plan «"+r.p.k+"» creado ("+durTxt(r.p.n)+"). Ya aparece en todos los módulos; sus costos se pueden ajustar en Finanzas > Costos y planes.";
     pJm(pre,false);
     if(txt!==null){
       if(/^\s*\{/.test(txt)){pJPrepara(txt);$("pJMsg").textContent=pre+" "+$("pJMsg").textContent}
@@ -7031,6 +7108,150 @@ function avisosPor(){
       (adeudo&&x.meses&&x.meses.length?'<div class="wrap" style="margin-top:6px"><table style="min-width:340px"><thead><tr><th>Concepto</th><th class="n">Pendiente</th></tr></thead><tbody>'+x.meses.map(function(m){return '<tr><td>'+esc(m.c)+'</td><td class="n">'+esc(mx.format(m.rem))+'</td></tr>'}).join("")+'<tr><td><b>Total</b></td><td class="n"><b>'+esc(mx.format(x.total))+'</b></td></tr></tbody></table></div>':'')+
       '<span class="hint">'+esc(fd(x.fecha))+'</span></div>'}).join("");
 }
+/* ===== Cambiar el nombre de un plan de estudios (solo Administrador) ===== */
+function rnLista(vieja){
+  var L=[],add=function(g,p,f){L.push({g:g,p:p,f:f})};
+  Object.keys(ST).forEach(function(id){var d=ST[id];if(d.programa===vieja||d.carrera===vieja)add("alumnos","students/"+id,function(n){var x={};if(d.programa===vieja)x.programa=n;if(d.carrera===vieja)x.carrera=n;return x})});
+  Object.keys(GRP).forEach(function(id){if(GRP[id].plan===vieja)add("grupos","grupos/"+id,function(n){return {plan:n}})});
+  Object.keys(MAT).forEach(function(id){var m=MAT[id],fu=(m.fus||[]).some(function(f){return f.plan===vieja});if(m.plan===vieja||fu)add("materias del calendario","materias/"+id,function(n){var x={};if(m.plan===vieja)x.plan=n;if(fu)x.fus=m.fus.map(function(f){return f.plan===vieja?Object.assign({},f,{plan:n}):f});return x})});
+  Object.keys(DOC).forEach(function(id){var d=DOC[id];if((d.asig||[]).some(function(a){return a.plan===vieja}))add("asignaciones de docentes","docentes/"+id,function(n){return {asig:d.asig.map(function(a){return a.plan===vieja?Object.assign({},a,{plan:n}):a})}})});
+  Object.keys(CAL).forEach(function(id){var d=CAL[id];if((d.items||[]).some(function(a){return a.plan===vieja}))add("calificaciones","calif/"+id,function(n){return {items:d.items.map(function(a){return a.plan===vieja?Object.assign({},a,{plan:n}):a})}})});
+  Object.keys(CONS).forEach(function(id){var d=CONS[id];if((d.items||[]).some(function(a){return a.plan===vieja}))add("constancias","constancias/"+id,function(n){return {items:d.items.map(function(a){return a.plan===vieja?Object.assign({},a,{plan:n}):a})}})});
+  [["acuerdos",ACU,"acuerdos de pago"],["egresados",EGR,"egresados"],["justificantes",JUS,"justificantes"],["resguardos",RSG,"títulos en resguardo"],["solicitudes",SOL,"solicitudes de alumnos"]].forEach(function(c){
+    Object.keys(c[1]||{}).forEach(function(id){if(c[1][id].plan===vieja)add(c[2],c[0]+"/"+id,function(n){return {plan:n}})})});
+  return L;
+}
+function rnResumen(vieja){
+  var L=rnLista(vieja),o={},cat=CATA[slug(vieja)];L.forEach(function(x){o[x.g]=(o[x.g]||0)+1});
+  var t=Object.keys(o).map(function(k){return o[k]+" "+k});if(cat&&(cat.items||[]).length)t.push((cat.items||[]).length+" asignaturas del plan de estudios");
+  return {total:L.length,txt:t.length?"Se actualizarán: "+t.join(", ")+".":"Este plan todavía no tiene registros que actualizar."};
+}
+function validaRn(){
+  var v=$("rnPlan").value,n=$("rnNom").value.replace(/\s+/g," ").trim();
+  if(!PL.some(function(p){return p.k===v}))return {e:"Elige el plan."};
+  if(n.length<3)return {e:"Escribe el nombre nuevo (mínimo 3 letras)."};
+  if(n===v)return {e:"El nombre nuevo es igual al actual."};
+  if(PL.some(function(p){return p.k!==v&&(nz(p.k)===nz(n)||slug(p.k)===slug(n))}))return {e:"Ya existe otro plan con ese nombre."};
+  var ko=slug(v),kn=slug(n),c=CATA[kn];if(kn!==ko&&c&&(c.items||[]).length)return {e:"Ya hay asignaturas guardadas con un nombre equivalente a ese; elige otro nombre."};
+  return {v:v,n:n};
+}
+function rnAviso(){
+  var r=validaRn(),v=$("rnPlan").value;$("rnRes").textContent=rnResumen(v).txt;
+  var n=$("rnNom").value.replace(/\s+/g," ").trim(),av="";
+  var propia=(NOMC.planes||{})[v]>0;
+  if(n.length>=3&&!propia&&tarifaRegla(v)!==tarifaRegla(n))av="Ojo: este plan no tiene una tarifa por hora propia y la general se elige por su nombre; con el nombre nuevo pasaría de "+mx.format(tarifaRegla(v))+" a "+mx.format(tarifaRegla(n))+" por hora. Para evitarlo, dale primero una tarifa propia en Nómina docente > «Tarifas por plan y por docente», o conserva en el nombre la palabra «Enfermería», «Maestría» o «Doctorado», según corresponda.";
+  $("rnAviso").textContent=av;
+}
+function abreRn(){
+  if(!esAdminReal()){alert("Solo el Administrador puede cambiar el nombre de un plan.");return}
+  $("rnPlan").innerHTML=PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join("");
+  var a=$("pPlan").value;if(PL.some(function(p){return p.k===a}))$("rnPlan").value=a;
+  $("rnNom").value=$("rnPlan").value;$("rnMsg").textContent="";$("rnOk").disabled=false;$("rnCan").disabled=false;rnAviso();$("dRn").showModal();$("rnNom").select();
+}
+$("pRen").onclick=abreRn;$("rnCan").onclick=function(){$("dRn").close()};
+$("rnPlan").onchange=function(){$("rnNom").value=this.value;rnAviso()};$("rnNom").oninput=rnAviso;
+$("rnOk").onclick=async function(){
+  var say=function(t,bad){$("rnMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rnMsg").textContent=t};
+  if(!esAdminReal())return;
+  var r=validaRn();if(r.e){say(r.e,true);return}
+  var res=rnResumen(r.v);
+  if(!confirm("¿Cambiar el nombre del plan «"+r.v+"» por «"+r.n+"»?\n\n"+res.txt+"\n\nConviene tener un respaldo reciente."))return;
+  $("rnOk").disabled=true;$("rnCan").disabled=true;
+  try{
+    var L=rnLista(r.v);
+    for(var i=0;i<L.length;i+=10){await Promise.all(L.slice(i,i+10).map(function(x){return DBH.doc(x.p).update(x.f(r.n))}));say("Actualizando registros… "+Math.min(i+10,L.length)+" de "+L.length)}
+    var ko=slug(r.v),kn=slug(r.n),cat=CATA[ko];
+    if(cat){await DBH.doc("catalogo/"+kn).set({plan:r.n,items:cat.items||[]});if(kn!==ko){await DBH.doc("catalogo/"+ko).delete();delete CATA[ko]}CATA[kn]={plan:r.n,items:cat.items||[]}}
+    var P=PL.find(function(p){return p.k===r.v});P.k=r.n;
+    Object.keys(REN).forEach(function(k){if(REN[k]===r.v)REN[k]=r.n});REN[r.v]=r.n;Object.keys(REN).forEach(function(k){if(REN[k]===k)delete REN[k]});
+    saveRen();savePlans();await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN});
+    if(NOMC.planes&&NOMC.planes[r.v]>0){var np=Object.assign({},NOMC.planes);np[r.n]=np[r.v];delete np[r.v];await DBH.doc("config/nomina").set({base:NOMC.base,esp:NOMC.esp,planes:np,docentes:NOMC.docentes||{}});NOMC=Object.assign({},NOMC,{planes:np})}
+    fillPlans();rebuild();$("dRn").close();$("pPlan").value=r.n;renderPlan();
+    pJm("El plan «"+r.v+"» ahora se llama «"+r.n+"»: se actualizaron "+L.length+" registros"+(cat?" y "+(cat.items||[]).length+" asignaturas":"")+". Las cargas de archivos con el nombre anterior se asignan al nombre nuevo.",false);
+  }catch(e){say("No se pudo terminar el cambio ("+((e&&(e.code||e.message))||"error")+"). Los datos pudieron quedar a medias: vuelve a ejecutar el mismo cambio de nombre para completarlo.",true);$("rnOk").disabled=false;$("rnCan").disabled=false}
+};
+/* ===== Tarifas por hora: general, por plan, por docente y por asignatura en un mes ===== */
+var NMTBUF=null;
+function abreNmT(){
+  if(ROL!=="admin"||!DBH)return;
+  NMTBUF={planes:Object.assign({},NOMC.planes||{}),docentes:Object.assign({},NOMC.docentes||{})};
+  $("nmtMsg").textContent="";$("nmtQ").value="";renderNmT();$("dNmT").showModal();
+}
+function renderNmT(){
+  var pl=NMTBUF.planes,dc=NMTBUF.docentes,q=nz($("nmtQ").value);
+  $("nmtPl").innerHTML=PL.map(function(p){return '<tr><td>'+esc(p.k)+'</td><td class="n">'+esc(mx.format(tarifaRegla(p.k)))+'</td><td class="n"><input type="number" min="0" step="1" data-p="'+attr(p.k)+'" value="'+(pl[p.k]>0?pl[p.k]:"")+'" placeholder="General" style="width:140px"></td></tr>'}).join("");
+  var ids=Object.keys(DOC).filter(function(id){return !q||nz(DOC[id].nombre).indexOf(q)>-1}).sort(function(a,b){return String(DOC[a].nombre).localeCompare(String(DOC[b].nombre))});
+  $("nmtDc").innerHTML=ids.length?ids.map(function(id){return '<tr><td>'+esc(DOC[id].nombre)+'</td><td class="n"><input type="number" min="0" step="1" data-d="'+attr(id)+'" value="'+(dc[id]>0?dc[id]:"")+'" placeholder="Del plan" style="width:140px"></td></tr>'}).join(""):'<tr><td colspan="2" class="empty">'+(Object.keys(DOC).length?"Ningún docente coincide.":"Aún no hay docentes registrados.")+'</td></tr>';
+}
+function leeNmT(){
+  /* conserva lo escrito aunque se filtre la lista de docentes */
+  Array.prototype.forEach.call($("nmtPl").querySelectorAll("input"),function(i){var v=parseFloat(i.value);if(v>0)NMTBUF.planes[i.dataset.p]=v;else delete NMTBUF.planes[i.dataset.p]});
+  Array.prototype.forEach.call($("nmtDc").querySelectorAll("input"),function(i){var v=parseFloat(i.value);if(v>0)NMTBUF.docentes[i.dataset.d]=v;else delete NMTBUF.docentes[i.dataset.d]});
+}
+$("nmTarMas").onclick=abreNmT;$("nmtCan").onclick=function(){NMTBUF=null;$("dNmT").close()};$("nmtQ").oninput=function(){leeNmT();renderNmT()};
+$("nmtGuarda").onclick=async function(){
+  if(ROL!=="admin"||!DBH||!NMTBUF)return;
+  leeNmT();var d=NMTBUF;
+  try{
+    await DBH.doc("config/nomina").set({base:NOMC.base,esp:NOMC.esp,planes:d.planes,docentes:d.docentes});
+    NOMC=Object.assign({},NOMC,{planes:d.planes,docentes:d.docentes});NMTBUF=null;renderNom();$("dNmT").close();
+    var np=Object.keys(d.planes).length,nd=Object.keys(d.docentes).length;
+    $("nmMsg").style.color="var(--ok)";$("nmMsg").textContent="Tarifas guardadas: "+np+(np===1?" plan":" planes")+" y "+nd+(nd===1?" docente":" docentes")+" con tarifa propia. Se aplican a las nóminas que aún no se han pagado.";
+  }catch(e){dberr(e)}
+};
+/* ===== Cuatrimestres de cada plan de estudios ===== */
+function nDeCuat(c){c=parseFloat(c);if(!(c>=0)||c>12||Math.round(c*2)!==c*2)return null;return 4*Math.floor(c)+((c%1)>=0.5?2:0)}
+function cuatTxt(n){var c=n/4;return Number.isInteger(c)?String(c):(Math.round(c*100)/100).toString()}
+function minCuatPlan(plan){
+  var mx=0,ch=function(c){c=parseInt(c,10);if(c>mx)mx=c};
+  catItems(plan).forEach(function(x){ch(x.cuat)});
+  Object.keys(GRP).forEach(function(k){if(GRP[k].plan===plan)ch(GRP[k].cuat)});
+  Object.keys(MAT).forEach(function(k){var m=MAT[k];if(m.plan===plan)ch(m.cuat);(m.fus||[]).forEach(function(f){if(f.plan===plan)ch(f.cuat)})});
+  return mx;
+}
+function impactoCuat(plan,nNuevo){
+  var P=PL.find(function(p){return p.k===plan}),antes=P?P.n:0,al=S.filter(function(s){return planDe(s)===plan&&!esEgr(s.id)}),sobre=0;
+  if(P){P.n=nNuevo;try{al.forEach(function(s){var tot=cargos(s).reduce(function(a,c){return a+c.m},0);if(paid(s)>tot+0.005)sobre++})}finally{P.n=antes}}
+  return {alumnos:al.length,antes:antes,despues:nNuevo,sobre:sobre};
+}
+function impactoTxt(plan,nNuevo){
+  var o=impactoCuat(plan,nNuevo),t="«"+plan+"»: de "+cuatTxt(o.antes)+" a "+cuatTxt(nNuevo)+" cuatrimestres ("+o.antes+" → "+nNuevo+" colegiaturas). ";
+  t+=o.alumnos?"Se recalculan los cobros de "+o.alumnos+(o.alumnos===1?" alumno":" alumnos")+" del plan.":"Todavía no tiene alumnos.";
+  if(o.sobre)t+=" "+o.sobre+(o.sobre===1?" alumno ya ha pagado":" alumnos ya han pagado")+" más de lo que costaría el plan y quedarían con saldo a favor.";
+  return t;
+}
+function errMinCuat(plan,n){var mc=minCuatPlan(plan);return Math.ceil(n/4)<mc?"No se puede dejar «"+plan+"» en "+durTxt(n).split(" · ")[0]+": hay asignaturas, grupos o clases en el cuatrimestre "+mc+". Muévelas o quítalas primero.":""}
+async function guardaPlanes(){
+  savePlans();await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN});refreshTotals();rebuild();
+}
+function abreCu(){
+  if(!esAdminReal()){alert("Solo el Administrador puede cambiar los cuatrimestres de un plan.");return}
+  $("cuPlan").innerHTML=PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join("");
+  var a=$("pPlan").value;if(PL.some(function(p){return p.k===a}))$("cuPlan").value=a;
+  $("cuN").value=cuatTxt(PL.find(function(p){return p.k===$("cuPlan").value}).n);$("cuMsg").textContent="";$("cuOk").disabled=false;cuRefresca();$("dCu").showModal();$("cuN").select();
+}
+function cuRefresca(){
+  var plan=$("cuPlan").value,P=PL.find(function(p){return p.k===plan}),n=nDeCuat($("cuN").value);
+  $("cuMin").textContent=P?"Cuatrimestre más alto con asignaturas, grupos o clases: "+(minCuatPlan(plan)||"ninguno")+". Costo actual: "+mx.format(P.col)+" por colegiatura, "+mx.format(P.rein)+" de reinscripción.":"";
+  if(n==null){$("cuDur").textContent="Escribe un número de 0 a 12 (usa .5 para medio cuatrimestre).";$("cuImp").textContent="";return}
+  $("cuDur").textContent=n===0?"Sin colegiaturas mensuales.":durTxt(n)+" · "+n+" colegiaturas y "+Math.max(Math.ceil(n/4)-1,0)+(Math.ceil(n/4)-1===1?" reinscripción":" reinscripciones");
+  $("cuImp").textContent=n===(P?P.n:n)?"El plan ya tiene esa duración.":impactoTxt(plan,n);
+}
+$("pCu").onclick=abreCu;$("cuCan").onclick=function(){$("dCu").close()};
+$("cuPlan").onchange=function(){var P=PL.find(function(p){return p.k===$("cuPlan").value});$("cuN").value=cuatTxt(P.n);$("cuMsg").textContent="";cuRefresca()};$("cuN").oninput=function(){$("cuMsg").textContent="";cuRefresca()};
+$("cuOk").onclick=async function(){
+  var say=function(t,bad){$("cuMsg").style.color=bad?"var(--bad)":"var(--ok)";$("cuMsg").textContent=t};
+  if(!esAdminReal())return;
+  var plan=$("cuPlan").value,P=PL.find(function(p){return p.k===plan}),n=nDeCuat($("cuN").value);
+  if(!P)return say("Elige el plan.",true);
+  if(n==null)return say("Los cuatrimestres van de 0 a 12 (usa .5 para medio cuatrimestre).",true);
+  if(n===P.n)return say("El plan ya tiene esa duración.",true);
+  var e=errMinCuat(plan,n);if(e)return say(e,true);
+  if(!confirm("¿Cambiar la duración del plan?\n\n"+impactoTxt(plan,n)))return;
+  var b=this;b.disabled=true;var antes=P.n;
+  try{P.n=n;await guardaPlanes();$("dCu").close();$("pPlan").value=plan;renderPlan();pJm("«"+plan+"» ahora dura "+durTxt(n)+" ("+n+" colegiaturas).",false)}
+  catch(er){P.n=antes;dberr(er);b.disabled=false}
+};
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}
@@ -7138,12 +7359,13 @@ $("usL").onclick=async function(e){
   DBH.doc("config/plans").onSnapshot(function(d){
     if(d.exists&&d.data().plans){
       PL=JSON.parse(JSON.stringify(d.data().plans));
-      var falt=PL0.filter(function(x){return !PL.some(function(p){return p.k===x.k})});
-      if(falt.length){falt.forEach(function(x){PL.push(JSON.parse(JSON.stringify(x)))});if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:d.data().extra||EXTRA,cons:d.data().cons||CONSC}).catch(function(){})}
+      REN=JSON.parse(JSON.stringify(d.data().ren||{}));saveRen();
+      var falt=PL0.filter(function(x){return !PL.some(function(p){return p.k===x.k})&&!REN[x.k]});
+      if(falt.length){falt.forEach(function(x){PL.push(JSON.parse(JSON.stringify(x)))});if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:d.data().extra||EXTRA,cons:d.data().cons||CONSC,ren:REN}).catch(function(){})}
     }
     if(d.exists&&d.data().extra)EXTRA=JSON.parse(JSON.stringify(d.data().extra));
     if(d.exists&&d.data().cons)CONSC=JSON.parse(JSON.stringify(d.data().cons));
-    else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC}).catch(function(){});
+    else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN}).catch(function(){});
     rebuild();
   },onErr);
   [["avisos",function(d){AVI=d;if(MOD==="por")renderPor()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
@@ -7157,7 +7379,7 @@ $("usL").onclick=async function(e){
     else{var y=USERS.find(function(z){return z.u===APP.u});APP=y?{u:y.u,name:y.name,rol:y.rol,doc:y.doc||"",modulos:y.modulos||null,perm:y.perm||null}:null}
     sesion();if($("dUs").open)renderUs();
   },function(e){document.body.classList.remove("locked");onErr(e)});
-  DBH.doc("config/nomina").onSnapshot(function(d){if(d.exists&&d.data().base>0&&d.data().esp>0)NOMC={base:d.data().base,esp:d.data().esp};if(MOD==="nom"&&!$("dNm").open)renderNom()},onErr);
+  DBH.doc("config/nomina").onSnapshot(function(d){if(d.exists&&d.data().base>0&&d.data().esp>0)NOMC={base:d.data().base,esp:d.data().esp,planes:d.data().planes||{},docentes:d.data().docentes||{}};if(MOD==="nom"&&!$("dNm").open)renderNom()},onErr);
   DBH.doc("config/app").onSnapshot(function(d){
     var u=(d.exists&&d.data().uni)||"Universidad Lafragua";
     if(document.activeElement!==$("uni"))$("uni").value=u;

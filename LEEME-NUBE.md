@@ -26,7 +26,7 @@ Servidor propio de la escuela publicado en internet con HTTPS. Cada persona entr
 1. En la plataforma anterior (claude.ai), como Administrador, pulsa **Respaldo** y descarga los **datos (JSON)** y los **archivos adjuntos (ZIP)**.
 2. En la nueva, entra como Administrador y abre `https://TU-SERVICIO.onrender.com/herramientas.html`.
 3. Paso 1: sube el JSON y restaura. Paso 2: sube el ZIP (o todas sus partes).
-4. Las contraseñas no se pasan: crea los usuarios en el botón **Usuarios** (Control de pagos).
+4. Las contraseñas no se pasan: crea los usuarios en el botón **Usuarios** (Finanzas).
 
 ## Usuarios y contraseñas
 - Mínimo 8 caracteres. Cada persona puede cambiar la suya con **Mi contraseña**.

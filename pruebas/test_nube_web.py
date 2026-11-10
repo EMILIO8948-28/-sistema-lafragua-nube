@@ -90,7 +90,7 @@ with sync_playwright() as pw:
     # 7) administrador con la contraseña nueva: herramientas y respaldos
     pg.fill('#lgU','admin');pg.fill('#lgP','clave-segura-1');pg.click('#lgGo');W(pg,"document.getElementById('lgE').textContent.length>0");ok('clave_anterior_ya_no','incorrectos' in pg.inner_text('#lgE'))
     pg.fill('#lgP','nueva-admin-77');pg.click('#lgGo');W(pg,"typeof APP!=='undefined'&&APP!==null&&!document.body.classList.contains('locked')")
-    pg.evaluate("ir('pagos')");pg.click('#bBk');pg.wait_for_selector('#dBk[open]')
+    pg.evaluate("ir('pagos')");pg.evaluate("abreDlgBk()");pg.wait_for_selector('#dBk[open]')
     with pg.expect_download() as d:pg.click('#bkSrv')
     ok('descarga_respaldo_servidor',d.value.suggested_filename.startswith('respaldo-completo-'))
     z=zipfile.ZipFile(d.value.path());ok('zip_valido',z.testzip() is None and 'lafragua.db' in z.namelist())

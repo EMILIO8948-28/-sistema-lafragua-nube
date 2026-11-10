@@ -46,7 +46,7 @@ with sync_playwright() as pw:
     with pg.expect_download() as d:pg.click('#hAlmGo')
     ok('el_boton_descarga_el_respaldo_completo',d.value.suggested_filename.startswith('respaldo-completo-') and d.value.suggested_filename.endswith('.zip'))
     time.sleep(0.8);info=c1.request.get(B1+'/api/almacenamiento').json();ok('queda_registrada_la_descarga',info['ultimaDescarga'] is not None and info['ultimaDescarga'][:10]==time.strftime('%Y-%m-%d',time.gmtime()))
-    pg.click('#bBk') if False else pg.evaluate("document.getElementById('bBk').click()");pg.wait_for_selector('#dBk[open]');W(pg,"document.getElementById('bkAlm').textContent.length>10")
+    pg.evaluate("abreDlgBk()");pg.wait_for_selector('#dBk[open]');W(pg,"document.getElementById('bkAlm').textContent.length>10")
     ok('el_cuadro_de_respaldo_muestra_el_estado_y_el_boton_del_servidor','DISCO TEMPORAL' in pg.inner_text('#bkAlm') and 'Último respaldo completo descargado' in pg.inner_text('#bkAlm') and pg.is_visible('#bkSrv'))
     pg.evaluate("document.getElementById('dBk').close()")
     # ---------- permisos ----------
@@ -63,7 +63,7 @@ with sync_playwright() as pw:
     ok('con_disco_persistente_solo_recuerda_el_respaldo','Aún no has descargado un respaldo completo' in t2 and 'disco temporal' not in t2 and pg2.evaluate("document.getElementById('hAlm').style.borderColor")=='var(--warn)')
     c2.request.get(B2+'/api/respaldo/descargar');pg2.evaluate("ALM=null;ALMT=0;ir('home')");pg2.wait_for_timeout(1200)
     ok('tras_descargar_un_respaldo_desaparece_el_aviso',pg2.is_hidden('#hAlm'))
-    pg2.evaluate("document.getElementById('bBk').click()");pg2.wait_for_selector('#dBk[open]');W(pg2,"document.getElementById('bkAlm').textContent.length>10")
+    pg2.evaluate("abreDlgBk()");pg2.wait_for_selector('#dBk[open]');W(pg2,"document.getElementById('bkAlm').textContent.length>10")
     ok('el_cuadro_dice_disco_persistente','disco persistente ✓' in pg2.inner_text('#bkAlm') and 'hace 0 días' in pg2.inner_text('#bkAlm'))
     b2.close();p2.terminate();time.sleep(0.4)
     # ---------- 3. no se puede comprobar ----------

@@ -1,6 +1,6 @@
 FROM node:22-slim
 WORKDIR /app
-COPY package.json servidor.js ./
+COPY package.json servidor.js respaldos.js restaurar.js ./
 COPY publico ./publico
 COPY precarga ./precarga
 ENV LF_MODO=nube

@@ -32,7 +32,7 @@ with sync_playwright() as pw:
     ok('con_la_insignia_de_advertencia_roja_si_nunca_se_ha_respaldado',pg.evaluate("document.getElementById('bBk').className")=='bk-top rojo' and pg.is_visible('#bkIns') and pg.inner_text('#bkIns')=='!' and 'Aún no has hecho un respaldo' in pg.get_attribute('#bBk','title'))
     for m in ['esc','pagos','nom','na','home']:
         pg.evaluate("ir('%s')"%m);pg.wait_for_timeout(150);ok('visible_en_%s'%m,caja()['vis'] and abs(caja()['r']-r['r'])<2 and pg.is_visible('#bkIns'))
-    pg.evaluate("ir('pagos')");pg.click('#bBk');pg.wait_for_selector('#dBk[open]');ok('al_pulsarlo_abre_el_cuadro_de_respaldo',pg.is_visible('#bkJson') and pg.is_visible('#bkSrv'));pg.evaluate("document.getElementById('dBk').close()")
+    pg.evaluate("ir('pagos')");pg.click('#bBk');W(pg,"MOD==='bk'");ok('al_pulsarlo_abre_el_modulo_de_respaldos',pg.is_visible('#vBk') and pg.is_visible('#rbAhora'));pg.click('#rbOld');pg.wait_for_selector('#dBk[open]');ok('y_desde_ahi_el_cuadro_de_respaldo_del_navegador',pg.is_visible('#bkJson') and pg.is_visible('#bkSrv'));pg.evaluate("document.getElementById('dBk').close()")
     # ---- respaldo completo del servidor ----
     ctx.request.get(B+'/api/respaldo/descargar');pg.evaluate("ALM=null;ALMT=0;cargaAlm()");pg.wait_for_timeout(1200)
     ok('tras_un_respaldo_completo_la_insignia_desaparece',pg.evaluate("document.getElementById('bBk').className")=='bk-top ok' and pg.is_hidden('#bkIns') and 'Respaldo al día' in pg.get_attribute('#bBk','title'))
@@ -44,7 +44,7 @@ with sync_playwright() as pw:
     ok('con_disco_temporal_es_roja_aunque_haya_respaldo','rojo' in pg.evaluate("document.getElementById('bBk').className") and 'disco temporal' in pg.get_attribute('#bBk','title'));pg.evaluate("ALM.persistente=true;actualizaInsigniaBk()")
     # ---- respaldo de datos (JSON) hecho desde el cuadro ----
     pg.evaluate("ALM.ultimaDescarga=null;localStorage.removeItem(KEY+'-ultbk');actualizaInsigniaBk()");ok('sin_respaldo_vuelve_a_rojo','rojo' in pg.evaluate("document.getElementById('bBk').className"))
-    pg.click('#bBk');pg.wait_for_selector('#dBk[open]')
+    pg.evaluate("abreDlgBk()");pg.wait_for_selector('#dBk[open]')
     with pg.expect_download() as d:pg.click('#bkJson')
     ok('descarga_los_datos',d.value.suggested_filename.startswith('respaldo-colegiaturas-'));pg.wait_for_timeout(800)
     ok('el_respaldo_de_datos_tambien_quita_la_advertencia',pg.evaluate("document.getElementById('bBk').className")=='bk-top ok');pg.evaluate("document.getElementById('dBk').close()")

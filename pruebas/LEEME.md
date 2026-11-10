@@ -45,5 +45,6 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_foto_docente.py` · foto del rostro del docente: cámara, expediente, Mi perfil, seguridad del servicio y credencial de docentes (34).
 - `test_ficha_firma.py` · ficha de inscripción con firma electrónica: firmas del alumno o tutor y de Control escolar, PDF firmado, lista, campana y permisos (34).
 - `test_a286_planes.py` · Acuerdo 286: plan mensual y Plan Express, liquidación con certificado disponible, cobro desde Finanzas, servicio de pagos y permisos (50).
+- `test_respaldos_motor.js` · motor de respaldos: firma AWS oficial, ZIP, daños, cifrado, almacenamiento y correo simulados, programación (23). `test_respaldos_api.py` · API con destinos simulados, restauración real con `restaurar.js`, daños, retención y programación automática (43; usa `fake_destinos.js`). `test_respaldos_ui.py` · pantalla Respaldos y seguridad (21).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

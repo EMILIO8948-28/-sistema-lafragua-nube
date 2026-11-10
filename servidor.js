@@ -468,6 +468,120 @@ async function respaldoCompleto(res) {
   try { await enviaZip(res, 'respaldo-completo-' + hoy() + '.zip', entradas); } finally { try { fs.unlinkSync(tmp); } catch (e) {} }
 }
 
+/* ---------- Respaldos automáticos, verificados y con copia fuera del servidor ---------- */
+const RESPA = require('./respaldos.js'), AUTO = path.join(RESP, 'auto'); fs.mkdirSync(AUTO, { recursive: true });
+const CFG_RESP0 = { activo: false, hora: 2, conservar: 14, cifrar: false, claveCif: '', s3: { activo: false, endpoint: '', region: 'us-east-1', bucket: '', prefijo: 'respaldos/', acceso: '', secreto: '' }, correo: { activo: false, host: '', puerto: 587, seguro: false, usuario: '', clave: '', de: '', para: [], adjuntar: true } };
+const SECRETOS_RESP = [['claveCif'], ['s3', 'acceso'], ['s3', 'secreto'], ['correo', 'clave']];
+function leeSis(id, def) { const r = q.uno.get('sistema', id); try { return r ? JSON.parse(r.data) : def; } catch (e) { return def; } }
+function ponSis(id, o) { q.pon.run('sistema', id, JSON.stringify(o), Date.now()); }
+const getP = (o, r) => r.reduce((x, k) => (x == null ? x : x[k]), o);
+function setP(o, r, v) { let x = o; r.slice(0, -1).forEach(k => { x = x[k]; }); x[r[r.length - 1]] = v; }
+function cfgResp() {  /* configuración con los secretos ya descifrados (solo para uso interno) */
+  const g = leeSis('respaldos', {}), c = JSON.parse(JSON.stringify(CFG_RESP0));
+  ['activo', 'hora', 'conservar', 'cifrar', 'claveCif'].forEach(k => { if (g[k] !== undefined) c[k] = g[k]; }); Object.assign(c.s3, g.s3 || {}); Object.assign(c.correo, g.correo || {});
+  SECRETOS_RESP.forEach(r => { const v = getP(c, r); setP(c, r, v ? (descifra(v) || '') : ''); }); return c;
+}
+function cfgRespPublica() {
+  const c = cfgResp(), p = JSON.parse(JSON.stringify(c));
+  p.claveGuardada = !!c.claveCif; p.s3.accesoGuardado = !!c.s3.acceso; p.s3.secretoGuardado = !!c.s3.secreto; p.correo.claveGuardada = !!c.correo.clave;
+  SECRETOS_RESP.forEach(r => setP(p, r, '')); p.s3.acceso = ''; return p;
+}
+function guardaCfgResp(n) {  /* n: lo que manda la pantalla; un secreto vacío conserva el que ya estaba */
+  const act = cfgResp(), c = JSON.parse(JSON.stringify(CFG_RESP0)), err = m => { const e = new Error(m); e.cod = 400; throw e; };
+  c.activo = !!n.activo; c.cifrar = !!n.cifrar;
+  c.hora = Math.round(Number(n.hora)); if (!(c.hora >= 0 && c.hora <= 23)) err('La hora va de 0 a 23.');
+  c.conservar = Math.round(Number(n.conservar)); if (!(c.conservar >= 1 && c.conservar <= 60)) err('Los respaldos que se conservan en el servidor van de 1 a 60.');
+  const s = n.s3 || {}, m = n.correo || {};
+  c.s3 = { activo: !!s.activo, endpoint: String(s.endpoint || '').trim().replace(/\/+$/, ''), region: String(s.region || 'us-east-1').trim(), bucket: String(s.bucket || '').trim(), prefijo: String(s.prefijo || '').trim().replace(/^\/+/, ''), acceso: '', secreto: '' };
+  c.correo = { activo: !!m.activo, host: String(m.host || '').trim(), puerto: Math.round(Number(m.puerto) || 587), seguro: !!m.seguro, usuario: String(m.usuario || '').trim(), clave: '', de: String(m.de || '').trim(), para: (Array.isArray(m.para) ? m.para : String(m.para || '').split(/[,;\s]+/)).map(x => String(x).trim()).filter(Boolean), adjuntar: m.adjuntar !== false };
+  if (c.s3.activo || c.s3.endpoint) { if (!/^https?:\/\/[^\s/]+/i.test(c.s3.endpoint)) err('La dirección del almacenamiento debe empezar con https://'); if (!/^[A-Za-z0-9._-]{3,63}$/.test(c.s3.bucket)) err('El nombre del «bucket» no es válido.'); if (!/^[a-z0-9-]{2,30}$/i.test(c.s3.region)) err('La región no es válida.'); if (c.s3.prefijo.length > 80) err('La carpeta es demasiado larga.'); }
+  if (c.correo.activo) { if (!/^[A-Za-z0-9.-]+$/.test(c.correo.host)) err('Escribe el servidor de correo (por ejemplo smtp.gmail.com).'); if (!(c.correo.puerto >= 1 && c.correo.puerto <= 65535)) err('El puerto del correo no es válido.'); if (!/@/.test(c.correo.de)) err('Escribe el correo del remitente.'); if (!c.correo.para.length || c.correo.para.length > 5 || !c.correo.para.every(x => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x))) err('Escribe de 1 a 5 correos de destino válidos.'); }
+  const nuevo = (v, a) => (typeof v === 'string' && v.length ? v : a);
+  c.claveCif = nuevo(n.claveCif, act.claveCif); c.s3.acceso = nuevo(s.acceso, act.s3.acceso); c.s3.secreto = nuevo(s.secreto, act.s3.secreto); c.correo.clave = nuevo(m.clave, act.correo.clave);
+  if (c.cifrar && String(c.claveCif).length < 10) err('Escribe una contraseña de cifrado de al menos 10 caracteres.');
+  if (c.s3.activo && (!c.s3.acceso || !c.s3.secreto)) err('Escribe la llave de acceso y la llave secreta del almacenamiento.');
+  if (c.correo.activo && c.correo.usuario && !c.correo.clave) err('Escribe la contraseña del correo.');
+  const g = JSON.parse(JSON.stringify(c)); SECRETOS_RESP.forEach(r => { const v = getP(g, r); setP(g, r, v ? cifra(v) : ''); }); ponSis('respaldos', g);
+}
+const EST_RESP0 = { corriendo: false, paso: '', ultimoIntento: 0, ultimoAutoOk: '', ultimoOk: 0, ultimoVerificado: 0, ultimaExterna: 0, ultimaPrueba: null, historial: [] };
+const estResp = () => Object.assign({}, EST_RESP0, leeSis('respaldos_estado', {}));
+function ponEst(e) { ponSis('respaldos_estado', e); }
+function resumenAuto() {
+  const c = cfgResp(), e = estResp(), ult = (e.historial || [])[0] || null;
+  return { activo: c.activo, hora: c.hora, s3: !!(c.s3.activo), correo: !!(c.correo.activo), cifrado: !!c.cifrar, corriendo: !!e.corriendo, ultimoOk: e.ultimoOk, ultimoVerificado: e.ultimoVerificado, ultimaExterna: e.ultimaExterna, ultimoError: ult && !ult.ok ? ult.msg : '', ultimaPrueba: e.ultimaPrueba };
+}
+function crcRuta(ruta) { return new Promise((ok, mal) => { let c = 0; fs.createReadStream(ruta).on('data', d => { c = zlib.crc32(d, c); }).on('end', () => ok(c >>> 0)).on('error', mal); }); }
+function listaLocales() { try { return fs.readdirSync(AUTO).filter(n => /^respaldo-\d{4}-\d{2}-\d{2}-\d{4}-[0-9a-f]{4}\.zip$/.test(n)).map(n => { const s = fs.statSync(path.join(AUTO, n)); return { nombre: n, bytes: s.size, fecha: s.mtimeMs }; }).sort((a, b) => b.fecha - a.fecha); } catch (e) { return []; } }
+async function creaPaquete() {
+  const mx = RESPA.fechaMx(new Date()), nombre = 'respaldo-' + mx.dia + '-' + new Date().toISOString().slice(11, 16).replace(':', '') + '-' + crypto.randomBytes(2).toString('hex') + '.zip', destino = path.join(AUTO, nombre);
+  const tdb = path.join(TMP, 'paq-' + crypto.randomBytes(5).toString('hex') + '.db'); db.exec("VACUUM INTO '" + tdb.replace(/'/g, "''") + "'");
+  const d = new DatabaseSync(tdb, { readOnly: true }); const filas = {}; d.prepare('SELECT coleccion, COUNT(*) AS n FROM docs GROUP BY coleccion').all().forEach(r => { filas[r.coleccion] = r.n; });
+  const usuarios = d.prepare('SELECT COUNT(*) AS n FROM usuarios').get().n, registrosArchivos = d.prepare('SELECT COUNT(*) AS n FROM archivos').get().n, archs = d.prepare('SELECT id, nombre FROM archivos ORDER BY id').all(); d.close();
+  const entradas = [{ nombre: 'lafragua.db', ruta: tdb }], man = { version: 1, sistema: 'lafragua', fecha: new Date().toISOString(), filas, usuarios, registrosArchivos, sha256Db: await RESPA.shaArchivo(tdb), archivos: [] };
+  for (const a of archs) { const ruta = path.join(ARCH, a.id); if (!fs.existsSync(ruta)) continue; const ent = 'archivos/' + a.id + '-' + String(a.nombre || 'archivo').replace(/[^\w.\- áéíóúñÁÉÍÓÚÑ]/g, '_'); entradas.push({ nombre: ent, ruta }); man.archivos.push({ id: a.id, entrada: ent, tam: fs.statSync(ruta).size, crc: await crcRuta(ruta) }); }
+  entradas.push({ nombre: 'manifest.json', datos: Buffer.from(JSON.stringify(man)) });
+  const w = await RESPA.escribeZip(destino, entradas); return { nombre, destino, tdb, bytes: w.bytes };
+}
+function recorta(e) { e.historial = (e.historial || []).slice(0, 40); return e; }
+async function ejecutaRespaldo(tipo, quien) {
+  let e = estResp(); if (e.corriendo && Date.now() - (e.ultimoIntento || 0) < 3600000) { const x = new Error('Ya hay un respaldo en curso.'); x.cod = 409; throw x; }
+  const c = cfgResp(), reg = { ts: Date.now(), tipo, quien: quien || '', ok: false, msg: '', archivo: '', bytes: 0, verif: null, cifrado: false, destinos: [] }; let pq = null, cif = null, gz = null;
+  e.corriendo = true; e.paso = 'Creando el respaldo…'; e.ultimoIntento = Date.now(); if (tipo === 'auto') e.ultimoIntentoAuto = Date.now(); ponEst(e);
+  try {
+    pq = await creaPaquete(); reg.archivo = pq.nombre; reg.bytes = pq.bytes;
+    e = estResp(); e.paso = 'Verificando que se pueda restaurar…'; ponEst(e);
+    reg.verif = RESPA.verificaZip(pq.destino, DatabaseSync, TMP); if (!reg.verif.ok) throw new Error('El respaldo no pasó la verificación: ' + reg.verif.errores[0]);
+    let ofrece = pq.destino, nombreExt = pq.nombre;
+    if (c.cifrar && (c.s3.activo || c.correo.activo)) {
+      if (String(c.claveCif || '').length < 10) throw new Error('Falta la contraseña de cifrado de los respaldos (en Respaldos y seguridad).');
+      e = estResp(); e.paso = 'Cifrando el respaldo…'; ponEst(e);
+      cif = pq.destino + '.cif'; await RESPA.cifraArchivo(pq.destino, cif, c.claveCif);
+      const prueba = path.join(TMP, 'dec-' + crypto.randomBytes(4).toString('hex')); try { await RESPA.descifraArchivo(cif, prueba, c.claveCif); if ((await RESPA.shaArchivo(prueba)) !== (await RESPA.shaArchivo(pq.destino))) throw new Error('El cifrado no devolvió el mismo respaldo.'); } finally { try { fs.unlinkSync(prueba); } catch (x) {} }
+      reg.cifrado = true; ofrece = cif; nombreExt = pq.nombre + '.cif';
+    }
+    const dia = RESPA.fechaMx(new Date()).dia;
+    if (c.s3.activo) {
+      e = estResp(); e.paso = 'Subiendo la copia al almacenamiento externo…'; ponEst(e);
+      try { const clave = (c.s3.prefijo ? c.s3.prefijo.replace(/\/*$/, '/') : '') + dia + '/' + nombreExt; await RESPA.s3Pon(c.s3, clave, ofrece, 'application/octet-stream'); reg.destinos.push({ tipo: 's3', ok: true, msg: 'Subido a ' + c.s3.bucket + '/' + clave, bytes: fs.statSync(ofrece).size }); }
+      catch (x) { reg.destinos.push({ tipo: 's3', ok: false, msg: x.message }); }
+    }
+    if (c.correo.activo) {
+      e = estResp(); e.paso = 'Enviando el correo…'; ponEst(e);
+      try {
+        const adj = []; let nota = '';
+        if (c.correo.adjuntar) { gz = path.join(TMP, 'mail-' + crypto.randomBytes(4).toString('hex') + '.gz'); const dbx = pq.tdb; fs.writeFileSync(gz, zlib.gzipSync(fs.readFileSync(dbx)));
+          let envio = gz, nom = 'lafragua-' + dia + '.db.gz'; if (c.cifrar) { await RESPA.cifraArchivo(gz, gz + '.cif', c.claveCif); envio = gz + '.cif'; nom += '.cif'; }
+          if (fs.statSync(envio).size <= 20 * 1024 * 1024) adj.push({ nombre: nom, datos: fs.readFileSync(envio), tipo: 'application/octet-stream' }); else nota = '\nLa base de datos pesa demasiado para ir por correo: la copia completa va solo al almacenamiento externo.'; if (envio !== gz) try { fs.unlinkSync(envio); } catch (x) {} }
+        await RESPA.smtpEnvia(c.correo, { asunto: 'Respaldo de la plataforma · ' + dia + ' · verificado', texto: 'El respaldo automático de ' + dia + ' se hizo y se verificó correctamente.\n\nRegistros: ' + reg.verif.filas + ' · Archivos: ' + reg.verif.archivos + ' · Tamaño: ' + Math.round(reg.bytes / 1024) + ' KB' + (reg.cifrado ? '\nLos archivos adjuntos van cifrados con la contraseña de respaldos que guardaste.' : '') + nota + '\n\nPlataforma escolar.', adjuntos: adj });
+        reg.destinos.push({ tipo: 'correo', ok: true, msg: 'Enviado a ' + c.correo.para.join(', ') + (adj.length ? ' con la base de datos adjunta' : ''), bytes: adj.length ? adj[0].datos.length : 0 });
+      } catch (x) { reg.destinos.push({ tipo: 'correo', ok: false, msg: x.message }); }
+    }
+    reg.ok = true; reg.msg = reg.destinos.some(x => !x.ok) ? 'Respaldo verificado, pero falló una copia externa.' : (reg.destinos.length ? 'Respaldo verificado y copiado fuera del servidor.' : 'Respaldo verificado en el servidor (sin copia externa configurada).');
+    const dias = listaLocales(); dias.slice(Math.max(1, c.conservar)).forEach(f => { try { fs.unlinkSync(path.join(AUTO, f.nombre)); } catch (x) {} });
+  } catch (x) {
+    reg.ok = false; reg.msg = x.message; if (pq) { try { fs.unlinkSync(pq.destino); } catch (y) {} }
+    if (c.correo.activo) { try { await RESPA.smtpEnvia(c.correo, { asunto: '⚠ Falló el respaldo de la plataforma', texto: 'El respaldo de hoy no se pudo completar:\n' + x.message + '\n\nEntra a Respaldos y seguridad para revisarlo.' }); } catch (y) {} }
+  } finally {
+    [pq && pq.tdb, cif, gz].forEach(f => { if (f) try { fs.unlinkSync(f); } catch (x) {} });
+    e = estResp(); e.corriendo = false; e.paso = ''; e.historial = [reg].concat(e.historial || []);
+    if (reg.ok) { e.ultimoOk = reg.ts; e.ultimoVerificado = reg.ts; if (tipo === 'auto') e.ultimoAutoOk = RESPA.fechaMx(new Date()).dia; if (reg.destinos.some(x => x.ok)) e.ultimaExterna = reg.ts; }
+    ponEst(recorta(e));
+  }
+  return reg;
+}
+function pruebaRestauracion() {
+  const e = estResp(), l = listaLocales()[0]; let r;
+  if (!l) r = { ts: Date.now(), ok: false, msg: 'Todavía no hay respaldos en el servidor para probar.' };
+  else { const v = RESPA.verificaZip(path.join(AUTO, l.nombre), DatabaseSync, TMP); r = { ts: Date.now(), ok: v.ok, archivo: l.nombre, filas: v.filas, archivos: v.archivos, ms: v.ms, msg: v.ok ? 'El respaldo «' + l.nombre + '» se abrió como si se restaurara: base íntegra, ' + v.filas + ' registros y ' + v.archivos + ' archivos completos.' : 'La prueba falló: ' + v.errores[0] }; }
+  e.ultimaPrueba = r; ponEst(e); return r;
+}
+let TICK_RESP = null;
+function programaRespaldos() {
+  const tick = () => { try { const c = cfgResp(), e = estResp(); if (e.corriendo && Date.now() - (e.ultimoIntento || 0) > 3600000) { e.corriendo = false; ponEst(e); } if (RESPA.debeCorrer(c, e, Date.now())) ejecutaRespaldo('auto', 'automático').catch(x => console.error('Respaldo automático:', x.message)); } catch (x) { console.error('Programación de respaldos:', x.message); } };
+  TICK_RESP = setInterval(tick, parseInt(ENV.LF_RESPALDO_TICK_MS || '600000', 10)); TICK_RESP.unref(); setTimeout(tick, 20000).unref();
+  const e = estResp(); if (e.corriendo) { e.corriendo = false; e.paso = ''; ponEst(e); }   /* quedó a medias por un reinicio */
+}
+
 /* ---------- Librerías de PDF y Excel (se descargan una vez si faltan) ---------- */
 const LIBS = [['jspdf.umd.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'], ['xlsx.full.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js']];
 function descarga(url, dest, saltos) {
@@ -805,6 +919,24 @@ async function api(req, res, partes) {
     if (m === 'POST' && !a) { try { const d = respaldar(); audita(s.u, req, 'Respaldo manual en el servidor'); return responde(res, 200, { ok: true, carpeta: d }); } catch (e) { return responde(res, 500, { error: e.message }); } }
     if (m === 'GET' && a === 'descargar') { audita(s.u, req, 'Descargó el respaldo completo'); try { await respaldoCompleto(res); } catch (e) { console.error(e.message); try { res.end(); } catch (x) {} } return; }
   }
+
+  /* Respaldos automáticos (solo el Administrador) */
+  if (tipo === 'respaldos') {
+    if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
+    if (m === 'GET' && !a) return responde(res, 200, { config: cfgRespPublica(), estado: Object.assign(estResp(), { historial: (estResp().historial || []).slice(0, 15) }), locales: listaLocales(), bd: (() => { try { return fs.statSync(path.join(DATOS, 'lafragua.db')).size; } catch (e) { return 0; } })() });
+    if (m === 'PUT' && a === 'config') { try { guardaCfgResp(await leeJSON(req, 20000)); audita(s.u, req, 'Cambió la configuración de respaldos'); return responde(res, 200, { ok: true, config: cfgRespPublica() }); } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); } }
+    if (m === 'POST' && a === 'ejecutar') { if (estResp().corriendo) return responde(res, 409, { error: 'Ya hay un respaldo en curso.' }); audita(s.u, req, 'Pidió un respaldo ahora'); ejecutaRespaldo('manual', s.nombre || s.u).catch(x => console.error('Respaldo manual:', x.message)); return responde(res, 200, { ok: true, iniciado: true }); }
+    if (m === 'POST' && a === 'restauracion') { audita(s.u, req, 'Probó la restauración de un respaldo'); return responde(res, 200, pruebaRestauracion()); }
+    if (m === 'POST' && a === 'probar') {
+      const c = cfgResp(), cuerpo = await leeJSON(req, 5000);
+      try {
+        if (cuerpo.destino === 's3') { if (!c.s3.endpoint || !c.s3.bucket || !c.s3.acceso || !c.s3.secreto) return responde(res, 400, { error: 'Guarda primero los datos del almacenamiento.' }); const tmp = path.join(TMP, 'prueba-' + crypto.randomBytes(4).toString('hex') + '.txt'); fs.writeFileSync(tmp, 'Prueba de conexión de la plataforma escolar · ' + new Date().toISOString()); try { await RESPA.s3Pon(c.s3, (c.s3.prefijo ? c.s3.prefijo.replace(/\/*$/, '/') : '') + 'prueba-de-conexion.txt', tmp, 'text/plain'); } finally { try { fs.unlinkSync(tmp); } catch (e) {} } return responde(res, 200, { ok: true, msg: 'Conexión correcta: se subió un archivo de prueba a «' + c.s3.bucket + '».' }); }
+        if (cuerpo.destino === 'correo') { if (!c.correo.host || !c.correo.para.length) return responde(res, 400, { error: 'Guarda primero los datos del correo.' }); await RESPA.smtpEnvia(c.correo, { asunto: 'Prueba de correo · respaldos de la plataforma', texto: 'Si recibes este mensaje, los respaldos automáticos podrán avisarte y enviarte la copia de la base de datos.\n\nPlataforma escolar.' }); return responde(res, 200, { ok: true, msg: 'Correo de prueba enviado a ' + c.correo.para.join(', ') + '.' }); }
+        return responde(res, 400, { error: 'Elige qué probar.' });
+      } catch (e) { return responde(res, 200, { ok: false, msg: e.message }); }
+    }
+    if (m === 'GET' && a === 'descargar' && /^respaldo-\d{4}-\d{2}-\d{2}-\d{4}-[0-9a-f]{4}\.zip$/.test(b || '') && fs.existsSync(path.join(AUTO, b))) { audita(s.u, req, 'Descargó un respaldo del servidor', b); res.writeHead(200, { 'Content-Type': 'application/zip', 'Content-Disposition': 'attachment; filename="' + b + '"', 'Content-Length': fs.statSync(path.join(AUTO, b)).size, 'Cache-Control': 'no-store' }); fs.createReadStream(path.join(AUTO, b)).pipe(res); return; }
+  }
   /* Fotografía del rostro del docente: él mismo la ve y la cambia (solo ese campo de su expediente) */
   if (tipo === 'docente' && a === 'foto') {
     const did = s.rol === 'docente' ? s.doc : '';
@@ -843,7 +975,7 @@ async function api(req, res, partes) {
   if (tipo === 'almacenamiento' && m === 'GET') {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
     const a1 = infoAlmacenamiento(), c = qCreada.get(), d = qUltDesc.get();
-    return responde(res, 200, Object.assign(a1, { creada: c && c.f ? new Date(c.f).toISOString() : null, ultimaDescarga: d && d.f ? new Date(d.f).toISOString() : null, respaldosEnServidor: (() => { try { return fs.readdirSync(RESP).filter(n => /^\d{4}-\d{2}-\d{2}$/.test(n)).length; } catch (e) { return 0; } })() }));
+    return responde(res, 200, Object.assign(a1, { creada: c && c.f ? new Date(c.f).toISOString() : null, ultimaDescarga: d && d.f ? new Date(d.f).toISOString() : null, auto: resumenAuto(), respaldosEnServidor: (() => { try { return fs.readdirSync(RESP).filter(n => /^\d{4}-\d{2}-\d{2}$/.test(n)).length; } catch (e) { return 0; } })() }));
   }
   if (tipo === 'info' && m === 'GET') {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
@@ -1147,7 +1279,7 @@ servidor.listen(PUERTO, '0.0.0.0', () => {
     if (!ENV.LF_SETUP_TOKEN) { SETUP_AUTO = crypto.randomBytes(9).toString('hex'); console.log('==> Aún no hay usuarios. Código de configuración inicial: ' + SETUP_AUTO + ' (usa la página /configurar)'); }
     else console.log('==> Aún no hay usuarios. Abre /configurar y usa el código de configuración de tus variables de entorno (LF_SETUP_TOKEN).');
   }
-  respaldoDiario(); setInterval(respaldoDiario, 3600000).unref(); aseguraLibs(); programaCobranza();
+  respaldoDiario(); setInterval(respaldoDiario, 3600000).unref(); aseguraLibs(); programaCobranza(); programaRespaldos();
 });
 function cierra() { try { respaldar(); } catch (e) {} try { db.close(); } catch (e) {} process.exit(0); }
 process.on('SIGINT', cierra); process.on('SIGTERM', cierra);

@@ -157,6 +157,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <button class="mod" id="mNom" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.7 3-6 6.5-6 1.2 0 2.3.3 3.2.8"/><circle cx="17.5" cy="16.5" r="4"/><path d="M17.5 14.5v2l1.4 1"/></svg></span><b>Nómina docente</b><span>Pago mensual a docentes por asignatura y horas: $120 por hora, y $150 en Enfermería, maestría y doctorado.</span><span class="st" id="mNomS"></span></button>
     <button class="mod" id="mNa" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3 12.5h18"/><path d="M11 12.5v2h2v-2"/></svg></span><b>Nómina administrativa</b><span>Sueldos del personal administrativo: empleados, periodos, bonos, descuentos y recibos. Cuenta como gasto en el corte de caja y en el estado de cuenta final.</span><span class="st" id="mNaS"></span></button>
     <button class="mod" id="mNot" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5a6 6 0 0 1 12 0c0 6 2 7.5 2 7.5H4s2-1.5 2-7.5"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span><b>Notificaciones</b><span>Cuando alguien del personal quiere borrar algo, te llega aquí para que lo apruebes o lo deniegues.</span><span class="st" id="mNotS"></span></button>
+    <button class="mod" id="mBk" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="11" cy="5.5" rx="7" ry="3"/><path d="M4 5.5v6c0 1.66 3.13 3 7 3 .9 0 1.77-.08 2.57-.22"/><path d="M4 11.5v6c0 1.66 3.13 3 7 3 .5 0 1-.03 1.5-.08"/><path d="M18 12l4 1.6v3.2c0 2.5-1.7 4.3-4 5.2-2.3-.9-4-2.7-4-5.2v-3.2z"/><path d="M16.3 17.3l1.3 1.3 2.4-2.6"/></svg></span><b>Respaldos y seguridad</b><span>Respaldo automático diario, copia fuera del servidor, cifrado y prueba de restauración.</span><span class="st" id="mBkS"></span></button>
     <button class="mod" id="mUsr" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/><circle cx="12" cy="10" r="2.3"/><path d="M8.3 16.2c.6-1.9 2-2.8 3.7-2.8s3.1.9 3.7 2.8"/></svg></span><b>Usuarios y permisos</b><span>Crea usuarios y decide a qué módulos entra cada uno y con qué privilegio: solo ver o editar.</span><span class="st" id="mUsrS"></span></button>
     <button class="mod" id="mVer" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.6 2.6L16 9.5"/></svg></span><b>Verificación de pagos</b><span>Transferencias por verificar en la app del banco, según los recibos emitidos.</span><span class="st" id="mVerS"></span></button>
     <button class="mod" id="mA2"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21H11"/><path d="M13.5 3L19 8.5V11"/><path d="M13.5 3v5.5H19"/><path d="M8.5 12.5h5M8.5 15.5h2.5"/><circle cx="17" cy="16" r="3"/><path d="M15.6 18.6L15 22l2-1 2 1-.6-3.4"/></svg></span><b>Acuerdo 286</b><span>Bachillerato por Acuerdo 286: ficha de inscripción, documentos, evaluación, envío, certificado y pagos.</span><span class="st" id="mA2S"></span></button>
@@ -401,7 +402,58 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <h2 style="margin-top:16px">Historial</h2>
      <div class="wrap"><table style="min-width:720px"><thead><tr><th>Fecha</th><th>Usuario</th><th>Qué quiso borrar</th><th>Resultado</th></tr></thead><tbody id="ntHist"></tbody></table></div>
    </div>
-   <div id="vUsr" hidden>
+   <div id="vBk" hidden>
+  <p class="hint">Aquí cuidas que la información de la escuela no se pierda: el sistema hace un respaldo cada día, lo <b>verifica</b> (lo abre como si lo fuera a restaurar) y lo manda <b>fuera del servidor</b>. Puede ir cifrado, para que solo tú lo abras.</p>
+  <div id="rbLocalAv" class="mod" style="cursor:default" hidden><b>Respaldos automáticos</b><span>Esta versión no tiene un servidor propio: usa el respaldo desde el navegador.</span><div class="bar" style="margin:8px 0 0"><button class="p" id="rbLocalOld">Respaldo desde el navegador</button></div></div>
+  <div id="rbSrv">
+    <div id="rbEst" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-bottom:12px"></div>
+    <p class="hint" id="rbPaso" style="font-weight:600;color:var(--ink);min-height:1.2em"></p>
+    <div class="bar"><button class="p" id="rbAhora">Respaldar ahora</button><button id="rbProbarRes">Probar restauración</button><button id="rbDesc">Descargar respaldo completo (ZIP)</button><button id="rbOld">Respaldo desde el navegador</button></div>
+    <p class="hint" id="rbMsg" style="min-height:1.4em"></p>
+    <h2>Últimos respaldos</h2>
+    <div id="rbHist"></div>
+    <p class="hint" id="rbLoc"></p>
+    <h2 style="margin-top:14px">Configuración</h2>
+    <div class="row">
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="rbAct" type="checkbox" style="width:auto"> Respaldar automáticamente cada día</label>
+      <label>Hora (0 a 23, hora de la Ciudad de México)<input id="rbHora" type="number" min="0" max="23" step="1"></label>
+      <label>Respaldos que se conservan en el servidor<input id="rbCons" type="number" min="1" max="60" step="1"></label>
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="rbCif" type="checkbox" style="width:auto"> Cifrar las copias que salen del servidor</label>
+      <label class="full">Contraseña de respaldos (cifrado)<input id="rbClave" type="password" autocomplete="new-password"><span class="hint">Guárdala fuera de la plataforma (en tu gestor de contraseñas o impresa). Sin ella no se pueden abrir las copias cifradas.</span></label>
+    </div>
+    <h2 style="margin-top:12px">Almacenamiento externo (compatible con S3)</h2>
+    <p class="hint">Funciona con Backblaze B2, Cloudflare R2, Wasabi, DigitalOcean Spaces, MinIO o AWS S3. Crea un «bucket» privado y una llave que solo pueda escribir en él.</p>
+    <div class="row">
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="rbS3A" type="checkbox" style="width:auto"> Enviar una copia al almacenamiento externo</label>
+      <label class="full">Dirección (endpoint)<input id="rbS3E" placeholder="https://s3.us-west-004.backblazeb2.com"></label>
+      <label>Región<input id="rbS3R" placeholder="us-east-1"></label>
+      <label>Bucket<input id="rbS3B"></label>
+      <label class="full">Carpeta dentro del bucket (opcional)<input id="rbS3P" placeholder="respaldos/"></label>
+      <label>Llave de acceso<input id="rbS3K" autocomplete="off"></label>
+      <label>Llave secreta<input id="rbS3S" type="password" autocomplete="new-password"></label>
+    </div>
+    <div class="bar"><button id="rbS3T">Guardar y probar la conexión</button></div>
+    <h2 style="margin-top:12px">Correo</h2>
+    <p class="hint">Te avisa cada día que el respaldo salió bien (o que falló) y puede adjuntar la base de datos. Con Gmail usa una «contraseña de aplicación».</p>
+    <div class="row">
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="rbCoA" type="checkbox" style="width:auto"> Avisar y enviar por correo</label>
+      <label>Servidor (SMTP)<input id="rbCoH" placeholder="smtp.gmail.com"></label>
+      <label>Puerto<input id="rbCoP" type="number" min="1" max="65535" step="1" value="587"></label>
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="rbCoS" type="checkbox" style="width:auto"> Conexión segura directa (SSL, puerto 465)</label>
+      <label>Usuario<input id="rbCoU" autocomplete="off"></label>
+      <label>Contraseña<input id="rbCoC" type="password" autocomplete="new-password"></label>
+      <label>Remitente<input id="rbCoD" placeholder="Plataforma &lt;escuela@correo.mx&gt;"></label>
+      <label class="full">Correos de destino (separados por coma)<input id="rbCoPara" placeholder="direccion@correo.mx, respaldo@correo.mx"></label>
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="rbCoAdj" type="checkbox" style="width:auto"> Adjuntar la base de datos (si pesa menos de 20 MB)</label>
+    </div>
+    <div class="bar"><button id="rbCoT">Guardar y enviar un correo de prueba</button></div>
+    <div class="bar"><button class="p" id="rbGuarda">Guardar configuración</button></div>
+    <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">Cómo restaurar un respaldo</summary>
+      <div class="hf-txt" style="max-height:none;margin-top:8px"><ol style="margin:0;padding-left:20px;line-height:1.55"><li>Descarga el respaldo (el <b>.zip</b> del servidor o el <b>.zip.cif</b> de tu almacenamiento externo).</li><li>En Render, abre tu servicio, pulsa <b>Shell</b> y sube el archivo, o cópialo al disco <code>/data</code>.</li><li>Detén el servicio (<b>Suspend</b>) y ejecuta: <code>node restaurar.js /data/respaldo-AAAA-MM-DD-….zip --datos /data --si</code> (si está cifrado, agrega <code>--clave "tu contraseña de respaldos"</code>).</li><li>El programa revisa el respaldo, conserva lo anterior con el sufijo <code>.antes-FECHA</code> y restaura la base y los archivos.</li><li>Reanuda el servicio, entra y vuelve a escribir las llaves del almacenamiento y del correo en esta pantalla.</li></ol></div>
+    </details>
+  </div>
+</div>
+<div id="vUsr" hidden>
      <p class="hint">Crea usuarios y decide a qué módulos entra cada uno y con qué privilegio: <b>Solo ver</b> (consulta, sin capturar) o <b>Editar</b> (captura y registra). El Administrador siempre entra a todo. Las contraseñas se guardan cifradas.</p>
      <div class="bar"><input id="usBus" class="grow" type="search" placeholder="Buscar usuario" aria-label="Buscar usuario"><button class="p" id="usNew">Nuevo usuario</button><button id="usAl" hidden>Accesos de alumnos</button></div>
      <label id="usVerAlL" class="hint" style="display:flex;gap:6px;align-items:center" hidden><input id="usVerAl" type="checkbox" style="width:auto"><span id="usVerAlT"></span></label>
@@ -2255,12 +2307,12 @@ function ir(m){
   if(m!=="home"&&!accesoVista(m))m="home";
   var rv=m==="home"?BASEROL:rolDeVista(m);if(rv&&rv!==ROL)setRol(rv);
   MOD=m;var home=m==="home";
-  $("vUsr").hidden=m!=="usr";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
+  $("vUsr").hidden=m!=="usr";$("vBk").hidden=m!=="bk";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
   $("vHome").hidden=!home;$("vEsc").hidden=m!=="esc";$("vIns").hidden=m!=="ins";$("vAcu").hidden=m!=="acu";$("vDoc").hidden=m!=="doc";$("vTit").hidden=m!=="tit";$("vA2").hidden=m!=="a2";$("vVer").hidden=m!=="ver";$("vNom").hidden=m!=="nom";$("vNa").hidden=m!=="na";
   $("tabs").hidden=m!=="pagos";$("nav").hidden=home||m==="por";$("subt").hidden=m!=="pagos";$("warn").hidden=m!=="pagos";
-  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":"Control escolar"))))))))))));
+  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":(m==="bk"?"Respaldos y seguridad":"Control escolar")))))))))))));
   if(FIN.indexOf(m)>-1)$("ttl").textContent="Finanzas";renderFinTabs(m);
-  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="por")renderPor();if(m==="not")cargaNot();
+  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="bk")renderBk();if(m==="por")renderPor();if(m==="not")cargaNot();
   if(home){if(typeof MODDEF!=="undefined"&&MODDEF)aplicaModulos();renderHome()}
   if(typeof cargaAlm==="function")cargaAlm();if(typeof actualizaInsigniaBk==="function")actualizaInsigniaBk();if(typeof ntProgramar==="function")ntProgramar();if(typeof cargaMiFoto==="function"){pintaPerfil();cargaMiFoto()}
 }
@@ -2342,6 +2394,7 @@ function renderHome(){
   if($("mEscS"))$("mEscS").textContent=nAs+(nAs===1?" asignatura":" asignaturas")+" en los planes · "+nGr+(nGr===1?" grupo":" grupos");
   var pcf=pagoPend().length,pvr=verItems().filter(function(x){return !x.ok}).length;
   $("mVerS").textContent=pvr?pvr+" por verificar":"Sin pendientes";if(tp&&ROL!=="consulta"&&pcf)t+=" · "+pcf+(pcf===1?" transferencia por confirmar":" transferencias por confirmar");
+  if($("mBkS")){var au=(typeof ALM!=="undefined"&&ALM&&ALM.auto)?ALM.auto:null;$("mBkS").textContent=!au?"":(au.activo?((au.s3||au.correo)&&au.ultimaExterna&&(Date.now()-au.ultimaExterna)<36*3600000?"✔ Al día · copia externa "+rbHace(au.ultimaExterna):(au.ultimoVerificado&&(Date.now()-au.ultimoVerificado)<36*3600000?"⚠ Falta la copia fuera del servidor":"✖ Sin respaldo reciente")):"El respaldo automático está desactivado")}
   var tf=t?[t]:[];if(permiso("ver")!=="none")tf.push(pvr?pvr+" por verificar":"Verificación sin pendientes");
   $("mPagS").textContent=tf.join(" · ");
   var nn=S.filter(function(s){return s.nuevo!==false&&s.ingreso===cicloAct()}).length;
@@ -5223,7 +5276,8 @@ async function armaRespaldo(msg){
   return datos;
 }
 function textoResumen(d){var r=d.resumen,c=r.documentosPorColeccion;return c.students+" alumnos · "+r.pagos+" pagos · "+c.docentes+" docentes · "+c.grupos+" grupos · "+c.titulaciones+" titulaciones · "+c.acuerdo286+" trámites de Acuerdo 286 · "+r.archivos+" archivos adjuntos"}
-$("bBk").onclick=function(){if(ROL==="admin"){$("bkMsg").textContent="";$("bkRes").textContent=BKLAST?"Último respaldo generado en esta sesión: "+textoResumen(BKLAST):"";$("bkAlm").textContent="";$("dBk").showModal();ALMT=0;cargaAlm().then(function(){$("bkAlm").textContent=almTexto()})}};
+function abreDlgBk(){if(ROL==="admin"){$("bkMsg").textContent="";$("bkRes").textContent=BKLAST?"Último respaldo generado en esta sesión: "+textoResumen(BKLAST):"";$("bkAlm").textContent="";$("dBk").showModal();ALMT=0;cargaAlm().then(function(){$("bkAlm").textContent=almTexto()})}}
+$("bBk").onclick=function(){if(window.LF_NUBE)ir("bk");else abreDlgBk()};
 $("bkCls").onclick=function(){$("dBk").close()};
 $("bkJson").onclick=async function(){
   if(ROL!=="admin"||!DBH)return;
@@ -5668,14 +5722,14 @@ function accesoVista(m){
   if(m==="not")return !!window.LF_NUBE&&esAdminReal()&&BASEROL==="admin";
   if(m==="por")return !!(APP&&APP.rol==="alumno");
   if(APP&&APP.rol==="alumno")return false;
-  if(m==="usr")return esAdminReal()&&BASEROL==="admin";
+  if(m==="usr"||m==="bk")return esAdminReal()&&BASEROL==="admin";
   if(m==="pagos")return permiso("pagos")!=="none"||permiso("corte")!=="none"||permiso("estado")!=="none";
   if(m==="esc")return permiso("escolar")!=="none"||permiso("constancias")!=="none";
   if(m==="doc")return permiso("docente")!=="none"&&!!(APP&&APP.doc);
   return !!MODV[m]&&permiso(MODV[m])!=="none";
 }
 function rolDeVista(m){
-  if(m==="usr"||m==="por"||m==="not")return BASEROL;
+  if(m==="usr"||m==="por"||m==="not"||m==="bk")return BASEROL;
   if(m==="pagos")return efectivoRol(permiso("pagos")!=="none"?"pagos":(permiso("corte")!=="none"?"corte":"estado"));
   if(m==="esc")return mayorRol(efectivoRol("escolar"),efectivoRol("constancias"));
   return efectivoRol(MODV[m]);
@@ -5691,7 +5745,7 @@ function aplicaModulos(){
     if(m[0]==="docente")vis=vis&&!!(APP&&APP.doc);
     $(t).hidden=!vis;
   });
-  $("mUsr").hidden=!accesoVista("usr");
+  $("mUsr").hidden=!accesoVista("usr");$("mBk").hidden=!accesoVista("bk");
   $("mNot").hidden=!accesoVista("not");if(typeof renderNotBadge==="function")renderNotBadge();
   if(accesoVista("not")&&typeof cargaNot==="function"&&!aplicaModulos.nt){aplicaModulos.nt=1;setTimeout(cargaNot,50)}
 }
@@ -5711,7 +5765,8 @@ function renderUsr(){
   $("usTb").innerHTML=L.length?L.map(function(u){var doc=u.doc&&DOC[u.doc];return '<tr><td>'+esc(u.name)+(doc?'<br><span class="hint">Docente: '+esc(doc.nombre)+'</span>':'')+'</td><td>'+esc(u.u)+'</td><td>'+esc(ROLTXT[u.rol]||u.rol)+'</td><td style="white-space:normal;min-width:260px"><span class="hint">'+esc(resumenMods(u))+'</span></td><td>'+(u.rol==="alumno"?(window.LF_NUBE?'<button data-ra="'+esc(u.alumno)+'">Restablecer contraseña</button> ':''):'<button data-ed="'+esc(u.u)+'">Editar</button> ')+'<button class="d" data-dl="'+esc(u.u)+'">'+(USCONF===u.u?"Confirmar":"Eliminar")+'</button></td></tr>'}).join(""):'<tr><td colspan="5" class="empty">'+(USERS.length?"Sin resultados.":"Aún no hay usuarios. Mientras no existan, el sistema no pide contraseña.")+'</td></tr>';
   $("mUsrS").textContent=(USERS||[]).length+((USERS||[]).length===1?" usuario":" usuarios");
 }
-$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mUsr").onclick=function(){ir("usr")};
+$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mBk").onclick=function(){ir("bk")};
+$("mUsr").onclick=function(){ir("usr")};
 function nivelesMods(){var o={};Array.prototype.forEach.call($("usMods").querySelectorAll("select[data-m]"),function(s){if(s.value!=="none")o[s.dataset.m]=s.value});return o}
 function pintaMods(p,bloqueado){
   $("usMods").innerHTML='<div class="wrap"><table style="min-width:640px"><thead><tr><th>Módulo</th><th style="width:220px">Privilegio</th></tr></thead><tbody>'+MODDEF.map(function(m){
@@ -7502,10 +7557,16 @@ function actualizaInsigniaBk(){
   var ver=typeof esAdminReal==="function"&&esAdminReal();
   b.hidden=!ver;if(!ver)return;
   var srv=(typeof ALM!=="undefined"&&ALM&&ALM.ultimaDescarga)?Date.parse(ALM.ultimaDescarga):0,ult=Math.max(srv||0,ultBkLocal()),h=ult?(Date.now()-ult)/3600000:null;
-  var temporal=typeof ALM!=="undefined"&&ALM&&ALM.persistente===false,rojo=temporal||h===null,amar=!rojo&&h>24;
+  var temporal=typeof ALM!=="undefined"&&ALM&&ALM.persistente===false,rojo=temporal||h===null,amar=!rojo&&h>24,au=(typeof ALM!=="undefined"&&ALM&&ALM.auto&&ALM.auto.activo)?ALM.auto:null,msgAu="";
+  if(au&&!temporal){
+    var vOk=au.ultimoVerificado&&(Date.now()-au.ultimoVerificado)<36*3600000,eOk=au.ultimaExterna&&(Date.now()-au.ultimaExterna)<36*3600000;
+    if(vOk&&eOk&&(au.s3||au.correo)){rojo=false;amar=false;msgAu="Respaldo automático al día y con copia fuera del servidor ("+rbHace(au.ultimaExterna)+")."}
+    else if(vOk){rojo=false;amar=true;msgAu="El respaldo automático funciona, pero falta la copia fuera del servidor."}
+    else{rojo=true;amar=false;msgAu="El respaldo automático no se ha completado en las últimas 36 horas: revisa «Respaldos y seguridad»."}
+  }
   b.className="bk-top"+(rojo?" rojo":amar?" amarillo":" ok");
   var cuanto=h===null?"":h<1?"hace menos de una hora":h<48?"hace "+Math.floor(h)+(Math.floor(h)===1?" hora":" horas"):"hace "+Math.floor(h/24)+" días";
-  b.title=(temporal?"Tus datos están en un disco temporal: haz un respaldo ahora. ":"")+(h===null?"Aún no has hecho un respaldo: pulsa para respaldar tu información.":amar?"Último respaldo "+cuanto+": haz uno hoy.":"Respaldo al día ("+cuanto+"). Pulsa para hacer otro.");
+  b.title=msgAu||((temporal?"Tus datos están en un disco temporal: haz un respaldo ahora. ":"")+(h===null?"Aún no has hecho un respaldo: pulsa para respaldar tu información.":amar?"Último respaldo "+cuanto+": haz uno hoy.":"Respaldo al día ("+cuanto+"). Pulsa para hacer otro."));
 }
 document.addEventListener("click",function(e){var t=e.target&&e.target.closest&&e.target.closest("#bkSrv");if(t)setTimeout(function(){ALM=null;ALMT=0;cargaAlm()},6000)});
 setInterval(function(){actualizaInsigniaBk()},600000);
@@ -8141,6 +8202,70 @@ $("a86Add").onclick=async function(){
   b.disabled=false;
 };
 $("tA86").onclick=function(){vista("a86")};
+/* ===== Respaldos y seguridad: respaldos automáticos, verificados y con copia fuera del servidor ===== */
+var RB=null,RBT=null,RBCARGA=false;
+function rbHace(ts){if(!ts)return "nunca";var h=(Date.now()-ts)/3600000;return h<1?"hace menos de una hora":h<48?"hace "+Math.floor(h)+(Math.floor(h)===1?" hora":" horas"):"hace "+Math.floor(h/24)+" días"}
+function rbMB(b){return b>=1048576?(b/1048576).toFixed(1)+" MB":Math.max(1,Math.round(b/1024))+" KB"}
+function rbTarj(t,estado,txt,det){var col=estado==="ok"?"var(--ok)":estado==="warn"?"var(--warn)":"var(--bad)",ic=estado==="ok"?"✔":estado==="warn"?"⚠":"✖";return '<div class="mod" style="cursor:default;border-color:'+col+'"><span class="hint">'+esc(t)+'</span><b style="color:'+col+'">'+ic+" "+esc(txt)+'</b><span>'+esc(det)+'</span></div>'}
+function rbCampos(c){
+  $("rbAct").checked=!!c.activo;$("rbHora").value=c.hora;$("rbCons").value=c.conservar;$("rbCif").checked=!!c.cifrar;$("rbClave").value="";$("rbClave").placeholder=c.claveGuardada?"Guardada (escribe otra para cambiarla)":"Mínimo 10 caracteres";
+  var s=c.s3||{},m=c.correo||{};
+  $("rbS3A").checked=!!s.activo;$("rbS3E").value=s.endpoint||"";$("rbS3R").value=s.region||"us-east-1";$("rbS3B").value=s.bucket||"";$("rbS3P").value=s.prefijo||"";$("rbS3K").value="";$("rbS3S").value="";
+  $("rbS3K").placeholder=s.accesoGuardado?"Guardada":"Llave de acceso";$("rbS3S").placeholder=s.secretoGuardado?"Guardada":"Llave secreta";
+  $("rbCoA").checked=!!m.activo;$("rbCoH").value=m.host||"";$("rbCoP").value=m.puerto||587;$("rbCoS").checked=!!m.seguro;$("rbCoU").value=m.usuario||"";$("rbCoC").value="";$("rbCoC").placeholder=m.claveGuardada?"Guardada":"Contraseña del correo";$("rbCoD").value=m.de||"";$("rbCoPara").value=(m.para||[]).join(", ");$("rbCoAdj").checked=m.adjuntar!==false;
+}
+function rbHist(h){
+  return h.length?'<div class="wrap"><table style="min-width:640px"><thead><tr><th>Fecha</th><th>Tipo</th><th>Resultado</th><th class="n">Tamaño</th><th>Copias fuera del servidor</th></tr></thead><tbody>'+h.map(function(x){
+    var f=new Date(x.ts),fh=pad2(f.getDate())+"/"+pad2(f.getMonth()+1)+"/"+f.getFullYear()+" "+pad2(f.getHours())+":"+pad2(f.getMinutes());
+    return '<tr><td>'+fh+'</td><td>'+(x.tipo==="auto"?"Automático":"A petición")+'</td><td style="white-space:normal;min-width:200px">'+(x.ok?'<span class="tag pagado">Verificado</span> ':'<span class="tag sin">Falló</span> ')+'<span class="hint">'+esc(x.msg||"")+'</span></td><td class="n">'+(x.bytes?rbMB(x.bytes):"—")+'</td><td style="white-space:normal">'+((x.destinos||[]).length?x.destinos.map(function(d){return (d.ok?"✔ ":"✖ ")+(d.tipo==="s3"?"Almacenamiento":"Correo")+(d.ok?"":": "+esc(d.msg))}).join("<br>"):'<span class="hint">Ninguna</span>')+(x.cifrado?'<br><span class="hint">Cifrada</span>':'')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Todavía no se ha hecho ningún respaldo automático.</p>';
+}
+function rbRender(j,llenaCampos){
+  RB=j;var c=j.config,e=j.estado,h=e.historial||[],ult=h[0]||null,hoyOk=e.ultimoVerificado&&(Date.now()-e.ultimoVerificado)<36*3600000,ext=e.ultimaExterna&&(Date.now()-e.ultimaExterna)<36*3600000;
+  var destinos=[c.s3&&c.s3.activo?"almacenamiento externo":"",c.correo&&c.correo.activo?"correo":""].filter(Boolean);
+  $("rbEst").innerHTML=
+    rbTarj("Respaldo en el servidor",hoyOk?"ok":(e.ultimoVerificado?"warn":"bad"),hoyOk?"Verificado "+rbHace(e.ultimoVerificado):(e.ultimoVerificado?"Desactualizado":"Todavía no hay respaldo"),c.activo?"Automático todos los días a las "+c.hora+":00 (hora de la Ciudad de México)":"El respaldo automático está desactivado.")+
+    rbTarj("Copia fuera del servidor",(ext&&destinos.length)?"ok":(destinos.length?"warn":"bad"),(ext&&destinos.length)?"Enviada "+rbHace(e.ultimaExterna):(destinos.length?"Sin envío reciente":"No configurada"),destinos.length?"Destino: "+destinos.join(" y ")+(c.cifrar?" · cifrada":" · sin cifrar"):"Sin una copia fuera del servidor, un fallo del disco o de Render puede perder todo.")+
+    rbTarj("Prueba de restauración",e.ultimaPrueba?(e.ultimaPrueba.ok?"ok":"bad"):"warn",e.ultimaPrueba?(e.ultimaPrueba.ok?"Pasó "+rbHace(e.ultimaPrueba.ts):"Falló "+rbHace(e.ultimaPrueba.ts)):"Aún no se ha hecho",e.ultimaPrueba?e.ultimaPrueba.msg:"Cada respaldo se verifica al crearlo; aquí también puedes probar abrirlo como si se restaurara.");
+  $("rbPaso").textContent=e.corriendo?"⏳ "+(e.paso||"Trabajando…"):(ult&&!ult.ok?"⚠ El último intento falló: "+ult.msg:"");
+  $("rbAhora").disabled=!!e.corriendo;$("rbHist").innerHTML=rbHist(h);
+  $("rbLoc").textContent=(j.locales||[]).length?"Respaldos guardados en el servidor ("+j.locales.length+"): "+j.locales.map(function(x){return x.nombre.replace("respaldo-","").replace(".zip","")+" · "+rbMB(x.bytes)}).join(" · "):"";
+  if(llenaCampos)rbCampos(c);
+  clearTimeout(RBT);if(e.corriendo)RBT=setTimeout(rbCarga,1500);
+}
+async function rbCarga(llena){
+  if(!window.LF_NUBE){$("rbLocalAv").hidden=false;$("rbSrv").hidden=true;return}
+  $("rbLocalAv").hidden=true;$("rbSrv").hidden=false;
+  try{var r=await cbApi("GET","/api/respaldos");if(r.ok){rbRender(r.j,llena===true||!RBCARGA);RBCARGA=true;ALM=null;ALMT=0;cargaAlm()}}catch(e){}
+}
+function renderBk(){rbCarga(true)}
+function rbLee(){
+  return {activo:$("rbAct").checked,hora:+$("rbHora").value,conservar:+$("rbCons").value,cifrar:$("rbCif").checked,claveCif:$("rbClave").value,
+    s3:{activo:$("rbS3A").checked,endpoint:$("rbS3E").value.trim(),region:$("rbS3R").value.trim(),bucket:$("rbS3B").value.trim(),prefijo:$("rbS3P").value.trim(),acceso:$("rbS3K").value.trim(),secreto:$("rbS3S").value},
+    correo:{activo:$("rbCoA").checked,host:$("rbCoH").value.trim(),puerto:+$("rbCoP").value,seguro:$("rbCoS").checked,usuario:$("rbCoU").value.trim(),clave:$("rbCoC").value,de:$("rbCoD").value.trim(),para:$("rbCoPara").value,adjuntar:$("rbCoAdj").checked}};
+}
+function rbMsg(t,bad){$("rbMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rbMsg").textContent=t}
+$("rbGuarda").onclick=async function(){
+  var b=this;b.disabled=true;
+  try{var r=await cbApi("PUT","/api/respaldos/config",rbLee());if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo guardar.");rbMsg("Configuración guardada.",false);rbCampos(r.j.config);rbCarga(false)}catch(e){rbMsg(e.message,true)}
+  b.disabled=false;
+};
+async function rbProbar(dest,btn){
+  btn.disabled=true;rbMsg("Probando…",false);
+  try{var g=await cbApi("PUT","/api/respaldos/config",rbLee());if(!g.ok)throw new Error((g.j&&g.j.error)||"No se pudo guardar.");rbCampos(g.j.config);
+    var r=await cbApi("POST","/api/respaldos/probar",{destino:dest});rbMsg((r.j&&(r.j.msg||r.j.error))||"Sin respuesta.",!(r.j&&r.j.ok))}
+  catch(e){rbMsg(e.message,true)}
+  btn.disabled=false;
+}
+$("rbS3T").onclick=function(){rbProbar("s3",this)};$("rbCoT").onclick=function(){rbProbar("correo",this)};
+$("rbAhora").onclick=async function(){
+  rbMsg("",false);try{var r=await cbApi("POST","/api/respaldos/ejecutar",{});if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo iniciar.");rbCarga(false)}catch(e){rbMsg(e.message,true)}
+};
+$("rbProbarRes").onclick=async function(){
+  var b=this;b.disabled=true;try{var r=await cbApi("POST","/api/respaldos/restauracion",{});rbMsg((r.j&&r.j.msg)||"Sin respuesta.",!(r.j&&r.j.ok));rbCarga(false)}catch(e){rbMsg(e.message,true)}b.disabled=false;
+};
+$("rbDesc").onclick=function(){location.href="/api/respaldo/descargar";setTimeout(function(){ALM=null;ALMT=0;cargaAlm()},6000)};
+$("rbOld").onclick=function(){abreDlgBk()};
+$("rbLocalOld").onclick=function(){abreDlgBk()};
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}

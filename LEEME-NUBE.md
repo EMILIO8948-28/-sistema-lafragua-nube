@@ -43,6 +43,15 @@ Servidor propio de la escuela publicado en internet con HTTPS. Cada persona entr
 ## Actualizar el sistema
 Cuando te entregue una versión nueva, sube los archivos cambiados al repositorio de GitHub. Render publica solo; durante el cambio el sistema se interrumpe unos instantes (los servicios con disco no se actualizan sin pausa).
 
+## Respaldos automáticos con copia fuera del servidor
+Entra como Administrador a **Respaldos y seguridad** (tarjeta del panel o botón «Respaldo» de arriba a la derecha):
+1. **Activa el respaldo automático** y elige la hora (por ejemplo, 2).
+2. **Almacenamiento externo (recomendado):** crea una cuenta gratuita en Backblaze B2 o Cloudflare R2, un «bucket» **privado** y una llave de aplicación con permiso de escritura solo en ese bucket. Escribe la dirección (endpoint), la región, el bucket y las dos llaves, y pulsa **Guardar y probar la conexión**.
+3. **Correo (opcional):** con Gmail, activa la verificación en dos pasos y crea una «contraseña de aplicación»; servidor `smtp.gmail.com`, puerto `587`. Pulsa **Guardar y enviar un correo de prueba**.
+4. **Cifrado:** activa «Cifrar las copias que salen del servidor» y escribe una contraseña de respaldos (mínimo 10 caracteres). **Guárdala fuera de la plataforma**: sin ella no se abren las copias cifradas.
+5. Pulsa **Respaldar ahora** y comprueba que las tres tarjetas queden en verde, y **Probar restauración**.
+Para **restaurar**: en Render, Shell del servicio, con el servicio suspendido: `node restaurar.js /data/respaldo-AAAA-MM-DD-….zip --datos /data --si` (agrega `--clave "tu contraseña"` si es un `.zip.cif`). Vuelve a escribir las llaves del almacenamiento y del correo después de restaurar.
+
 ## Si después de actualizar faltan datos
 Actualizar el sistema (subir archivos nuevos a GitHub) **no borra datos**: el servidor solo cambia de programa y vuelve a abrir la misma base de datos. Si desaparecen registros después de una actualización, casi siempre es porque la base está en un **disco temporal** y no en el disco persistente. Cómo revisarlo:
 1. Entra como Administrador: si los datos están en un disco temporal, el panel principal muestra un aviso rojo («Tus datos se guardan en un disco temporal»). En el botón **Respaldo** también aparece el estado del almacenamiento y la fecha en que se creó la base de datos (si es reciente y no esperabas empezar de cero, los datos se reiniciaron).

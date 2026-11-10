@@ -853,6 +853,11 @@ function precarga() {
       let cat = D.colecciones.catalogo[k], clave = k;
       /* Si el Administrador cambió el nombre de este plan, la carga se hace con el nombre nuevo */
       try { const pl = q.uno.get('config', 'plans'), ren = (pl && JSON.parse(pl.data).ren) || {}; if (cat && ren[cat.plan]) { const nuevo = String(ren[cat.plan]), kn = nuevo.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); if (kn && NOMBRE_OK.test(kn)) { clave = kn; cat = Object.assign({}, cat, { plan: nuevo }); } } } catch (e) {}
+      /* Si el plan existe sin duración (0 colegiaturas) y la carga trae su duración, se fija (nunca pisa una duración ya definida) */
+      try {
+        const dur = Number(cat && cat.config && cat.config.n);
+        if (dur > 0) { const pr = q.uno.get('config', 'plans'); if (pr) { const P = JSON.parse(pr.data), nm = (P.ren && P.ren[cat.plan]) || cat.plan, pl = (P.plans || []).find(x => x.k === nm); if (pl && Number(pl.n) === 0) { pl.n = dur; q.pon.run('config', 'plans', JSON.stringify(P), Date.now()); hechos.push(nm + ': duración fijada en ' + dur + ' colegiaturas'); } } }
+      } catch (e) {}
       const previo = q.uno.get('catalogo', clave);
       if (previo && ((JSON.parse(previo.data).items) || []).length) { omitidos.push(clave); continue; }
       let n = 0;

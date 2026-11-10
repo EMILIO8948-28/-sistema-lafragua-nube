@@ -39,5 +39,6 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_respaldo_boton.py` · botón de respaldo arriba a la derecha: posición, insignia roja/amarilla, tiempos, celular y permisos (23).
 - `test_iconos.py` · iconos de las tarjetas del panel: uno por opción, distintos, decorativos, modo oscuro, celular y otros roles (11).
 - `test_notificaciones.py` · campana de notificaciones: administrador, personal por permiso, docente (calificaciones y planeaciones), alumno (solicitudes y avisos), leídas, navegación y celular (39).
+- `test_doctorado.py` · carga del Doctorado: duración de 5 cuatrimestres, aviso al cargar, precarga del servidor que no pisa duraciones, cobros sin costo (13).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

@@ -1440,7 +1440,7 @@ var PL0=[
  {k:"Arquitectura",n:42,col:1300,ins:800,rein:800,tit:23000},
  {k:"Ingeniería Industrial",n:36,col:1350,ins:1000,rein:1000,tit:23000},
  {k:"Maestría en Educación",n:16,col:1800,ins:800,rein:800,tit:25000},
- {k:"Doctorado",n:0,col:0,ins:0,rein:0,tit:30000}];
+ {k:"Doctorado",n:20,col:0,ins:0,rein:0,tit:30000}];
 function loadRen(){try{return JSON.parse(localStorage.getItem(KEY+"-ren")||"{}")||{}}catch(e){return {}}}
 var REN=loadRen();
 function saveRen(){try{localStorage.setItem(KEY+"-ren",JSON.stringify(REN))}catch(e){}}
@@ -1475,7 +1475,7 @@ function cargos0(s){
   if(s.nuevo!==false&&P.ins>0)L.push({id:"i",c:"Inscripción",m:P.ins});
   for(var q=1;q<=C;q++){
     if(q>1&&P.rein>0)L.push({id:"r"+q,c:"Reinscripción cuatrimestre "+q+" ("+mesAnio(4*(q-1)+1,ing)+")",m:P.rein});
-    for(var i=0;i<4&&k<P.n;i++){k++;L.push({id:"c"+k,c:"Colegiatura "+mesAnio(k,ing),k:k,m:P.col})}
+    for(var i=0;i<4&&k<P.n;i++){k++;if(P.col>0)L.push({id:"c"+k,c:"Colegiatura "+mesAnio(k,ing),k:k,m:P.col})}
   }
   if(P.tit>0)L.push({id:"t",c:TIT,m:P.tit});
   return L;
@@ -6065,14 +6065,14 @@ $("hPlGo").onclick=function(){ir("esc");etab("D")};
 var PJ=null;
 function pJm(t,bad){$("pJMsg").textContent=t;$("pJMsg").style.color=bad?"var(--bad)":"var(--ok)"}
 function pJResumen(D){
-  var r={planes:[],omitidos:[],crear:[],nuevas:0,actualizadas:0,conContenido:0,reemplaza:0};
+  var r={planes:[],omitidos:[],crear:[],durac:[],nuevas:0,actualizadas:0,conContenido:0,reemplaza:0};
   Object.keys(D.colecciones.catalogo).forEach(function(k){
     var c=D.colecciones.catalogo[k],pl=matchPlan(c.plan||k),its=c.items||[],items,n=0,a=0;
     if(!pl){
       if(!esAdminReal()||!String(c.plan||k).trim()){r.omitidos.push(c.plan||k);return}
       var mx=0;its.forEach(function(it){if(it.cuat>mx)mx=it.cuat});
       r.crear.push(planPorDefecto(String(c.plan||k).replace(/\s+/g," ").trim(),mx,c.config));items=[];
-    }else items=catItems(pl.k);
+    }else{items=catItems(pl.k);if(esAdminReal()&&pl.n===0&&c.config&&c.config.n>0)r.durac.push({k:pl.k,n:c.config.n})}
     its.forEach(function(it){
       var x=items.find(function(y){return (it.clave&&y.clave&&nz(y.clave)===nz(it.clave))||nz(y.nom)===nz(it.nom)});
       if(x){a++;if(x.ct)r.reemplaza++}else n++;
@@ -6089,7 +6089,7 @@ function pJPrepara(txt){
   var r=pJResumen(D);
   if(!r.planes.length){pJm("Ningún plan del archivo se puede cargar"+(r.omitidos.length?" ("+r.omitidos.join(", ")+": solo el Administrador puede crear planes nuevos)":"")+".",true);$("pJBar").hidden=true;PJ=null;return}
   PJ=D;
-  pJm("Se cargarán "+(r.nuevas+r.actualizadas)+" asignaturas de "+r.planes.join(", ")+" con "+r.conContenido+" contenidos: "+r.nuevas+" nuevas y "+r.actualizadas+" que ya existen (se les agrega el contenido sin duplicarlas)."+(r.crear.length?" Se crearán los planes nuevos: "+r.crear.map(function(p){return "«"+p.k+"» ("+durTxt(p.n)+", colegiatura de $"+p.col+")"}).join("; ")+"; sus costos se ajustan después en Finanzas > Costos y planes.":"")+(r.reemplaza?" "+r.reemplaza+" ya tenían contenido y se reemplazará.":"")+(r.omitidos.length?" No se cargará: "+r.omitidos.join(", ")+" (plan no reconocido).":"")+" Pulsa «Confirmar carga» para continuar.",false);
+  pJm("Se cargarán "+(r.nuevas+r.actualizadas)+" asignaturas de "+r.planes.join(", ")+" con "+r.conContenido+" contenidos: "+r.nuevas+" nuevas y "+r.actualizadas+" que ya existen (se les agrega el contenido sin duplicarlas)."+(r.crear.length?" Se crearán los planes nuevos: "+r.crear.map(function(p){return "«"+p.k+"» ("+durTxt(p.n)+", colegiatura de $"+p.col+")"}).join("; ")+"; sus costos se ajustan después en Finanzas > Costos y planes.":"")+(r.durac.length?" "+r.durac.map(function(d){return "«"+d.k+"» no tiene duración definida: se fijará en "+durTxt(d.n).split(" · ")[0]+" ("+d.n+" colegiaturas)"}).join("; ")+".":"")+(r.reemplaza?" "+r.reemplaza+" ya tenían contenido y se reemplazará.":"")+(r.omitidos.length?" No se cargará: "+r.omitidos.join(", ")+" (plan no reconocido).":"")+" Pulsa «Confirmar carga» para continuar.",false);
   $("pJBar").hidden=false;
 }
 $("pFileJ").onchange=function(){
@@ -6099,7 +6099,7 @@ $("pFileJ").onchange=function(){
 $("pJNo").onclick=function(){PJ=null;$("pJBar").hidden=true;pJm("")};
 $("pJOk").onclick=async function(){
   if(ROL!=="admin"||!PJ)return;var D=PJ,b=this;b.disabled=true;$("pJNo").disabled=true;
-  var tot={nuevas:0,act:0,cont:0,planes:[]},hecho=0,total=0;
+  var tot={nuevas:0,act:0,cont:0,planes:[],durac:[]},hecho=0,total=0;
   Object.keys(D.colecciones.catalogo).forEach(function(k){total+=((D.colecciones.catalogo[k].items)||[]).length});
   try{
     for(var k in D.colecciones.catalogo){
@@ -6109,6 +6109,7 @@ $("pJOk").onclick=async function(){
         var mx=0;(c.items||[]).forEach(function(it){if(it.cuat>mx)mx=it.cuat});
         pl=await crearPlan(planPorDefecto(String(c.plan||k).replace(/\s+/g," ").trim(),mx,c.config),true);tot.planes.push(pl.k);
       }
+      if(esAdminReal()&&pl.n===0&&c.config&&c.config.n>0){pl.n=c.config.n;tot.durac.push(pl.k)}
       var items=catItems(pl.k).map(function(x){return Object.assign({},x)}),usados={};items.forEach(function(x){usados[x.id]=1});
       var its=c.items||[];
       for(var i=0;i<its.length;i++){
@@ -6125,8 +6126,9 @@ $("pJOk").onclick=async function(){
       }
       await guardaCat(pl.k,items);
     }
+    if(tot.durac.length)await guardaPlanes();
     PJ=null;$("pJBar").hidden=true;
-    pJm("Listo: "+(tot.nuevas+tot.act)+" asignaturas cargadas ("+tot.nuevas+" nuevas y "+tot.act+" actualizadas) y "+tot.cont+" contenidos cargados."+(tot.planes.length?" Planes nuevos creados: "+tot.planes.join(", ")+".":""),false);
+    pJm("Listo: "+(tot.nuevas+tot.act)+" asignaturas cargadas ("+tot.nuevas+" nuevas y "+tot.act+" actualizadas) y "+tot.cont+" contenidos cargados."+(tot.planes.length?" Planes nuevos creados: "+tot.planes.join(", ")+".":"")+(tot.durac.length?" Duración fijada en: "+tot.durac.join(", ")+".":""),false);
     if(tot.planes.length)rebuild();
     renderPlan();
   }catch(e){pJm("No se pudo terminar la carga ("+((e&&(e.code||e.message))||"error")+"). Lo ya cargado se conserva; puedes volver a intentarlo.",true)}

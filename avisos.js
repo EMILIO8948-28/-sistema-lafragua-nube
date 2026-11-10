@@ -6,8 +6,9 @@
    Sin dependencias.
    =========================================================================== */
 const http = require('http'), https = require('https');
-const EVENTOS = ['adeudo', 'solicitud', 'planeacion', 'calificaciones', 'manual', 'resumen'];
-const CFG0 = { activo: false, escuela: 'Universidad Lafragua', correo: { activo: false, usarRespaldos: false, host: '', puerto: 587, seguro: false, usuario: '', clave: '', de: '', nombre: '' }, whatsapp: { activo: false, phoneId: '', token: '', version: 'v21.0', plantilla: 'aviso_escolar', idioma: 'es_MX', pais: '52' }, eventos: { adeudo: { correo: true, whatsapp: true }, solicitud: { correo: true, whatsapp: true }, planeacion: { correo: true, whatsapp: false }, calificaciones: { correo: true, whatsapp: true }, manual: { correo: true, whatsapp: true }, resumen: { correo: true, whatsapp: false } }, recordatorios: { calificaciones: true }, resumen: { activo: true, hora: 8, para: [] }, sin: [] };
+const EVENTOS = ['adeudo', 'solicitud', 'planeacion', 'evaluacion', 'calificaciones', 'pago', 'manual', 'resumen'];
+const PLAZO_CAL = 3;   /* días después de la evaluación para capturar calificaciones */
+const CFG0 = { activo: false, escuela: 'Universidad Lafragua', correo: { activo: false, usarRespaldos: false, host: '', puerto: 587, seguro: false, usuario: '', clave: '', de: '', nombre: '' }, whatsapp: { activo: false, phoneId: '', token: '', version: 'v21.0', plantilla: 'aviso_escolar', idioma: 'es_MX', pais: '52' }, eventos: { adeudo: { correo: true, whatsapp: true }, solicitud: { correo: true, whatsapp: true }, planeacion: { correo: true, whatsapp: false }, evaluacion: { correo: true, whatsapp: true }, pago: { correo: true, whatsapp: false }, calificaciones: { correo: true, whatsapp: true }, manual: { correo: true, whatsapp: true }, resumen: { correo: true, whatsapp: false } }, recordatorios: { calificaciones: true }, resumen: { activo: true, hora: 8, para: [] }, sin: [] };
 const MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 function telWa(t, pais) { const d = String(t || '').replace(/\D/g, ''); if (d.length < 10) return ''; if (d.length === 10) return (pais || '52') + d; if (d.length === 13 && d.startsWith('521')) return '52' + d.slice(3); return d.length <= 15 ? d : ''; }
 function limpiaWa(t, max) { return String(t || '').replace(/[\r\n\t]+/g, ' · ').replace(/ {3,}/g, '  ').trim().slice(0, max); }
@@ -122,6 +123,16 @@ function crea(ctx) {
     encola('planeacion', p, 'Planeación ' + (nuevo.estado === 'aprobada' ? 'aprobada' : 'denegada'), texto, 'pln:' + mid + ':' + nuevo.estado + ':' + (nuevo.revFecha || ''), 'automático');
   }
   const sumaDia = (f, n) => { const d = new Date(f + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+  const limiteCal = m => { const def = sumaDia(m.ev, PLAZO_CAL); return m.prorroga && m.prorroga > def ? m.prorroga : def; }, fl = f => String(f).split('-').reverse().join('/');
+  const diaSem = f => { try { return new Date(f + 'T12:00:00Z').toLocaleDateString('es-MX', { weekday: 'long', timeZone: 'UTC' }); } catch (e) { return ''; } };
+  function hookEvaluacion(mid, viejo, nuevo) {
+    if (!nuevo || !nuevo.docId) return; const p = docente(nuevo.docId); if (!p) return;
+    if (nuevo.ev && (!viejo || viejo.ev !== nuevo.ev || viejo.docId !== nuevo.docId)) {
+      const lim = limiteCal(nuevo);
+      encola('evaluacion', p, 'Evaluación programada', 'Se programó la evaluación de «' + nuevo.nom + '» (' + nuevo.plan + ', cuatrimestre ' + nuevo.cuat + ') para el ' + diaSem(nuevo.ev) + ' ' + fl(nuevo.ev) + '. Podrás capturar las calificaciones en la plataforma hasta el ' + diaSem(lim) + ' ' + fl(lim) + ' (' + PLAZO_CAL + ' días después de la evaluación).', 'eval:' + mid + ':' + nuevo.ev + ':' + nuevo.docId, 'automático');
+    }
+    if (nuevo.ev && nuevo.prorroga && (!viejo || viejo.prorroga !== nuevo.prorroga)) encola('evaluacion', p, 'Prórroga para capturar calificaciones', 'Control escolar amplió el plazo para capturar las calificaciones de «' + nuevo.nom + '» (' + nuevo.plan + '): ahora puedes hacerlo hasta el ' + diaSem(nuevo.prorroga) + ' ' + fl(nuevo.prorroga) + '.', 'pro:' + mid + ':' + nuevo.prorroga, 'automático');
+  }
   function califPendientes(hoy) {
     const out = [], grupos = q.lista.all('grupos').map(r => { try { return JSON.parse(r.data); } catch (e) { return null; } }).filter(Boolean), desde = sumaDia(hoy, -45);
     q.lista.all('materias').forEach(r => {
@@ -144,8 +155,10 @@ function crea(ctx) {
     if (c.recordatorios.calificaciones && (force === 'calificaciones' || (!force && hora >= 8 && st.ultimo.cal !== hoy))) {
       califPendientes(hoy).forEach(x => {
         const p = docente(x.m.docId); if (!p) return;
-        const texto = x.m.ev === hoy ? 'Hoy es la evaluación de «' + x.m.nom + '» (' + x.m.plan + '). Recuerda subir las calificaciones en la plataforma.' : 'Faltan ' + x.faltan + ' de ' + x.total + ' calificaciones de «' + x.m.nom + '» (' + x.m.plan + '), cuya evaluación fue el ' + x.m.ev.split('-').reverse().join('/') + '. Súbelas en la plataforma.';
-        const r = encola('calificaciones', p, 'Calificaciones por subir', texto, 'cal:' + x.mid + ':' + hoy, 'automático'); hecho.calificaciones += r.correo + r.whatsapp;
+        const lim = limiteCal(x.m); let texto, ref;
+        if (hoy <= lim) { texto = x.m.ev === hoy ? 'Hoy es la evaluación de «' + x.m.nom + '» (' + x.m.plan + '). Tienes hasta el ' + fl(lim) + ' para capturar las calificaciones en la plataforma.' : 'Faltan ' + x.faltan + ' de ' + x.total + ' calificaciones de «' + x.m.nom + '» (' + x.m.plan + '), cuya evaluación fue el ' + fl(x.m.ev) + '. El plazo para capturarlas termina el ' + fl(lim) + (lim === hoy ? ' (hoy es el último día)' : '') + '.'; ref = 'cal:' + x.mid + ':' + hoy; }
+        else { texto = 'El plazo para capturar las calificaciones de «' + x.m.nom + '» (' + x.m.plan + ') venció el ' + fl(lim) + ' y faltan ' + x.faltan + ' de ' + x.total + '. Si necesitas más tiempo, pide una prórroga a Control escolar.'; ref = 'calv:' + x.mid + ':' + lim; }
+        const r = encola('calificaciones', p, hoy <= lim ? 'Calificaciones por subir' : 'Venció el plazo de calificaciones', texto, ref, 'automático'); hecho.calificaciones += r.correo + r.whatsapp;
       }); if (!force) st.ultimo.cal = hoy;
     }
     if (c.resumen.activo && c.resumen.para.length && (force === 'resumen' || (!force && hora >= c.resumen.hora && st.ultimo.res !== hoy))) {
@@ -200,6 +213,7 @@ function crea(ctx) {
     const tick = async () => { try { diarios(); await procesa(40); } catch (e) { console.error('Avisos:', e.message); } };
     const t = setInterval(tick, parseInt(ENV.LF_AVISOS_TICK_MS || '30000', 10)); t.unref(); return t;
   }
-  return { cfgPublica, guardaCfg, setSin, hookAviso, hookSolicitud, hookPlaneacion, diarios, procesa, destinatarios, enviarManual, mensajes, resumen, reintenta, probar, programa, califPendientes, resumenPendientes, cfg };
+  function avisaAlumno(evento, sid, asunto, texto, ref) { const p = alumno(sid); if (p) encola(evento, p, asunto, texto, ref, 'automático'); }
+  return { avisaAlumno, cfgPublica, guardaCfg, setSin, hookAviso, hookSolicitud, hookPlaneacion, hookEvaluacion, diarios, procesa, destinatarios, enviarManual, mensajes, resumen, reintenta, probar, programa, califPendientes, resumenPendientes, cfg };
 }
 module.exports = { crea, telWa, limpiaWa, MAIL };

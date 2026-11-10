@@ -8,9 +8,18 @@
   /* Inicio y cierre de sesión */
   window.entrar=async function(){
     var u=nrm($("lgU").value),p=$("lgP").value;$("lgE").textContent="";
-    if(!u||!p){$("lgE").textContent="Escribe tu usuario y tu contraseña.";return}
+    if(!window.__ticket2&&(!u||!p)){$("lgE").textContent="Escribe tu usuario y tu contraseña.";return}
     $("lgGo").disabled=true;
-    try{var r=await llama("POST","/api/login",{u:u,clave:p});
+    try{
+      if(window.__ticket2){
+        var r2=await llama("POST","/api/login2fa",{ticket:window.__ticket2,codigo:$("lgC").value});
+        if(r2.ok){location.reload();return}
+        $("lgE").textContent=r2.j.error||"El código no es correcto.";$("lgC").value="";
+        if(r2.status===401&&/caduc/i.test(r2.j.error||"")||r2.status===429){window.__ticket2=null;$("lgCW").hidden=true;$("lgP").disabled=false;$("lgP").value="";$("lgGo").textContent="Entrar"}
+        $("lgGo").disabled=false;return
+      }
+      var r=await llama("POST","/api/login",{u:u,clave:p});
+      if(r.ok&&r.j.requiere2fa){window.__ticket2=r.j.ticket;$("lgCW").hidden=false;$("lgP").disabled=true;$("lgE").textContent="Escribe el código de tu aplicación de verificación (o un código de recuperación).";$("lgGo").textContent="Verificar";$("lgC").value="";$("lgC").focus();$("lgGo").disabled=false;return}
       if(!r.ok){var le=$("lgE");le.textContent=r.j.error||"No se pudo iniciar sesión.";le.style.cssText=r.j.bloqueado?"padding:12px;border:1px solid var(--bad);border-radius:8px;background:rgba(180,40,40,.08);color:#8a1c1c;font-weight:600;line-height:1.45":"";$("lgP").value="";}
       else{location.reload();return}
     }catch(e){$("lgE").textContent="No se pudo conectar con el servidor."}
@@ -90,5 +99,5 @@
   });
   /* Respaldo completo del servidor */
   $("bkSrv").onclick=function(){location.href="/api/respaldo/descargar"};
-  (window.LF_LISTO||Promise.resolve()).then(function(){$("bPw").hidden=!window.LF_ME;if(window.LF_ME)document.body.setAttribute("data-nube","1")});
+  (window.LF_LISTO||Promise.resolve()).then(function(){$("bPw").hidden=!window.LF_ME;if(window.LF_ME)document.body.setAttribute("data-nube","1");if(typeof sxArranque==="function")sxArranque()});
 })();

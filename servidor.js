@@ -38,6 +38,7 @@ try { db.exec('ALTER TABLE usuarios ADD COLUMN modulos TEXT'); } catch (e) { /* 
 try { db.exec('ALTER TABLE usuarios ADD COLUMN temporal TEXT'); } catch (e) { /* la columna ya existe */ }
 try { db.exec('ALTER TABLE usuarios ADD COLUMN alumno TEXT'); } catch (e) { /* la columna ya existe */ }
 try { db.exec('ALTER TABLE usuarios ADD COLUMN forzar INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* la columna ya existe */ }
+for (const c of ['totp TEXT', 'totp_resp TEXT', 'totp_ult INTEGER']) { try { db.exec('ALTER TABLE usuarios ADD COLUMN ' + c); } catch (e) { /* la columna ya existe */ } }
 db.exec(`CREATE TABLE IF NOT EXISTS borrados (id TEXT PRIMARY KEY, u TEXT NOT NULL, nombre TEXT, creado INTEGER NOT NULL, estado TEXT NOT NULL, via TEXT, descripcion TEXT NOT NULL, detalle TEXT, resuelto_por TEXT, resuelto INTEGER, motivo TEXT, expira INTEGER, ops TEXT)`);
 db.exec('CREATE INDEX IF NOT EXISTS ix_borrados_estado ON borrados (estado, creado)');
 const q = {
@@ -51,7 +52,7 @@ const q = {
   todosArch: db.prepare('SELECT id, nombre, privado FROM archivos ORDER BY id'),
   cuenta: db.prepare('SELECT coleccion, COUNT(*) AS n FROM docs GROUP BY coleccion ORDER BY coleccion'),
   usr: db.prepare('SELECT * FROM usuarios WHERE u = ?'),
-  usrs: db.prepare('SELECT u, nombre, rol, doc, modulos, alumno, forzar, (temporal IS NOT NULL) AS tmp FROM usuarios ORDER BY nombre'),
+  usrs: db.prepare('SELECT u, nombre, rol, doc, modulos, alumno, forzar, (temporal IS NOT NULL) AS tmp, (totp IS NOT NULL) AS dos FROM usuarios ORDER BY nombre'),
   nUsr: db.prepare('SELECT COUNT(*) AS n FROM usuarios'),
   nAdm: db.prepare("SELECT COUNT(*) AS n FROM usuarios WHERE rol = 'admin'"),
   admins: db.prepare("SELECT * FROM usuarios WHERE rol = 'admin'"),
@@ -145,26 +146,26 @@ const intentos = new Map();
 function limite(clave, max, ventanaMs) { const a = intentos.get(clave), ahora = Date.now(); if (!a || ahora - a.desde > ventanaMs) return false; return a.n >= max; }
 function falla(clave, ventanaMs) { const a = intentos.get(clave), ahora = Date.now(); if (!a || ahora - a.desde > ventanaMs) intentos.set(clave, { n: 1, desde: ahora }); else a.n++; }
 setInterval(() => { const ahora = Date.now(); intentos.forEach((v, k) => { if (ahora - v.desde > 3600000) intentos.delete(k); }); q.limpiaSes.run(ahora); }, 600000).unref();
-const publicoUsuario = u => { const m = u.perm ? u.modulos : parseModulos(u.modulos); return { u: u.u, name: u.nombre || u.name, rol: u.rol, doc: u.doc || '', modulos: m || null, perm: permisosDe(u.rol, m), alumno: u.alumno || '', forzar: !!u.forzar, temporal: !!u.tmp }; };
+const publicoUsuario = u => { const m = u.perm ? u.modulos : parseModulos(u.modulos); return { u: u.u, name: u.nombre || u.name, rol: u.rol, doc: u.doc || '', modulos: m || null, perm: permisosDe(u.rol, m), alumno: u.alumno || '', forzar: !!u.forzar, temporal: !!u.tmp, dosPasos: !!u.dos }; };
 const listaUsuarios = () => q.usrs.all().map(x => publicoUsuario(x));
 
 /* ---------- Permisos por módulo (se aplican aquí, no solo en la pantalla) ----------
    Cada usuario tiene un nivel por módulo: "ver" (solo lectura) o "editar" (lectura y escritura).
    L = colecciones que lee; E = colecciones que además escribe cuando el nivel es "editar". */
 const MODULOS = {
-  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'cobranza', 'avisos', 'acuerdo286'], E: ['ledger', 'meta', 'constancias'], plans: true },
+  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'cobranza', 'avisos', 'acuerdo286', 'fiscal', 'facturas'], E: ['ledger', 'meta', 'constancias'], plans: true },
   corte:        { L: ['gastos', 'cortes', 'ledger', 'students'], E: ['gastos', 'cortes'], plans: true },
   estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'egresados'], E: [], plans: true, nomina: true },
   ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
   inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
-  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'resguardos'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos'], plans: true, archivos: true },
+  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'resguardos', 'ciclos'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
   constancias:  { L: ['constancias', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
   acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
   a286:         { L: ['acuerdo286', 'resguardos286'], E: ['acuerdo286', 'meta', 'resguardos286'], archivos: true },
   titulaciones: { L: ['titulaciones'], E: ['titulaciones', 'meta'], archivos: true },
   nomina_doc:   { L: ['nomina', 'docentes', 'materias'], E: ['nomina', 'meta'], nomina: true, nominaE: true },
   nomina_adm:   { L: ['empleados', 'nomina_admin'], E: ['empleados', 'nomina_admin', 'meta'] },
-  docente:      { L: ['students', 'grupos', 'materias', 'docentes', 'calif', 'criterios', 'catalogo', 'contenidos'], E: ['calif', 'criterios'] },
+  docente:      { L: ['students', 'grupos', 'materias', 'docentes', 'calif', 'criterios', 'catalogo', 'contenidos', 'ciclos', 'justificantes'], E: ['calif', 'criterios'] },
   expedientes:  { L: ['docentes_docs'], E: ['docentes_docs'], archivos: true, privados: true }
 };
 const VER_ALUMNOS_COMPLETOS = ['pagos', 'corte', 'estado', 'ver', 'inscripcion', 'escolar', 'constancias', 'acuerdos'];
@@ -202,7 +203,8 @@ function filtraAlumno(s, col, id, data, ctx) {
     case 'students': { if (id !== sid) return null; const o = {}; CAMPOS_ALUMNO.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'ledger': { if (id !== sid) return null; return { pagos: (data.pagos || []).map(g => { const o = Object.assign({}, g); delete o.by; delete o.confPor; return o; }) }; }
     case 'calif': case 'constancias': case 'egresados': case 'fotos': return id === sid ? data : null;
-    case 'solicitudes': case 'avisos': return data.sid === sid ? data : null;
+    case 'solicitudes': case 'avisos': case 'facturas': return data.sid === sid ? data : null;
+    case 'fiscal': return id === sid ? data : null;
     case 'justificantes': { if (data.sid !== sid || data.estado !== 'Aprobado') return null; const o = {}; ['id', 'num', 'sid', 'nombre', 'mat', 'plan', 'sexo', 'grupo', 'fecha', 'desde', 'hasta', 'motivo', 'estado', 'solicitud'].forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'grupos': return (data.alumnos || []).includes(sid) ? Object.assign({}, data, { alumnos: [sid] }) : null;
     case 'materias': return ctx.grupos.some(g => materiaDeGrupo(data, g.d)) ? data : null;
@@ -214,7 +216,8 @@ function filtraAlumno(s, col, id, data, ctx) {
 }
 function eventoAlumno(s, c, id) {
   if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos'].includes(c)) return id === s.alumno;
-  if (c === 'solicitudes' || c === 'justificantes' || c === 'avisos') { const r = q.uno.get(c, id || ''); if (!r) return false; try { return JSON.parse(r.data).sid === s.alumno; } catch (e) { return false; } }
+  if (c === 'fiscal') return id === s.alumno;
+  if (c === 'solicitudes' || c === 'justificantes' || c === 'avisos' || c === 'facturas') { const r = q.uno.get(c, id || ''); if (!r) return false; try { return JSON.parse(r.data).sid === s.alumno; } catch (e) { return false; } }
   if (['grupos', 'materias', 'docentes', 'catalogo'].includes(c)) return true;
   if (c === 'config') return id === 'plans' || id === 'app';
   return false;
@@ -227,6 +230,8 @@ function puedeLeer(s, col, id) {
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
   if (col === 'planeaciones') return P.escolar === 'editar' || (!!(P.docente && P.docente !== 'none') && esPlaneacionPropia(s, id));
+  /* Asistencia: Control escolar la ve; cada docente solo la de sus propias asignaturas */
+  if (col === 'asistencia') return (!!P.escolar && P.escolar !== 'none') || (!!(P.docente && P.docente !== 'none') && esPlaneacionPropia(s, id));
   if (col === 'solicitudes') return P.escolar === 'editar';
   /* Los contratos llevan datos fiscales y honorarios: solo Control escolar (editar) y la nómina docente los leen */
   if (col === 'contratos') return P.escolar === 'editar' || (!!P.nomina_doc && P.nomina_doc !== 'none');
@@ -246,6 +251,7 @@ function puedeEscribir(s, col, id) {
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
   if (col === 'planeaciones' && P.escolar !== 'editar') return P.docente === 'editar' && esPlaneacionPropia(s, id);
+  if (col === 'asistencia' && P.escolar !== 'editar') return P.docente === 'editar' && esPlaneacionPropia(s, id);
   if (col === 'solicitudes') return P.escolar === 'editar';
   if (col === 'contratos') return P.escolar === 'editar';
   if (col === 'fichasins') return P.inscripcion === 'editar';
@@ -261,6 +267,8 @@ function puedeArchivos(s, privado) {
 }
 const CAMPOS_DOCENTE = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'sexo', 'nuevo'];
 function reduce(s, col, data) {
+  /* El docente solo necesita saber qué faltas están justificadas (no el motivo ni los documentos) */
+  if (col === 'justificantes' && s.rol === 'docente') { const o = {}; ['id', 'sid', 'num', 'desde', 'hasta', 'estado'].forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
   /* Quien cobra desde Finanzas ve de Acuerdo 286 solo lo necesario para cobrar (sin foto, documentos ni archivos) */
   if (col === 'acuerdo286' && s.rol !== 'admin') {
     const P0 = s.perm || {};
@@ -291,6 +299,13 @@ function validaModulos(m) {
    Nadie que no sea Administrador borra nada sin autorización: o la contraseña del encargado, o su aprobación.
    Es un borrado: eliminar un documento o un archivo, o quitar elementos de un documento (un pago, un gasto, un documento cargado…). */
 const NOMBRES_COL = { students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura', contratos: 'Contrato de docente', fichasins: 'Ficha de inscripción firmada' };
+const idPer = per => String(per || '').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+const cicloDe = per => { if (!per) return null; const r = q.uno.get('ciclos', idPer(per)); try { return r ? JSON.parse(r.data) : null; } catch (e) { return null; } };
+const perCerrado = per => { const c = cicloDe(per); return !!(c && c.cerrado); };
+/* El cuatrimestre se evalúa en dos bloques de asignaturas (meses 1-2 y 3-4): el bloque sale de la asignatura o de su fecha de evaluación */
+const mitadPer = per => { const m = /^(Sep–Dic|Ene–Abr|May–Ago) (\d{4})$/.exec(String(per || '')); return m ? m[2] + (m[1] === 'Sep–Dic' ? '-10-31' : m[1] === 'Ene–Abr' ? '-02-29' : '-06-30') : ''; };
+const bloqueDe = m => { if (!m) return 0; if (m.bl === 1 || m.bl === 2) return m.bl; const x = mitadPer(m.per); return m.ev && x ? (m.ev <= x ? 1 : 2) : 0; };
+const matCerrada = (mid, cache) => { const r = q.uno.get('materias', mid); let m = null; try { m = r ? JSON.parse(r.data) : null; } catch (e) {} if (!m) return false; if (perCerrado(m.per)) return true; const b = bloqueDe(m), c = cicloDe(m.per); return !!(b && c && c.bloques && c.bloques[b] && c.bloques[b].cerrado); };
 const EXENTAS_PUT = new Set(['meta', 'calif', 'criterios', 'contenidos', 'cortes', 'config', 'fotos', 'planeaciones']);
 const VENTANA_BORRADO = 10 * 60000, RACHA_BORRADO = 15000;
 function alumnoDe(col, id) { if (['students', 'ledger', 'calif', 'constancias', 'fotos', 'egresados'].includes(col)) { const r = q.uno.get('students', id); if (r) { try { return JSON.parse(r.data).nombre || ''; } catch (e) {} } } return ''; }
@@ -677,13 +692,15 @@ function verificaDoc(t, id, code, vig, fecha) {
 
 async function api(req, res, partes) {
   const m = req.method, [tipo, a, b] = partes, ip = ipDe(req);
+  /* El aviso de Stripe llega sin sesión ni encabezados propios: se acepta solo con su firma */
+  if (tipo === 'pagos-linea' && a === 'webhook' && m === 'POST') { if (limite('whk|' + ip, 300, 60000)) return responde(res, 429, { error: 'Demasiadas solicitudes' }); falla('whk|' + ip, 60000); return PL.webhook(req, res, leeCuerpo, responde); }
   if (m !== 'GET' && !req.headers['x-lafragua']) return responde(res, 403, { error: 'Solicitud no permitida' });
   if (!origenOk(req)) return responde(res, 403, { error: 'Origen no permitido' });
 
   /* --- públicas --- */
   if (tipo === 'yo' && m === 'GET') {
     const s = sesionDe(req), hay = q.nUsr.get().n > 0;
-    return responde(res, 200, { modo: 'nube', urlPublica: String(ENV.LF_URL_PUBLICA || ''), setup: !hay, usuario: s ? publicoUsuario(s) : null, usuarios: s ? (s.rol === 'admin' ? listaUsuarios() : [publicoUsuario(s)]) : [{ u: '_', name: '', rol: 'consulta', doc: '' }] });
+    return responde(res, 200, { modo: 'nube', urlPublica: String(ENV.LF_URL_PUBLICA || ''), setup: !hay, usuario: s ? Object.assign(publicoUsuario(s), { dosPasos: SEG.tiene(s.u), debeActivar2fa: s.rol === 'admin' && SEG.cfgSeg().exigir2fa && !SEG.tiene(s.u), privacidadPendiente: SEG.pendienteDe(s.u) }) : null, usuarios: s ? (s.rol === 'admin' ? listaUsuarios() : [publicoUsuario(s)]) : [{ u: '_', name: '', rol: 'consulta', doc: '' }] });
   }
   if (tipo === 'verificar' && m === 'GET') {
     if (limite('ver|' + ip, 60, 60000)) return responde(res, 429, { ok: false, motivo: 'Demasiadas consultas. Espera un minuto e inténtalo de nuevo.' });
@@ -701,8 +718,20 @@ async function api(req, res, partes) {
     if (usr) ok = claveOk(clave, usr); else hashClave(clave, 'sin-usuario-sal');
     if (!ok) { falla('ip|' + ip, 900000); falla('u|' + ip + '|' + u, 900000); audita(u, req, 'Inicio de sesión fallido'); await dormir(400); return responde(res, 401, { error: 'Usuario o contraseña incorrectos.' }); }
     if (usr.rol === 'alumno' && bloqueadoPorPago(usr.alumno)) { intentos.delete('u|' + ip + '|' + u); audita(usr.u, req, 'Inicio de sesión rechazado: acceso bloqueado por falta de pago'); return responde(res, 403, { error: MSG_BLOQUEO, bloqueado: true }); }
-    intentos.delete('u|' + ip + '|' + u); nuevaSesion(req, res, usr.u); audita(usr.u, req, 'Inicio de sesión');
+    intentos.delete('u|' + ip + '|' + u);
+    if (usr.totp) return responde(res, 200, { requiere2fa: true, ticket: SEG.emiteTicket(usr.u) });
+    nuevaSesion(req, res, usr.u); audita(usr.u, req, 'Inicio de sesión');
     return responde(res, 200, { usuario: publicoUsuario(usr) });
+  }
+  if (tipo === 'login2fa' && m === 'POST') {
+    const c = await leeJSON(req, 2000);
+    if (limite('f2|' + ip, 40, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' }); falla('f2|' + ip, 900000);
+    try {
+      const r = SEG.usaTicket(c.ticket, c.codigo), usr = q.usr.get(r.u); if (!usr) return responde(res, 401, { error: 'Usuario no encontrado.' });
+      if (usr.rol === 'alumno' && bloqueadoPorPago(usr.alumno)) return responde(res, 403, { error: MSG_BLOQUEO, bloqueado: true });
+      nuevaSesion(req, res, usr.u); audita(usr.u, req, 'Inicio de sesión con verificación en dos pasos' + (r.recuperacion ? ' (código de recuperación)' : ''));
+      return responde(res, 200, { usuario: publicoUsuario(usr), recuperacion: r.recuperacion, restantes: SEG.restantes(usr.u) });
+    } catch (e) { audita(null, req, 'Código de verificación incorrecto'); await dormir(300); return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
   }
   if (tipo === 'configurar' && m === 'POST') {
     const c = await leeJSON(req), hay = q.nUsr.get().n > 0;
@@ -723,6 +752,7 @@ async function api(req, res, partes) {
   if (!s) return responde(res, 401, { error: 'Sesión requerida' });
   const rol = s.rol;
   if (s.forzar && !['logout', 'cambiar-clave'].includes(tipo)) return responde(res, 403, { error: 'Debes cambiar tu contraseña antes de continuar.', forzar: true });
+  if (s.rol === 'admin' && !['logout', 'cambiar-clave', '2fa', 'yo', 'privacidad'].includes(tipo) && SEG.cfgSeg().exigir2fa && !SEG.tiene(s.u)) return responde(res, 403, { error: 'La escuela exige la verificación en dos pasos para los administradores. Actívala para continuar.', requiere2fa: true });
 
   if (tipo === 'logout' && m === 'POST') { q.borSes.run(s._token); ponCookie(req, res, '', 0); audita(s.u, req, 'Cierre de sesión'); return responde(res, 200, { ok: true }); }
 
@@ -732,13 +762,13 @@ async function api(req, res, partes) {
   }
   if (tipo === 'col' && m === 'GET' && NOMBRE_OK.test(a || '')) {
     if (s.rol === 'alumno') {
-      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes', 'avisos'].includes(a)) return responde(res, 200, { docs: [] });
+      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes', 'avisos', 'facturas', 'fiscal'].includes(a)) return responde(res, 200, { docs: [] });
       const ctx = contextoAlumno(s), docs = [];
       q.lista.all(a).forEach(r => { const d = filtraAlumno(s, a, r.id, JSON.parse(r.data), ctx); if (d) docs.push({ id: r.id, data: d }); });
       return responde(res, 200, { docs });
     }
     if (!puedeLeer(s, a, null)) return responde(res, 200, { docs: [] });
-    return responde(res, 200, { docs: q.lista.all(a).filter(r => a !== 'planeaciones' || puedeLeer(s, a, r.id)).map(r => ({ id: r.id, data: reduce(s, a, JSON.parse(r.data)) })) });
+    return responde(res, 200, { docs: q.lista.all(a).filter(r => (a !== 'planeaciones' && a !== 'asistencia') || puedeLeer(s, a, r.id)).map(r => ({ id: r.id, data: reduce(s, a, JSON.parse(r.data)) })) });
   }
   if (tipo === 'doc' && NOMBRE_OK.test(a || '') && NOMBRE_OK.test(b || '')) {
     if (m === 'GET' && s.rol === 'alumno') { const r0 = q.uno.get(a, b), d0 = r0 ? filtraAlumno(s, a, b, JSON.parse(r0.data), contextoAlumno(s)) : null; return responde(res, 200, d0 ? { exists: true, data: d0 } : { exists: false, data: null }); }
@@ -764,9 +794,25 @@ async function api(req, res, partes) {
         const rc = q.uno.get(a, b), vc = rc ? JSON.parse(rc.data) : {}, rp = q.uno.get('planeaciones', b);
         if (rp && JSON.stringify(vc.items || []) !== JSON.stringify(nuevo.items || [])) { const dp = JSON.parse(rp.data); if (dp.estado === 'aprobada' || dp.estado === 'denegada') { dp.estado = 'pendiente'; delete dp.revisor; delete dp.revFecha; delete dp.motivo; reabre = dp; } }
       }
-      const viejoAv = (a === 'solicitudes' || a === 'planeaciones') ? q.uno.get(a, b) : null;
+      /* Un periodo cerrado ya no admite cambios de calificaciones ni de asistencia (solo el Administrador lo puede reabrir) */
+      if (s.rol !== 'admin') {
+        if (a === 'asistencia') { const rm = q.uno.get('materias', b); let mm = null; try { mm = rm ? JSON.parse(rm.data) : null; } catch (e) {} if (mm && matCerrada(b)) return responde(res, 403, { error: 'Esa asignatura está cerrada (su bloque o el periodo ' + mm.per + '): la asistencia ya no se puede cambiar.' }); }
+        if (a === 'calif') { const rv = q.uno.get('calif', b); let vv = {}; try { vv = rv ? JSON.parse(rv.data) : {}; } catch (e) {} const ci = d => ((d && d.items) || []).filter(i => i && ((i.per && perCerrado(i.per)) || (i.mid && matCerrada(i.mid)))).map(i => JSON.stringify(i)).sort().join('|'); if (ci(vv) !== ci(nuevo)) return responde(res, 403, { error: 'Hay calificaciones de un periodo cerrado: ya no se pueden cambiar. El Administrador puede reabrir el periodo.' }); }
+        if (a === 'ciclos') { const rc2 = q.uno.get('ciclos', b); let vc = {}; try { vc = rc2 ? JSON.parse(rc2.data) : {}; } catch (e) {} const abiertos = Object.keys((vc.bloques || {})).filter(k => vc.bloques[k] && vc.bloques[k].cerrado && !((nuevo.bloques || {})[k] && nuevo.bloques[k].cerrado)); if ((vc.cerrado && !nuevo.cerrado) || abiertos.length) return responde(res, 403, { error: 'Solo el Administrador puede reabrir un periodo o un bloque.' }); }
+      }
+      /* Plazo para capturar calificaciones: 3 días después de la evaluación (o la prórroga que dé Control escolar). Solo rige para docentes */
+      if (a === 'calif' && s.rol !== 'admin' && (s.perm || {}).escolar !== 'editar') {
+        const rv2 = q.uno.get('calif', b); let v2 = {}; try { v2 = rv2 ? JSON.parse(rv2.data) : {}; } catch (e) {}
+        const mapa = d => { const o = {}; ((d && d.items) || []).forEach(i => { if (i && i.id) o[i.id] = JSON.stringify(i); }); return o; }, A = mapa(v2), N = mapa(nuevo), hoyS = hoyMx();
+        for (const k of new Set([...Object.keys(A), ...Object.keys(N)])) {
+          if (A[k] === N[k]) continue; const it = JSON.parse(N[k] || A[k]), rm = it.mid ? q.uno.get('materias', it.mid) : null; let mm = null; try { mm = rm ? JSON.parse(rm.data) : null; } catch (e) {}
+          if (mm && mm.ev) { const def = sumaDias(mm.ev, 3), lim = mm.prorroga && mm.prorroga > def ? mm.prorroga : def; if (hoyS > lim) return responde(res, 403, { error: 'El plazo para capturar las calificaciones de «' + mm.nom + '» venció el ' + lim.split('-').reverse().join('/') + '. Pide una prórroga a Control escolar.' }); }
+        }
+      }
+      const viejoAv = (a === 'solicitudes' || a === 'planeaciones' || a === 'materias') ? q.uno.get(a, b) : null;
       q.pon.run(a, b, JSON.stringify(nuevo), Date.now()); difunde(a, b); cobHook(a, b);
       if (a === 'solicitudes' || (a === 'planeaciones' && (s.rol === 'admin' || (s.perm || {}).escolar === 'editar'))) { try { const vv = viejoAv ? JSON.parse(viejoAv.data) : null; if (a === 'solicitudes') AV.hookSolicitud(b, vv, nuevo); else AV.hookPlaneacion(b, vv, nuevo); } catch (e) { console.error('Avisos:', e.message); } }
+      if (a === 'materias') { try { AV.hookEvaluacion(b, viejoAv ? JSON.parse(viejoAv.data) : null, nuevo); } catch (e) { console.error('Avisos:', e.message); } }
       if (reabre) { q.pon.run('planeaciones', b, JSON.stringify(reabre), Date.now()); difunde('planeaciones', b); }
       return responde(res, 200, { ok: true });
     }
@@ -786,9 +832,9 @@ async function api(req, res, partes) {
       if (!/^(application\/pdf|image\/jpeg|image\/png)/.test(String(req.headers['content-type'] || ''))) return responde(res, 400, { error: 'El archivo debe ser PDF, JPG o PNG.' });
       if (q.cuentaArch.get(s.u, Date.now() - 86400000).n >= 20) return responde(res, 429, { error: 'Subiste demasiados archivos hoy. Inténtalo mañana.' });
     }
-    else if (!puedeArchivos(s, privSolicitado)) return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
+    else if (!puedeArchivos(s, privSolicitado) && !(privSolicitado && req.headers['x-categoria'] === 'factura' && nivel(s, 'pagos') === 'editar')) return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
     if (m === 'DELETE' && ID_ARCH.test(a || '') && s.rol !== 'admin') { const inf2 = q.uArch.get(a); if (q.archRef.get('%' + a + '%') && protegeBorrado(s, req, res, { accion: 'ARCHIVO', col: 'archivo', id: a, descripcion: 'Eliminar el archivo «' + ((inf2 && inf2.nombre) || a) + '»' })) return; }
-    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (['planeacion', 'solicitud', 'resguardo', 'certificado', 'contrato'].includes(req.headers['x-categoria']) ? req.headers['x-categoria'] : '');
+    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (['planeacion', 'solicitud', 'resguardo', 'certificado', 'contrato', 'factura'].includes(req.headers['x-categoria']) ? req.headers['x-categoria'] : '');
     if (m === 'POST' && !a) { const buf = await leeCuerpo(req, s.rol === 'alumno' ? 10 * 1024 * 1024 : 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id, sizeBytes: buf.length }); }
     if (ID_ARCH.test(a || '')) {
       if (m === 'PUT') { const buf = await leeCuerpo(req, 26 * 1024 * 1024); fs.writeFileSync(path.join(ARCH, a), buf); q.ponArch.run(a, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id: a, sizeBytes: buf.length }); }
@@ -922,6 +968,76 @@ async function api(req, res, partes) {
     if (m === 'GET' && a === 'descargar') { audita(s.u, req, 'Descargó el respaldo completo'); try { await respaldoCompleto(res); } catch (e) { console.error(e.message); try { res.end(); } catch (x) {} } return; }
   }
 
+  /* Verificación en dos pasos de cada usuario */
+  if (tipo === '2fa') {
+    try {
+      if (m === 'GET' && a === 'estado') return responde(res, 200, { activo: SEG.tiene(s.u), restantes: SEG.restantes(s.u), exigida: s.rol === 'admin' && SEG.cfgSeg().exigir2fa });
+      if (m === 'POST' && a === 'iniciar') { if (SEG.tiene(s.u)) return responde(res, 400, { error: 'Ya tienes la verificación en dos pasos activa.' }); return responde(res, 200, SEG.iniciar(s.u)); }
+      if (m === 'POST' && a === 'activar') { if (limite('2fa|' + s.u, 10, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' }); falla('2fa|' + s.u, 900000); const c = await leeJSON(req, 1000), cods = SEG.activar(s.u, c.codigo); audita(s.u, req, 'Activó la verificación en dos pasos'); return responde(res, 200, { ok: true, codigos: cods }); }
+      if (m === 'POST' && (a === 'desactivar' || a === 'codigos')) {
+        if (limite('2fa|' + s.u, 10, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' }); falla('2fa|' + s.u, 900000);
+        const c = await leeJSON(req, 1000), f = q.usr.get(s.u); if (!f.totp) return responde(res, 400, { error: 'No tienes la verificación en dos pasos activa.' });
+        if (!claveOk(String(c.clave || ''), f)) { await dormir(300); return responde(res, 403, { error: 'La contraseña no es correcta.' }); }
+        SEG.usaTicket(SEG.emiteTicket(s.u), c.codigo);
+        if (a === 'desactivar') { if (s.rol === 'admin' && SEG.cfgSeg().exigir2fa) return responde(res, 400, { error: 'La escuela exige la verificación en dos pasos para los administradores.' }); SEG.desactivar(s.u); audita(s.u, req, 'Desactivó la verificación en dos pasos'); return responde(res, 200, { ok: true }); }
+        audita(s.u, req, 'Generó códigos de recuperación nuevos'); return responde(res, 200, { ok: true, codigos: SEG.regenerar(s.u) });
+      }
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
+  /* Aviso de privacidad: cualquiera con sesión lo acepta */
+  if (tipo === 'privacidad' && m === 'POST' && a === 'aceptar') { try { const c = await leeJSON(req, 500); SEG.aceptar(s.u, Number(c.version)); audita(s.u, req, 'Aceptó el aviso de privacidad', 'versión ' + c.version); return responde(res, 200, { ok: true }); } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); } }
+  /* Seguridad y privacidad (solo el Administrador) */
+  if (tipo === 'seguridad') {
+    if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
+    try {
+      if (m === 'GET' && !a) return responde(res, 200, { config: SEG.cfgSeg(), usuarios: listaUsuarios().filter(x => x.rol !== 'alumno').map(x => ({ u: x.u, name: x.name, rol: x.rol, dosPasos: !!x.dosPasos })), privacidad: Object.assign(SEG.cfgPriv(), { aceptaciones: SEG.aceptaciones() }), conservacion: { config: SEG.cfgCons(), candidatos: SEG.candidatos() } });
+      if (m === 'PUT' && a === 'config') { SEG.guardaSeg(await leeJSON(req, 500)); audita(s.u, req, 'Cambió la política de verificación en dos pasos'); return responde(res, 200, { ok: true, config: SEG.cfgSeg() }); }
+      if (m === 'PUT' && a === 'privacidad') { SEG.guardaPriv(await leeJSON(req, 6000)); audita(s.u, req, 'Cambió el aviso de privacidad'); return responde(res, 200, { ok: true, privacidad: Object.assign(SEG.cfgPriv(), { aceptaciones: SEG.aceptaciones() }) }); }
+      if (m === 'PUT' && a === 'conservacion') { SEG.guardaCons(await leeJSON(req, 1000)); audita(s.u, req, 'Cambió los plazos de conservación de datos'); return responde(res, 200, { ok: true, conservacion: { config: SEG.cfgCons(), candidatos: SEG.candidatos() } }); }
+      if (m === 'POST' && a === 'reset') { const c = await leeJSON(req, 500), u = String(c.u || '').toLowerCase(); if (!USUARIO_OK.test(u) || !q.usr.get(u)) return responde(res, 404, { error: 'No existe ese usuario.' }); SEG.desactivar(u); audita(s.u, req, 'Reinició la verificación en dos pasos de un usuario', u); return responde(res, 200, { ok: true }); }
+      if (m === 'POST' && a === 'depurar') {
+        if (limite('dep|' + s.u, 5, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' }); const c = await leeJSON(req, 2000);
+        if (!claveOk(String(c.clave || ''), q.usr.get(s.u))) { falla('dep|' + s.u, 900000); await dormir(300); return responde(res, 403, { error: 'Tu contraseña no es correcta.' }); }
+        const cats = (Array.isArray(c.categorias) ? c.categorias : []).filter(x => ['ine', 'firmasContrato', 'firmasFicha', 'mensajes', 'sesionesPago', 'auditoria'].includes(x)); if (!cats.length) return responde(res, 400, { error: 'Elige qué depurar.' });
+        const r = SEG.depura(cats); audita(s.u, req, 'Depuró datos por plazo de conservación', JSON.stringify(r)); return responde(res, 200, { ok: true, resultado: r, conservacion: { config: SEG.cfgCons(), candidatos: SEG.candidatos() } });
+      }
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
+  /* Pagos en línea (Stripe), datos fiscales y facturas */
+  if (tipo === 'pagos-linea') {
+    if (s.rol === 'alumno') {
+      if (!s.alumno) return responde(res, 403, { error: 'No tienes un expediente de alumno.' });
+      if (m === 'GET' && a === 'estado') return responde(res, 200, PL.estado(s.alumno));
+      if (m === 'POST' && a === 'checkout') {
+        if (limite('plk|' + s.u, 8, 60000)) return responde(res, 429, { error: 'Demasiados intentos. Espera un minuto.' }); falla('plk|' + s.u, 60000);
+        const c = await leeJSON(req, 2000); try { return responde(res, 200, await PL.checkout(s.alumno, String(c.opcion || ''), req)); } catch (e) { return responde(res, e.cod || 502, { error: e.cod ? e.message : 'No se pudo iniciar el pago: ' + e.message }); }
+      }
+      return responde(res, 403, { error: 'No permitido.' });
+    }
+    const adm = rol === 'admin', ver = adm || nivel(s, 'pagos') !== 'none';
+    if (!ver) return responde(res, 403, { error: 'No tienes permiso.' });
+    if (m === 'GET' && !a) return responde(res, 200, { config: adm ? PL.cfgPublica(baseUrlReq(req)) : { activo: PL.cfg().activo }, sesiones: PL.sesiones(), esAdmin: adm });
+    if (!adm) return responde(res, 403, { error: 'Solo el Administrador.' });
+    if (m === 'PUT' && a === 'config') { try { PL.guardaCfg(await leeJSON(req, 5000)); audita(s.u, req, 'Cambió la configuración de pagos en línea'); return responde(res, 200, { ok: true, config: PL.cfgPublica(baseUrlReq(req)) }); } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); } }
+    if (m === 'POST' && a === 'probar') { try { return responde(res, 200, Object.assign({ ok: true }, await PL.probar())); } catch (e) { return responde(res, 200, { ok: false, msg: e.message }); } }
+  }
+  if (tipo === 'fiscal') {
+    try {
+      if (s.rol === 'alumno' && m === 'PUT' && !a) { if (!s.alumno) return responde(res, 403, { error: 'No permitido.' }); PL.guardaFiscal(s.alumno, await leeJSON(req, 3000)); return responde(res, 200, { ok: true }); }
+      if (s.rol !== 'alumno' && m === 'PUT' && a && NOMBRE_OK.test(a) && (rol === 'admin' || nivel(s, 'pagos') === 'editar')) { PL.guardaFiscal(a, await leeJSON(req, 3000)); audita(s.u, req, 'Editó los datos fiscales de un alumno', a); return responde(res, 200, { ok: true }); }
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+    return responde(res, 403, { error: 'No permitido.' });
+  }
+  if (tipo === 'facturas') {
+    try {
+      if (s.rol === 'alumno') { if (m === 'POST' && a === 'solicitar' && s.alumno) { const c = await leeJSON(req, 2000), f = PL.solicita(s.alumno, String(c.pagoId || '')); audita(s.u, req, 'Pidió una factura', f.folioPago); return responde(res, 200, { ok: true, id: f.id }); } return responde(res, 403, { error: 'No permitido.' }); }
+      const ed = rol === 'admin' || nivel(s, 'pagos') === 'editar', ver = ed || nivel(s, 'pagos') !== 'none'; if (!ver) return responde(res, 403, { error: 'No tienes permiso.' });
+      if (m === 'GET' && !a) return responde(res, 200, { facturas: PL.facturas(new URL(req.url, 'http://x').searchParams.get('estado') || ''), regimenes: PL.REGIMENES, usos: PL.USOS });
+      if (!ed) return responde(res, 403, { error: 'No tienes permiso para emitir facturas.' });
+      if (m === 'POST' && a === 'emitir') { const c = await leeJSON(req, 3000); return responde(res, 200, { ok: true, factura: PL.emitir(String(c.id || ''), c, s.u) }); }
+      if (m === 'POST' && a === 'rechazar') { const c = await leeJSON(req, 3000); return responde(res, 200, { ok: true, factura: PL.rechaza(String(c.id || ''), c.motivo, s.u) }); }
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
   /* Avisos por correo y WhatsApp */
   if (tipo === 'avisos') {
     const adm = rol === 'admin', staff = adm || (s.perm || {}).escolar === 'editar';
@@ -1016,11 +1132,13 @@ const servidor = http.createServer(async (req, res) => {
       const id = ruta.slice(7), f = path.join(ARCH, id);
       if (!ID_ARCH.test(id) || !fs.existsSync(f)) { res.writeHead(404); return res.end('No encontrado'); }
       const info = q.uArch.get(id) || {};
-      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || (info.cat === 'certificado' ? nivel(sBlob, 'a286') === 'editar' : (info.cat === 'planeacion' || info.cat === 'solicitud' || info.cat === 'resguardo' || info.cat === 'contrato') ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
+      const facturaPropia = info.cat === 'factura' && sBlob.rol === 'alumno' && q.lista.all('facturas').some(r => { try { const d = JSON.parse(r.data); return d.sid === sBlob.alumno && d.estado === 'emitida' && ((d.xml && d.xml.id === id) || (d.pdf && d.pdf.id === id)); } catch (e) { return false; } });
+      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || facturaPropia || (info.cat === 'factura' ? nivel(sBlob, 'pagos') !== 'none' : info.cat === 'certificado' ? nivel(sBlob, 'a286') === 'editar' : (info.cat === 'planeacion' || info.cat === 'solicitud' || info.cat === 'resguardo' || info.cat === 'contrato') ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
       if (info.privado && !verPriv) { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Este archivo es confidencial: solo lo puede ver el Administrador.'); }
       res.writeHead(200, { 'Content-Type': info.tipo || 'application/octet-stream', 'Content-Disposition': "inline; filename*=UTF-8''" + encodeURIComponent(info.nombre || id), 'Cache-Control': 'private, no-store' });
       return fs.createReadStream(f).pipe(res);
     }
+    if (ruta === '/privacidad') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' }); return res.end(SEG.paginaPrivacidad()); }
     const rel = ruta === '/' ? '/index.html' : (ruta === '/configurar' ? '/configurar.html' : (ruta === '/verificar' ? '/verificar.html' : ruta));
     const f = path.normalize(path.join(PUB, rel));
     if (!f.startsWith(PUB + path.sep) || !fs.existsSync(f) || !fs.statSync(f).isFile()) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('No encontrado'); }
@@ -1204,6 +1322,23 @@ function corridaCobranza(op) {
 }
 /* ---------- Avisos fuera de la plataforma (correo y WhatsApp) ---------- */
 const AV = require('./avisos.js').crea({ db, q, leeDoc, cifra, descifra, smtpEnvia: RESPA.smtpEnvia, hoyMx: () => hoyMx(), horaMx: () => RESPA.fechaMx(new Date()).hora, audita, cfgCorreoRespaldos: () => cfgResp().correo, ENV });
+/* ---------- Pagos en línea y facturas ---------- */
+const baseUrlReq = req => { const h = String(req.headers['x-forwarded-host'] || req.headers.host || ''); return (String(req.headers['x-forwarded-proto'] || 'http').split(',')[0]) + '://' + h; };
+function pendientesSrv(sid) {
+  const st = leeDoc('students', sid); if (!st) return null;
+  const hoy = hoyMx(), pe = planesYExtra(), cfg = cobCfg(), led = leeDoc('ledger', sid) || { pagos: [] }, cal = leeDoc('calif', sid) || { items: [] }, con = leeDoc('constancias', sid) || { items: [] };
+  const ing = st.ingreso || cicloMx(hoy), L = cargosAlumnoSrv(st, pe.planes, pe.extra, cal, con, hoy), rem = restanteCargos(L, led.pagos || []), pend = [];
+  L.forEach((c, i) => { if (rem[i] > 0.004) pend.push({ id: c.id, c: c.c, monto: Math.round(rem[i] * 100) / 100, vencido: !!(c.k && fechaLimiteCol(c.k, ing, cfg.diaLimite) < hoy) }); });
+  return { st, hoy, pend };
+}
+function avisaAlumnoSrv(evento, sid, titulo, mensaje, ref) {
+  const id = sid + '-' + String(ref || Date.now()).replace(/[^A-Za-z0-9:_-]/g, '_');
+  if (!q.uno.get('avisos', id)) { q.pon.run('avisos', id, JSON.stringify({ sid, tipo: 'info', n: 0, fecha: hoyMx(), creada: new Date().toISOString(), titulo, mensaje, leida: false }), Date.now()); difunde('avisos', id); }
+  try { AV.avisaAlumno(evento, sid, titulo, mensaje, ref); } catch (e) { console.error('Avisos:', e.message); }
+}
+const PL = require('./pagoslinea.js').crea({ q, leeDoc, cifra, descifra, hoyMx: () => hoyMx(), audita, difunde, cobHook: (c, i) => cobHook(c, i), pendientesSrv, avisaAlumno: avisaAlumnoSrv, candados, ENV });
+/* ---------- Seguridad y privacidad ---------- */
+const SEG = require('./seguridad.js').crea({ db, q, leeDoc, cifra, descifra, audita, claveOk, ARCH, difunde, hoyMx: () => hoyMx(), ENV }); SEG.reiniciarPorEntorno();
 const cobPend = new Set(); let cobTodos = false, cobTimer = null;
 function cobHook(col, id) {
   if (!['ledger', 'students', 'calif', 'constancias', 'acuerdos', 'config', 'egresados'].includes(col)) return;

@@ -52,6 +52,10 @@ Entra como Administrador a **Respaldos y seguridad** (tarjeta del panel o botón
 5. Pulsa **Respaldar ahora** y comprueba que las tres tarjetas queden en verde, y **Probar restauración**.
 Para **restaurar**: en Render, Shell del servicio, con el servicio suspendido: `node restaurar.js /data/respaldo-AAAA-MM-DD-….zip --datos /data --si` (agrega `--clave "tu contraseña"` si es un `.zip.cif`). Vuelve a escribir las llaves del almacenamiento y del correo después de restaurar.
 
+## Si te quedas sin acceso con la verificación en dos pasos
+1. Usa uno de tus **códigos de recuperación** (cada uno sirve una vez) en lugar del código de 6 dígitos.
+2. Si no los tienes: en Render, **Environment**, agrega la variable `LF_2FA_REINICIAR` con tu usuario (por ejemplo `admin`), reinicia el servicio, entra con tu contraseña, activa de nuevo la verificación y **quita la variable**.
+
 ## Si después de actualizar faltan datos
 Actualizar el sistema (subir archivos nuevos a GitHub) **no borra datos**: el servidor solo cambia de programa y vuelve a abrir la misma base de datos. Si desaparecen registros después de una actualización, casi siempre es porque la base está en un **disco temporal** y no en el disco persistente. Cómo revisarlo:
 1. Entra como Administrador: si los datos están en un disco temporal, el panel principal muestra un aviso rojo («Tus datos se guardan en un disco temporal»). En el botón **Respaldo** también aparece el estado del almacenamiento y la fecha en que se creó la base de datos (si es reciente y no esperabas empezar de cero, los datos se reiniciaron).

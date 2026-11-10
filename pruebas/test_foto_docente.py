@@ -70,7 +70,7 @@ with sync_playwright() as pw:
     ok('el_perfil_y_el_avatar_se_actualizan_y_avisa',pd.evaluate("document.getElementById('uAv').getAttribute('src')")==srv['foto'] and pd.evaluate("document.getElementById('fpImg').getAttribute('src')")==srv['foto'] and 'Foto actualizada' in pd.inner_text('#fpMsg') and 'credencial' in pd.inner_text('#fpMsg'))
     pd.set_input_files('#fpFile','/tmp/ine_reverso.jpg');W(pd,"UFOTO!==%s"%json.dumps(srv['foto']))
     ok('tambien_puede_elegir_o_tomar_una_foto_con_el_selector_de_la_tableta',ctx.request.get(B+'/api/doc/docentes_docs/d1').json()['data']['foto']==pd.evaluate("UFOTO"))
-    ok('el_admin_ve_la_nueva_foto_en_el_expediente',pg.evaluate("DXD.d1.foto")==pd.evaluate("UFOTO"))
+    nf=pd.evaluate("UFOTO");W(pg,"DXD.d1.foto===%s"%json.dumps(nf));ok('el_admin_ve_la_nueva_foto_en_el_expediente',pg.evaluate("DXD.d1.foto")==nf)
     pd.screenshot(path='/tmp/fd_perfil.png')
     # ============ seguridad ============
     api=lambda cx,m,url,body=None:cx.request.fetch(B+url,method=m,data=json.dumps(body) if body is not None else None,headers=HDR)

@@ -565,7 +565,13 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <p class="hint" id="inFirmaE" style="margin-top:6px"></p>
   </div>
 </div>
-<div class="bar" id="tabs" hidden><button class="p" id="tAl">Alumnos</button><button id="tGa">Gastos y corte de caja</button><button id="tEf">Estado de cuenta final</button></div>
+<div class="bar" id="tabs" hidden><button class="p" id="tAl">Alumnos</button><button id="tA86" hidden>Acuerdo 286</button><button id="tGa">Gastos y corte de caja</button><button id="tEf">Estado de cuenta final</button></div>
+<div id="vA86" hidden>
+  <p class="hint">Cobros del bachillerato por Acuerdo 286, con su plan mensual o Plan Express. Cada cobro queda registrado en Acuerdo 286 y en Finanzas (verificación de transferencias, corte de caja y estado de cuenta final).</p>
+  <div class="bar"><input id="a86Bus" class="grow" type="search" placeholder="Buscar por alumno o folio B286" aria-label="Buscar"><select id="a86Est" aria-label="Filtrar"><option value="">Todas</option><option value="saldo">Con saldo pendiente</option><option value="cert">Con certificado disponible y saldo</option><option value="liq">Liquidadas</option></select></div>
+  <p class="hint" id="a86S"></p>
+  <div class="wrap"><table style="min-width:820px"><thead><tr><th>Folio</th><th>Alumno</th><th>Plan</th><th class="n">Total</th><th class="n">Pagado</th><th class="n">Saldo</th><th>Siguiente pago</th><th>Certificado</th><th></th></tr></thead><tbody id="a86Tb"></tbody></table></div>
+</div>
 <div id="vAl" hidden>
 <div class="bar">
   <input id="q" class="grow" type="search" placeholder="Buscar por nombre, matrícula o carrera" aria-label="Buscar">
@@ -773,6 +779,8 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="row">
     <label class="full">Fotografía tamaño infantil (se convierte a escala de grises)<span style="display:flex;gap:10px;align-items:center"><img id="a2Img" alt="" style="width:72px;height:90px;object-fit:cover;border-radius:8px;background:var(--bg);border:1px solid var(--line);visibility:hidden"><input id="a2Foto" type="file" accept="image/*"></span></label>
     <label>Fecha de inscripción<input id="a2Fec" type="date"></label>
+    <label class="full">Modalidad de pago<select id="a2Mod"><option value="mensual">Plan mensual: inscripción $1,000 + colegiaturas mensuales de $1,500 + pago final de $1,500 por el certificado</option><option value="express">Plan Express: $11,000 en 2 pagos de $5,500 (50 % al iniciar el proceso y 50 % al entregar el certificado)</option></select></label>
+    <label id="a2NColL">Colegiaturas mensuales (plan mensual)<input id="a2NCol" type="number" min="1" max="24" step="1" value="6"></label>
     <label>Nombre(s)<input id="a2Nom"></label>
     <label>Apellido paterno<input id="a2Pat"></label>
     <label>Apellido materno<input id="a2Mat"></label>
@@ -806,9 +814,10 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <h2 style="margin-top:14px">Certificado</h2>
     <p class="hint">Cárgalo cuando el certificado ya esté en la institución.</p>
     <div id="a2Cert"></div>
-    <h2 style="margin-top:14px">Plan de pagos (8 pagos)</h2>
-    <p class="hint">Inscripción de $1,000, seis colegiaturas mensuales de $1,500 y un pago final de $1,500 al recibir el certificado. Los pagos y sus recibos se registran solo aquí, en Acuerdo 286.</p>
+    <h2 style="margin-top:14px" id="a2PlanT">Plan de pagos</h2>
+    <p class="hint" id="a2PlanH"></p>
     <p class="hint" id="a2Res"></p>
+    <div id="a2LiqBar"></div>
     <div id="a2Plan"></div>
     <div class="need-admin">
       <div class="row" style="margin-top:8px">
@@ -1044,7 +1053,29 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <div class="bar" style="justify-content:flex-end;margin:8px 0 0"><button class="p" id="fzlCls">Cerrar</button></div>
    </dialog>
 
-   <dialog id="dNP" style="width:min(560px,96vw)">
+   <dialog id="dA86" style="width:min(820px,98vw)">
+  <h2 id="a86T">Cobro Acuerdo 286</h2>
+  <p class="hint" id="a86S2"></p>
+  <p class="hint" id="a86Res"></p>
+  <p class="hint" id="a86Hint"></p>
+  <div id="a86Liq"></div>
+  <div id="a86Plan"></div>
+  <div id="a86Form">
+    <div class="row" style="margin-top:8px">
+      <label class="full">Concepto del pago<select id="a86Con"></select></label>
+      <label>Monto ($)<input id="a86Mon" type="number" min="0" step="0.01"></label>
+      <label>Fecha<input id="a86Fec" type="date"></label>
+      <label>Método de pago<select id="a86Met"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option></select></label>
+      <label>Referencia (opcional)<input id="a86Ref"></label>
+    </div>
+    <div class="bar"><button class="p" id="a86Add">Registrar pago</button></div>
+  </div>
+  <div id="a86Pags"></div>
+  <p class="hint" id="a86Msg" style="min-height:1.4em"></p>
+  <div class="bar" style="justify-content:flex-end;margin:0"><button id="a86Cls">Cerrar</button></div>
+</dialog>
+
+<dialog id="dNP" style="width:min(560px,96vw)">
      <h2>Nuevo plan de estudios</h2>
      <p class="hint">Crea una licenciatura, maestría u otro programa. Aparecerá en todos los módulos donde se elige un plan: alumnos, inscripción, grupos, calendario, calificaciones, pagos, constancias, credenciales, egresados y más.</p>
      <div class="row">
@@ -2220,11 +2251,13 @@ function vista(v){
   if(v==="al"&&!pp)v=pc?"ga":"ef";
   if(v==="ga"&&!pc)v=pp?"al":"ef";
   if(v==="ef"&&!pe)v=pp?"al":"ga";
-  TAB=v;var ga=v==="ga",ef=v==="ef",on=MOD==="pagos";
+  if(v==="a86"&&!pp)v=pc?"ga":"ef";
+  TAB=v;var ga=v==="ga",ef=v==="ef",a86=v==="a86",on=MOD==="pagos";
   if(on){var rt=efectivoRol(ga?"corte":(ef?"estado":"pagos"));if(rt&&rt!==ROL)setRol(rt)}
-  $("tAl").hidden=!pp;$("tGa").hidden=!pc;$("tEf").hidden=!pe;
-  $("vAl").hidden=!on||ga||ef;$("vGa").hidden=!on||!ga;$("vEf").hidden=!on||!ef;$("sum").hidden=!on||ga||ef;
-  $("tAl").className=(ga||ef)?"":"p";$("tGa").className=ga?"p":"";$("tEf").className=ef?"p":"";
+  $("tAl").hidden=!pp;$("tA86").hidden=!pp;$("tGa").hidden=!pc;$("tEf").hidden=!pe;
+  $("vAl").hidden=!on||ga||ef||a86;$("vA86").hidden=!on||!a86;$("vGa").hidden=!on||!ga;$("vEf").hidden=!on||!ef;$("sum").hidden=!on||ga||ef||a86;
+  $("tAl").className=(ga||ef||a86)?"":"p";$("tA86").className=a86?"p":"";$("tGa").className=ga?"p":"";$("tEf").className=ef?"p":"";
+  if(on&&a86)renderA86();
   if(on&&ga){if(!$("cFec").value)$("cFec").value=today();$("gFec").value=today();cargaCierre();renderCaja()}
   if(on&&ef)renderEf();
 }
@@ -4126,14 +4159,15 @@ async function grisBlob(file){
   return {blob:blob,name:String(file.name||"documento").replace(/\.[^.]+$/,"")+"-gris.jpg"};
 }
 /* ---- Plan de pagos: inscripción, 6 colegiaturas mensuales y pago final ---- */
-function cargos286(){
-  var L=[{id:"i",c:"Inscripción",m:A2C.ins}];
-  for(var i=1;i<=A2C.n;i++)L.push({id:"c"+i,c:"Colegiatura mensual "+i+" de "+A2C.n,m:A2C.col,k:i});
-  L.push({id:"f",c:"Pago final (al recibir el certificado)",m:A2C.fin});
+function cargos286(t){
+  if(modo286(t)==="express")return [{id:"e1",c:"Plan Express · primer pago (50 %), al iniciar el proceso",m:A2EXP.total/2},{id:"e2",c:"Plan Express · segundo pago (50 %), al entregar el certificado",m:A2EXP.total/2,fin:1}];
+  var n=nCol286(t),L=[{id:"i",c:"Inscripción",m:A2C.ins}];
+  for(var i=1;i<=n;i++)L.push({id:"c"+i,c:"Colegiatura mensual "+i+" de "+n,m:A2C.col,k:i});
+  L.push({id:"f",c:"Pago final (al recibir el certificado)",m:A2C.fin,fin:1});
   return L;
 }
 function ap286(t){
-  var L=cargos286(),rem=L.map(function(c){return c.m}),out={};
+  var L=cargos286(t),rem=L.map(function(c){return c.m}),out={};
   function first(){for(var i=0;i<L.length;i++)if(rem[i]>0.004)return i;return -1}
   (t.pagos||[]).filter(esConf).forEach(function(g){
     var amt=g.monto,parts=[];
@@ -4145,9 +4179,9 @@ function ap286(t){
   });
   return {L:L,rem:rem,out:out};
 }
-function conc2(parts){
+function conc2(parts,t){
   var o=[],cs=[];
-  function flush(){if(cs.length){o.push(cs.length>1?"Colegiaturas mensuales "+cs[0].k+" a "+cs[cs.length-1].k+" de "+A2C.n:cs[0].c);cs=[]}}
+  function flush(){if(cs.length){o.push(cs.length>1?"Colegiaturas mensuales "+cs[0].k+" a "+cs[cs.length-1].k+" de "+nCol286(t):cs[0].c);cs=[]}}
   (parts||[]).forEach(function(p){
     if(p.k&&p.full){if(cs.length&&cs[cs.length-1].k+1!==p.k)flush();cs.push(p);return}
     flush();o.push(p.c+(p.full?"":" (abono)"));
@@ -4162,7 +4196,7 @@ function renderA2(){
     var ok=fe==="enviado"?t.enviado:fe==="sin"?!t.enviado:fe==="cert"?!!t.cert:true;
     return ok&&(nom2(t)+" "+t.num+" "+(t.tel||"")).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return (parseInt(String(b.num).replace(/\D/g,""),10)||0)-(parseInt(String(a.num).replace(/\D/g,""),10)||0)});
   $("a2Tb").innerHTML=L.length?L.map(function(t){var e=est286(t);
-    return '<tr data-id="'+t.id+'"><td>'+esc(t.num)+'</td><td>'+esc(nom2(t))+'<br><span class="hint">'+esc(t.tel||"")+'</span></td><td>'+ndocs2(t)+' de '+(A2DOCS.length+1)+'</td><td>'+(t.fechaEval?esc(fd(t.fechaEval)):'—')+(t.promedio!=null?'<br><span class="hint">Promedio '+Number(t.promedio).toFixed(1)+'</span>':'')+'</td><td>'+(t.enviado?'<span class="tag pagado">Enviado</span><br><span class="hint">'+esc(fd(t.fechaEnvio||""))+'</span>':'<span class="tag parcial">Sin enviar</span>')+'</td><td>'+e.cub+' de '+e.n+'<br><span class="hint">'+mx.format(e.pag)+'</span></td><td>'+(t.cert?'<span class="tag pagado">Recibido</span>':'—')+'</td></tr>'}).join(""):vacio(7,"Aún no hay inscripciones de Acuerdo 286.");
+    return '<tr data-id="'+t.id+'"><td>'+esc(t.num)+'</td><td>'+esc(nom2(t))+'<br><span class="hint">'+esc(t.tel||"")+'</span></td><td>'+ndocs2(t)+' de '+(A2DOCS.length+1)+'</td><td>'+(t.fechaEval?esc(fd(t.fechaEval)):'—')+(t.promedio!=null?'<br><span class="hint">Promedio '+Number(t.promedio).toFixed(1)+'</span>':'')+'</td><td>'+(t.enviado?'<span class="tag pagado">Enviado</span><br><span class="hint">'+esc(fd(t.fechaEnvio||""))+'</span>':'<span class="tag parcial">Sin enviar</span>')+'</td><td>'+e.cub+' de '+e.n+'<br><span class="hint">'+mx.format(e.pag)+' · '+esc(tagPlan286(t))+'</span></td><td>'+(t.cert?'<span class="tag pagado">Recibido</span>':'—')+'</td></tr>'}).join(""):vacio(7,"Aún no hay inscripciones de Acuerdo 286.");
 }
 $("a2Bus").oninput=$("a2Est").onchange=renderA2;
 $("a2Tb").onclick=function(e){var tr=e.target.closest&&e.target.closest("tr[data-id]");if(tr)openA2(tr.dataset.id)};
@@ -4170,6 +4204,8 @@ $("a2New").onclick=function(){if(ROL==="admin")openA2(null)};
 /* ---- Ficha de inscripción ---- */
 function a2Via(){var a=$("a2Via").value==="asesor";$("a2AsNL").hidden=!a;$("a2AsTL").hidden=!a}
 $("a2Via").onchange=a2Via;
+function a2ModUI(){$("a2NColL").hidden=$("a2Mod").value==="express"}
+$("a2Mod").onchange=a2ModUI;
 function sugNum2(){return "B286-"+String(Object.keys(A2||{}).length+1).padStart(6,"0")}
 function openA2(id){
   A2ID=id;A2FOTO=null;A2CONF=null;clearTimeout(A2T);
@@ -4180,6 +4216,7 @@ function openA2(id){
   $("a2Sex").value=t?t.sexo||"":"";$("a2Edad").value=t&&t.edad?t.edad:"";$("a2Tel").value=t?t.tel||"":"";$("a2Mail").value=t?t.mail||"":"";$("a2Dom").value=t?t.dom||"":"";
   $("a2Proc").value=t?t.proc||"":"";$("a2Tut").value=t?t.tut||"":"";$("a2TutTel").value=t?t.tutTel||"":"";
   $("a2Via").value=t?t.via||"":"";$("a2AsNom").value=t?t.asNom||"":"";$("a2AsTel").value=t?t.asTel||"":"";a2Via();
+  $("a2Mod").value=modo286(t);$("a2NCol").value=t?nCol286(t):A2C.n;$("a2Mod").disabled=!ed||!!(t&&(t.pagos||[]).length);$("a2NCol").disabled=$("a2Mod").disabled;a2ModUI();
   $("a2Foto").value="";$("a2Img").src=t&&t.foto?t.foto:"";$("a2Img").style.visibility=t&&t.foto?"visible":"hidden";
   ["a2Fec","a2Nom","a2Pat","a2Mat","a2Sex","a2Edad","a2Tel","a2Mail","a2Dom","a2Proc","a2Tut","a2TutTel","a2Via","a2AsNom","a2AsTel","a2Foto"].forEach(function(i){$(i).disabled=!ed});
   $("a2Msg").textContent="";$("a2Del").textContent="Eliminar trámite";$("a2PagFec").value=today();$("a2PagMon").value="";$("a2PagRef").value="";
@@ -4201,6 +4238,7 @@ $("a2Save").onclick=async function(){
   try{
     var old=A2ID?A2[A2ID]:null,id=A2ID||uid(),num=old?old.num:"B286-"+String(await folios(1,"meta/folio286")).padStart(6,"0");
     var t=Object.assign({docs:{},tram:{},pagos:[],cert:null,enviado:false,fechaEnvio:"",fechaEval:"",promedio:null,byn:APP?APP.name:""},old||{},{id:id,num:num,fecha:$("a2Fec").value||today(),nombre:nom,apPat:pat,apMat:$("a2Mat").value.trim(),sexo:$("a2Sex").value,edad:parseInt($("a2Edad").value,10)||null,tel:$("a2Tel").value.trim(),mail:$("a2Mail").value.trim(),dom:$("a2Dom").value.trim(),proc:$("a2Proc").value.trim(),tut:$("a2Tut").value.trim(),tutTel:$("a2TutTel").value.trim(),via:via,asNom:via==="asesor"?asN:"",asTel:via==="asesor"?asT:"",foto:A2FOTO||(old&&old.foto)||null});
+    if(!(old&&(old.pagos||[]).length)){t.plan=$("a2Mod").value==="express"?"express":"mensual";t.nCol=t.plan==="mensual"?Math.max(1,Math.min(24,parseInt($("a2NCol").value,10)||A2C.n)):null}
     await saveA2(t);A2ID=id;A2FOTO=null;
     $("a2T").textContent="Acuerdo 286 · "+num;$("a2S").textContent=nom2(t);renderA2Mas();renderA2();$("a2Msg").textContent="Ficha guardada.";
   }catch(e){dberr(e)}
@@ -4228,14 +4266,15 @@ function renderA2Mas(){
   var e=est286(t);
   $("a2Res").innerHTML='Pagos cubiertos: <b>'+e.cub+' de '+e.n+'</b> · Total del plan: <b>'+mx.format(e.tot)+'</b> · Pagado: <b>'+mx.format(e.pag)+'</b> · Saldo: <b>'+mx.format(e.saldo)+'</b>';
   $("a2Plan").innerHTML='<div class="wrap"><table style="min-width:420px"><thead><tr><th>Pago</th><th class="n">Monto</th><th class="n">Pagado</th><th>Estado</th></tr></thead><tbody>'+e.a.L.map(function(c,i){var p=c.m-e.a.rem[i];return '<tr><td>'+esc(c.c)+'</td><td class="n">'+mx.format(c.m)+'</td><td class="n">'+mx.format(p)+'</td><td>'+(e.a.rem[i]<0.005?'<span class="tag pagado">Pagado</span>':p>0.004?'<span class="tag parcial">Abono</span>':'<span class="tag sin">Pendiente</span>')+'</td></tr>'}).join("")+'</tbody></table></div>'+(t.cert&&e.a.rem[e.a.L.length-1]>0.004?'<p class="hint" style="color:var(--warn)">El certificado ya se recibió: queda pendiente el pago final.</p>':'');
-  setOpts($("a2PagCon"),'<option value="">Siguiente pendiente (automático)</option>'+e.a.L.map(function(c,i){return e.a.rem[i]>0.004?'<option value="'+c.id+'">'+esc(c.c)+' · '+mx.format(e.a.rem[i])+'</option>':''}).join(""));
-  if(!$("a2PagMon").value){var ni=e.a.rem.findIndex(function(r){return r>0.004});$("a2PagMon").value=ni>-1?Math.round(e.a.rem[ni]*100)/100:""}
-  $("a2Pags").innerHTML=(t.pagos||[]).length?'<div class="wrap"><table style="min-width:520px"><thead><tr><th>Fecha</th><th>Folio</th><th>Concepto</th><th>Método</th><th class="n">Monto</th><th></th></tr></thead><tbody>'+t.pagos.map(function(g){return '<tr><td>'+esc(fd(g.fecha))+'</td><td>'+esc(g.folio||"")+'</td><td style="white-space:normal;min-width:180px">'+esc(conc2(e.a.out[g.id]))+'</td><td>'+esc(g.metodo||"")+(g.ref?'<br><span class="hint">'+esc(g.ref)+'</span>':'')+'</td><td class="n">'+mx.format(g.monto)+'</td><td>'+(esConf(g)?'<button data-rc="'+g.id+'">Recibo (PDF)</button>':'<span class="tag parcial">Por verificar</span>')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Aún no hay pagos registrados.</p>';
+  $("a2Mod").disabled=!ed||!!(t.pagos||[]).length;$("a2NCol").disabled=$("a2Mod").disabled;
+  $("a2PlanT").textContent="Plan de pagos · "+tagPlan286(t)+" ("+e.n+(e.n===1?" pago":" pagos")+")";$("a2PlanH").textContent=planTxt286(t)+" Los pagos y sus recibos se registran aquí y también se pueden cobrar y consultar en Finanzas.";$("a2LiqBar").innerHTML=a2LiqHtml(t);
+  var selc=$("a2PagCon").value;setOpts($("a2PagCon"),a2OpcHtml(t));if(selc&&Array.prototype.some.call($("a2PagCon").options,function(o){return o.value===selc}))$("a2PagCon").value=selc;
+  if(!$("a2PagMon").value){var op0=opciones286(t).find(function(x){return x.v===$("a2PagCon").value});$("a2PagMon").value=op0&&op0.mon?op0.mon:""}
+  $("a2Pags").innerHTML=(t.pagos||[]).length?'<div class="wrap"><table style="min-width:520px"><thead><tr><th>Fecha</th><th>Folio</th><th>Concepto</th><th>Método</th><th class="n">Monto</th><th></th></tr></thead><tbody>'+t.pagos.map(function(g){return '<tr><td>'+esc(fd(g.fecha))+'</td><td>'+esc(g.folio||"")+'</td><td style="white-space:normal;min-width:180px">'+esc(conc2(e.a.out[g.id],t)+(g.liq?" (liquidación)":""))+'</td><td>'+esc(g.metodo||"")+(g.ref?'<br><span class="hint">'+esc(g.ref)+'</span>':'')+'</td><td class="n">'+mx.format(g.monto)+'</td><td>'+(esConf(g)?'<button data-rc="'+g.id+'">Recibo (PDF)</button>':'<span class="tag parcial">Por verificar</span>')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Aún no hay pagos registrados.</p>';
 }
 $("a2PagCon").onchange=function(){
-  var t=A2ID&&A2[A2ID];if(!t)return;var e=est286(t),v=this.value;
-  var i=v?e.a.L.findIndex(function(c){return c.id===v}):e.a.rem.findIndex(function(r){return r>0.004});
-  $("a2PagMon").value=i>-1?Math.round(e.a.rem[i]*100)/100:"";
+  var t=A2ID&&A2[A2ID];if(!t)return;var v=this.value,op=opciones286(t).find(function(x){return x.v===v});
+  $("a2PagMon").value=op&&op.mon?op.mon:"";
 };
 /* Documentos: cargar (las imágenes se convierten a escala de grises), descargar y quitar */
 async function a2Click(e){
@@ -4282,10 +4321,9 @@ $("a2PagAdd").onclick=async function(){
   var mon=parseFloat($("a2PagMon").value);if(!(mon>0)){$("a2Msg").textContent="Escribe el monto del pago.";return}
   var b=this;b.disabled=true;
   try{
-    var n=await folios(1,"meta/folio286R"),g={id:uid(),fecha:$("a2PagFec").value||today(),monto:Math.round(mon*100)/100,metodo:$("a2PagMet").value,ref:$("a2PagRef").value.trim(),folio:"R286-"+String(n).padStart(6,"0"),cc:$("a2PagCon").value?[$("a2PagCon").value]:[],byn:APP?APP.name:""};if($("a2PagMet").value==="Transferencia")g.estado="pendiente";
-    await saveA2(Object.assign({},t,{pagos:(t.pagos||[]).concat([g])}));
-    $("a2PagMon").value="";$("a2PagRef").value="";renderA2Mas();renderA2();$("a2Msg").textContent="Pago registrado: "+g.folio+".";
-  }catch(e){dberr(e)}
+    var g=await registraPago286(t,{con:$("a2PagCon").value,mon:mon,fec:$("a2PagFec").value,met:$("a2PagMet").value,ref:$("a2PagRef").value.trim()});
+    $("a2PagMon").value="";$("a2PagRef").value="";renderA2Mas();renderA2();$("a2Msg").textContent="Pago registrado: "+g.folio+(g.liq?" (liquidación de colegiaturas).":".")
+  }catch(e){if(e&&e.message&&/liquidaci|pagos de Acuerdo|No se pudo registrar/.test(e.message))$("a2Msg").textContent=e.message;else dberr(e)}
   b.disabled=false;
 };
 $("a2Pags").onclick=function(e){
@@ -4330,7 +4368,10 @@ function ficha286PDF(t){
   d.setFontSize(8);d.setTextColor(90,90,90);d.text("Todos los documentos se entregan en escala de grises.",15,y);y+=6;d.setTextColor(0,0,0);
   sec("Plan de pagos");
   var e=est286(t);
-  fila("Inscripción",mx.format(A2C.ins));fila("Colegiaturas",A2C.n+" mensualidades de "+mx.format(A2C.col));fila("Pago final",mx.format(A2C.fin)+" al recibir el certificado");fila("Total",mx.format(e.tot)+" en "+e.n+" pagos");
+  fila("Modalidad",tagPlan286(t));
+  if(modo286(t)==="express"){fila("Primer pago (50 %)",mx.format(A2EXP.total/2)+" al iniciar el proceso");fila("Segundo pago (50 %)",mx.format(A2EXP.total/2)+" al entregar el certificado")}
+  else{fila("Inscripción",mx.format(A2C.ins));fila("Colegiaturas",nCol286(t)+" mensualidades de "+mx.format(A2C.col)+" (se pueden liquidar todas juntas cuando el certificado esté disponible)");fila("Pago final",mx.format(A2C.fin)+" al recibir el certificado")}
+  fila("Total",mx.format(e.tot)+" en "+e.n+" pagos");
   y+=2;if(y>252){d.addPage();y=30}
   d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(90,90,90);
   d.text(d.splitTextToSize("Declaro que los datos proporcionados son verdaderos y me comprometo a cumplir con el reglamento de la institución.",180),15,y);y+=18;
@@ -4343,7 +4384,7 @@ function recibo286PDF(t,g){
   if(!esConf(g)){alert("Este pago es una transferencia por verificar: el recibo se emite al confirmarla.");return}
   var J=pdfLib();if(!J)return;
   var d=new J.jsPDF({unit:"mm",format:"letter"}),W=215.9,e=est286(t),i=(t.pagos||[]).findIndex(function(x){return x.id===g.id});
-  var sub={pagos:(t.pagos||[]).slice(0,i+1)},es=est286(sub),cn=conc2(e.a.out[g.id]);
+  var sub={pagos:(t.pagos||[]).slice(0,i+1),plan:t.plan,nCol:t.nCol},es=est286(sub),cn=conc2(e.a.out[g.id],t)+(g.liq?" (liquidación)":"");
   function copia(y0,tag){
     var x0=15,x1=W-15,h=126,L=x0+6,V=x0+42;
     d.setDrawColor(15,107,99);d.setLineWidth(0.6);d.rect(x0,y0,x1-x0,h);d.setLineWidth(0.2);d.rect(x0+1.5,y0+1.5,x1-x0-3,h-3);
@@ -4716,9 +4757,9 @@ function verItems(){
     if(a.metodo!=="Transferencia")return;
     o.push({src:"tit",sid:t.id,pid:a.id,origen:"Titulaciones",nombre:nomTit(t),ref0:t.num,folio:a.folio||"",fecha:a.fecha,monto:a.monto,ref:a.ref||"",ok:esConf(a),confFecha:a.confFecha||"",confRef:a.confRef||"",concepto:"Abono a cuenta · "+(TGRADOS[t.grado]||"")});
   })});
-  Object.keys(A2||{}).forEach(function(k){var t=A2[k],L=cargos286();(t.pagos||[]).forEach(function(g){
+  Object.keys(A2||{}).forEach(function(k){var t=A2[k],L=cargos286(t);(t.pagos||[]).forEach(function(g){
     if(g.metodo!=="Transferencia")return;var ok=esConf(g);
-    o.push({src:"a2",sid:t.id,pid:g.id,origen:"Acuerdo 286",nombre:nom2(t),ref0:t.num,folio:g.folio||"",fecha:g.fecha,monto:g.monto,ref:g.ref||"",ok:ok,confFecha:g.confFecha||"",confRef:g.confRef||"",concepto:ok?(conc2(ap286(t).out[g.id])||"Pago"):((g.cc||[]).map(function(id){return (L.find(function(c){return c.id===id})||{}).c}).filter(Boolean).join(", ")||"Siguiente pago pendiente")});
+    o.push({src:"a2",sid:t.id,pid:g.id,origen:"Acuerdo 286",nombre:nom2(t),ref0:t.num,folio:g.folio||"",fecha:g.fecha,monto:g.monto,ref:g.ref||"",ok:ok,confFecha:g.confFecha||"",confRef:g.confRef||"",concepto:ok?(conc2(ap286(t).out[g.id],t)||"Pago"):((g.cc||[]).map(function(id){return (L.find(function(c){return c.id===id})||{}).c}).filter(Boolean).join(", ")||"Siguiente pago pendiente")});
   })});
   return o;
 }
@@ -5075,7 +5116,7 @@ function buscaRecibo(folio){
     r={origen:"Titulaciones",nombre:nomTit(t),ref0:"Trámite "+t.num,concepto:"Abono a cuenta · "+(TGRADOS[t.grado]||""),monto:a.monto,fecha:a.fecha,metodo:a.metodo,estado:ok?(a.estado==="confirmado"?"Pago confirmado":"Registrado"):"Transferencia pendiente de confirmar",folio:a.folio,pend:!ok};return true})});
   if(!r)Object.keys(A2||{}).some(function(k){var t=A2[k];return (t.pagos||[]).some(function(g){
     if(!es(g.folio))return false;var ok=esConf(g);
-    r={origen:"Acuerdo 286",nombre:nom2(t),ref0:"Trámite "+t.num,concepto:ok?(conc2(ap286(t).out[g.id])||"Pago"):"Pago pendiente",monto:g.monto,fecha:g.fecha,metodo:g.metodo,estado:ok?(g.estado==="confirmado"?"Pago confirmado":"Registrado"):"Transferencia pendiente de confirmar",folio:g.folio,pend:!ok};return true})});
+    r={origen:"Acuerdo 286",nombre:nom2(t),ref0:"Trámite "+t.num,concepto:ok?(conc2(ap286(t).out[g.id],t)||"Pago"):"Pago pendiente",monto:g.monto,fecha:g.fecha,metodo:g.metodo,estado:ok?(g.estado==="confirmado"?"Pago confirmado":"Registrado"):"Transferencia pendiente de confirmar",folio:g.folio,pend:!ok};return true})});
   if(!r)Object.keys(NOM||{}).some(function(mes){var pg=(NOM[mes]||{}).pagos||{};return Object.keys(pg).some(function(did){
     var p=pg[did];if(!es(p.folio))return false;
     r={origen:"Nómina docente",nombre:(DOC[did]||{}).nombre||"Docente",ref0:"Mes "+mes,concepto:"Pago de nómina docente",monto:p.monto,fecha:p.fecha,metodo:p.metodo,estado:"Pagado",folio:p.folio,pend:false};return true})});
@@ -7554,7 +7595,8 @@ function ntItems(){
       var cp=califPend();if(cp.length)T({id:"t:cal",ico:"cal",n:cp.length,titulo:ntPlural(cp.length,"asignatura con calificaciones sin subir","asignaturas con calificaciones sin subir"),detalle:cp.slice(0,3).map(function(c){var d=DOC[c.m.docId];return c.m.nom+" ("+(d?d.nombre:"sin docente")+", evaluación "+fd(c.m.ev)+")"}).join("; ")+(cp.length>3?"…":""),go:function(){ir("esc");etab("K")}});
     }
     if(APP&&APP.rol==="admin"&&window.LF_NUBE){var nb=(NOTS.pendientes||[]).length;if(nb)T({id:"t:bor",ico:"borr",n:nb,titulo:ntPlural(nb,"solicitud de eliminación por aprobar","solicitudes de eliminación por aprobar"),detalle:"Alguien del personal quiere borrar información y espera tu respuesta.",go:function(){ir("not")}})}
-    if(permiso("pagos")==="editar"){var nt=pagoPend().length;if(nt)T({id:"t:pag",ico:"pago",n:nt,titulo:ntPlural(nt,"transferencia por confirmar","transferencias por confirmar"),detalle:"Confírmalas cuando aparezcan en la app del banco.",go:function(){ir("pagos")}})}
+    if(permiso("pagos")==="editar"){var n86=Object.keys(A2||{}).filter(function(k){var t=A2[k];return cert286Listo(t)&&est286(t).saldo>0.004}).length;if(n86)T({id:"t:a86",ico:"pago",n:n86,titulo:ntPlural(n86,"alumno de Acuerdo 286 con certificado disponible y saldo pendiente","alumnos de Acuerdo 286 con certificado disponible y saldo pendiente"),detalle:"Pueden liquidar lo que deben (colegiaturas y pago final).",go:function(){ir("pagos");vista("a86")}});
+      var nt=pagoPend().length;if(nt)T({id:"t:pag",ico:"pago",n:nt,titulo:ntPlural(nt,"transferencia por confirmar","transferencias por confirmar"),detalle:"Confírmalas cuando aparezcan en la app del banco.",go:function(){ir("pagos")}})}
     if(permiso("ver")==="editar"){var nv=verItems().filter(function(x){return !x.ok}).length;if(nv)T({id:"t:ver",ico:"ver",n:nv,titulo:ntPlural(nv,"pago por verificar","pagos por verificar"),detalle:"Transferencias que esperan comprobarse contra la app del banco.",go:function(){ir("ver")}})}
     if(permiso("acuerdos")!=="none"){var av=Object.keys(ACU||{}).filter(function(k){return estAc(ACU[k])==="Vencido"}).length;if(av)T({id:"t:acu",ico:"acu",n:av,titulo:ntPlural(av,"acuerdo de pago vencido","acuerdos de pago vencidos"),detalle:"Hay parcialidades que no se pagaron en la fecha acordada.",go:function(){ir("acu")}})}
   }
@@ -8038,6 +8080,86 @@ function fzLista(){
 $("inFichas").onclick=function(){$("fzlQ").value="";fzLista();$("dFzL").showModal()};
 $("fzlQ").oninput=fzLista;$("fzlCls").onclick=function(){$("dFzL").close()};
 $("fzlL").onclick=function(e){var t=e.target.dataset;if(!t)return;if(t.fzf){$("dFzL").close();abreFz(t.fzf)}else if(t.fzp){var o=fzObj(t.fzp);if(o)fichaInscPDF(o.s,o.g)}};
+/* ===== Acuerdo 286: modalidades de pago (mensual o Express), liquidación y cobro desde Finanzas ===== */
+var A2EXP={total:11000};
+function modo286(t){return t&&t.plan==="express"?"express":"mensual"}
+function nCol286(t){return (t&&t.nCol>0)?Math.min(Math.round(t.nCol),24):A2C.n}
+function tagPlan286(t){return modo286(t)==="express"?"Plan Express":"Plan mensual"}
+function cert286Listo(t){return !!(t&&(t.certListo||t.cert||Object.keys(RGD||{}).some(function(k){return RGD[k]&&RGD[k].sid===t.id})))}
+function liq286(t){
+  var e=est286(t),ids=[],mon=0,fin=0,finId=null;
+  e.a.L.forEach(function(c,i){if(e.a.rem[i]<0.005)return;if(c.k){ids.push(c.id);mon+=e.a.rem[i]}else if(c.fin){finId=c.id;fin+=e.a.rem[i]}});
+  return {ids:ids,n:ids.length,mon:r2(mon),fin:r2(fin),finId:finId,todo:r2(mon+fin),listo:cert286Listo(t)&&modo286(t)==="mensual"};
+}
+function prox286(t){var e=est286(t),i=e.a.rem.findIndex(function(r){return r>0.004});return i>-1?{c:e.a.L[i].c,m:r2(e.a.rem[i]),id:e.a.L[i].id}:null}
+function planTxt286(t){
+  return modo286(t)==="express"
+    ?"Plan Express: "+mx.format(A2EXP.total)+" en 2 pagos de "+mx.format(A2EXP.total/2)+" (50 % al iniciar el proceso y 50 % al entregar el certificado)."
+    :"Plan mensual: inscripción de "+mx.format(A2C.ins)+", "+nCol286(t)+" colegiaturas mensuales de "+mx.format(A2C.col)+" y un pago final de "+mx.format(A2C.fin)+" por el certificado. Cuando el certificado ya esté disponible (cargado o recibido en resguardo) el alumno puede liquidar de una sola vez todas sus colegiaturas pendientes.";
+}
+function opciones286(t){
+  var e=est286(t),L=liq286(t),n=prox286(t),o=[{v:"",label:"Siguiente pendiente (automático)"+(n?" · "+mx.format(n.m):""),mon:n?n.m:0}];
+  e.a.L.forEach(function(c,i){if(e.a.rem[i]>0.004)o.push({v:c.id,label:c.c+" · "+mx.format(e.a.rem[i]),mon:r2(e.a.rem[i])})});
+  if(L.listo&&L.n>0){o.push({v:"liq",label:"Liquidar las "+L.n+(L.n===1?" colegiatura pendiente":" colegiaturas pendientes")+" · "+mx.format(L.mon),mon:L.mon});if(L.fin>0)o.push({v:"liqT",label:"Liquidar todo el plan (colegiaturas + pago final) · "+mx.format(L.todo),mon:L.todo})}
+  return o;
+}
+/* Registra un pago de Acuerdo 286 (lo usan el módulo 286 y Finanzas). Quien no edita 286 lo hace por el servicio de pagos. */
+function puede286Escribir(){return esAdminReal()||permiso("a286")==="editar"}
+async function registraPago286(t,o){
+  var mon=Math.round(o.mon*100)/100,cc=[],liq=false,L=liq286(t);
+  if(o.con==="liq"||o.con==="liqT"){
+    if(!L.listo||!L.n)throw new Error("La liquidación se habilita cuando el certificado ya está disponible.");
+    cc=L.ids.slice();if(o.con==="liqT"&&L.finId)cc.push(L.finId);liq=true;
+  }else if(o.con)cc=[o.con];
+  var n=await folios(1,"meta/folio286R"),g={id:uid(),fecha:o.fec||today(),monto:mon,metodo:o.met,ref:o.ref||"",folio:"R286-"+String(n).padStart(6,"0"),cc:cc,byn:APP?APP.name:""};
+  if(liq)g.liq=1;if(o.met==="Transferencia")g.estado="pendiente";
+  if(puede286Escribir()){await saveA2(Object.assign({},t,{pagos:(t.pagos||[]).concat([g])}))}
+  else{var r=await cbApi("POST","/api/a286/pago",{id:t.id,pago:g});if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo registrar el pago.");A2[t.id]=Object.assign({},A2[t.id],{pagos:((A2[t.id]||{}).pagos||[]).concat([g])})}
+  return g;
+}
+function a2OpcHtml(t){return opciones286(t).map(function(x){return '<option value="'+attr(x.v)+'">'+esc(x.label)+'</option>'}).join("")}
+function a2LiqHtml(t){
+  var L=liq286(t);if(!(L.listo&&L.n>0))return "";
+  return '<div class="mod" style="cursor:default;border-color:var(--ok);margin:8px 0"><b>El certificado ya está disponible</b><span>El alumno puede liquidar sus '+L.n+(L.n===1?' colegiatura pendiente':' colegiaturas pendientes')+' ('+mx.format(L.mon)+')'+(L.fin>0?' o todo el plan, con el pago final ('+mx.format(L.todo)+')':'')+'.</span></div>';
+}
+/* ---- Finanzas > Acuerdo 286: lista y cobro ---- */
+var A86ID=null;
+function renderA86(){
+  if(!$("a86Tb"))return;
+  var q=($("a86Bus").value||"").toLowerCase(),fe=$("a86Est").value,ed=permiso("pagos")==="editar";
+  var L=Object.keys(A2||{}).map(function(k){return A2[k]}).filter(function(t){var e=est286(t);return (fe==="saldo"?e.saldo>0.004:fe==="liq"?e.saldo<=0.004:fe==="cert"?cert286Listo(t)&&e.saldo>0.004:true)&&(nom2(t)+" "+t.num).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return String(b.num).localeCompare(String(a.num))});
+  var pend=Object.keys(A2||{}).filter(function(k){return est286(A2[k]).saldo>0.004}).length;
+  $("a86S").textContent=Object.keys(A2||{}).length?Object.keys(A2).length+" inscripciones · "+pend+(pend===1?" con saldo pendiente":" con saldo pendiente"):"Todavía no hay inscripciones de Acuerdo 286.";
+  $("a86Tb").innerHTML=L.length?L.map(function(t){var e=est286(t),n=prox286(t),cl=cert286Listo(t);
+    return '<tr><td>'+esc(t.num)+'</td><td style="white-space:normal">'+esc(nom2(t))+'</td><td>'+(modo286(t)==="express"?"Express":"Mensual")+'</td><td class="n">'+mx.format(e.tot)+'</td><td class="n">'+mx.format(e.pag)+'</td><td class="n"><b>'+mx.format(e.saldo)+'</b></td><td style="white-space:normal">'+(n?esc(n.c)+'<br><span class="hint">'+mx.format(n.m)+'</span>':'<span class="tag pagado">Liquidado</span>')+'</td><td>'+(cl?'<span class="tag pagado">Disponible</span>':'—')+'</td><td>'+(ed&&e.saldo>0.004?'<button class="p" data-a86="'+attr(t.id)+'">Cobrar</button> ':'')+'<button data-a86v="'+attr(t.id)+'">Ver pagos</button></td></tr>'}).join(""):vacio(9,"No hay inscripciones con esa búsqueda.");
+}
+function a86Detalle(){
+  var t=A2[A86ID];if(!t)return;var e=est286(t),ed=permiso("pagos")==="editar";
+  $("a86T").textContent="Cobro Acuerdo 286 · "+t.num;$("a86S2").textContent=nom2(t)+" · "+tagPlan286(t);
+  $("a86Res").innerHTML='Pagos cubiertos: <b>'+e.cub+' de '+e.n+'</b> · Total: <b>'+mx.format(e.tot)+'</b> · Pagado: <b>'+mx.format(e.pag)+'</b> · Saldo: <b>'+mx.format(e.saldo)+'</b>';
+  $("a86Hint").textContent=planTxt286(t);$("a86Liq").innerHTML=a2LiqHtml(t);
+  $("a86Plan").innerHTML='<div class="wrap"><table style="min-width:420px"><thead><tr><th>Pago</th><th class="n">Monto</th><th class="n">Pagado</th><th>Estado</th></tr></thead><tbody>'+e.a.L.map(function(c,i){var p=c.m-e.a.rem[i];return '<tr><td>'+esc(c.c)+'</td><td class="n">'+mx.format(c.m)+'</td><td class="n">'+mx.format(p)+'</td><td>'+(e.a.rem[i]<0.005?'<span class="tag pagado">Pagado</span>':p>0.004?'<span class="tag parcial">Abono</span>':'<span class="tag sin">Pendiente</span>')+'</td></tr>'}).join("")+'</tbody></table></div>';
+  var sel=$("a86Con").value;setOpts($("a86Con"),a2OpcHtml(t));if(sel&&Array.prototype.some.call($("a86Con").options,function(o){return o.value===sel}))$("a86Con").value=sel;
+  var op=opciones286(t).find(function(x){return x.v===$("a86Con").value});if(!$("a86Mon").value)$("a86Mon").value=op&&op.mon?op.mon:"";
+  $("a86Form").hidden=!ed||e.saldo<=0.004;
+  $("a86Pags").innerHTML=(t.pagos||[]).length?'<div class="wrap"><table style="min-width:520px"><thead><tr><th>Fecha</th><th>Folio</th><th>Concepto</th><th>Método</th><th class="n">Monto</th><th></th></tr></thead><tbody>'+t.pagos.map(function(g){return '<tr><td>'+esc(fd(g.fecha))+'</td><td>'+esc(g.folio||"")+'</td><td style="white-space:normal;min-width:180px">'+esc(conc2(e.a.out[g.id],t)+(g.liq?" (liquidación)":""))+'</td><td>'+esc(g.metodo||"")+'</td><td class="n">'+mx.format(g.monto)+'</td><td>'+(esConf(g)?'<button data-a86r="'+attr(g.id)+'">Recibo (PDF)</button>':'<span class="tag parcial">Por verificar</span>')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Aún no hay pagos registrados.</p>';
+}
+function abreA86(id){A86ID=id;$("a86Msg").textContent="";$("a86Mon").value="";$("a86Fec").value=today();$("a86Ref").value="";$("a86Con").innerHTML="";a86Detalle();$("dA86").showModal()}
+$("a86Bus").oninput=$("a86Est").onchange=renderA86;
+$("a86Tb").onclick=function(e){var d=e.target.dataset;if(d.a86)abreA86(d.a86);else if(d.a86v)abreA86(d.a86v)};
+$("a86Con").onchange=function(){var t=A2[A86ID];if(!t)return;var op=opciones286(t).find(function(x){return x.v===$("a86Con").value});$("a86Mon").value=op&&op.mon?op.mon:""};
+$("a86Cls").onclick=function(){$("dA86").close();renderA86()};
+$("a86Pags").onclick=function(e){var id=e.target.dataset&&e.target.dataset.a86r,t=A2[A86ID];if(!id||!t)return;var g=(t.pagos||[]).find(function(x){return x.id===id});if(g)recibo286PDF(t,g)};
+$("a86Add").onclick=async function(){
+  var t=A2[A86ID];if(!t||permiso("pagos")!=="editar")return;
+  var mon=parseFloat($("a86Mon").value);if(!(mon>0)){$("a86Msg").style.color="var(--bad)";$("a86Msg").textContent="Escribe el monto del pago.";return}
+  var b=this;b.disabled=true;
+  try{var g=await registraPago286(t,{con:$("a86Con").value,mon:mon,fec:$("a86Fec").value,met:$("a86Met").value,ref:$("a86Ref").value.trim()});
+    $("a86Mon").value="";$("a86Ref").value="";a86Detalle();renderA86();$("a86Msg").style.color="var(--ok)";$("a86Msg").textContent="Pago registrado: "+g.folio+(g.estado?" (transferencia por verificar).":".")}
+  catch(e){$("a86Msg").style.color="var(--bad)";$("a86Msg").textContent=(e&&e.message)||"No se pudo registrar el pago."}
+  b.disabled=false;
+};
+$("tA86").onclick=function(){vista("a86")};
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}
@@ -8154,7 +8276,7 @@ $("usL").onclick=async function(e){
     else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN}).catch(function(){});
     rebuild();
   },onErr);
-  [["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+  [["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
     DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(typeof ntProgramar==="function")ntProgramar();if(c[0]==="calif"||c[0]==="constancias")render();if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
   DBH.collection("gastos").onSnapshot(function(s){G={};s.docs.forEach(function(d){G[d.id]=d.data()});if(!$("vGa").hidden)renderCaja()},onErr);

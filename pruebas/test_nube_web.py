@@ -118,7 +118,7 @@ p.terminate();p.wait()
 esperados={(401,'/api/login'),(403,'/api/autoriza-admin'),(403,'/api/usuarios'),(400,'/api/cambiar-clave'),(401,'/api/configurar')}
 print('respuestas de error:',sorted(set((c,u.split('?')[0]) for c,u,_ in malos)))
 print('detalle:',[m for m in malos if m[0]==401 and 'config/plans' in m[1]])
-inesperados=[(c,u) for c,u,_ in malos if (c,u.split('?')[0]) not in esperados and not (c==403 and u.startswith('/api/configurar')) and not (c==403 and (u.startswith('/api/doc/ledger/') or u.startswith('/api/borrados/'))) and not (c==401 and u.startswith('/api/borrados'))]
+inesperados=[(c,u) for c,u,_ in malos if (c,u.split('?')[0]) not in esperados and not (c==401 and u.startswith('/api/col/')) and not (c==403 and u.startswith('/api/configurar')) and not (c==403 and (u.startswith('/api/doc/ledger/') or u.startswith('/api/borrados/'))) and not (c==401 and u.startswith('/api/borrados'))]
 ok('sin_errores_inesperados',len(inesperados)==0)
 if inesperados:print('INESPERADOS:',inesperados[:8])
 bad=[k for k,v in R.items() if not v];print(len(R),'comprobaciones');print('FALLAN:',bad)

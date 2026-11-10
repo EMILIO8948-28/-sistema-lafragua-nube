@@ -152,7 +152,7 @@ const listaUsuarios = () => q.usrs.all().map(x => publicoUsuario(x));
    Cada usuario tiene un nivel por módulo: "ver" (solo lectura) o "editar" (lectura y escritura).
    L = colecciones que lee; E = colecciones que además escribe cuando el nivel es "editar". */
 const MODULOS = {
-  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'cobranza', 'avisos'], E: ['ledger', 'meta', 'constancias'], plans: true },
+  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'cobranza', 'avisos', 'acuerdo286'], E: ['ledger', 'meta', 'constancias'], plans: true },
   corte:        { L: ['gastos', 'cortes', 'ledger', 'students'], E: ['gastos', 'cortes'], plans: true },
   estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'egresados'], E: [], plans: true, nomina: true },
   ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
@@ -261,6 +261,14 @@ function puedeArchivos(s, privado) {
 }
 const CAMPOS_DOCENTE = ['mat', 'nombre', 'carrera', 'programa', 'ingreso', 'sexo', 'nuevo'];
 function reduce(s, col, data) {
+  /* Quien cobra desde Finanzas ve de Acuerdo 286 solo lo necesario para cobrar (sin foto, documentos ni archivos) */
+  if (col === 'acuerdo286' && s.rol !== 'admin') {
+    const P0 = s.perm || {};
+    if ((P0.a286 && P0.a286 !== 'none') || (P0.estado && P0.estado !== 'none')) return data;
+    const o = {}; ['id', 'num', 'nombre', 'apPat', 'apMat', 'tel', 'fecha', 'plan', 'nCol', 'pagos', 'enviado'].forEach(k => { if (data[k] !== undefined) o[k] = data[k]; });
+    o.certListo = !!data.cert || !!q.lista.all('resguardos286').some(r => { try { return JSON.parse(r.data).sid === data.id; } catch (e) { return false; } });
+    return o;
+  }
   if (col !== 'students' || s.rol === 'admin') return data;
   const P = s.perm || {};
   if (VER_ALUMNOS_COMPLETOS.some(m => P[m] && P[m] !== 'none')) return data;
@@ -811,6 +819,26 @@ async function api(req, res, partes) {
       audita(s.u, req, 'Cambió su fotografía de perfil', 'docente ' + did);
       return responde(res, 200, { ok: true });
     }
+  }
+  /* Cobro de Acuerdo 286 desde Finanzas: solo agrega un pago a la inscripción (no toca documentos ni datos) */
+  if (tipo === 'a286' && a === 'pago' && m === 'POST') {
+    const P = s.perm || {};
+    if (!(s.rol === 'admin' || P.pagos === 'editar' || P.a286 === 'editar')) return responde(res, 403, { error: 'No tienes permiso para registrar pagos de Acuerdo 286.' });
+    const c = await leeJSON(req, 20000), g = (c.pago && typeof c.pago === 'object') ? c.pago : {}, id = String(c.id || '');
+    const r0 = NOMBRE_OK.test(id) ? q.uno.get('acuerdo286', id) : null;
+    if (!r0) return responde(res, 404, { error: 'No existe esa inscripción.' });
+    const monto = Number(g.monto), cc = Array.isArray(g.cc) ? g.cc : [];
+    const valido = typeof g.id === 'string' && /^[A-Za-z0-9]{4,40}$/.test(g.id) && /^\d{4}-\d{2}-\d{2}$/.test(String(g.fecha || '')) && monto > 0 && monto <= 100000 && ['Efectivo', 'Transferencia', 'Tarjeta', 'Depósito'].includes(g.metodo) && /^R286-\d{6}$/.test(String(g.folio || '')) && cc.length <= 40 && cc.every(x => typeof x === 'string' && /^[A-Za-z0-9]{1,12}$/.test(x)) && String(g.ref || '').length <= 120 && String(g.byn || '').length <= 80 && (g.estado === undefined || g.estado === 'pendiente') && ((g.metodo === 'Transferencia') === (g.estado === 'pendiente'));
+    if (!valido) return responde(res, 400, { error: 'El pago no es válido.' });
+    let d; try { d = JSON.parse(r0.data); } catch (e) { return responde(res, 500, { error: 'Error interno' }); }
+    d.pagos = Array.isArray(d.pagos) ? d.pagos : [];
+    if (d.pagos.some(x => x && (x.id === g.id || x.folio === g.folio))) return responde(res, 409, { error: 'Ese pago o ese folio ya están registrados.' });
+    const nuevo = { id: g.id, fecha: g.fecha, monto: Math.round(monto * 100) / 100, metodo: g.metodo, ref: String(g.ref || ''), folio: g.folio, cc, byn: String(g.byn || '') };
+    if (g.liq) nuevo.liq = 1; if (g.estado) nuevo.estado = 'pendiente';
+    d.pagos.push(nuevo);
+    q.pon.run('acuerdo286', id, JSON.stringify(d), Date.now()); difunde('acuerdo286', id);
+    audita(s.u, req, 'Registró un pago de Acuerdo 286', g.folio + ' · ' + dinero(monto));
+    return responde(res, 200, { ok: true });
   }
   if (tipo === 'almacenamiento' && m === 'GET') {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });

@@ -19,8 +19,8 @@ def W(pg,js,t=40):
         time.sleep(0.1)
     raise TimeoutError('espera: '+js[:90])
 def fijaNots(pg):
-    pg.evaluate("window.borradosLista=async function(){return {pendientes:[{id:'b1'}],historial:[]}};0");pg.evaluate("NOTS={pendientes:[{id:'b1'}]};ntRender();0");time.sleep(0.4)
-    pg.evaluate("window.borradosLista=async function(){return {pendientes:[{id:'b1'}],historial:[]}};0")
+    for _ in range(4):
+        pg.evaluate("window.borradosLista=async function(){return {pendientes:[{id:'b1'}],historial:[]}};0");pg.evaluate("NOTS={pendientes:[{id:'b1'}]};ntRender();0");time.sleep(0.5)
 hoy=datetime.date.today();iso=lambda d:d.isoformat()
 with sync_playwright() as pw:
     b=pw.chromium.launch();ctx=b.new_context(viewport={'width':1100,'height':900});ctx.set_default_timeout(15000)

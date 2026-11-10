@@ -44,5 +44,6 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_firma_contrato.py` · firma electrónica en pantalla táctil, fotos de la INE, PDF firmado con anexo, bloqueo y permisos (36).
 - `test_foto_docente.py` · foto del rostro del docente: cámara, expediente, Mi perfil, seguridad del servicio y credencial de docentes (34).
 - `test_ficha_firma.py` · ficha de inscripción con firma electrónica: firmas del alumno o tutor y de Control escolar, PDF firmado, lista, campana y permisos (34).
+- `test_a286_planes.py` · Acuerdo 286: plan mensual y Plan Express, liquidación con certificado disponible, cobro desde Finanzas, servicio de pagos y permisos (50).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

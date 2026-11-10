@@ -27,7 +27,7 @@ with sync_playwright() as pw:
     caja=lambda:pg.evaluate("(function(){var r=document.getElementById('bBk').getBoundingClientRect(),m=document.querySelector('main').getBoundingClientRect();return {x:r.left,r:r.right,t:r.top,b:r.bottom,mr:m.right,mt:m.top,vis:r.width>0&&r.height>0}})()")
     r=caja()
     ok('el_boton_esta_arriba_a_la_derecha',r['vis'] and r['t']<110 and abs(r['r']-r['mr'])<30 and r['x']>600)
-    ok('ya_no_esta_en_la_barra_de_finanzas',pg.evaluate("document.querySelectorAll('#vAl #bBk').length")==0 and pg.evaluate("document.getElementById('bBk').parentElement.tagName")=='MAIN')
+    ok('ya_no_esta_en_la_barra_de_finanzas',pg.evaluate("document.querySelectorAll('#vAl #bBk').length")==0 and pg.evaluate("document.getElementById('bBk').parentElement.id")=='accTop')
     ok('trae_el_logotipo_de_respaldo_y_el_texto',pg.evaluate("!!document.querySelector('#bBk svg')") and 'Respaldo' in pg.inner_text('#bBk'))
     ok('con_la_insignia_de_advertencia_roja_si_nunca_se_ha_respaldado',pg.evaluate("document.getElementById('bBk').className")=='bk-top rojo' and pg.is_visible('#bkIns') and pg.inner_text('#bkIns')=='!' and 'Aún no has hecho un respaldo' in pg.get_attribute('#bBk','title'))
     for m in ['esc','pagos','nom','na','home']:

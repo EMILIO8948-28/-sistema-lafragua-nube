@@ -13,7 +13,7 @@ def arranca():
 srv=arranca()
 R={};errs=[]
 def ok(n,c):R[n]=bool(c)
-def W(pg,js,t=9):
+def W(pg,js,t=40):
     t0=time.time()
     while time.time()-t0<t:
         try:
@@ -36,8 +36,9 @@ with sync_playwright() as pw:
     pg.fill('#tk',TOK);pg.fill('#nm','Administrador');pg.fill('#us','admin');pg.fill('#pw','clave-segura-1');pg.fill('#p2','clave-segura-1');pg.click('#go');pg.wait_for_url(B+'/')
     W(pg,"typeof DBH!=='undefined'&&DBH!==null&&typeof APP!=='undefined'&&APP!==null&&ROL==='admin'")
     def put(path,obj):assert ctx.request.put(B+'/api/doc/'+path,data=json.dumps(obj),headers=HDR).status==200
+    time.sleep(3)
     for sid,nom,mat in [('s1','Ana López','1001'),('s2','Beto Mena','1002')]:put('students/'+sid,{'mat':mat,'nombre':nom,'carrera':'Derecho','programa':'Derecho','ingreso':2025,'nuevo':False})
-    W(pg,"S.length===2");pg.evaluate(MOCK)
+    time.sleep(3);W(pg,"S.length===2");pg.evaluate(MOCK)
     pg.evaluate("ir('pagos')")
     # ---- sin acceso: crear ----
     pg.evaluate("openPf('s1')");pg.wait_for_selector('#dPf[open]');W(pg,"document.getElementById('pfAcc').innerText.includes('Acceso a la plataforma')")

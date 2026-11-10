@@ -54,4 +54,4 @@ Los recibos, constancias y credenciales llevan un código QR que abre la página
 
 
 ## Precarga de planes de estudio (opcional)
-La carpeta `precarga/` trae los planes de Pedagogía (47 asignaturas), Contaduría (52), Derecho (49), Enfermería (54, con contenido propuesto pendiente de revisión académica) e Ingeniería Industrial (39, provisional), con sus contenidos. Al publicar esta versión, el sistema los carga solo, una única vez, si Pedagogía aún no tiene materias. Si ya tenía materias, no toca nada. Para desactivarlo, agrega en Render > Environment la variable `LF_SIN_PRECARGA` con el valor `1`.
+La carpeta `precarga/` trae los planes de Pedagogía (47 asignaturas), Administración (47), Contaduría (52), Derecho (49), Enfermería (54, con contenido propuesto pendiente de revisión académica) e Ingeniería Industrial (39, provisional), con sus contenidos. Al publicar esta versión, el sistema los carga solo, una única vez, si Pedagogía aún no tiene materias. Si ya tenía materias, no toca nada. Para desactivarlo, agrega en Render > Environment la variable `LF_SIN_PRECARGA` con el valor `1`.

@@ -1,0 +1,771 @@
+{
+ "app": "colegiaturas-universidad-lafragua",
+ "formato": 1,
+ "exportado": "2026-11-10T01:07:48.000Z",
+ "exportadoPor": "Carga del plan de estudios de Administración",
+ "colecciones": {
+  "catalogo": {
+   "administracion": {
+    "plan": "Administración",
+    "items": [
+     {
+      "id": "adm-tc101",
+      "cuat": 1,
+      "clave": "TC101",
+      "nom": "Metodología de la investigación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc102",
+      "cuat": 1,
+      "clave": "TC102",
+      "nom": "Redacción avanzada",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc103",
+      "cuat": 1,
+      "clave": "TC103",
+      "nom": "Matemáticas aplicadas a los negocios I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc104",
+      "cuat": 1,
+      "clave": "TC104",
+      "nom": "Visión microeconómica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc105",
+      "cuat": 1,
+      "clave": "TC105",
+      "nom": "Informática aplicada a los negocios I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc106",
+      "cuat": 1,
+      "clave": "TC106",
+      "nom": "Derecho constitucional y administrativo",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc207",
+      "cuat": 2,
+      "clave": "TC207",
+      "nom": "Administración I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc208",
+      "cuat": 2,
+      "clave": "TC208",
+      "nom": "Teoría de la comunicación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc209",
+      "cuat": 2,
+      "clave": "TC209",
+      "nom": "Matemáticas aplicadas a los negocios II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc210",
+      "cuat": 2,
+      "clave": "TC210",
+      "nom": "Visión macroeconómica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc211",
+      "cuat": 2,
+      "clave": "TC211",
+      "nom": "Informática aplicada a los negocios II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc212",
+      "cuat": 2,
+      "clave": "TC212",
+      "nom": "Derecho mercantil",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc313",
+      "cuat": 3,
+      "clave": "TC313",
+      "nom": "Administración II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc314",
+      "cuat": 3,
+      "clave": "TC314",
+      "nom": "Sociología de las organizaciones",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc315",
+      "cuat": 3,
+      "clave": "TC315",
+      "nom": "Estadística para los negocios",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc316",
+      "cuat": 3,
+      "clave": "TC316",
+      "nom": "Mercadotecnia",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc317",
+      "cuat": 3,
+      "clave": "TC317",
+      "nom": "Informática aplicada a los negocios III",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-tc318",
+      "cuat": 3,
+      "clave": "TC318",
+      "nom": "Información financiera",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae420",
+      "cuat": 4,
+      "clave": "LAE420",
+      "nom": "Administración de la producción",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae421",
+      "cuat": 4,
+      "clave": "LAE421",
+      "nom": "Investigación de operaciones",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae422",
+      "cuat": 4,
+      "clave": "LAE422",
+      "nom": "Sistemas y procedimientos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae423",
+      "cuat": 4,
+      "clave": "LAE423",
+      "nom": "Comportamiento organizacional",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae424",
+      "cuat": 4,
+      "clave": "LAE424",
+      "nom": "Derecho civil",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae525",
+      "cuat": 5,
+      "clave": "LAE525",
+      "nom": "Calidad total",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae527",
+      "cuat": 5,
+      "clave": "LAE527",
+      "nom": "Costos I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae528",
+      "cuat": 5,
+      "clave": "LAE528",
+      "nom": "Sistemas administrativos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae529",
+      "cuat": 5,
+      "clave": "LAE529",
+      "nom": "Derecho laboral",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae630",
+      "cuat": 6,
+      "clave": "LAE630",
+      "nom": "Contabilidad administrativa",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae631",
+      "cuat": 6,
+      "clave": "LAE631",
+      "nom": "Finanzas I",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae632",
+      "cuat": 6,
+      "clave": "LAE632",
+      "nom": "Costos II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae633",
+      "cuat": 6,
+      "clave": "LAE633",
+      "nom": "Presupuestos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae634",
+      "cuat": 6,
+      "clave": "LAE634",
+      "nom": "Administración de la mercadotecnia",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae735",
+      "cuat": 7,
+      "clave": "LAE735",
+      "nom": "Liderazgo",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae736",
+      "cuat": 7,
+      "clave": "LAE736",
+      "nom": "Finanzas II",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae737",
+      "cuat": 7,
+      "clave": "LAE737",
+      "nom": "Administración por proyectos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae738",
+      "cuat": 7,
+      "clave": "LAE738",
+      "nom": "Estudio contable",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae739",
+      "cuat": 7,
+      "clave": "LAE739",
+      "nom": "Derecho fiscal",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae840",
+      "cuat": 8,
+      "clave": "LAE840",
+      "nom": "Auditoría administrativa",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae841",
+      "cuat": 8,
+      "clave": "LAE841",
+      "nom": "Trabajo en equipo y negociación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae842",
+      "cuat": 8,
+      "clave": "LAE842",
+      "nom": "Habilidades directivas",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae843",
+      "cuat": 8,
+      "clave": "LAE843",
+      "nom": "Análisis financiero",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae844",
+      "cuat": 8,
+      "clave": "LAE844",
+      "nom": "Relaciones públicas",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae945",
+      "cuat": 9,
+      "clave": "LAE945",
+      "nom": "Seminario de titulación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae946",
+      "cuat": 9,
+      "clave": "LAE946",
+      "nom": "Ética profesional",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae947",
+      "cuat": 9,
+      "clave": "LAE947",
+      "nom": "Comercio internacional",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae948",
+      "cuat": 9,
+      "clave": "LAE948",
+      "nom": "Proyectos de investigación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "adm-lae949",
+      "cuat": 9,
+      "clave": "LAE949",
+      "nom": "Planeación estratégica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     }
+    ]
+   }
+  }
+ },
+ "documentos": {},
+ "contenidos": {
+  "adm-tc101": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno será capaz de utilizar los métodos de investigación, así como las bases para el diseño, desarrollo y exposición de los trabajos de investigación.\n\nCONTENIDO TEMÁTICO\n1. NATURALEZA Y OBJETO DEL CONOCIMIENTO CIENTÍFICO\n   1.1 Concepto de ciencia, teoría, técnica y método\n   1.2 Ideología y ciencia\n   1.3 Principios de la teoría del conocimiento\n   1.4 Los métodos más utilizados\n      1.4.1 El método científico\n      1.4.2 Los métodos lógicos\n      1.4.3 La escuela Idealista y Materialista\n   1.5 El paradigma del razonamiento científico deducción-inducción\n   1.6 La interdisciplina y el conocimiento científico\n\n2. PROYECTO DE INVESTIGACIÓN\n   2.1 El proyecto de la investigación\n   2.2 La planeación de la investigación\n   2.3 La revisión preliminar de bibliografía y documentos básicos\n   2.4 Diseño del proyecto de investigación\n\n3. LA INVESTIGACIÓN\n   3.1 Investigación científica\n   3.2 Tipos de investigación\n      3.2.1 Historial\n      3.2.2 Descriptiva\n      3.2.3 Experimental\n      3.2.4 Participativa\n   3.3 Formas de investigación y sus técnicas\n      3.3.1 Documental\n      3.3.2 Campo\n   3.4 Etapas principales de investigación\n      3.4.1 Recolección de información\n      3.4.2 Procesamiento de la información\n      3.4.3 Análisis e interpretación de la información\n\n4. EL REPORTE DE LA INVESTIGACIÓN\n   4.1 El informe y la estructura\n   4.2 Criterios y características del informe\n   4.3 Formato de presentación\n\n5. LA INVESTIGACIÓN Y TOMA DE DECISIONES\n   5.1 Los resultados de la investigación en la detección de problemas\n   5.2 La toma de decisiones\n   5.3 El programa operativo y desarrollo para la solución de problemas\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas realizado por equipos de alumnos\n• Trabajos de investigación\n\nDe manera independiente\n• Investigaciones bibliográficas\n• Reunión con miembros del equipo de investigación\n• Lecturas propias al tema a investigar\n• Elaboración de fichas bibliográficas\n• Entrevistas con profesionales para profundizar temas de investigación\n• Avances de lectura\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Investigaciones: 10%\n• Fichas bibliográficas: 10%\n• Elaboración trabajo de investigación: 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc102": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno aplicará la redacción en todas las asignaturas, con base en la observación; asimilará la importancia del lenguaje para lograr un proceso descriptivo, mediante diferentes técnicas, integrando informes de todo tipo.\n\nCONTENIDO TEMÁTICO\n1. DESARROLLO DE LA OBSERVACIÓN\n   1.1 Lógica de la observación\n   1.2 Enunciados de observación de inferencia y juicios de valor\n   1.3 Forma y estructura\n   1.4 Palabras llenas y vacías\n   1.5 Base discursiva sustancial, adjetiva, verbal y adverbial\n   1.6 Oración simple y oración compuesta\n   1.7 Uso de preposiciones\n\n2. DESCRIPCIÓN Y MODIFICACIÓN DE UNA ESCRITURA LINGÜÍSTICA DISCURSIVA\n   2.1 Adición y sustracción\n   2.2 Análisis del receptor y objetivo del mensaje\n   2.3 Diferentes tipos de tonos\n   2.4 Nivel sintáctico, semántico y léxico\n   2.5 Signos unívocos, equívocos, plurales y vagos\n   2.6 Los siete significados de Leech\n   2.7 Estructura del párrafo\n   2.8 Silogismos, incoherencias y falacias\n   2.9 Organización del texto por ideas\n   2.10 Niveles del lenguaje\n   2.11 Mirada crítica a la inconosfera contemporánea\n   2.12 Uso de conjunciones\n   2.13 Adverbios\n   2.14 Sinónimos y antónimos\n\n3. ACERCAMIENTO A UN PROCESO DESCRIPTIVO\n   3.1 Descripción subjuntiva, objetiva y animada\n   3.2 Sujeto y objeto en el proceso descriptivo\n   3.3 Descripción pictórica, topográfica y cinematográfica\n   3.4 Otros tipos de descripción: perspectiva, induciva, selectiva, etc.\n   3.5 Explicación esquemática del verbo\n   3.6 Descripción estática y dinámica\n   3.7 Procesos descriptivos simples y complejos\n   3.8 Formas negativas y positivas\n\n4. MODELOS DEL ESCARABAJO\n   4.1 Las fases del modelo\n   4.2 Clasificación de los enlaces por su función\n   4.3 Cómo elegir un título\n   4.4 Desarrollo de un tema\n   4.5 Elaboración de un índice\n   4.6 Desarrollo de ideas\n   4.7 Análisis y solución de problemas\n   4.8 El modelo a la inversa\n   4.9 El ensayo\n\n5. REDACCIÓN DE UN INFORME\n   5.1 Tipos de informe. Expositivos, interpretativos y demostrativos\n   5.2 Puntos básicos de un informe\n   5.3 Metodología para un informe\n   5.4 Monografía, reporte y ponencia\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas realizado por equipos de alumnos\n• Trabajos de redacción con base en la observación\n• Trabajos de procesos descriptivos\n\nDe manera independiente\n• Investigación bibliográfica\n• Preparación de temas a exponer\n• Elaboración de informes\n• Elaboración de procesos descriptivos utilizando varias técnicas\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Investigaciones realizadas: 10%\n• Trabajos: 10%\n• Examen final: 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc103": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno enunciará las principales áreas de aplicación de los métodos numéricos, resolverá ejemplos de aplicación de repartos proporcionales aplicados a los costos de venta, intereses y descuentos aplicando principios algebraicos, matrices y sistemas de ecuaciones.\n\nCONTENIDO TEMÁTICO\n1. REPARTOS PROPORCIONALES\n   1.1 Reparto proporcional simple\n   1.2 Costos especiales de reparto proporcional directo simple\n   1.3 Reparto proporcional inverso simple\n   1.4 Reparto proporcional directo compuesto\n   1.5 Reparto proporcional inverso compuesto\n   1.6 Reparto proporcional mixto\n   1.7 Prorrateo de facturas\n   1.8 Reglas de compañía\n\n2. LOS PORCIENTOS APLICADOS A LOS PRECIOS DE COSTO Y DE VENTA\n   2.1 Determinar el precio de venta, cuando la ganancia es sobre costo\n   2.2 Determinar el precio de costo, cuando la ganancia es sobre costo\n   2.3 Fijar el precio de costo, cuando a la venta es con pérdida sobre el costo\n   2.4 Definir el tanto por ciento correspondiente sobre el precio de costo, tomando en cuenta la utilidad\n      o pérdida dada por la venta de una mercancía\n   2.5 Buscar equivalencia entre el tanto por ciento sobre el costo y el tanto por ciento sobre la venta\n\n3. INTERESES Y DESCUENTOS\n   3.1 Deducción de la fórmula de interés simple\n   3.2 Deducción de la fórmula del capital, tasa, tiempo y monto en función\n   3.3 Diseñar métodos para el cálculo del interés simple\n   3.4 Fórmula del descuento comercial y su deducción\n   3.5 Deducciones de la fórmula del descuento justo\n   3.6 Cuentas corrientes con interés\n   3.7 Principios de interés compuesto\n\n4. PRINCIPIOS ALGEBRAICOS APLICABLES AL CALCULO FINANCIERO\n   4.1 Uso práctico de álgebra en las matemáticas de inversiones\n   4.2 Todas las operaciones elementales del álgebra: suma, resta, multiplicación y división\n   4.3 Logaritmos\n\n5. MATRICES\n   5.1 Operaciones fundamentales matriciales\n   5.2 Matriz nula\n   5.3 Matriz cuadrada\n\n6. SISTEMA DE EDUCACIONES LINEALES\n   6.1 Métodos de Gauss Jordán\n   6.2 Métodos de Cramer\n   6.3 Métodos de matriz inversa\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicios en aula\n• Elaboración de reportes de investigación\n• Demostración prácticas\n\nDe manera independiente\n• Realización de prácticas\n• Resolución de ejercicios y problemas adicionales\n• Actividades de investigación y documentación\n• Realización de ejercicios y prácticas en equipos de trabajo\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Trabajos: 30%\n• Investigaciones: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc104": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno definirá qué es la teoría económica y el capitalismo americano, clasificará los mercados mediante la oferta y la demanda. Conocerá qué es el salario y el efecto de los ciclos económicos y su redundancia microeconómica en las entidades productivas.\n\nCONTENIDO TEMÁTICO\n1. ASPECTOS GENERALES\n   1.1 Qué es la teoría económica\n      1.1.1 Generalidades\n      1.1.2 Concepto\n      1.1.3 Significado\n      1.1.4 Iniciadores\n      1.1.5 La economía, ciencia o arte\n   1.2 Qué hacen los economistas\n      1.2.1 Juicio de valor\n      1.2.2 Errores comunes en el pensamiento económico\n      1.2.3 Método de la ciencia\n      1.2.4 Sistemas económicos\n      1.2.5 Ciencias con las que se relaciona la economía\n      1.2.6 Teoría del valor, objetiva y subjetiva\n\n2. EL CAPITALISMO AMERICANO\n   2.1 Recursos del sistema económico\n      2.1.1 Materiales\n      2.1.2 Humanos\n   2.2 Factores de producción\n      2.2.1 Tierra\n      2.2.2 Trabajo\n      2.2.3 Capital\n      2.2.4 Elemento empresarial\n   2.3 Retribución a los propietarios de los factores de la producción\n   2.4 Objetivos del sistema económico\n   2.5 Ley de la escasez\n   2.6 Las tres preguntas del sistema económico, ¿qué?, ¿cómo?, y ¿para quién producir?\n   2.7 Posibilidades de producción\n   2.8 Ley de los costos crecientes\n\n3. MERCADO\n   3.1 Concepto\n   3.2 Elementos\n   3.3 Clasificación\n   3.4 Tipos y clases\n\n4. OFERTA Y DEMANDA\n   4.1 Demanda\n   4.2 Oferta\n   4.3 Precio\n   4.4 La competencia perfecta\n   4.5 La competencia imperfecta\n\n5. EL SALARIO\n   5.1 Concepto\n   5.2 Clasificación\n   5.3 Producción, productividad y salario\n   5.4 Teoría objetiva y subjetiva del salario\n\n6. TEORÍA DE LA DISTRIBUCIÓN\n   6.1 El capital\n   6.2 La ganancia\n   6.3 El interés\n   6.4 La renta\n\n7. TEORÍA CUÁNTICA DEL DINERO\n   7.1 Funciones del dinero\n   7.2 Teoría cuántica del dinero\n   7.3 La influencia\n\n8. CICLOS ECONÓMICOS\n   8.1 Definición y fases\n   8.2 Tipos y ciclos\n   8.3 Características\n   8.4 Coyuntura económica\n   8.5 Teorías acerca de la crisis\n   8.6 Crisis económica\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicio en aula\n• Elaboración de reportes de investigación\n• Exposición de temas realizados por equipos de alumnos\n\nDe manera independiente\n• Investigación bibliográfica\n• Elaboración de cuadros sinópticos que contengan\n• - Clasificación de mercado\n• - Diversas teorías económicas\n• - Ciclos económicos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 70%\n• Trabajos: 15%\n• Investigaciones: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc105": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno obtendrá los conocimientos generales sobre cómo funcionan las computadoras, cómo se procesan los datos, cómo se interacciona con la computadora y los tipos de almacenamientos que éstas proporcionan, para poder ser utilizadas en una mejor preparación y optimización de sus trabajos y su desarrollo profesional.\n\nCONTENIDO TEMÁTICO\n1. CÓMO FUNCIONAN LAS COMPUTADORAS\n   1.1 La herramienta multiuso\n   1.2 Una mirada al interior de la máquina\n      1.2.1 El procesador\n   1.3 La computadora de un vistazo\n      1.3.1 Memoria\n      1.3.2 Dispositivos de entrada y salida\n      1.3.3 Otros dispositivos de almacenamiento\n   1.4 El software le da vida a la máquina\n      1.4.1 Sistemas operativos funciones\n      1.4.2 Software de aplicación\n   1.5 Las formas de las computadoras actuales\n      1.5.1 Supercomputadoras, computadoras mainframe, minicomputadoras y microcomputadoras\n      1.5.2 Modelos de escritorio, computadoras notebook, asistentes personales digitales\n      1.5.3 Estaciones de trabajo\n\n2. PROCESAMIENTO DE DATOS\n   2.1 Transformación de la información\n      2.1.1 Cómo representan los datos las computadoras\n      2.1.2 Bits y bytes\n      2.1.3 Códigos de texto\n         2.1.3.1 EBCDIC\n         2.1.3.2 ASCII\n         2.1.3.3 Unicote\n   2.2 CÓMO PROCESA DATOS UNA COMPUTADORA\n      2.2.1 La CPU\n      2.2.2 La unidad de control\n      2.2.3 La unidad lógica aritmética\n      2.2.4 Memoria ROM, RAM\n\n3. LA INTERACCIÓN CON SU COMPUTADORA\n   3.1 El ratón\n      3.1.1 Uso del ratón\n         3.1.1.1 El funcionamiento interno de un ratón\n         3.1.1.2 Cuidado con el ratón\n      3.1.2 El TrackBall\n      3.1.3 Punteros en el teclado\n   3.2 Otros dispositivos de entrada\n      3.2.1 Lápices\n      3.2.2 Pantallas sensibles al tacto\n      3.2.3 Lectores del código de barras\n      3.2.4 Escáner\n      3.2.5 Micrófonos y reconocimientos de voz\n      3.2.6 Entrada de video\n      3.2.7 Cámara digital\n   3.3 El monitor\n      3.3.1 Cómo despliega una imagen un monitor CRT\n      3.3.2 Comparación de monitores CRT\n   3.4 Impresoras\n      3.4.1 Impresoras de inyección de tinta\n      3.4.2 Impresoras láser\n      3.4.3 Otras impresoras de alta calidad\n   3.5 Conexión de los dispositivos de E’S\n      3.5.1 Puerto serial paralelo\n      3.5.2 Ranuras y tarjetas de expansión\n\n4. ALMACENAMIENTO DE INFORMACIÓN EN UNA COMPUTADORA\n   4.1 Tipos de dispositivos de almacenamiento\n   4.2 Unidades de disquete\n   4.3 Cómo se organizan los datos en el disco\n   4.4 Cómo se encuentran los datos del sistema operativo en un disco\n   4.5 Discos duros removibles\n   4.6 Cartucho de disco duro\n   4.7 La unidad Bemoulli\n   4.8 Unidades de cinta\n   4.9 Unidades DAT\n\n5. DISPOSITIVOS ÓPTICOS\n   5.1 CD-ROM\n   5.2 Velocidades del CD-ROM\n   5.3 Uso del CD-ROM\n   5.4 Medios DVD\n   5.5 CD gravables, discos WORM y PhotoCD\n   5.6 Unidades regrabables de cambio de fase\n   5.7 Unidades magneto-ópticas\n   5.8 Unidades flópticas\n\n6. MEDICIÓN DEL DESEMPEÑO DE LAS UNIDADES\n   6.1 Tiempos de acceso promedio\n   6.2 Comprensión de archivos\n   6.3 Velocidad de transferencia de datos\n   6.4 Normas de interfaz de unidades\n   6.5 La norma ST-506\n   6.6 Unidades electrónicas integradas\n   6.7 Interfaz mejorada de dispositivo pequeño\n   6.8 Interfaz del sistema de computadora pequeña\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicios en aula\n• Elaboración de reportes de investigación\n• Prácticas de laboratorio\n\nDe manera independiente\n• Trabajos desarrollados con computadora\n• Investigaciones bibliográficas y de campo\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Prácticas: 15%\n• Trabajos: 15%\n• Examen final: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc106": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno será capaz de analizar el sistema constitucional mexicano, la constitución vigente y los fundamentos en que se basa la administración del estado\n\nCONTENIDO TEMÁTICO\n1. GENERALIDADES\n   1.1 Los sistemas normativos\n   1.2 La norma jurídica\n   1.3 Clasificación del derecho\n   1.4 La persona jurídica\n   1.5 Las fuentes del derecho\n\n2. DERECHO CONSTITUCIONAL\n   2.1 Concepto\n   2.2 Referencia histórica\n   2.3 La Constitución\n\n3. LAS GARANTÍAS INDIVIDUALES\n   3.1 Concepto\n   3.2 Elementos, naturaleza y sujetos de las garantías individuales\n   3.3 Clasificación y suspensión de las garantías individuales\n   3.4 Garantías de igualdad, libertad, propiedad y seguridad pública\n\n4. EL ESTADO MEXICANO\n   4.1 Concepto de pueblo nacional y ciudadanía. Adquisición y pérdida\n   4.2 Formas principales de gobierno\n   4.3 El gobierno como realizador de las funciones del estado\n   4.4 Teoría de la división de poderes\n   4.5 Facultades y funciones de los poderes. Ejecutivo, legislativo y judicial\n\n5. DERECHO ADMINISTRATIIVO\n   5.1 Naturaleza del derecho administrativo\n   5.2 La actividad del estado\n   5.3 La ciencia de la administración y el derecho administrativo\n   5.4 Fuentes del derecho administrativo\n   5.5 Atribución, función y servicio público\n   5.6 Función administrativa, acto formal y materias\n   5.7 Formas de organización administrativa\n\n6. LA DINÁMICA ADMINISTRATIVA\n   6.1 El procedimiento del acto administrativo\n   6.2 El acto administrativo\n   6.3 Extinción de los actos administrativos\n   6.4 Los recursos administrativos\n\n7. ADQUISICIÓN DE LA PROPIEDAD\n   7.1 La expropiación\n   7.2 La confiscación\n   7.3 La nacionalización\n   7.4 La requisición\n   7.5 Defensa jurídica de los particulares\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas realizado por equipos de alumnos\n\nDe manera independiente\n• Investigación bibliográfica\n• Preparación de temas\n• Elaboración de avances de lectura\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Investigaciones: 10%\n• Trabajos: 10%\n• Examen final: 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc207": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno comprenderá el proceso administrativo, la importancia de la planeación, sus principios y tipología, la organización con todas sus técnicas, así como el sistema directivo en las empresas con el objeto de aplicarlos adecuadamente en las mismas.\n\nCONTENIDO TEMÁTICO\n1. EL PROCESO ADMINISTRATIVO\n   1.1 Generalidades\n   1.2 Criterios para clasificar el proceso administrativo\n   1.3 Valores institucionales en las etapas del proceso administrativo por fecha y autor\n   1.4 Diversos criterios en las etapas del proceso administrativo por fecha y autor\n\n2. PLANEACIÓN\n   2.1 Análisis de diversos criterios\n   2.2 Concepto de planeación\n   2.3 Importancia\n   2.4 Principios\n   2.5 Tipología\n   2.6 Etapas de planeación\n      2.6.1 Propósitos\n      2.6.2 Objetivos\n      2.6.3 Estrategias\n      2.6.4 Políticas\n      2.6.5 Presupuestos\n   2.7 Técnicos de la planeación\n\n3. ORGANIZACIÓN\n   3.1 Análisis de diversos criterios\n   3.2 Concepto de organización\n   3.3 Importancia\n   3.4 Etapas\n   3.5 Tipología de las organizaciones\n   3.6 Técnicas de organización\n\n4. EL SISTEMA DIRECTIVO DE LAS ORGANIZACIONES\n   4.1 La tarea del administrador\n   4.2 Ejecutivo, gerente, director y empresario\n   4.3 Funciones gerenciales\n   4.4 Habilidades gerenciales\n   4.5 El perfil del ejecutivo mexicano\n   4.6 Fortaleza y debilidades del ejecutivo mexicano\n   4.7 La selección estratégica de los gerentes\n   4.8 Conocimiento y habilidades de los administradores\n   4.9 La habilidad directiva como fundamento de la eficiencia\n   4.10 El reto de los administradores\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de ejercicio en aula\n• Elaboración de reportes de investigación\n• Exposición de temas realizado por equipos de alumnos\n\nDe manera independiente\n• Investigación bibliográfica y de campo en empresas, determinando el proceso administrativo en cada una.\n• Realización de un manual organizativo de la empresa\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Exposiciones individuales: 10%\n• Realización de manual: 20%\n• Examen final: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc208": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá en forma teórica el conocimiento y comprensión de la comunicación, analizando sus elementos, trascendencia y proceso. Analizará el comportamiento y relaciones que se crean en el proceso comunicacional.\n\nCONTENIDO TEMÁTICO\n1. LA COMUNICACIÓN: TRASCENDENCIA, ELEMENTOS, PATOLOGÍA\n   1.1 Origen de la comunicación y el lenguaje\n   1.2 Importancia de la comunicación\n   1.3 Definición de la comunicación\n   1.4 La comunicación, factor cinético de todo organismo social\n   1.5 Contenido de la comunicación\n   1.6 Funciones de la comunicación\n   1.7 Patología de las comunicaciones\n\n2. MODELO DEL PROCESO DE COMUNICACIÓN\n   2.1 El concepto del proceso\n   2.2 Los componentes de la comunicación\n   2.3 Modelos de comunicación\n   2.4 La fuente codificadora\n   2.5 El receptor decodificador\n   2.6 El mensaje\n   2.7 El canal\n\n3. CRITERIOS DE CALIFICACIÓN, GÉNEROS Y ESPECIES DE LA COMUNIDAD\n   3.1 Géneros y especies\n   3.2 Clasificación general de la comunicación en función de los medios de transmisión\n   3.3 Clasificación de la comunicación administrativa, atendiendo a la estructura y contenido\n   3.4 La comunicación social a través de mediadores\n   3.5 El rumor\n\n4. COMUNICACIÓN ESCRITA: TÉCNICAS ESTRUCTURALES\n   4.1 Flujo comunicativo escrito\n   4.2 Ordenación de la comunicación escrita: método estructural\n   4.3 Los problemas de emisión y recepción\n   4.4 Comunicación escrita y administración\n\n5. COMUNICACIÓN ORAL: TÉCNICAS ESTRUCTURALES Y MODULARES\n   5.1 Flujo comunicativo verbal\n   5.2 Desarrollo de aptitud\n   5.3 Calidades del emisor y receptor\n   5.4 Manifestaciones externas del emisor\n   5.5 Tipos y formas de comunicación oral: su módulos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de ejercicio en aula\n• Elaboración de reportes de investigación\n• Exposición de temas realizado por equipos de alumnos\n\nDe manera independiente\n• Investigación\n• Elaboración de avances de lectura\n• Trabajo en equipo\n• Revisión de información\n• Redacción de informes\n• Elaboración de ensayos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Investigaciones: 10%\n• Avances de lectura: 10%\n• Ensayo: 10%\n• Información: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc209": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl estudiante comprenderá y aplicará los conceptos matemáticos referentes a la variación del valor del dinero con el tiempo, asimismo identificará situaciones y resolverá problemas financieros mediante la utilización de las matemáticas financieras.\n\nCONTENIDO TEMÁTICO\n1. INTERÉS COMPUESTO\n   1.1 Interés simple e interés compuesto\n   1.2 Fórmula general de interés compuesto\n   1.3 Elementos\n   1.4 Tasas nominales\n   1.5 Tasas equivalentes y proporcionales\n   1.6 Fórmula general para problemas de valor actual o capital\n   1.7 Tablas de factoraje de interés compuesto\n\n2. ANUALIDADES ORDINARIAS\n   2.1 Tipos de anualidades\n   2.2 Fórmula general de anualidades ordinarias\n   2.3 Elementos\n   2.4 Fórmula general del valor actual de anualidades ordinarias\n   2.5 Factores precalculados de tablas financieras\n   2.6 Tablas de amortización de interés compuesto\n\n3. ANUALIDADES ANTICIPADAS O INMEDIATAS\n   3.1 Fórmula general de anualidades anticipadas\n   3.2 Elementos\n\n4. ANUALIDADES DIFERIDAS\n   4.1 Fórmula general del valor actual de anualidades ordinarias diferidas\n   4.2 Fórmula general del valor actual de anualidades anticipadas o diferidas\n\n5. DEPRECIACIÓN\n   5.1 Métodos de depreciación\n   5.2 Tablas de depreciación\n   5.3 Convivencia de los diferentes métodos\n\n6. EMISIÓN DE BONOS\n   6.1 Definición de obligaciones o bonos\n   6.2 Cálculo de emisión de obligaciones\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicios en aula\n• Elaboración de reportes de investigación\n• Exposición de temas en clase\n\nDe manera independiente\n• Investigación bibliográfica\n• Realización de prácticas\n• Resolución de ejercicio y problemas adicionales\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 70%\n• Trabajos: 15%\n• Prácticas: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc210": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno comprenderá qué es la macroeconomía, cuáles son sus variables y la medición de éstas mediante diferentes mecanismos; conocerá los diferentes modelos macroeconómicos. Desarrollará teorías y tendencias que son susceptibles de cambio, provocadas por las políticas económicas.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN\n   1.1 Qué es la macroeconomía\n   1.2 Variables macroeconómicas\n      1.2.1 Producción\n      1.2.2 Desempleo\n      1.2.3 Inflación\n      1.2.4 Inflación y desempleo\n      1.2.5 Los déficit\n   1.3 Aspectos centrales de la macroeconomía\n\n2. MEDICIÓN DE LAS VARIABLES DE LA MACROECONOMÍA\n   2.1 Contabilidad nacional\n   2.2 Producto interno bruto\n   2.3 Renta nacional\n   2.4 Renta personal y personal disponible\n   2.5 Algunas identidades de la contabilidad nacional\n   2.6 Medición de cambios en el precio\n   2.7 El índice de precios al consumidor y al producto\n   2.8 Medición de la variable\n   2.9 Clínica en producción\n\n3. MODELOS MACROECONÓMICOS\n   3.1 Macroeconomía clásica\n      3.1.1 Producción\n      3.1.2 Empleo de equilibrio\n   3.2 El modelo clásico\n      3.2.1 Dinero\n      3.2.2 Precio\n      3.2.3 Interés\n   3.3 El modelo Keynesiano\n      3.3.1 El rol de la demanda agregada\n      3.3.2 Dinero\n      3.3.3 Interés\n      3.3.4 Renta\n\n4. EFECTOS DE LA POLÍTICA ECONÓMICA\n   4.1 Factores que afectan la renta de equilibrio y la tasa de interés\n   4.2 Efectividad relativa de la política monetaria y fiscal\n\n5. OFERTA AGREGADA\n   5.1 La curva de la demanda agregada\n   5.2 La división contractual\n   5.3 Oferta de trabajo y salario monetario variable\n   5.4 Efecto de los desplazamientos en la función de la oferta agregada\n   5.5 Shocks de oferta y política de demanda agregada\n\n6. LA CONTRARREVOLUCIÓN MONETARIA\n   6.1 Introducción\n   6.2 Reformulación de la teoría cuantitativa del dinero\n   6.3 Algunas evidencias sobre la controversia\n\n7. EXTENSIÓN DE LOS MODELOS\n   7.1 Consumo e inversión\n   7.2 Demanda de dinero\n   7.3 El proceso de la oferta de dinero\n   7.4 Crecimiento económico a mediano y largo plazo\n\n8. POLÍTICA ECONÓMICA\n   8.1 Política fiscal\n   8.2 Política monetaria\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicio en aula\n• Elaboración de reportes de investigación\n• Exposición de temas realizado por equipos de alumnos\n\nDe manera independiente\n• Investigación bibliográfica\n• Lecturas dirigidas\n• Reporte de avances\n• Redacción de informes de las clases impartidas\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Investigación: 20%\n• Informes: 15%\n• Exposición de temas: 10%\n• Trabajos estadísticos: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc211": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno podrá utilizar el Microsoft Office, y documentos en Word, Excel y Power Point para apoyar sus labores escolares y exposiciones de las diferentes asignaturas que contiene la licenciatura, así como para reforzar su desarrollo profesional.\n\nCONTENIDO TEMÁTICO\n1. REVISIÓN DE MICROSOFT OFFICE\n   1.1 Lo nuevo en Office\n   1.2 Cómo ejecutar aplicaciones, introducir comandos y otras maniobras básicas\n\n2. DOMINE LOS DOCUMENTOS EN WORD\n   2.1 Cómo elaborar y editar documentos en Word\n   2.2 Cómo alinear textos en tablas y columnas\n   2.3 Adorne los documentos con imágenes, sonidos y video\n   2.4 Cómo controlar sus páginas\n   2.5 Cómo revisar la ortografía y la gramática\n   2.6 Cómo crear etiquetas de correo y cartas modelo\n   2.7 Cómo trabajar con documentos largos\n\n3. PROCESAMIENTO DE NÚMEROS CON LAS HOJAS DE CÁLCULO DE EXCEL\n   3.1 Operaciones matemáticas, con fórmulas\n   3.2 Cómo dar a su hoja de cálculo un aspecto profesional\n   3.3 Cómo elaborar gráficos a partir de los datos\n   3.4 Cómo trabajar con hojas de cálculo\n\n4. CÓMO ELABORAR PRESENTACIONES CON DIAPOSITIVAS EN POWER POINT\n   4.1 Cómo armar una presentación con diapositivas básicas\n   4.2 Cómo agregar listas, imágenes y sonidos a una diapositiva\n   4.3 Cómo controlar objetos en una diapositiva\n   4.4 Cómo organizar y exhibir su presentación con diapositivas\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de documentos en Word, Excel y Power Point\n• Prácticas de laboratorio\n• Resolución de problemas y ejercicios en aula\n\nDe manera independiente\n• Investigación de campo\n• Visitas a empresas, específicamente a departamentos que utilicen computadora que tenga Microsoft Office\n• Elaboración de reportes e informes\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Trabajos: 20%\n• Prácticas: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc212": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá el objetivo y contenido del Derecho Mercantil, los sujetos que intervienen en el acto comercial, las obligaciones, los contratos mercantiles y las operaciones de crédito.\n\nCONTENIDO TEMÁTICO\n1. CONCEPTO DEL DERECHO\n   1.1 Elementos del comercio\n   1.2 Derecho Mercantil\n   1.3 Fuentes\n   1.4 El acto de comercio\n   1.5 Los actos mercantiles\n   1.6 Los elementos de la relación jurídica\n\n2. LAS CONDICIONES LEGALES DE LA EMPRESA\n   2.1 Concepto legal de las empresas\n   2.2 Elementos jurídicos\n   2.3 Causa mercantil y moneda\n\n3. EL ACTO COMERCIAL, IMPORTANCIA, CLASIFICACIÓN Y CARACTERÍSTICAS\n   3.1 El acto comercial\n   3.2 El comerciante y sus condiciones\n   3.3 Las obligaciones mercantiles\n   3.4 Los auxiliares mercantiles\n   3.5 Los empleados\n\n4. EL ESTABLECIMIENTO MERCANTIL\n   4.1 Conceptos\n   4.2 Elementos del establecimiento mercantil\n\n5. SOCIEDADES MERCANTILES\n   5.1 Criterios de identidad\n   5.2 Sociedad en Nombre Colectivo\n   5.3 Sociedad en Comandita Simple\n   5.4 Sociedad de Responsabilidad Limitada\n   5.5 Sociedad Anónima\n   5.6 Sociedad en Comandita por Acciones\n   5.7 Sociedad Corporativa\n\n6. TÍTULOS DE CRÉDITO\n   6.1 Títulos de crédito\n   6.2 La letra de cambio, el pagaré\n   6.3 El cheque\n   6.4 Otros títulos de crédito\n   6.5 Títulos de crédito bancario\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas realizado por equipos de alumnos\n\nDe manera independiente\n• Investigación bibliográfica\n• Trabajos en equipo\n• -Revisión de información\n• -Análisis y síntesis\n• -Reflexión\n• -Preparación de trabajos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Investigación: 10%\n• Trabajos en equipo: 20%\n• Síntesis: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc313": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno será capaz de integrar el proceso administrativo con los elementos de dirección y control, en su etapa dinámica, en las diferentes áreas de las organizaciones.\n\nCONTENIDO TEMÁTICO\n1. DIRECCIÓN\n   1.1 Concepto como parte del proceso administrativo\n   1.2 Importancia\n   1.3 Principios y etapas\n   1.4 Autoridad, poder e influencia\n   1.5 Tipos de autoridad\n   1.6 Introducción a las relaciones humanas\n\n2. CONTROL\n   2.1 Concepto e importancia del control\n   2.2 Elementos del control\n   2.3 El proceso del control\n   2.4 Relación del control con el proceso administrativo\n   2.5 Control administrativo general interrelacionado\n   2.6 Tipos de control\n   2.7 Periodicidad del control\n   2.8 Herramientas prácticas del control\n\n3. EVOLUCIÓN DE LA TEORÍA ADMINISTRATIVA\n   3.1 Escuela de la teoría administrativa\n   3.2 Administración científica\n   3.3 Escuela de administración empírica\n   3.4 Escuela ambiental\n   3.5 Escuela del comportamiento humano\n   3.6 Escuela del sistema social\n   3.7 Escuela de administración de sistemas\n   3.8 Escuela de teoría de decisiones\n   3.9 Escuela ecléctica universal\n\n4. CORRIENTES ACTUALES EN LA ADMINISTRACIÓN\n   4.1 Aplicación de la teoría administrativa en Latinoamérica\n   4.2 Autogestión\n   4.3 Desarrollo Organizacional\n      4.3.1 Diagnóstico\n      4.3.2 Planeación de la estrategia\n      4.3.3 Educación\n      4.3.4 Consultoría\n      4.3.5 Evolución\n\n5. ADMINISTRACIÓN JAPONESA\n   5.1 Fundamentos\n      5.1.1 La confianza\n      5.1.2 La sutileza\n      5.1.3 La intimidad\n   5.2 Contraste de la escuela japonesa y las estadounidenses\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de ejercicios en aula\n• Elaboración de reportes de investigación\n• Cuadros comparativos de la teoría administrativa sobre diversas escuelas\n• Socialización de temas\n• Aplicación de un caso ficticio\n\nDe manera independiente\n• Investigación documental y bibliográfica\n• Elaboración de fichas bibliográficas\n• Preparación de temas\n• Lecturas\n• Elaboración de ensayos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• 1 examen parcial: 30%\n• Investigación y elaboración de reportes: 20%\n• Cuadros comparativos: 10%\n• Exposición de temas: 10%\n• Examen final: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc314": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno aplicará un modelo adecuado dentro de las organizaciones, con los fundamentos básicos, teóricos e instrumentales de la sociología.\n\nCONTENIDO TEMÁTICO\n1. GENERALIDADES\n   1.1 Antecedentes históricos\n   1.2 Aportaciones de la sociología al proceso de industrialización\n   1.3 Aportaciones de la sociología a las organizaciones\n   1.4 Concepto e importancia de la sociología e las organizaciones\n\n2. FUNDAMENTOS BÁSICOS\n   2.1 Cultura y socialización\n   2.2 Estructura social\n   2.3 Instituciones sociales\n   2.4 El grupo\n   2.5 La organización\n\n3. ESTRUCTURA Y SISTEMAS\n   3.1 Estructura de las organizaciones\n   3.2 Tipología de las estructuras\n   3.3 La estructura organizacional\n   3.4 Modelo, estructura e información\n   3.5 El enfoque por sistemas\n   3.6 La organización como sistema\n   3.7 La teoría por sistemas como una herramienta sociológica\n\n4. INTERRELACIÓN, ROLES Y REGLAS ORGANIZACIONALES\n   4.1 La organización. Interrelación y procesos sociales\n   4.2 Roles y reglas\n   4.3 Grupos de trabajo\n\n5. LA CONDUCTA SOCIAL EN LAS ORGANIZACIONES\n   5.1 El poder\n   5.2 El control social\n   5.3 El conflicto social\n   5.4 El cambio social\n   5.5 Integración socio cultural\n\n6. LA SOCIOLOGÍA, UN MODELO DE EXPLICACIÓN DE LAS ORGANIZACIONES\n   6.1 Encauzamiento y estructura social de las organizaciones\n   6.2 Un modelo organizacional de la sociología\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicio en aula\n• Elaboración de reportes de investigación\n• Exposición de temas de equipos\n• Comentarios de avances de lectura (evidencia)\n\nDe manera independiente\n• Investigación bibliográfica y de campo\n• Elaboración de fichas bibliográficas\n• Conductos sociales en las organizaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 60%\n• Investigaciones: 20%\n• Trabajos: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc315": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá la importancia y utilidad de la probabilidad y estadística dentro de una empresa, observando las tendencias positivas o negativas que arroja, siendo un indicador para corregir el futuro organizacional y resolver en tiempo problemas financieros, administrativos, entre otros.\n\nCONTENIDO TEMÁTICO\n1. VARIABLES Y REPRESENTACIONES\n   1.1 Estadística\n   1.2 Población y muestra\n   1.3 Estadística descriptiva e inductiva\n   1.4 Variables discretas y continuas\n   1.5 Redondeo de datos\n   1.6 Logaritmos y antilogaritmos\n\n2. DISTRIBUCIONES DE FRECUENCIA\n   2.1 Toma de datos\n   2.2 Ordenación\n   2.3 Distribución de frecuencia\n   2.4 Intervalos de clase y límites de clase\n   2.5 Distribuciones de frecuencia acumulada. Ojivazas\n   2.6 Tipos de curvas de frecuencia\n\n3. MEDIA, MEDIANA, MODA Y OTRAS MEDIDAS DE CENTRALIZACIÓN\n   3.1 Notación con índice o subíndice\n   3.2 Notación sumatoria\n   3.3 Promedios y medidas de centralización\n   3.4 Media aritmética\n      3.4.1 Media aritmética ponderada\n      3.4.2 Propiedades de la media aritmética\n   3.5 Mediana\n   3.6 Moda\n   3.7 Relación empírica entre mediana y moda\n\n4. TEORÍA ELEMENTAL DE LA PROBABILIDAD\n   4.1 Definición de la probabilidad\n   4.2 Probabilidad condicional\n   4.3 Distribución de probabilidad discreta\n   4.4 Análisis combinatorio\n   4.5 Permutaciones\n   4.6 Combinaciones\n   4.7 Relación entre teoría de probabilidad y conjuntos\n\n5. LAS DISTRIBUCIONES BINOMIAL, NORMAL Y DE POISSON\n   5.1 La distribución binomial\n   5.2 La distribución normal\n   5.3 Relación entre las distribuciones binomial y normal\n   5.4 La distribución de poisson\n   5.5 La distribución multinominal\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas por equipo\n• Resolución de problemas y ejercicio en aula\n• Elaboración de reportes de investigación\n• Ejercicios prácticos\n\nDe manera independiente\n• Investigación bibliográfica\n• Elaboración de resúmenes\n• Trabajo en equipo para integración y distribución de temas para exponer\n• Investigación de campo\n• Recolección de datos\n• Solución de casos prácticos, elaborando estadísticas con diversas medidas de centralización\n• Media, moda, mediana\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 30%\n• Evaluación de actividades, tareas, trabajos independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc316": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno sabrá el alcance e importancia de la mercadotecnia, su ambiente, los sistemas de información e investigación de mercados; comprenderá qué es el producto, cómo se determinan los precios y cuáles son los canales de distribución.\n\nCONTENIDO TEMÁTICO\n1. CAMPO DE LA MERCADOTECNIA\n   1.1 Naturaleza y alcance de la mercadotecnia\n   1.2 Importancia actual de la mercadotecnia\n   1.3 El concepto de la mercadotecnia\n   1.4 Administración de la mercadotecnia y su evolución\n\n2. AMBIENTE DE LA MERCADOTECNIA\n   2.1 Macroambiente externo\n   2.2 Microambiente externo\n   2.3 Ambiente interno de una organización\n\n3. SISTEMA DE INFORMACIÓN E INVESTIGACIÓN DE MERCADOS\n   3.1 Qué es un sistema de información de mercadotecnia\n   3.2 Necesidad de un sistema de información de mercadotecnia\n   3.3 Beneficios y aplicaciones de un sistema de información de mercadotecnia\n   3.4 Relación entre los sistemas de información de mercadotecnia y la investigación de mercados\n   3.5 Alcance de las actividades de investigación de mercados\n   3.6 Procedimiento en la investigación de mercados\n\n4. MERCADOS META\n   4.1 Demografía del mercado\n   4.2 Poder adquisitivo\n   4.3 influencia psicológica y del grupo social en el comportamiento del consumidor\n   4.4 El mercado industrial\n   4.5 Segmentación del mercado\n   4.6 Pronóstico de la demanda del mercado\n\n5. EL PRODUCTO\n   5.1 Planeación y desarrollo del producto\n   5.2 Estrategia de la mezcla de productos\n   5.3 Marca, empaque, embase y otras características del producto\n\n6. EL PRECIO\n   6.1 Determinación del precio\n   6.2 Determinación de estrategias para fijar el precio del producto\n\n7. CANALES DE DISTRIBUCIÓN\n   7.1 Comercio el menudeo: mercado e instituciones\n   7.2 Comercio el mayoreo: mercado e instituciones\n   7.3 Canales de distribución: conflicto, cooperación y administración\n   7.4 Administración de la distribución física\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicio en aula\n• Elaboración de reportes de investigación\n• Exposición de temas por equipo\n\nDe manera independiente\n• Investigación de campo, identificación de segmento de mercado\n• Investigación bibliográfica\n• Elaboración de fichas bibliográficas\n• Reportes\n• Cuadros comparativos de mercados redituables\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 50%\n• Exposiciones: 10%\n• Investigaciones: 20%\n• Cuadros comparativos: 10%\n• Reportes: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc317": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno podrá utilizar el Internet para apoyar sus labores escolares y exposiciones de las diferentes asignaturas que contiene la licenciatura, así como para reforzar su desarrollo profesional.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN Y CONCEPTOS GENERALES DE INTERNET\n   1.1 Los orígenes de Internet\n   1.2 Terminología en Internet\n   1.3 Redes de ordenadores\n   1.4 Direcciones IP y nombres de dominio\n   1.5 NIC. El control de registros en Internet\n   1.6 Las cifras en Internet\n   1.7 Funcionamiento de la red\n\n2. SERVICIOS EN INTERNET\n   2.1 Correo electrónico\n   2.2 Teleconferencias\n   2.3 Telnet\n   2.4 File Transfer Protocol (FTP)\n   2.5 Newsgroups o Foros Temáticos (USENET)\n   2.6 Archie\n   2.7 Gopher\n   2.8 Finger\n   2.9 World Wide Web (WWW)\n   2.10 Servicios de telefonía\n   2.11 Audio y video en Internet\n\n3. CONECTANDO CON INTERNET\n   3.1 El equipo necesario\n   3.2 Los proveedores de Internet\n   3.3 Acceso a Internet por Infovía\n   3.4 ¿Qué tipo de acceso telefónico elegir?\n   3.5 Acceso a Internet por RDSI\n\n4. INSTALACIONES DE UN MODEM, ADSL, CABLE\n\n5. CREAR UNA CONEXIÓN A INTERNET\n\n6. EXPLORER: EL NAVEGADOR\n   6.1 Iniciando el programa\n   6.2 La barra de navegación\n   6.3 El indicador de actividad\n   6.4 El indicador de la dirección actual\n   6.5 El menú principal de Internet Explorer\n   6.6 Cache del Navegador\n   6.7 Marcadores, Bookmarks o Webs favoritas\n   6.8 Práctica con Internet Explorer\n   6.9 Los hipertextos o enlaces\n   6.10 Los banners\n   6.11 Importar gráficos y fotografías de las Web\n   6.12 Recursos multimedia\n   6.13 Gestión de cookies\n\n7. BÚSQUEDAS EN INTERNET\n   7.1 Buscadores\n   7.2 Técnicas de búsqueda para Altavista, Yahoo y Google\n   7.3 Búsquedas en lenguaje natural\n   7.4 Términos requeridos y términos excluyentes\n   7.5 Frases literales\n   7.6 Funciones especiales\n   7.7 Idiomas\n   7.8 Afinar o filtrar una búsqueda\n   7.9 Mayúsculas/minúsculas\n   7.10 Comodines\n   7.11 Búsqueda avanzada o búsqueda simple\n\n8. OUTLOOK EXPRESS: EL CORREO ELECTRÓNICO\n   8.1 Configuración del Outlook Express\n   8.2 Servidores POP\n   8.3 Servidores SMTP\n   8.4 Contraseña\n   8.5 Configuración del correo electrónico de Outlook Express\n   8.6 Outlook Express. El gestor de correo de Microsoft\n   8.7 La barra de herramientas de Outlook Express\n   8.8 Envío de un correo electrónico\n   8.9 Los archivos adjuntos o attachment\n   8.10 Los libros de direcciones en Outlook Express\n   8.11 Listas de distribución\n\n9. IRC CHAT\n   9.1 Redes de IRC\n   9.2 Configuración del programa mIRC\n   9.3 Configuración de los datos personales\n   9.4 Configuración de los datos de conexión\n   9.5 Cómo utilizar el IRC\n   9.6 Comandos del IRC\n\n10. GRUPOS DE NOTICIAS O NEWS\n   10.1 Envío de artículos\n   10.2 Cómo configurar el servidor del grupo de noticias\n\n11. FTP TRANSFERENCIA DE FICHEROS\n   11.1 Tipos de programas\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas\n• Elaboración de documentos en Word, Excel y Power Point\n• Prácticas de laboratorio\n\nDe manera independiente\n• Investigación de campo\n• Visitas a empresas, específicamente a departamentos que utilicen computadora que tenga el Microsoft Office\n• Elaboración de reportes e informes\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Trabajos: 20%\n• Prácticas: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-tc318": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá la importancia de la información financiera; conceptos de cuenta; los esquemas de mayor, cómo se elabora un catálogo de cuentas; la partida doble; el registro de las operaciones y preparar los balances y estados financieros.\n\nCONTENIDO TEMÁTICO\n1. LA CONTABILIDAD: ASPECTOS GENERALES\n   1.1 Conceptos de contabilidad\n   1.2 Fines fundamentales de la contabilidad\n   1.3 La obligación legal de llevar contabilidad\n\n2. LA CUENTA\n   2.1 Concepto y representación de la cuenta\n   2.2 Elementos de la cuenta\n   2.3 Reglas de cargo y abono\n   2.4 Partida doble\n   2.5 Registro de operaciones\n   2.6 Principio de dualidad económica\n\n3. PRINCIPALES CUENTAS EN LA CONTABILIDAD\n   3.1 Cuentas de activo y pasivo\n   3.2 Cuentas de capital\n   3.3 Dinamismo de la función\n   3.4 Principios de valor histórico originalç\n\n4. LIBROS PRINCIPALES\n   4.1 Autorización de libros\n   4.2 Libros, inventarios y balances\n   4.3 Libro diario\n   4.4 Libro mayor\n   4.5 Errores y contrapartidas\n\n5. ELABORACIÓN DE ESTADOS FINANCIEROS\n   5.1 Hoja de trabajo\n   5.2 Ajustes\n   5.3 Elaboración de estados financieros\n\n6. EL BALANCE\n   6.1 Necesidades que satisfacen su elaboración\n   6.2 Elementos de balance general\n      6.2.1 Concepto de activo\n      6.2.2 Concepto de pasivo\n      6.2.3 Concepto de capital social\n      6.2.4 Clasificación del activo\n      6.2.5 Clasificación del pasivo\n   6.3 Formas de representación\n      6.3.1 Forma de cuenta\n      6.3.2 Forma de reporte\n   6.4 Formas de entidad\n\n7. ESTADO DE RESULTADOS\n   7.1 Concepto\n   7.2 El propósito de la elaboración\n   7.3 Elementos\n      7.3.1 Ingresos ordinarios y extraordinarios\n      7.3.2 Egresos ordinarios y extraordinarios\n   7.4 Demostración, técnicas de los elementos\n   7.5 Elaboración del estado de resultados\n   7.6 Principio\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposiciones de temas de introducción a la contabilidad y aspectos generales\n• Elaboración de ejercicios\n• Elaboración y llenado de los libros principales\n• Elaboración de estados financieros\n• Elaboración de balance y estado de resultados\n\nDe manera independiente\n• Investigaciones bibliográficas\n• Ejercicios prácticos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 60%\n• Prácticas: 20%\n• Exposiciones: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae420": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno analizará los elementos y principios de los sistemas de producción, así como las aplicaciones del control de la calidad dentro de la empresa para una mejor producción,\n\nCONTENIDO TEMÁTICO\n1. ACTIVIDAES Y SISTEMAS INDUSTRIALES\n   1.1 Evolución del desarrollo industrial\n   1.2 Estructura de las actividades industriales\n   1.3 Tipos de organización\n   1.4 Sistemas de producción\n   1.5 Clases de sistemas\n   1.6 Medio ambiente de la empresa\n\n2. LA FUNCIÓN PRODUCTIVA\n   2.1 Concepto de productividad\n   2.2 Clasificación de los costos en la función productiva\n   2.3 Eficiencia física y económica de un sistema productivo\n   2.4 Política de dirección relacionada con un sistema de producción\n\n3. PLANEACIÓN Y CONTROL DE LA PRODCUCCIÓN\n   3.1 Tipos afines\n   3.2 Características del sistema de recursos humanos\n   3.3 Características del sistema de mercadotecnia\n   3.4 Relaciones con el sistema de finanzas\n\n4. PLANEACIÓN Y CONTROL DE LA PRODUCCIÓN\n   4.1 Objetivos de la función de la planeación y control de la producción\n   4.2 Funciones\n   4.3 Importancia e influencia de los pronósticos\n   4.4 Métodos de los mínimos cuadros\n   4.5 Introducción de una red de ruta crítica\n   4.6 Determinación del camino crítico de una red\n   4.7 Método del punto de equilibrio\n   4.8 Lote económico de compras y producción\n\n5. CONTROL DE CALIDAD\n   5.1 La función de calidad y su relación con las demás funciones de la empresa\n   5.2 Gráficas de control de calidad\n   5.3 Muestreo de aceptación por atributos y variables\n   5.4 Curvas características de operación\n   5.5 Organización y ubicación de la empresa\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicios en aula\n• Elaboración de reportes de investigación\n• Aplicación de un caso ficticio\n\nDe manera independiente\n• Investigación de campo: visitas a empresas\n• Reportes de sistemas de producción de diferentes empresas\n• Evaluación de ruta crítica\n• Análisis y síntesis sobre las filosofías de la calidad\n• Investigación bibliográfica\n• Elaboración de mapas y redes conceptuales\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 20%\n• Evaluación de actividades, tareas, trabajos independientes: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae421": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno utilizará los diferentes modelos para el control de inventarios, la elaboración de estructuras para obtener el punto de equilibrio y facilitar la toma de decisiones dentro de la empresa.\n\nCONTENIDO TEMÁTICO\n1. INVESTIGACIÓN DE OPERACIONES\n   1.1 Historia de la investigación de operaciones\n   1.2 Las computadoras y la investigación de operaciones\n   1.3 Definición de modelo\n   1.4 Fórmula de modelo\n   1.5 Función de los modelos en los proyectos de 10\n   1.6 Ventaja de los modelos\n   1.7 Desventajas de los modelos\n   1.8 Características principales de la investigación de operaciones\n   1.9 Definición de la investigación de operaciones\n   1.10 Modelos cuantitativos que se abarcan\n\n2. TEORÍA DE DECISIONES\n   2.1 Requisitos para la formulación de problemas de la teoría de decisiones\n   2.2 Términos de la probabilidad\n   2.3 Relaciones entre la independencia y la dependencia estadística\n   2.4 Revisión de probabilidades\n   2.5 Selección del criterio óptimo\n   2.6 Árboles de decisiones\n\n3. TOMA DE DECISIONES CON UNA DEMANDA VARIABLE\n   3.1 Requisitos para la toma de decisiones\n   3.2 Distribución discreta de probabilidad\n   3.3 Distribución continua de probabilidad\n\n4. PERT / TIEMPO Y PERT / COSTO\n   4.1 Requisitos para transformar una gráfica e Gant a una red de Pert\n   4.2 Problema de Pert / tiempo\n   4.3 Paquetes de Pert / tiempo para computadora\n   4.4 Pert / costo\n   4.5 Paquete de Pert / costo para computadora\n   4.6 Probabilidades de terminar un proyecto Pert\n   4.7 Ventajas del Pert\n   4.8 Desventajas del Pert\n   4.9 Costo de utilización de la técnica Pert\n\n5. PROGRAMACIÓN LINEAL – MÉTODOS GRÁFICO Y SIMPLEX\n   5.1 Requisitos para la formulación de un problema de programación lineal\n   5.2 Método gráfico de programación lineal\n   5.3 Método simples\n   5.4 Precauciones a tomar con los métodos de programación lineal\n\n6. PROGRAMACIÓN DINÁMICA\n   6.1 Requerimientos para la formulación de un problema de programación dinámica\n   6.2 Ajuste de la producción y control de inventarios\n   6.3 Distribución de vendedores a diversas áreas de mercado\n   6.4 Compra bajo incertidumbre\n   6.5 Diferencias entre programación dinámica y la programación lineal\n\n7. MODELOS DE LÍNEAS DE ESPERA\n   7.1 Requisitos para la formulación de problemas de líneas de espera\n   7.2 Sistema de tiempos uniformes de llegada y de servicios a las líneas de espera\n   7.3 Modelos de líneas de espera en un solo canal\n   7.4 Llegadas de Poisson de un solo canal con servicio exponencial\n   7.5 Tasa de servicio de costo mínimo de un solo canal (ALEATORIO) en las líneas de espera\n   7.6 Método de Montecario de varios canales usando números aleatorios\n\n8. SIMULACIÓN\n   8.1 Requisitos para problemas de simulación\n   8.2 Método de juegos operacionales\n   8.3 Método de simulación de sistemas\n   8.4 Método sistemático de computación encausado a la simulación\n   8.5 Mejoramiento de operaciones de ensamble\n   8.6 Determinación de la magnitud de la mano de obra para mantenimiento\n   8.7 Determinación de los niveles de producción e inventarios\n   8.8 Minimización del costo total de inventarios\n\n9. INVESTIGACIÓN DE OPERACIONES: PRESENTE Y FUTURO\n   9.1 Programación entera\n   9.2 Programación no lineal\n   9.3 Programación por metas\n   9.4 Análisis de riesgo\n   9.5 Programación heurística\n   9.6 Modelos de comportamiento o de conducta\n   9.7 La investigación de operaciones en el presente\n   9.8 La investigación de operaciones en el futuro\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicio en aula\n• Exposición de temas por equipo\n• Elaborar cuadros comparativos\n\nDe manera independiente\n• Investigación de campo\n• Solución de problemas\n• Investigación bibliográficas\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Investigación: 10%\n• Trabajo de equipo: 10%\n• Solución de problemas: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae422": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno analizará qué son los sistemas y procedimientos, mismos que aseguran una mejor administración y control de la empresa, con base en gráficas y diversos manuales.\n\nCONTENIDO TEMÁTICO\n1. SISTEMAS Y PROCEDIMIENTOS\n   1.1 Introducción\n   1.2 El papel de los sistemas y procedimientos dentro de la administración en general\n   1.3 Conceptos y enfoques\n   1.4 Campo y función de los sistemas y procedimientos\n\n2. DEPARTAMENTO DE SISTEMAS Y PROCEDIMIENTOS\n   2.1 Conceptos del departamento\n   2.2 Organizando el departamento\n   2.3 Programa y plan de proyecto\n   2.4 Administración del departamento\n\n3. ESTUDIO DE SISTEMAS\n   3.1 Introducción\n   3.2 Solicitud del proyecto\n   3.3 Asignación del proyecto\n   3.4 Planeación del estudio\n   3.5 El examen preeliminar\n   3.6 Análisis de los hechos\n   3.7 Desarrollo de la solución\n   3.8 Importancia del flujo de trabajo\n   3.9 La solución debe alcanzar los objetivos\n   3.10 Estudio de equipo\n   3.11 Efectos de la solución sobre políticas a seguir\n   3.12 Preparando el informe\n   3.13 Poniendo en práctica las recomendaciones\n\n4. GRÁFICAS DE LOS SISTEMAS\n   4.1 Las gráficas recursos principales en la técnica de los sistemas\n   4.2 Métodos para formular gráficas\n   4.3 Técnicas y mecánicas\n   4.4 Gráficas de organización\n   4.5 Gráficas para fines especiales\n\n5. SIMPLIFICACIÓN DEL TRABAJO\n   5.1 La simplificación del trabajo, una filosofía\n      5.1.1 El orden de la oficina\n      5.1.2 Mecanización de la oficina\n      5.1.3 Medición del trabajo\n      5.1.4 La importancia de un programa de simplificación de trabajo\n\n6. DISEÑO Y CONTROL DE FORMAS\n   6.1 Concepto de forma\n   6.2 Responsabilidad del control de formas\n   6.3 Instalación de un programa de instalación de formas\n\n7. LOS SÍMBOLOS Y GRÁFICAS COMO HERRAMIENTAS DEL ANÁLISIS\n   7.1 Los símbolos\n   7.2 Las gráficas o diagramas\n   7.3 Clasificación de las gráficas\n   7.4 Utilización de los símbolos\n   7.5 Método descriptivo\n\n8. MANUALES DE COMPAÑÍA\n   8.1 Necesidades de los manuales\n   8.2 El manual de la organización\n   8.3 El manual de las políticas\n   8.4 El manual de los procedimientos\n   8.5 Evaluación del programa de manuales vigentes\n   8.6 Investigación en el campo de la preparación de manuales\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Elaborar cuadros comparativos\n• Socialización de temas\n• Aplicación de un caso ficticio\n• Exposición de temas por equipo\n\nDe manera independiente\n• Investigación de campo\n• Elaboración de manuales de compañía; organización, procedimiento y política\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 70%\n• Exposición: 10%\n• Realización de manual: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae423": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno utilizará el desarrollo organizacional como una herramienta para el cambio y una filosofía de la administración.\n\nCONTENIDO TEMÁTICO\n1. NOCIONES GENERALES\n   1.1 Breve reseña histórica\n   1.2 Definiciones de desarrollo organizacional y terminología\n   1.3 Objetivos del desarrollo organizacional\n   1.4 Valores del desarrollo organizacional\n   1.5 Algunos planteamientos del desarrollo organizacional\n   1.6 Conceptualización del desarrollo organizacional\n   1.7 Relación cliente-consultor\n   1.8 Requisitos para un programa de desarrollo organizacional\n   1.9 Algunas condiciones para el éxito o fracaso en la implantación de un problema de desarrollo organizacional\n\n2. INVESTIGACIÓN Y DIAGNÓSTICO\n   2.1 Sintomatología del estado de salud y enfermedad de las organizaciones\n   2.2 Investigación de la acción\n   2.3 Construcción de un mapa de diagnóstico\n   2.4 Diagnóstico de desarrollo organizacional como ciclo de actividad\n   2.5 Diagnóstico de desarrollo organizacional a través del equilibrio de sistemas\n   2.6 Diagnóstico de desarrollo organizacional por diferenciación e integración\n\n3. PLANEACIÓN\n   3.1 Las fuerzas del cambio\n   3.2 Empleo de normas alternativas\n   3.3 Cambio estratégico de la cultura empresarial\n   3.4 Agenda de un plan de acción\n\n4. EJECUCIÓN\n   4.1 Liderazgo y administración\n   4.2 El cambio de conducta\n   4.3 Técnicas del desarrollo organizacional\n   4.4 Desarrollo de equipo\n   4.5 Caso de desarrollo de equipo\n   4.6 Métodos\n   4.7 Estrategias\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Elaborar cuadros comparativos\n• Exposición de temas por equipo\n\nDe manera independiente\n• Investigación bibliográfica y documental\n• Elaboración de fichas y reportes\n• Elaboración de un proyecto para el desarrollo organizacional\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 60%\n• Exposiciones: 10%\n• Investigación: 10%\n• Fichas y reportes, proyecto: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae424": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá el patrimonio y la persona; definirá cuáles son sus derechos reales; sabrá qué es la propiedad; reconocerá las obligaciones; definirá qué son los actos y hechos jurídicos; utilizará y distinguirá los diferentes contratos relacionados con el Derecho Civil.\n\nCONTENIDO TEMÁTICO\n1. EL PATRIMONIO Y LA PERSONA\n   1.1 El patrimonio y la persona\n      1.1.1 Caracteres y elementos\n      1.1.2 Derechos patrimoniales y no patrimoniales\n      1.1.3 Derechos reales y personales\n   1.2 Los bienes\n      1.2.1 Concepto\n      1.2.2 Clasificación\n      1.2.3 Los bienes considerados en sí mismos\n      1.2.4 Por las personas a quien pertenecen\n\n2. LOS DERECHOS REALES\n   2.1 Concepto\n   2.2 Características\n   2.3 Clasificación\n\n3. LA PROPIEDAD\n   3.1 Generalidades\n      3.1.1 Concepto y comentarios generales\n      3.1.2 Características\n   3.2 Modos de adquirir la propiedad\n      3.2.1 Ocupación\n      3.2.2 Accesión\n      3.2.3 Enajenación\n      3.2.4 Preinscripción adquisitiva\n      3.2.5 Herencia\n      3.2.6 Otros\n   3.3 Los desmembramientos de la propiedad\n      3.3.1 Concepto\n      3.3.2 El usufructo\n      3.3.3 El uso\n      3.3.4 La habitación\n      3.3.5 La servidumbre\n      3.3.6 Derechos reales de garantía\n\n4. LAS OBLIGACIONES\n   4.1 Definición y elementos\n   4.2 Fuentes de las obligaciones\n      4.2.1 Contratos\n      4.2.2 Cuasicontratos\n      4.2.3 Los actos ilícitos\n         4.2.3.1 Delitos\n         4.2.3.2 Cuasidelitos\n      4.2.4 El riesgo creado\n      4.2.5 La ley\n   4.3 Modalidades de las obligaciones\n      4.3.1 El plazo o término, dilatorio y extintivo\n      4.3.2 La condición dilatoria y resolutoria\n      4.3.3 Obligaciones divisibles e indivisibles\n      4.3.4 Obligaciones divisibles e indivisibles\n   4.4 Transmisión de las obligaciones\n      4.4.1 Cesión de derechos\n      4.4.2 Cesión de deudas\n      4.4.3 Subrogación\n   4.5 Efectos de las obligaciones\n      4.5.1 Entre las partes\n      4.5.2 El cumplimiento\n      4.5.3 Con relación a terceros\n   4.6 Extinción de las obligaciones\n      4.6.1 Pago\n      4.6.2 Dación en pago\n      4.6.3 Compensación\n      4.6.4 Confusión\n      4.6.5 Remisión\n      4.6.6 Novación\n      4.6.7 Pérdida de la cosa\n      4.6.8 Término extintivo\n      4.6.9 Prescripción extintiva\n      4.6.10 Nulidad\n      4.6.11 Resolución\n      4.6.12 Rescisión\n      4.6.13 Renovación\n\n5. DEFINICIÓN DE LOS ACTOS Y HECHOS JURÍDICOS\n   5.1 División de los hechos jurídicos\n   5.2 División de los actos jurídicos\n   5.3 Requisitos de existencia\n   5.4 Requisitos de validez\n   5.5 Invalidez de los actos jurídicos\n      5.5.1 División de los hechos jurídicos\n      5.5.2 Nulidad absoluta\n      5.5.3 Nulidad relativa\n\n6. LOS CONTRATOS\n   6.1 Conceptos generales\n   6.2 Principales contratos\n      6.2.1 Traslativos de dominio\n      6.2.2 Traslativos de uso\n      6.2.3 De representación\n      6.2.4 De sociedad\n      6.2.5 DE garantía\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Socialización de temas\n• Exposiciones individuales\n• Exposiciones de casos\n\nDe manera independiente\n• Investigación bibliográfica\n• Elaboración de fichas bibliográficas\n• Avances de lectura\n• Elaboración de ensayos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 70%\n• Trabajos de investigación: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae525": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá las diferencias entre el control de calidad y la calidad total. Encontrará el enlace de la filosofía de la calidad con la productividad y estará capacitado para dirigirla y aplicar las herramientas matemáticas y diversos sistemas para lograrlo.\n\nCONTENIDO TEMÁTICO\n1. CONTROL DE CALIDAD Y CONTROL DE CALIDAD TOTAL\n   1.1 Conceptos de calidad y de control de calidad\n   1.2 Evaluación del pensamiento de calidad y del control estratégico para su administración\n   1.3 Control de calidad en Japón y en mundo occidental\n   1.4 Concepto de calidad y de calidad total\n   1.5 Principales tecnologías de apoyo a la calidad\n\n2. FILOSOFÍA DE LA CALIDAD\n   2.1 Edward Deming\n   2.2 M. Juran\n   2.3 Philip Crosby\n   2.4 Kaouru Ishikawa\n   2.5 Fergembaum\n\n3. RELACIÓN DE LA CALIDAD CON LA PRODUCTIVIDAD\n   3.1 Concepto de productividad\n   3.2 Calidad total y productividad total\n   3.3 Calidad total y competitividad internacional\n\n4. DIRECCIÓN DE CALIDAD\n   4.1 Administración estratégica a nivel dirección\n   4.2 Motivación para la calidad\n   4.3 Reto de la dirección\n   4.4 Control de calidad\n\n5. ESTARTEGIA OPERATIVA Y FUNCIONAL DE LA CALIDAD\n   5.1 Implementación de una estrategia de calidad\n   5.2 Garantía de calidad\n   5.3 Herramientas económicas en la administración de calidad\n      5.3.1 Costo de calidad\n      5.3.2 Mediciones directas de calidad\n      5.3.3 Análisis costo-beneficio de la calidad\n   5.4 Capacitación para la calidad\n   5.5 Funciones de control de calidad\n\n6. HERRAMIENTAS MATEMÁTICAS PARA EL CONTROL DE CALIDAD\n   6.1 Hojas de comparación\n   6.2 Histograma\n   6.3 Diagrama de causa\n   6.4 Ley de Pareto\n   6.5 Gráficas\n   6.6 Diagrama de correlación\n   6.7 Otras herramientas estadísticas\n      6.7.1 Objetivo\n      6.7.2 Distribución de frecuencia\n      6.7.3 Gráfica central\n      6.7.4 Tablas de muestreo\n      6.7.5 Métodos estadísticos\n      6.7.6 Predicción de confiabilidad\n\n7. EMPLEO DE SISTEMAS DE CALIDAD\n   7.1 Sistema de calidad total\n      7.1.1 Características\n      7.1.2 Significado\n   7.2 Ventajas del sistema de calidad total\n   7.3 Principios del sistema de calidad total\n   7.4 Actividades del sistema de calidad total\n   7.5 Retroalimentación del sistema\n   7.6 Administración de sistema de calidad\n\n8. CÁLCULOS DE CALIDAD\n   8.1 Actividades básicas de los círculos de calidad\n   8.2 Capacitación del personal sobre círculos de calidad\n   8.3 Evaluación de la actualización de los círculos de calidad\n   8.4 Los círculos de calidad en Japón y en otros países del mundo\n\n9. CONTROL DE CALIDAD EN EMPRESAS DE SERVICIOS DE DISTRIBUCIÓN\n   9.1 Problemas relacionados de control de calidad con la correlación\n   9.2 Problemas relacionados con el control de calidad en empresas de servicios\n   9.3 Principios de control de calidad para la relación comprador-vendedor\n\n10. AUDITORÍA DE LA CALIDAD\n   10.1 Auditoría interna de calidad\n   10.1 Auditoría externa de calidad\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Socialización de temas\n• Exposiciones individuales\n• Exposiciones de casos\n\nDe manera independiente\n• Investigación bibliográfica y documental\n• Elaboración de fichas y reportes\n• Elaboración de ensayo\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 50%\n• Exposiciones: 10%\n• Cuadros comparativos: 10%\n• Investigaciones, fichas y reportes: 10%\n• Ensayo: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae527": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno analizará los conceptos económicos – financieros del costo y la importancia que para los fines administrativos tiene la contabilidad de costos. Conocerá los diferentes sistemas de costos de producción existentes, su control y registro así como los estados financieros principales y secundarios que arroja.\n\nCONTENIDO TEMÁTICO\n1. CONCEPTO DE COSTOS\n   1.1 Costo, gasto e inventarios. La aplicación de recursos.\n   1.2 Costo de sustitución y costo de oportunidad. Nociones del análisis costo-beneficio\n   1.3 Los costos en: entidades comerciales, entidades industriales del gobierno, entidades sin fines de lucro y personas físicas.\n   1.4 Clasificación de los costos\n   1.5 De operación\n   1.6 Financieros\n   1.7 De producción\n   1.8 De venta\n\n2. CONTROL DE REGISTRO DE COSTO DE OPERACIÓN (COSTO DE DISTRIBUCIÓN) Y FINANCIERO\n   2.1 Concepto de costo de operación\n   2.2 Origen y ubicación del costo financiero\n   2.3 Diferencias del costo de distribución y del costo de producción. Operaciones que los integran\n   2.4 Control contable del costo de distribución\n   2.5 aplicación de principios de contabilidad\n\n3. LOS DIFERENTES SISTEMAS DE COSTOS DE PRODUCCIÓN\n   3.1 Conceptos generales\n   3.2 Contabilidad general y contabilidad de costos\n   3.3 Costos fabriles y costos no fabriles\n   3.4 Costo total\n   3.5 Precio de venta\n   3.6 Costo incurrido\n   3.7 Costo unitario, sus componentes\n   3.8 Influencia de los ciclos económicos\n   3.9 Fabricación simple (un producto) y fabricación compleja\n   3.10 Grados de dificultad para el control e información adecuada\n   3.11 Procedimientos, técnica y métodos para el control y valuación de las operaciones productivas\n   3.12 Concepto de sistemas, procedimiento, método y técnica\n   3.13 Procedimiento para el control de las operaciones productivas: órdenes, clases, procesos, operaciones\n   3.14 Técnicas para evaluar las operaciones productivas: costos históricos o reales y costos predeterminados\n\n4. CONTROL Y REGISTRO DE LOS ELEMENTOS DEL COSTO DE REPRODUCCIÓN\n   4.1 Elementos del costo\n   4.2 Catálogo de cuentas\n   4.3 Concepto\n   4.4 Sistemas de clasificación\n   4.5 Materia prima\n   4.6 Sueldos y salarios\n   4.7 Gastos indirectos\n   4.8 Clasificación, división departamental\n   4.9 Asignación directa de los gastos indirectos a cada uno de los departamentos\n   4.10 Prorrateo primario de los gastos indirectos, prorrateo secundario de los gastos indirectos, prorrateo final.\n   4.11 Bases de aplicación de los cargos indirectos a la producción. Determinación del coeficiente reclutador. Análisis de las variaciones entre gastos reales y estimados. Determinación del coeficiente rectificado. Aplicación contable de las variaciones.\n\n5. ESTADOS FINANCIEROS PRINCIPALES Y SECUNDARIOS QUE PRODUCE LA CONTABILIDAD DE COSTOS\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas por equipo\n• Ejercicios prácticos\n• Planeación de estados de costo\n• Exposición de temas en clase\n• Resolución de problemas y ejercicio en aula\n• Elaboración de reportes de investigación\n\nDe manera independiente\n• Investigación bibliográfica\n• Elaboración de reportes y fichas bibliográficas\n• Estados financieros que produce la contabilidad de costo\n• Caso práctico completo\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 30%\n• Evaluación de actividades, tareas, trabajos independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae528": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno comprenderá la importancia del enfoque de sistemas, aplicado a la administración, mediante el análisis de sus elementos y la comprensión de sus herramientas.\n\nCONTENIDO TEMÁTICO\n1. LA ADMINISTRACIÓN Y EL LUGAR QUE OCUPA EN EL SISTEMA DE LA CIENCIA\n   1.1 Introducción\n   1.2 Aspectos generales sobre la administración\n   1.3 Actividades de la administración\n   1.4 Tipos de administración\n   1.5 Naturaleza de la administración\n   1.6 El administrador profesional\n\n2. LAS TEORÍAS DE SISTEMAS\n   2.1 La teoría general de sistemas\n   2.2 El estudio de la teoría general de sistemas\n   2.3 Objetivos de la teoría de sistemas\n   2.4 Definiciones y conceptos sobre sistemas\n   2.5 Difusión de la teoría de sistemas\n   2.6 Algunos efectos de la teoría de sistemas\n   2.7 El enfoque de sistemas\n\n3. CONSTITUCIÓN DE LOS SISTEMASÇ\n   3.1 Objeto del sistema\n   3.2 Estructura del sistema\n   3.3 Principios en que se basan los sistemas\n   3.4 Características de los sistemas\n   3.5 Los sistemas y las empresas\n   3.6 Por qué debe la empresa aplicar los sistemas\n   3.7 El medio abierto\n   3.8 Sistemas que forman la empresa\n   3.9 El ciclo de los sistemas corporativos en la empresa\n\n4. EL SISTEMA DE PLANEACIÓN\n   4.1 La planeación\n   4.2 La planeación como sistema de la empresa\n   4.3 La planeación como adaptación al medio\n   4.4 Objeto del sistema de planeación\n   4.5 Esquema gradual de los planes\n   4.6 La aptitud para cumplir objetivos\n   4.7 Tendencias en la planeación\n   4.8 La predicción, métodos y técnicas\n   4.9 Ciclo del sistema de planeación\n   4.10 El concepto de planeación corporativa integrada\n\n5. EL SISTEMA DEINFORMACIÓN\n   5.1 El papel de la información\n   5.2 El sistema de la información y la dirección\n   5.3 Sistemas de información y uso del ordenador\n   5.4 Objeto del sistema de información\n   5.5 Información para la planeación\n   5.6 Información de relación\n   5.7 Información operacional\n   5.8 Información integrada\n   5.9 Información para la investigación\n   5.10 Ciclo general de la información\n\n6. LOS SISTEMAS OPERATIVOS\n   6.1 Qué es el sistema operativo\n   6.2 Orientación de los sistemas operativos\n   6.3 El análisis del sistema operativo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Resolución de problemas y ejercicio en aula\n• Elaboración de reportes de investigación\n• Elaboración de cuadros comparativos\n• Socialización de temas\n\nDe manera independiente\n• Investigación de campo y bibliográfica\n• Elaboración de reporte\n• Elaboración y aplicación de un sistema a la administración\n• Elaboración de un manual\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Investigación: 10%\n• Reportes: 10%\n• Manual de un sistema: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae529": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno comprenderá los principios básicos del Derecho Laboral; identificará los derechos y obligaciones de los trabajadores.\n\nCONTENIDO TEMÁTICO\n1. PRINCIPIOS GENERALES\n   1.1 Definición de derecho de trabajo\n   1.2 El Derecho del Trabajo\n   1.3 El artículo 123\n   1.4 Leyes reglamentarias del artículo 123\n\n2. RELACIONES INDIVIDUALES DE TRABAJO Y SU VIGENCIA\n   2.1 La relación de trabajo\n   2.2 El contrato individual\n   2.3 Los sujetos de la relación de trabajo\n   2.4 Concepto de establecimiento y de empresas\n\n3. DURACIÓN DE LAS RELACIONES\n   3.1 Jornada de trabajo\n   3.2 Días de descanso\n   3.3 Descanso semanal\n   3.4 Vacaciones\n\n4. SALARIO Y PROTECCIÓN DEL MISMO\n   4.1 Concepto\n   4.2 Salario mínimo\n   4.3 Normas protectoras del salario\n   4.4 Prima vacacional\n   4.5 Aguinaldo\n\n5. LA PARTICIPACIÓN DE LOS TRABAJADORES EN LAS UTILIDADES DE LA EMPRESA\n   5.1 Sujeto de las obligaciones\n   5.2 Porcentaje de la participación\n\n6. DERECHOS Y OBLIGACIONES DE PATRONES Y TRABAJADORES\n   6.1 Derechos de los patrones\n   6.2 Derechos de los trabajadores\n   6.3 Obligaciones de los trabajadores\n   6.4 Obligaciones de los patrones\n   6.5 Relaciones obrero-patronales\n\n7. CAPACITACIÓN Y ADIESTRAMIENTO\n   7.1 Análisis de las funciones de la Secretaría de Trabajo y Previsión Social\n\n8. VIVIENDA PARA LOS TRABAJADORES\n   8.1 INFONAVIT\n   8.2 FOVISSTE\n   8.3 FOVIMI\n\n9. EL TRABAJO DE LAS MUJERES, DE LOS MENORES DE EDAD Y LOS TRABAJADORES ESPECIALES\n   9.1 Los trabajadores al servicio del Estado\n   9.2 Trabajos especiales\n\n10. RELACIONES COLECTIVAS DE TRABAJO Y EL CONTRATO COLECTIVO DE TRABAJO\n   10.1 Sindicatos, coaliciones, asociaciones profesionales\n   10.2 El contrato colectivo y el contrato ley\n\n11. LA HUELGA\n   11.1 Concepto\n   11.2 Coalición\n   11.3 Requisitos\n   11.4 Huelgas existentes, inexistente e ilícitas\n   11.5 Terminación de la huelga\n\n12. RIESGO DE TRABAJO, HIGIENE Y SEGURIDAD\n   12.1 Enfermedades de trabajo\n   12.2 Accidentes de trabajo\n   12.3 Higiene y seguridad\n\n13. AUTORIDADES DE TRABAJO\n   13.1 Autoridades administrativas\n   13.2 Autoridades jurisdiccionales\n   13.3 El Tribunal Federal de Conciliación y Arbitraje\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Elaboración de cuadros comparativos\n• Socialización de temas\n\nDe manera independiente\n• Investigación bibliográfica\n• Elaboración de reportes\n• Avances de lecturas\n• Análisis y síntesis\n• Presentación de casos prácticos y su enlace en el derecho laboral\n• Cuadros sinópticos que contengan derechos y obligaciones del patrón y trabajador\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 50%\n• Investigaciones: 10%\n• Reportes: 10%\n• Avances de lectura: 10%\n• Caso práctico: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae630": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno reforzará los conocimientos adquiridos en Contabilidad general mediante la aplicación de sistemas contables sobre valores y mercancías.\n\nCONTENIDO TEMÁTICO\n1. LA GUÍA CONTABILIZADORA\n   1.1 Contenido\n   1.2 Objetivo\n\n2. INGRESOS Y EGRESOS\n   2.1 Concepto de ingresos\n   2.2 Diferencia entre entrada e ingresos\n   2.3 Concepto de egresos\n   2.4 Diferencia entre salida y egresos\n\n3. CUENTAS DE ORDEN\n   3.1 Valores\n   3.2 Valores ajenos\n   3.3 Clasificación de las cuentas\n   3.4 Movimientos de las cuentas de orden\n\n4. MERCACNCÍAS EN TRÁNSITO\n   4.1 Contrato de comisión mercantil\n   4.2 Cuentas de orden que emplea el comisionista\n   4.3 Movimientos de las cuentas de orden\n   4.4 Precio de venta de la mercancía en comisión\n\n5. MERCANCÍA EN CONSIGNACIÓN\n   5.1 Necesidad de las prestaciones\n   5.2 Procedimientos de control de la mercancía de consignación\n   5.3 Precio de costo y precio alzado de la mercancía en consignación\n   5.4 Presentación de los resultados y de la mercancía en consignación en los estados financieros\n\n6. MERCANCÍAS EN TRÁNSITO\n   6.1 Compras fuera de plaza\n   6.2 Cuentas de mercancías en tránsito\n   6.3 Mayor auxiliar\n   6.4 Importaciones\n\n7. PASIVO DE CONTINGENCIA\n   7.1 El endoso\n   7.2 Documento y valor real\n   7.3 Documentos descontados pasivo de contingencia\n   7.4 Cuentas de orden\n   7.5 Formas de registro\n\n8. INVENTARIOS\n   8.1 Reglas de valuación\n   8.2 Antecedentes\n   8.3 Costo\n   8.4 Sistema de valuación\n\n9. LA DEPRECIACIÓN\n   9.1 Concepto\n   9.2 Método de depreciación\n\n10. EROGACIONES CAPITALIZABLES Y GASTOS\n   10.1 Introducción\n   10.2 Características\n   10.3 Presentación\n\n11. PREVISIONES Y PROVISIONES\n   11.1 Concepto\n   11.2 Características\n   11.3 Diferencia entre previsión y provisión\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de tema por equipo\n• En cada unidad se harán ejercicios registrando operaciones en esquema de mayor\n• Formulación de estados financieros correspondientes\n• Exposición de temas en clase\n\nDe manera independiente\n• Investigación bibliográfica\n• Elaboración de reportes\n• Investigación de campo\n• Visitando empresas y observando y registrando la aplicación de controles contables\n• Para valores y mercancías\n• Casos prácticos completos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 40%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 30%\n• Evaluación de actividades, tareas, trabajos independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae631": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno será capaz de resolver los problemas de planeación financiera, mediante la utilización de técnicas específicas; analizará la información contable durante el ejercicio contable, logrando con ello la adecuada aplicación financiera de la misma.\n\nCONTENIDO TEMÁTICO\n1. INFORMACIÓN FINANCIERA\n   1.1 Naturaleza de los estados financieros\n   1.2 Generalidades sobre estados financieros\n   1.3 Limitaciones de los estados financieros\n   1.4 Objetivos de los estados financieros\n\n2. EL BALANCE GENERAL\n   2.1 Contenido del balance general\n   2.2 Clasificación del activo\n   2.3 Pasivo\n   2.4 Capital contable\n\n3. EL ESTADO DE RESULTADOS\n   3.1 Generalidades\n   3.2 Diferencia entre utilidad económica, utilidad gravable y utilidad contable\n   3.3 Formas de presentación del estado de resultados\n   3.4 Estado de costo de producción\n   3.5 Estado de utilidades retenidas\n   3.6 Estados consolidados\n\n4. ANÁLISIS E INTERPRETACIÓN DE LOS ESTADOS FINANCIEROS\n   4.1 El análisis financiero\n   4.2 Estado de las relaciones causales o razones financieras\n   4.3 Conclusiones del análisis\n   4.4 Bolsa de valores para empresas comerciales, industriales y servicios\n      4.4.1 Generalidades\n      4.4.2 Datos de balance, resultados\n      4.4.3 Razones y proporciones\n\n5. ESTADO DE ORIGEN Y APLICACIÓN DE RECURSOS\n   5.1 Introducción\n   5.2 Conceptos, recursos y criterios para su elaboración\n   5.3 Estado de cambios en la situación financiera\n   5.4 Estado de flujo de fondo\n   5.5 Estado de flujo de efectivo\n\n6. EFECTIVO DE CAMBIO EN LA INFORMACIÓN FINANCIERA POR NIVELES DE PRECIO\n   6.1 Introducción\n   6.2 Razones financieras afectadas por cambios en precio\n   6.3 Índices generales de precios\n   6.4 Clasificación de partidas\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de cuadros comparativos\n• Prácticas\n• Resolución de ejercicios\n\nDe manera independiente\n• Investigación bibliográfica\n• Fichas bibliográficas\n• Investigación de campo a empresas\n• Tipos de estados financieros entregados a Sociedades Nacionales de crédito para:\n• Créditos comerciales\n• Créditos industriales\n• Casas de bolsa\n• Casos prácticos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Investigaciones, fichas e informes: 10%\n• Ejercicios: 10%\n• Casos prácticos: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae632": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá los procedimientos de control de producción por órdenes y procesos. Determinará costos unitarios, conjuntos directos y marginales dependiendo de la naturaleza de la empresa productora, aplicando técnicas de valuación.\n\nCONTENIDO TEMÁTICO\n1. PROCEDIMIENTOS DE CONTROL DE PRODUCCIÓN POR ÓRDENES Y POR PROCESOS\n   1.1 Diferencias entre un procedimiento de control por órdenes, clases o grupos de productos y procedimientos de control por proceso\n   1.2 Determinar la producción equivalente para la valuación por las técnicas de precios promedios y P.E.P.S.\n   1.3 Aplicaciones en casos de mermas, pérdidas accidentales y producción defectuosa\n   1.4 Concepto de producto principal, coproducto, subproducto, desecho, desperdicios y residuos\n\n2. DETERMINACIÓN DE COSTOS UNITARIOS\n   2.1 Determinación de la producción equivalente para la reevaluación de la producción por las técnicas de precios promedios y P.E.P.S.\n   2.2 Cálculo de costo unitario, gradualmente con uno varios procesos y con o sin inventario de producción en proceso\n   2.3 Aplicación de casos de pérdidas normales y anormales de producción. Producción averiada y defectuosa a diferentes grados de inversión.\n\n3. COSTOS CONJUNTOS\n   3.1 Generalidades\n   3.2 Causas principales de la obtención de la producción conjunta\n   3.3 Procedimiento de control\n   3.4 Técnicas de valuación\n\n4. COSTO DIRECTO O MARGINAL (APLICADO A LOS COSTOS HISTÓRICOS)\n   4.1 Generalidades\n   4.2 Costos fijos y variables, criterios y razones para su separación\n   4.3 Procedimiento contable del costo directo, costo directo estimado y estable\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas por equipo\n• Elaboración de casos prácticos por unidad analizada, aplicando principios básicos y técnicas de valuación\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de material didáctico, para exposición por equipo\n• Caso práctico aplicando el costo directo\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 50%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 25%\n• Evaluación de actividades, tareas, trabajos independientes: 25%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae633": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno comprenderá la importancia del presupuesto, en la administración de una empresa y saber sus generalidades y la metodología del mismo, en sus diversas tipografías, asimismo, complementar los presupuestos con base en el control que arrojen.\n\nCONTENIDO TEMÁTICO\n1. GENERALIDADES SOBRE EL PRESUPUESTO EMPRESARIAL\n   1.1 Reserva histórica\n   1.2 Noción del presupuesto\n   1.3 Ubicación del presupuesto en el tiempo\n   1.4 Importancia\n   1.5 La planeación y el presupuesto, ventajas y limitaciones\n   1.6 Clasificación de los presupuestos\n   1.7 Mecánica, técnica y principios presupuestales\n\n2. METODOLOGÍA PARA LA ELABORACIÓN DE UN PRESUPUESTO\n   2.1 Labor de concientización\n   2.2 determinación de las características propias de la empresa\n   2.3 Definición de las actividades que realizan las personas encargadas de formular el presupuesto\n   2.4 Funciones del director de presupuestos\n   2.5 Etapas a seguir en la preparación del presupuesto\n\n3. TIPOLOGÍA DE LOS PRESUPUESTOS\n   3.1 Presupuesto de capital\n   3.2 Presupuesto de tesorería\n   3.3 Presupuesto de venta\n   3.4 Presupuesto de gastos operacionales\n\n4. CONTROL DE PRESUPUESTOS\n   4.1 Concepto\n   4.2 Niveles de control\n   4.3 El proceso de control\n   4.4 Control de presupuestos de:\n      4.4.1 Ventas\n      4.4.2 Producción\n      4.4.3 Materia prima\n      4.4.4 Mano de obra\n      4.4.5 Efectivo\n   4.5 Variaciones en el presupuesto\n   4.6 Análisis y contabilización de las variaciones\n\n5. PRESUPUESTOS COMPLEMENTARIOS\n   5.1 Presupuestos base cero\n   5.2 Presupuestos por programa\n   5.3 Inflación y presupuestos\n   5.4 La informática y la presupuestación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas preparados por equipo\n• Ejercicios prácticos\n• Elaboración cuadros comparativos\n\nDe manera independiente\n• Investigación bibliográfica y de campo\n• Elaboración de ejercicios prácticos\n• Proyecto de elaboración de un presupuesto\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Prácticas: 20%\n• Trabajos: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae634": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno implementará administrativamente, dentro de una empresa, la forma de organización, administración, dirección y control dirigido a la mercadotecnia.\n\nCONTENIDO TEMÁTICO\n1. ADMINISTRACIÓN DE LA MERCADOTECNIA\n   1.1 Elementos de administración mercadológica\n   1.2 Planeación de la mercadotecnia\n   1.3 Bases para la toma de decisiones, en un plan de mercado\n   1.4 La importancia de la planeación en el mercado moderno\n   1.5 La planeación mercadotécnica a largo plazo\n   1.6 La planeación de las utilidades y la mercadotecnia\n\n2. ORGANIZACIÓN DE LA MERCADOTECNIA\n   2.1 Concepto de organización de la mercadotecnia\n   2.2 Determinación de la organización más adecuada\n   2.3 Empleo de empresas orientada y no orientada hacia el consumidor\n   2.4 Funciones orgánicas de la mercadotecnia\n   2.5 Cómo se evalúa un mercado de prueba\n   2.6 Organización de la investigación de mercados\n   2.7 Organización de la promoción de ventas\n   2.8 Organización de la publicidad\n   2.9 Organización de las relaciones públicas\n   2.10 Organización de las ventas\n   2.11 Funciones de gerente de ventas\n   2.12 Desarrollo de las fases de la venta\n   2.13 Ventas dimensionales\n   2.14 El gerente de ventas como un comunicador efectivo\n   2.15 Organización de la administración de ventas\n   2.16 La gerencia de marca\n   2.17 Gerente de marca\n\n3. DIRECCIÓN DE LA MERCADOTECNIA\n   3.1 Definición de dirección\n   3.2 Relaciones de la mercadotecnia con las demás áreas funcionales de la empresa\n   3.3 Descripción del puesto de gerente de mercadotecnia\n   3.4 Planeación del producto de producción, presentación y empaque\n\n4. EVOLUCIÓN Y CONTROL DE LA MERCADOTECNIA\n   4.1 Áreas de evolución en mercadotecnia\n   4.2 Forma de controlar con base en la preparación de reportes\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Elaboración de cuadros comparativos\n• Exposición de temas por equipo\n\nDe manera independiente\n• Investigación de campo, bibliográfica y documental\n• Visitas a empresas, observando e identificando el proceso administrativo dirigido a la mercadotecnia\n• Elaboración de reportes\n• Elaboración de ensayos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 70%\n• Investigaciones: 10%\n• Reportes: 10%\n• Ensayo: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae735": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno comprenderá qué es el liderazgo; en qué teoría se basa y cuál es su desarrollo dentro de las empresas.\n\nCONTENIDO TEMÁTICO\n1. ENFOQUES DEL LIDERAZGO\n   1.1 Concepto\n   1.2 Fuentes de liderazgo\n   1.3 Clasificación de las teorías del liderazgo\n\n2. TEORÍAS UNIDIMENSIONALES\n   2.1 Teoría del gran hombre\n   2.2 Teoría “X”\n   2.3 Teoría “Y”\n   2.4 Teoría “Z”\n   2.5 Teoría de Likert\n   2.6 Recapitulación de las teorías unidimensionales\n\n3. TEORÍAS BIDIMENSIONALES\n   3.1 La rejilla gerencial\n   3.2 Teoría alfa-omega\n\n4. TEORÍA TRIDIMENSIONAL\n   4.1 Liderazgo situacional\n   4.2 Determinación del estilo apropiado\n   4.3 Enfoque ruta-meta\n   4.4 Teoría de Fiedler\n   4.5 Recapitulación\n\n5. DESARROLLO DEL ESTILO DE LIDERAZGO\n   5.1 Forma de evaluar el estilo de liderazgo\n   5.2 Inventarios para evaluar el estilo de liderazgo\n      5.2.1 Inventarios de motivación personal\n      5.2.2 Inventarios de agresividad-altruismo\n      5.2.3 Inventarios de manejo de conflictos\n      5.2.4 Inventarios de estilos de dirección\n      5.2.5 Inventarios acerca de los puestos\n   5.3 Clasificación de los inventarios\n   5.4 Deberes y responsabilidades del líder\n      5.4.1 Cualidades\n      5.4.2 Habilidades\n      5.4.3 Deberes y responsabilidades\n      5.4.4 Aspecto humano\n\n6. FACTORES QUE INFLUYEN EN LA EFICACIA DEL LIDERAZGO\n   6.1 Factores internos\n   6.2 Factores externos\n   6.3 Valores del liderazgo\n   6.4 Un modelo de valores para el ejercicio del liderazgo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas realizado por equipos de alumnos\n• Trabajos de investigación\n\nDe manera independiente\n• Investigación documental\n• Lectura de artículos sobre liderazgo\n• Elaboración de ensayo\n• Elaboración de reportes\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 70%\n• Investigaciones: 10%\n• Ensayo: 10%\n• Reportes: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae736": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno aprenderá la correcta administración de los recursos de la empresa y su financiación a corto plazo. Aplicará los distintos métodos analíticos de los estados financieros, para la solución de los problemas financieros, además de desarrollar su habilidad en la toma de decisiones de acuerdo a las diferentes alternativas de inversión.\n\nCONTENIDO TEMÁTICO\n1. FINANCIACIÓN DE LAS EMRPESAS\n   1.1 Introducción\n   1.2 Función económica\n   1.3 Necesidades de fondos\n   1.4 Objetivos fundamentales en la administración de los recursos\n   1.5 Rendimiento de la inversión\n\n2. ADMINISTRACIÓN DE INVENTARIOS Y NECESIDAD DE FONDOS\n   2.1 Inversiones en materia primas\n   2.2 Inversiones en inventarios de producción en proceso\n   2.3 Análisis de la inversión\n   2.4 El papel del funcionario financiero\n\n3. ADMINISTRACIÓN DE LAS CUENTAS POR COBRAR\n   3.1 Formas de las cuentas por cobrar\n   3.2 Factores determinantes\n   3.3 Labor del departamento de crédito\n   3.4 Fuentes de información de crédito\n\n4. ADMINISTRACIÓN DEL DINERO, INVERSIÓN DE TÍTULOS Y LA NECESIDAD DE FONDOS\n   4.1 Funciones de la inversión en activos líquidos\n   4.2 Inversión en reservas\n   4.3 Costa de mantener reservas\n   4.4 Formas para elevar el rendimiento\n\n5. INVERSIONES EN ACTIVO FIJO\n   5.1 Importancia en la inversión\n   5.2 Corrientes principales de fondos\n   5.3 Causas de desembolso de activo fijo\n   5.4 Análisis de su inversión\n\n6. FUENTES ESPONTÁNEAS DE CRÉDITO\n   6.1 Crédito mercantil\n   6.2 Análisis de los cambios de las cuentas por pagar comerciales\n   6.3 Impuestos sobre utilidades\n\n7. PRONÓSTICOS DE LAS NECESIDADES FUTURAS DE FONDOS\n   7.1 Técnicas de la pronosticación de las necesidades de fondos\n   7.2 Naturaleza de métodos de balance general proyectado\n   7.3 Pasos en la preparación del balance general proyectado\n   7.4 Pronóstico financiero de largo alcance\n\n8. CRÉDITO BANCARIO\n   8.1 Importancia de comprender las fuentes de crédito\n   8.2 Importancia del crédito bancario\n   8.3 Estructura de la banca comercial\n      8..4 Normas y procedimientos de la presentación bancaria\n\n9. FUENTES DE CRÉDITO A CORTO PLAZO NO BANCARIAS\n   9.1 El mercado de pagarés con fuente de créditos\n   9.2 Prestamistas privados\n   9.3 Anticipos de clientes\n   9.4 Créditos de proveedores\n\n10. GARANTÍAS EN LOS CRÉDITOS\n   10.1 Tipos de garantías\n   10.2 Razón de las garantías para ambas partes\n   10.3 Activos que constituyen una garantía\n   10.4 El aval como garantía\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Cuadros comparativos de métodos de estados financieros\n• Solución a problemas financieros\n\nDe manera independiente\n• Investigación bibliográfica, documental, análisis y síntesis de lecturas\n• Cuadros y redes conceptuales\n• Análisis de diversas alternativas de inversión\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 50%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 25%\n• Evaluación de actividades, tareas, trabajos independientes: 25%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae737": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno elaborará un proyecto con base en el conocimiento de la administración de proyectos.\n\nCONTENIDO TEMÁTICO\n1. EL MARCO DE LA ADMINISTRACIÓN DE PROYECTOS\n   1.1 Propósito de este documento\n   1.2 Qué es un proyecto\n   1.3 Qué es la administración de proyectos\n   1.4 Tareas relacionadas\n\n2. EL CONTEXTO DE LA ADMINISTRACIÓN DE PROYECTOS\n   2.1 Fases del proyecto y el ciclo de vida del proyecto\n   2.2 Los partidos interesados del proyecto\n   2.3 Influencias organizacionales\n   2.4 Habilidades claves de administración general\n   2.5 Influencia socioeconómica\n\n3. PROCESOS DE ADMINISTRACIÓN DE PROYECTOS\n   3.1 Proceso de proyectos\n   3.2 Grupos de procesos\n   3.3 Interacciones de procesos\n   3.4 La personalización de las interacciones de procesos\n\n4. ADMINISTRACIÓN DE LA ADMINISTRACIÓN DE PROYECTOS\n   4.1 Desarrollo del plan de proyectos\n      4.1.1 Entradas al desarrollo del plan de proyectos\n      4.1.2 Herramientas y técnicas para el desarrollo del plan de proyectos\n      4.1.3 Salidas del desarrollo del plan de proyectos\n   4.2 Ejecución del plan de proyectos\n   4.3 Control de cambios generales\n\n5. ADMINISTRACIÓN DEL ALCANCE DE PROYECTOS\n   5.1 Iniciación\n      5.1.1 Entradas para la iniciación\n      5.1.2 Herramientas y técnicas para la iniciación\n      5.1.3 Salidas de la iniciación\n   5.2 Planeación del alcance\n      5.2.1 Entradas a la planeación del alcance\n      5.2.2 Herramientas y técnicas para la planeación del alcance\n      5.2.3 Salidas de la definición del alcance\n   5.3 Definición del alcance\n      5.3.1 Entradas a la definición del alcance\n      5.3.2 Técnicas y herramientas para la definición del alcance\n      5.3.3 Salidas de la definición del alcance\n   5.4 Verificación del alcance\n      5.4.1 Entradas a la verificación del alcance\n      5.4.2 Herramientas y técnicas para la verificación del alcance\n      5.4.3 Salidas de la verificación del alcance\n   5.5 Control de cambios para el alcance\n      5.5.1 Entradas al control de cambios del alcance\n      5.5.2 Herramientas y técnicas para control de cambios de alcance\n      5.5.3 Salidas de control de cambios\n\n6. ADMINISTRACIÓN DE TIEMPOS DE PROYECTOS\n   6.1 Definición de las actividades\n   6.2 Secuencia de las actividades\n   6.3 Estimación de la duración de las actividades\n   6.4 Desarrollo de la programación\n\n7. ADMINISTRACIÓN DE LA CALIDAD DEL PROYECTO\n   7.1 Planeación de la calidad\n   7.2 Aseguramiento de la calidad\n   7.3 Control de calidad\n\n8. ADMINISTRACIÓN DEL COSTO DEL PROYECTO\n   8.1 Planeación de recursos\n   8.2 Estimación de costos\n   8.3 Presupuestación de costos\n\n9. ADMINISTARCIÓN DEL RECURSO HUMANO DEL PROYECTO\n   9.1 Planeación organizacional\n   9.2 Adquisición de staff\n   9.3 Desarrollo de equipo\n\n10. ADMINISTRACIÓN DE LAS COMUNICACIONES DEL PROYECTO\n   10.1 Planeación de las comunicaciones\n   10.2 Distribución de la información\n   10.3 Reportes de desempeño\n   10.4 Cierre administrativo\n\n11. ADMINISTRACIÓN DEL RIESGO DE PROYECTO\n   11.1 Identificación de riesgos\n   11.2 Cuantificación de riesgos\n   11.3 Desarrollo de respuesta al riesgo\n   11.4 Control de respuesta al riesgo\n\n12. ADMINISTRACIÓN DEL PROCURAMIENTO\n   12.1 Planeación de la procuración\n   12.2 Planeación de la solución\n   12.3 Solicitación\n   12.4 Selección de fuentes\n   12.5 Administración del contrato\n   12.6 Cierre del contrato\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Realización de mesas redondas y paneles de discusión sobre la problemática planteada por los proyectos\n• Exposición de temas sobre los contenidos específicos de los métodos de diseño de proyectos\n• Análisis crítico y evaluación de algunos proyectos (casos prácticos)\n• Análisis crítico y reflexivo sobre el uso de las tecnologías de información en el diseño e implementación de proyectos\n\nDe manera independiente\n• Investigación bibliográfica sobre las características fundamentales de los proyectos\n• Lectura\n• Investigación en casos específicos\n• Reporte de caso\n• Esquemas\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 20%\n• Evaluación de actividades, tareas, trabajos independientes: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae738": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno será capaz de aplicar las disposiciones fiscales que afectan a las sociedades mercantiles conociendo las leyes de renta y valor agregado, los aspectos de registro contable y sus contratos, así como las recuperaciones legales y financieras.\n\nCONTENIDO TEMÁTICO\n1. DISPOSICIONES GENERALES DE LA LEY DEL IMPUESTO SOBRE LA RENTA\n   1.1 Objetivo\n   1.2 Sujeto\n   1.3 Domicilio\n   1.4 Registros contables\n   1.5 Acreditamiento del impuesto pagado en el extranjero\n\n2. ESTUDIO Y APLICACIÓN CONTABLE DE LOS ESTIMULOS FISCALES RELATIVOS A LAS SOCIEDADES MERCANTILES\n   2.1 Sujeto\n   2.2 Cálculo de impuesto\n   2.3 Declaración anual\n   2.4 Entero del impuesto\n   2.5 Pagos provisionales\n   2.6 Utilidad fiscal ajustada\n   2.7 Pérdida fiscal\n   2.8 Bases especiales de tributación\n   2.9 Facultades de las autoridades\n   2.10 Disposiciones para sociedades específicas\n\n3. ESTUDIO Y APLIACIÓN CONTABLE DE LOS ESTIMULOS FISCALES RELATIVOS A LAS SOCIEDADES MERCANTILES\n   3.1 Concepto\n   3.2 Objetivo\n      3.2.1 Para las sociedades mercantiles\n      3.2.2 Para el sector gobierno\n   3.3 Estímulos fiscales del I.S.R\n   3.4 Requisitos\n   3.5 Proceso para su aprovechamiento\n   3.6 Registro contable\n\n4. ESTUDIO Y APLIACACIÓN CONTABLE DEL IVA EN LAS SOCIEDADES MERCANTILES\n   4.1 Objetivo\n   4.2 Estructura\n   4.3 Disposiciones generales de la Ley del IVA\n   4.4 IVA en la enajenación\n   4.5 IVA en la prestación de servicios\n   4.6 IVA en la importación de bienes y servicios\n   4.7 IVA en la exportación de bienes y servicios\n   4.8 Declaraciones\n      4.8.1 Mensual\n      4.8.2 Anual\n   4.9 Entero del impuesto\n   4.10 De las obligaciones de los contribuyentes\n   4.11 De las facultades de las autoridades\n   4.12 Disposiciones transitorias\n   4.13 Reglamento de la Ley del IVA\n   4.14 Disposiciones Misceláneas\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Socialización de temas\n• Ejercicios prácticos\n\nDe manera independiente\n• Investigación bibliográfica\n• Cálculo de impuestos ISR\n• Cálculo de impuestos IVA\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 50%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 25%\n• Evaluación de actividades, tareas, trabajos independientes: 25%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae739": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá los diferentes sujetos que están obligados al pago de tributaciones y las infracciones y delitos en que incurre cuando no se cumplen estas disposiciones.\n\nCONTENIDO TEMÁTICO\n1. SUJETOS DE LA RELACIÓN TRIBUTARIA\n   1.1 Sujeto activo: federación , estados y municipios\n   1.2 Sujeto pasivo: personas físicas y personas morales\n   1.3 Obligado directo: subsidiado y por garantía\n   1.4 Sujeto pasivo y activo en el Código Fiscal de la Federación (CFF)\n   1.5 Coordinación fiscal, la Ley de Coordinación Fiscal\n\n2. INFRACCIONES Y DELITOS FISCALES\n   2.1 Concepto de información y delito\n   2.2 Diferencias entre concepto de información y de delito\n   2.3 Sanción\n      2.3.1 Concepto\n      2.3.2 Sanción a las infraestructuras\n         2.3.2.1 El recargo\n         2.3.2.2 La rutina\n         2.3.2.3 La clausura del decomiso\n         2.3.2.4 Sanción a los delitos en material fiscal\n   2.4 Delitos fiscales en el CFF y la legislación Aduanera\n      2.4.1 Encubrimiento de servidores públicos tentativa\n      2.4.2 Continuados\n      2.4.3 Contrabando\n      2.4.4 Defraudación\n      2.4.5 Evasión y relacionadas con Registro Federal de Contribuyentes (RFC)\n\n3. PROCEDIMIENTO ADMINISTRATIVO\n   3.1 Formalidades esenciales del procedimiento\n   3.2 Resoluciones expresa y negativa\n   3.3 Derecho de petición\n   3.4 Los recursos administrativos en el CFF\n   3.5 Las notificaciones, secuestro, remate y garantía del interés fiscal\n   3.6 Procedimiento administrativo de ejecución\n   3.7 Procedimiento de contabilidad administrativa\n\n4. AUTORIDAD FISCAL\n   4.1 Las actas de auditoría, la liquidación\n   4.2 Órganos liquidadores\n   4.3 La prueba contra actas administrativas el procedimiento contencioso\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes\n• Exposición de temas por equipo\n• Presentación de casos prácticos\n\nDe manera independiente\n• Investigación bibliográfica\n• Elaboración de avances de lectura\n• Elaboración de ensayo\n• Elaboración de trabajos en equipo\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Trabajos: 20%\n• Investigaciones: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae840": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno identificará qué es la auditoría administrativa y el alcance que tiene dentro de una empresa, con diferentes enfoques, conocer la importancia de la planeación de ésta, dentro de una organización y la repercusión que conlleve el informe que arroja, después de realizarla.\n\nCONTENIDO TEMÁTICO\n1. UBICACIÓN, NECESIDAES, ANTECEDENTES Y CONCEPTOS DE AUDITORÍA ADMINISTRATIVA\n   1.1 Ubicación de la auditoría administrativa dentro del proceso administrativo\n   1.2 Origen y alcance de la auditoría administrativa\n   1.3 Necesidad legal y social de la auditoría\n   1.4 Ámbito de la aplicación de la auditoría\n   1.5 Conceptos y vinculación de los diferentes tipos de auditoría\n\n2. AUDITORÍA ADMINISTRATIVA INTERNA Y EXTERNA\n   2.1 Localización de la auditoría administrativa interna\n   2.2 Localización de la auditoría administrativa externa\n   2.3 Marco funcional de la auditoría administrativa, dentro del organismo social\n   2.4 El perfil profesional del auditor\n\n3. ENFOQUE DE WILLAM P. L. Y JOSÉ ANTONIO FERNÁNDEZ ARENA\n   3.1 El modelo\n   3.2 Metodología\n   3.3 Crítica al enfoque\n\n4. EL ANÁLISIS FACTORIAL Y EL DIAGNÓSTICO POR FUNCIONES\n   4.1 Concepto y naturaleza de enfoque\n   4.2 Factores de operación\n   4.3 Principios del diagnóstico\n   4.4 Metodología del diagnóstico\n   4.5 Crítica de este enfoque\n\n5. AUDITORÍA GUBERNAMENTAL\n   5.1 Concepto y antecedentes de la auditoría\n   5.2 Marco jurídico administrativo de la auditoría gubernamental\n   5.3 Clases y tipos de auditoría administrativa\n   5.4 Normas básicas de la auditoría gubernamental\n   5.5 Metodología de la auditoría gubernamental\n   5.6 Crítica a la auditoría gubernamental\n\n6. UBICACIÓN DE LA AUDITORÍA ADMINISTRATIVA EN LAS FUNCIONES DE LA ORGANIZACIÓN\n   6.1 Formas de realizar una auditoría administrativa\n   6.2 Ubicación de la auditoría administrativa de una organización\n   6.3 Ventajas y desventajas de los servicios de la auditoría administrativa interna y externa\n   6.4 Razones por las cuales las empresas utilizan consultores externos\n   6.5 Razones por las cuales las empresas no utilizan consultores externos\n   6.6 selección y capacitación de un auditor administración\n\n7. PLANEACIÓN DE LA AUDITORÍA ADMNISTRATIVA\n   7.1 Consideraciones que deben tomarse en cuenta al contratar los servicios de una auditoría administrativa externa\n   7.2 Entrevistas previas con los clientes\n   7.3 Programas de trabajo\n   7.4 Carta convenio\n\n8. PREPARACIÓN DEL INFORME\n   8.1 Puntos esenciales de un buen informa\n   8.2 Tipos de informe\n   8.3 Lo que la dirección quiere\n   8.4 Exposición de hechos principales\n   8.5 Presentación y comentarios\n   8.6 Métodos de preparación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas por equipo\n• Elaboración del análisis factorial y diagnóstico por funciones\n\nDe manera independiente\n• Investigación bibliográfica y de campo\n• Visitas a empresas y despachos contable observando el desarrollo de los auditores administrativos\n• Planeación de una auditoría administrativa\n• Desarrollo y aplicación de la auditoría\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 50%\n• Exposiciones: 10%\n• Investigaciones: 10%\n• Práctica de auditoría administrativa: 20%\n• Informes: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae841": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno desarrollará sensibilidad, voluntad y destreza para el manejo de procesos de negociación en la gestión educativa\n\nCONTENIDO TEMÁTICO\n1. INTEGRACIÓN DE EQUIPOS\n   1.1 Definición de equipo eficaz\n      1.1.1 Condicionantes\n      1.1.2 Ventajas/Inconvenientes del trabajo en equipo\n   1.2 Creatividad\n      1.2.1 Pensamiento vertical y horizontal\n      1.2.2 Barreras al pensamiento creativo\n      1.2.3 Técnicas de creatividad: individuales y grupales\n   1.3 Habilidades de comunicación\n      1.3.1 Proceso de comunicación\n      1.3.2 Soluciones a las barreras\n   1.4 Habilidades de comunicación\n      1.4.1 Comportamiento de tarea\n      1.4.2 Comportamiento de procesos\n\n2. GESTIÓN DE EQUIPO\n   2.1 Definición y organización de equipos eficaces\n   2.2 Gestión de conflictos\n   2.3 Caracterización del líder eficaz\n   2.4 Modelo de liderazgo situacional\n      2.4.1 Planteamiento\n      2.4.2 Liderazgo individual\n      2.4.3 Fases de desarrollo grupal\n   2.5 Modelo de motivación\n   2.6 Motivación a costo cero: guías prácticas\n\n3. FACTORES DE NEGOCIACIÓN EN LA GESTIÓN ADMINISTRATIVA\n   3.1 Factores del ambiente social\n   3.2 Factores del ambiente económico\n   3.3 Factores técnicos de la negociación\n   3.4 La dimensión humana en los procesos de negociación\n   3.5 La inteligencia emocional y los procesos de negociación gestión administrativa\n\n4. LAS EXPECTATIVAS Y LAS PROPUESTAS EN EL PROCESO NEGOCIACIÓN\n   4.1 Posturas maximalistas y posturas minimalista en el proceso negociación\n   4.2 Factores críticos en los procesos de negociación\n   4.3 Sabe y poder en los proceso de negociación\n\n5. LAS FUENTES Y LOS FUNDAMENTOS DEL NEGOCIADOR COMO FACTOR CRÍTICO\n   5.1 La credibilidad del negociador\n   5.2 Las fuentes de legitimidad del negociador\n   5.3 El modelo laboral y la capacidad negociación\n   5.4 Los tiempos de la negociación\n   5.5 La planificación de los procesos de negociación\n   5.6 La información como factor crítico éxito\n   5.7 Riesgos en los proceso de negociación\n\n6. ESTRUCTURA DE LA NEGOCIACIÓN\n   6.1 Planificación de la negociación\n      6.1.1 Recopilación de análisis de la información\n      6.1.2 establecimiento de objetivos\n      6.1.3 Desarrollo de estrategias de actuación\n      6.1.4 Manuales de la negociación\n      6.1.5 Preparar los medios para negociación\n   6.2 Búsqueda del beneficio mutuo (la lógica de ganar)\n   6.3 Posicionamiento en los procesos de negociación\n      6.3.1 Definir la situación de ambas partes\n      6.3.2 Determinar intereses, necesidades y motivaciones en el proceso negociación\n      6.3.3 La búsqueda de soluciones y la determinación de propuestas\n      6.3.4 Fijando los límites de la negociación\n      6.3.5 Poner a prueba el proceso negociación\n   6.4 Acuerdos y desacuerdos en el proceso negociación\n      6.4.1 Técnicas de cierre en los procesos de negociación\n      6.4.2 Actividades post negociación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de trabajos de equipo\n• Análisis y reflexión sobre el refinamiento de las técnicas de conducción tres sesiones grupales\n• Panel sobre el tema de los procesos de negociación\n• Debate sobre los factores críticos de éxito en una negociación\n• Escenificación de proceso de negociación\n\nDe manera independiente\n• Lecturas selectas sobre temas de negociación\n• Análisis de casos sobre procesos de negociación\n• Presentación de esquemas y proyectos de procesos de negociación\n• Elaboración de un reporte final sobre el curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 20%\n• Evaluación de actividades, tareas, trabajos independientes: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae842": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno conocerá la aplicación de habilidades tales como la visión, calidad, servicios, técnicas innovadoras y trabajo en equipo, para ocupar puestos directivos.\n\nCONTENIDO TEMÁTICO\n1. EL PODER E LA VISIÓN\n   1.1 El poder de la visión\n   1.2 Cómo crear visión\n   1.3 La visión como instrumento de liderazgo\n   1.4 Visiones más amplias\n\n2. EL EMPERATIVO CALIDAD/SERVICIO\n   2.1 Las claves para la supervivencia futura\n   2.2 Implementación del imperativo calidad/servicio\n   2.3 Cómo perfeccionar el imperativo calidad/servicio\n   2.4 Cómo evaluar su imperativo calidad/servicio\n\n3. CÓMO DOMINAR TÉCNICAS DE PENSAMIENTOS INNOVADOR\n   3.1 Exámenes de la situación\n   3.2 Análisis de las causas\n   3.3 Toma de decisiones\n   3.4 Análisis del plan\n   3.5 Innovación\n\n4. TRABAJO EN EQUIPO PARA EL FUTURO\n   4.1 Trabajo en equipo\n   4.2 La tarea y el proceso\n   4.3 Intervención del trabajo en equipo\n   4.4 Técnicas para la recolección de datos\n   4.5 Preparación para una intervención de trabajos en equipo\n   4.6 Habilidades del facilitador\n   4.7 Modelo de facilitación de equipos\n   4.8 Comportamiento del estilo en las etapas de desarrollo\n   4.9 Liderazgo del equipo\n   4.10 el TAO de equipos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas por equipo\n• Técnicas para el desarrollo de habilidades\n\nDe manera independiente\n• Investigación bibliográfica\n• Investigación de campo: vistas a empresas\n• Elaboración de informes\n• Aplicación de encuestas y entrevistas\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 50%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 25%\n• Evaluación de actividades, tareas, trabajos independientes: 25%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae843": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno analizará y evaluará las medidas previas al análisis de los estados financieros. Será capaz de descubrir enfermedades en las empresas, sanearías para una buena toma de decisiones.\n\nCONTENIDO TEMÁTICO\n1. MEDIDAS PREVIAS AL ANÁLSIS DE LOS ESTADOS FINANCIEROS\n   1.1 Reglas generales\n   1.2 Reglas especiales\n   1.3 Estados financieros dictaminados por un contador público\n\n2. PROCEDIMIENTOS DE PORCIENTOS INTEGRALES\n   2.1 Conceptos\n   2.2 Base\n   2.3 Fórmulas\n   2.4 Conclusiones para el informe\n   2.5 Aplicación incorrecta del procedimiento de porcientos integrales\n\n3. PROCEDIMIENTOS DE RAZONES SIMPLES\n   3.1 Concepto\n   3.2 Clasificación\n   3.3 Estudio particular de diferentes razones\n   3.4 Fórmula, ejemplo, lectura y aplicación de razones\n\n4. ESTUDIO DEL BALANCE DOBLE\n   4.1 Conceptos, características, división material, contenido\n   4.2 Presentación\n   4.3 Conclusiones\n\n5. ESTUDIO DE ENFERMEDADES EN LAS EMPRESAS\n   5.1 Clasificación\n   5.2 Sobreinversión, cuentas y documentos por cobrar en activos fijos\n   5.3 Insuficiencia de capital, utilidades, causas y efectos\n   5.4 Recomendaciones\n\n6. INFORME\n   6.1 Concepto\n   6.2 Contenido\n   6.3 Atributos\n   6.4 Reportes analíticos, formas\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas por equipo\n• Exposiciones individuales\n\nDe manera independiente\n• Investigación bibliográfica\n• Resolución de casos prácticos\n• Elaboración de informes\n• Análisis y síntesis de temas\n• Elaboración de mapas y redes conceptuales\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Evaluación de actividades efectuadas en las sesiones con el docente: 20%\n• Evaluación de actividades, tareas, trabajos independientes: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae844": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno comprenderá la importancia y naturaleza de las relaciones públicas y su interrelación dentro y fuera de la estructura organizacional.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN\n   1.1 Antecedentes\n   1.2 Concepto de función de relaciones públicas\n   1.3 Importancia de la función de relaciones públicas\n\n2. LAS RELACIONES PÚBLICAS COMO FUNCIÓN DE LA ORGANIZACIÓN\n   2.1 La diferencia y vínculos entre relaciones públicas y publicidad\n   2.2 Las relaciones públicas como función integral a la organización\n   2.3 Clasificación de las relaciones públicas\n\n3. RELACIONES PÚBLICAS INTERNAS\n   3.1 Importancia de estas relaciones\n   3.2 Preceptos básicos\n   3.3 Conocimiento de la situación presente\n   3.4 Las relaciones con el personal\n   3.5 Información que se debe proporcionar al personal\n   3.6 Medio de comunicación con el personal\n\n4. LA RELACIÓN DE LAS RELACIONES PÚBLICAS\n   4.1 Con accionistas, inversionistas y organizaciones financieras\n   4.2 Con clientes actuales y potenciales\n   4.3 Con los proveedores\n   4.4 Con el gobierno\n   4.5 Con la comunidad y los medios masivos de comunicación\n\n5. PLANEACIÓN DE LA FUNCIÓN DE RELACIONES PÚBLICAS\n   5.1 Importancia de la planeación de la función\n   5.2 Programas de relaciones públicas\n   5.3 Presupuesto de relaciones públicas\n\n6. ORGANIZACIÓN DE LA FUNCIÓN DE RELACIONES PÚBLICAS\n   6.1 Determinación de objetivos y funciones fundamentales\n   6.2 Departamento o servicio interno de asesoría\n   6.3 Asesoría externa\n   6.4 Ubicación de la función de la organización\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas por equipo\n\nDe manera independiente\n• Investigación bibliográfica y de campo\n• Resúmenes y síntesis\n• Elaboración de programas de relaciones públicas\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 50%\n• Investigación con resúmenes y síntesis: 25%\n• Elaboración de programa: 25%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae945": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno sintetizará la información, con base en los fundamentos metodológicos, mediante la utilización del método científico y empleando los diferentes tipos de investigación; elaborar el Anteproyecto de la Tesis.\n\nCONTENIDO TEMÁTICO\n1. LA TESIS\n   1.1 ¿Qué es la tesis?\n   1.2 Objetivos que persigue\n   1.3 Quiénes deben realizarla\n   1.4 Requisitos que debe cumplir\n   1.5 Función del asesor de tesis y del director de tesis\n   1.6 Cómo iniciar una tesis\n\n2. ELECCIÓN DEL ÁREA DE INVESTIGACIÓN\n   2.1 Áreas del estudio de la licenciatura en administración\n   2.2 Factores que afectan la elección del área de estudio\n   2.3 Metodología básica\n   2.4 Planteamiento del problema\n   2.5 Objetivos de la investigación\n   2.6 Tipos de investigación\n   2.7 Aspectos generales de la investigación\n   2.8 Cronograma\n\n3. PROCESO DE LA INVESTIGACIÓN\n   3.1 Marco conceptual\n   3.2 Definición del problema\n   3.3 Determinación de la necesidad y objetivos de la investigación\n   3.4 Variables\n   3.5 Relaciones de dirección y magnitud\n   3.6 Estipulación de la hipótesis\n   3.7 Tipos de estudio\n\n4. DISEÑO DE LA INVESTIGACIÓN\n   4.1 Importancia del diseño de la investigación\n   4.2 Tipos de diseño\n   4.3 Criterios para clasificar un estudio\n   4.4 Tipo de investigación\n   4.5 Diseño experimental\n   4.6 Modelos estadísticos\n\n5. RECOPILACIÓN DE DATOS\n   5.1 Datos secundarios\n   5.2 Libros y textos\n   5.3 LA Hemeroteca Nacional\n   5.4 La biblioteca\n   5.5 Datos primarios\n   5.6 Entrevistas\n   5.7 Experimento\n   5.8 Datos primarios impersonales\n   5.9 Observación\n\n6. CUESTIONARIO\n   6.1 Diseño de cuestionario\n   6.2 Información requerida\n   6.3 Determinación del tipo de preguntas\n   6.4 Contenido de una pregunta\n   6.5 Formas y respuestas\n   6.6 Decisión sobre la formulación de las preguntas\n   6.7 Determinar la secuencia de las preguntas\n   6.8 Evaluación y prueba del cuestionario\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Determinación del área a investigar\n• Proceso de la investigación\n• Diseño de la investigación\n• Elaboración de cuestionarios\n\nDe manera independiente\n• Investigaciones bibliográficas documentales\n• Revisión de revistas a fines al tema a desarrollar\n• Elaboración de fichas bibliográficas\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 20%\n• Investigaciones y fichas bibliográficas: 20%\n• Diseño de investigación, elaboración de cuestionario: 20%\n• Marco teórico: 20%\n• Capítulo I y II: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae946": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno reconocerá la importancia de regirse profesional y personalmente por un código de ética y la repercusión que tiene en la sociedad.\n\nCONTENIDO TEMÁTICO\n1. ASPECTOS GENERALES\n   1.1 Introducción\n   1.2 El núcleo de la cuestión\n   1.3 Por qué una declaración en principios morales\n   1.4 Definición nominal de ética\n   1.5 Definición real de ética\n\n2. LA ÉTICA Y SU MÉTODO\n   2.1 El carácter científico y racional de la ética\n   2.2 La ética es una ciencia normativa\n   2.3 El método de la ética\n\n3. PERFIL DE LA LICENCIATURA\n   3.1 Actitudes\n   3.2 Habilidades\n   3.3 Conocimientos\n   3.4 Destreza\n\n4. LIBERTAD, VALORES, OBLIGACIÓN Y MORAL\n   4.1 Actos humanos y actos de hombre\n   4.2 Libertad en función de los valores\n   4.3 Obstáculos de la libertad\n   4.4 La libertad en la ética\n   4.5 La esencia del valor moral\n   4.6 La bipolaridad de los valores\n      4.6.1 Escala bipolar\n      4.6.2 Escala de valores positivos y negativos\n      4.6.3 Escala del cero absoluto\n   4.7 La obligación moral\n   4.8 Autonomía y heteronimia\n   4.9 Moral civil e internacional\n   4.10 Problemas morales de la actualidad\n\n5. LA DEONTOLOGÍA\n   5.1 Clases de deontologías\n   5.2 Trabajo humano y campos de aplicación en la tecnología\n   5.3 Motivación\n   5.4 Autoridades\n   5.5 Respeto, convivencia y colaboración\n\n6. ÉTICA PROFESIONAL\n   6.1 La realidad de la vocación\n   6.2 Finalidad de la profesión\n   6.3 Deber profesional\n   6.4 Capacidad profesional\n   6.5 El propio beneficio\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas por equipo\n\nDe manera independiente\n• Investigación de campo\n• Análisis de lecturas\n• Entrevistas a funcionarios\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 80%\n• Exposiciones: 10%\n• Análisis de lecturas: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae947": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno analizará la importancia del comercio internacional y los factores que intervienen para desarrollar la empresa en ese ámbito.\n\nCONTENIDO TEMÁTICO\n1. LIBERTAD DE COMERCIO Y EMPRESA\n   1.1 El mercantilismo\n      1.1.1 Características sociales y económicas\n      1.1.2 Filosofía del mercantilismo\n      1.1.3 Políticas concretas del mercantilismo\n   1.2 Hacia el liberalismo económico\n      1.2.1 Influencia del capitalismo\n      1.2.2 La religión\n      1.2.3 La balanza comercial frente a la teoría cuantitativa del dinero\n      1.2.4 Adam Smith y la nueva economía\n      1.2.5 Aspectos técnicos de la revolución industrial\n   1.3 La doctrina clásica del costo comparativo\n      1.3.1 Adam Smith\n      1.3.2 David Ricardo\n      1.3.3 John Stuart Mill\n      1.3.4 Elaboración y perfeccionamiento de la teoría clásica\n\n2. LA TEORÍA DEL COMERCIO INTERNACIONAL\n   2.1 Modelo sencillo de producción y consumo\n      2.1.1 La oferta\n      2.1.2 La demanda\n   2.2 El modelo de Heckscher-Ohlin\n      2.2.1 La proporción de los factores\n      2.2.2 El comercio y el precio de los factores\n      2.2.3 Reversiones de la intensidad del factor\n   2.3 Otras posibles bases para el comercio\n      2.3.1 Variaciones del modelo sencillo\n      2.3.2 Productos, factores y empresas heterogéneas\n      2.3.3 Movilidad de mercancías\n   2.4 El comercio en condiciones variables\n      2.4.1 El crecimiento y la función de transformación\n      2.4.2 El crecimiento y los patrones de consumo\n      2.4.3 El crecimiento y la curva de la oferta\n      2.4.4 La movilidad del factor en la economía internacional\n\n3. EL INTERNACIONALISMO Y SU RIVAL\n   3.1 El desarrollo de una economía internacional\n      3.1.1 El desarrollo de Inglaterra\n      3.1.2 Europa occidental\n      3.1.3 El desarrollo de una economía\n      3.1.4 La liberación del comercio\n      3.1.5 Una economía internacional\n   3.2 Renacimiento del nacionalismo\n      3.2.1 Introducción\n      3.2.2 Nacionalismo y proteccionismo\n      3.2.3 La expansión imperialista\n   3.3 El problema arancelario\n      3.3.1 Introducción\n      3.3.2 Los efectos de un arancel; equilibrio parcial\n      3.3.3 Costos crecientes\n      3.3.4 Estructura arancelaria\n      3.3.5 Efectos de un arancel; equilibrio general\n   3.4 La coyuntura para la protección\n      3.4.1 Argumentos sensatos a favor de la protección\n      3.4.2 Argumentos de especial interés a favor del proteccionismo\n\n4. LAS RELACIONES MONETARIAS INTERNACIONALES\n   4.1 El ingreso nacional y la balanza de pagos\n      4.1.1 Las relaciones entre el ingreso nacional y la balanza de pagos\n      4.1.2 Transacciones de capital\n      4.1.3 Equilibrio\n      4.1.4 Transacciones financieras internacionales\n   4.2 Las divisas\n      4.2.1 Los mercados de cambios\n      4.2.2 Los sistemas de los tipos de cambios\n   4.3 La balanza de pagos\n      4.3.1 La balanza contra el equilibrio\n   4.4 El ajuste de la balanza de pagos\n      4.4.1 Las tasas fijas de cambio\n      4.4.2 El ajuste a largo plazo\n      4.4.3 El ajuste regional comparado con el internacional\n   4.5 Ajuste de la balanza de pagos\n      4.5.1 El ajuste automático\n      4.5.2 Oferta y demanda de divisas\n   4.6 Control de cambios\n      4.6.1 Controversidad y ajuste\n      4.6.2 Características prominentes del control de cambios\n      4.6.3 La razón del control de cambios\n      4.6.4 Canalización bilateral del comercio\n      4.6.5 Tasas cruzadas, desordenadas\n      4.6.6 Tasas múltiples entre clases de transacción\n\n5. LA PAROXIMACIÓN AL MERCADO INTERNACIONAL\n   5.1 La determinación de los mercados de exportación\n   5.2 La creación de demanda en los mercados exteriores\n   5.3 Las formas de penetrar en el comercio\n\n6. LA VENTA EN LOS MERCADOS INTERNACIONALES\n   6.1 Las ofertas de producción\n   6.2 Embalaje y transporte de las mercancías\n   6.3 Seguro, cobro y financiación de las exportaciones\n   6.4 Las formalidades administrativas y documentarias en las compraventas internacionales\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de reportes de investigación\n• Exposición de temas por equipo\n• Elaboración de cuadros comparativos\n\nDe manera independiente\n• Investigación documental\n• Localización de artículos de actualidad\n• Evidencias de lectura\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Exposiciones: 10%\n• Cuadros sinópticos: 10%\n• Investigaciones: 10%\n• Análisis de lectura: 10%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae948": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno aplicará las técnicas de análisis y evaluación en proyectos de inversión en nuestro país, analizando el impacto que la inflación tiene en el rendimiento de los proyectos y estudiar las técnicas para manejar el riesgo.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN\n   1.1 Identificación de alternativas\n   1.2 Consecuencias cuantificables\n   1.3 Consecuencias no cuantificables\n   1.4 Análisis de alternativas\n   1.5 Control de la alternativa seleccionada\n\n2. MÉTODOS DEL VALOR ANUAL EQUIVALENTE\n   2.1 Análisis y evaluación de un proyecto individual\n   2.2 Selección de alternativas mutuamente excluyentes\n   2.3 Anualidad de inversión a largo plazo\n\n3. MÉTODO DE LA TASA INTERNA DE RENDIMIENTO\n   3.1 Tasa interna de rendimiento (TIR)\n   3.2 Significado de la tasa interna de rendimiento\n   3.3 Evaluación de un proyecto individual\n   3.4 Evaluación de un proyecto manualmente excluyente\n\n4. TÉCNICA DE ANÁLISIS DE ESTUDIO DE REEMPLAZO\n   4.1 Consideraciones de un estudio de reemplazo\n   4.2 Determinación de la vida económica de un activo\n   4.3 Análisis de reemplazo del activo actual\n   4.4 Promoción\n\n5. COSTO DE CAPITAL\n   5.1 Cálculo del costo de capital\n   5.2 Costo de capital de fuentes externas\n   5.3 Costo de capital de fuentes internas\n\n6. DISTINCIÓN ENTRE DECISIONES DE INVERSIÓN Y DE FINANCIAMIENTO\n   6.1 Decisión de inversión\n   6.2 Decisión de financiamiento\n   6.3 Combinación de ambas decisiones\n\n7. TIPO DE ANÁLSIS\n   7.1 Análisis de incertidumbre\n   7.2 Análisis de sensibilidad\n   7.3 Análisis de decisión\n   7.4 Análisis de riesgo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Elaboración de papeles de trabajo relativos a proyectos de inversión\n• Formulación de informes\n• Práctica de conformación de un proyecto de inversión\n• Elaboración de informe general\n\nDe manera independiente\n• Investigaciones bibliográficas y de campo\n• Proyectos de inversión de capital aplicando diversos tipos de análisis\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 30%\n• Cuadros comparativos: 15%\n• Ejercicios: 15%\n• Proyecto de inversión y análisis: 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  },
+  "adm-lae949": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nEl alumno será capaz de analizar la planeación de estrategias organizacionales y su implementación dentro de la empresa.\n\nCONTENIDO TEMÁTICO\n1. ADMINISTRACIÓN ESTRATÉGICA\n   1.1 Antecedentes\n   1.2 Proceso de la administración estratégica\n   1.3 Concepto de estrategia\n\n2. PLANEACIÓN ESTRATÉGICA\n   2.1 Definición y concepto\n   2.2 Tipos de planeación estratégica\n   2.3 Elementos de la planeación estratégica\n\n3. PLANEACIÓN ESTRATÉGICA\n   3.1 Misión de la organización\n   3.2 Visión de la organización\n   3.3 Filosofía organizacional (valores)\n   3.4 Filosofía administrativa\n      -Objetivos\n         -Estrategia\n            -Planeación de la acción\n   3.5 Diagnóstico interno\n      -Fuerzas y debilidades\n   3.6 Diagnóstico externo\n   3.7 Áreas claves de resultados\n\n4. ESTRATEGIA DESARROLLO E IMPLANTACIÓN\n   4.1 Tres niveles de estrategias\n   4.2 Desarrollo e implementación de la estrategia\n\n5. FUERZAS QUE MODELAN LA TOMA DE DECISIONES ESTRATÉGICAS\n   5.1 Consideraciones administrativas\n   5.2 Limitaciones financieras\n   5.3 La agenda del director ejecutivo y el enfoque gerencial\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase\n• Realización de prácticas\n• Estudio de casos\n• Elaboración de informe general\n\nDe manera independiente\n• Investigación bibliográfica y de campo\n• Elaboración de resúmenes prácticos\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Un examen parcial: 60%\n• Prácticas: 20%\n• Estudio y solución de casos prácticos: 20%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:07:48.000Z",
+   "byn": "Carga inicial del programa de estudios"
+  }
+ },
+ "archivos": []
+}

@@ -40,5 +40,9 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_iconos.py` · iconos de las tarjetas del panel: uno por opción, distintos, decorativos, modo oscuro, celular y otros roles (11).
 - `test_notificaciones.py` · campana de notificaciones: administrador, personal por permiso, docente (calificaciones y planeaciones), alumno (solicitudes y avisos), leídas, navegación y celular (39).
 - `test_doctorado.py` · carga del Doctorado: duración de 5 cuatrimestres, aviso al cargar, precarga del servidor que no pisa duraciones, cobros sin costo (13).
+- `test_contratos.py` · contratos de docentes por honorarios: dialogo, meses de servicio, folios, texto del PDF, firma, cancelación, datos fiscales y permisos (44).
+- `test_firma_contrato.py` · firma electrónica en pantalla táctil, fotos de la INE, PDF firmado con anexo, bloqueo y permisos (36).
+- `test_foto_docente.py` · foto del rostro del docente: cámara, expediente, Mi perfil, seguridad del servicio y credencial de docentes (34).
+- `test_ficha_firma.py` · ficha de inscripción con firma electrónica: firmas del alumno o tutor y de Control escolar, PDF firmado, lista, campana y permisos (34).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

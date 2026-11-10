@@ -44,7 +44,7 @@
     if(!window.LF_ME)return;
     try{var es=new EventSource("/api/eventos"),abierto=false;
       es.onmessage=function(e){try{var m=JSON.parse(e.data);if(m.c==="_borrados"){if(window.LF_BORRADOS)window.LF_BORRADOS(m.id);return}refresca(m.c,m.id)}catch(x){}};
-      es.onopen=function(){if(abierto)escuchas.forEach(carga);abierto=true};
+      es.onopen=function(){/* al abrir el canal se vuelve a leer todo lo que pudo cambiar mientras se abría (salvo lo pesado y casi fijo) */if(abierto)escuchas.forEach(carga);else escuchas.forEach(function(L){if(["catalogo","contenidos","fotos"].indexOf(L.col)<0)carga(L)});abierto=true};
     }catch(e){}
   });
   function docUsuarios(){

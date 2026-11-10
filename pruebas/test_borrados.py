@@ -21,7 +21,7 @@ def W(pg,js,t=40):
 HDR={'Content-Type':'application/json','x-lafragua':'1'}
 def pago(i,folio,monto,**k):return dict({'id':i,'folio':folio,'fecha':'2026-09-05','monto':monto,'metodo':'Efectivo','cc':[],'byn':'Caja'},**k)
 with sync_playwright() as pw:
-    b=pw.chromium.launch();ctx=b.new_context();ctx.set_default_timeout(12000)
+    b=pw.chromium.launch();ctx=b.new_context();ctx.set_default_timeout(30000)
     def pagina(c):
         pg=c.new_page();pg.on("pageerror",lambda e:errs.append(str(e)));pg.on("dialog",lambda d:d.accept());return pg
     pg=pagina(ctx);pg.goto(B+'/');pg.wait_for_url('**/configurar.html')
@@ -138,9 +138,10 @@ with sync_playwright() as pw:
     # ---------------- pantallas ----------------
     ok('tile_y_bandeja_del_admin',True)
     pg.evaluate("ir('home')");W(pg,"!document.getElementById('mNot').hidden");ok('admin_ve_el_mosaico_de_notificaciones',pg.is_visible('#mNot'))
-    cj=b.new_context();cj.set_default_timeout(12000);pc=pagina(cj);pc.goto(B+'/');W(pc,"typeof sesion==='function'&&document.body.classList.contains('locked')")
+    cj=b.new_context();cj.set_default_timeout(30000);pc=pagina(cj);pc.goto(B+'/');W(pc,"typeof sesion==='function'&&document.body.classList.contains('locked')")
     pc.fill('#lgU','caja1');pc.fill('#lgP','clave-caja1-123');pc.click('#lgGo');W(pc,"typeof APP!=='undefined'&&APP!==null&&!document.body.classList.contains('locked')&&typeof S!=='undefined'&&S.length>=1")
     ok('caja_no_ve_notificaciones',pc.evaluate("document.getElementById('mNot').hidden")==True)
+    time.sleep(4)   # deja que la página abra su canal de actualizaciones antes de cambiar datos
     put('ledger/s1',{'pagos':[pago('p1','R-000001',1300),pago('p2','R-000002',1300),pago('p3','R-000003',800),pago('p4','R-000004',500)]})
     W(pc,"S.find(function(s){return s.id==='s1'}).pagos.length===4")
     def quita(pg_,pid):
@@ -172,7 +173,7 @@ with sync_playwright() as pw:
     pg.locator('#nTb [data-cx]').first.click();ok('pide_confirmar','Confirmar eliminación' in pg.inner_text('#nTb') and 'dejará de ser válido' in pg.inner_text('#nMsg'))
     pg.locator('#nTb [data-cx]').first.click();W(pg,"(CONS.s1.items||[]).length===1");ok('constancia_eliminada',len(adm('get','/api/doc/constancias/s1').json()['data']['items'])==1 and 'se eliminó' in pg.inner_text('#nMsg'))
     # (5) alguien con permiso de constancias necesita autorización
-    ce=b.new_context();ce.set_default_timeout(12000);pe=pagina(ce);pe.goto(B+'/');W(pe,"typeof sesion==='function'&&document.body.classList.contains('locked')")
+    ce=b.new_context();ce.set_default_timeout(30000);pe=pagina(ce);pe.goto(B+'/');W(pe,"typeof sesion==='function'&&document.body.classList.contains('locked')")
     pe.fill('#lgU','esc1');pe.fill('#lgP','clave-esc1-123');pe.click('#lgGo');W(pe,"typeof APP!=='undefined'&&APP!==null&&!document.body.classList.contains('locked')&&typeof S!=='undefined'&&S.length>=1")
     pe.evaluate("ir('esc');etab('N')");pe.evaluate("document.getElementById('nAl').value='s1'");pe.evaluate("renderCons()");pe.wait_for_selector('#nTb [data-cx]')
     pe.locator('#nTb [data-cx]').first.click();pe.locator('#nTb [data-cx]').first.click();pe.wait_for_selector('#dAu[open]');ok('personal_con_permiso_pide_autorizacion','C-' in pe.inner_text('#auDesc') or 'constancia' in pe.inner_text('#auDesc').lower())

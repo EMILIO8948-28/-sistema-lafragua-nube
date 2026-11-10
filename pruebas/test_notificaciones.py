@@ -18,6 +18,9 @@ def W(pg,js,t=40):
         except Exception:pass
         time.sleep(0.1)
     raise TimeoutError('espera: '+js[:90])
+def fijaNots(pg):
+    pg.evaluate("window.borradosLista=async function(){return {pendientes:[{id:'b1'}],historial:[]}};0");pg.evaluate("NOTS={pendientes:[{id:'b1'}]};ntRender();0");time.sleep(0.4)
+    pg.evaluate("window.borradosLista=async function(){return {pendientes:[{id:'b1'}],historial:[]}};0")
 hoy=datetime.date.today();iso=lambda d:d.isoformat()
 with sync_playwright() as pw:
     b=pw.chromium.launch();ctx=b.new_context(viewport={'width':1100,'height':900});ctx.set_default_timeout(15000)
@@ -52,7 +55,7 @@ with sync_playwright() as pw:
     usr('esc2','Esc Dos','personalizado',{'modulos':{'escolar':'editar'}});usr('caja1','Caja','caja');usr('doc1','Profesor Uno','docente',{'doc':'d1'});usr('con1','Consulta','consulta')
     ctx.request.post(B+'/api/usuarios/alumnos',data=json.dumps({'items':[{'u':'als1','name':'Ana','alumno':'s1','clave':'abcd-efgh'}]}),headers=HDR)
     # ================== administrador ==================
-    pg.reload();W(pg,"typeof APP!=='undefined'&&APP!==null&&ROL==='admin'&&Object.keys(MAT).length===5&&Object.keys(SOL).length===4&&Object.keys(PLN).length===3");pg.evaluate("window.borradosLista=async function(){return {pendientes:[{id:'b1'}],historial:[]}};NOTS={pendientes:[{id:'b1'}]};ntRender()");pg.wait_for_timeout(500)
+    pg.reload();W(pg,"typeof APP!=='undefined'&&APP!==null&&ROL==='admin'&&Object.keys(MAT).length===5&&Object.keys(SOL).length===4&&Object.keys(PLN).length===3");fijaNots(pg);pg.wait_for_timeout(500)
     caja=lambda:pg.evaluate("(function(){var a=document.getElementById('bNotif').getBoundingClientRect(),k=document.getElementById('bBk').getBoundingClientRect(),m=document.querySelector('main').getBoundingClientRect();return {x:a.left,r:a.right,t:a.top,vis:a.width>0,kx:k.left,kr:k.right,mr:m.right}})()")
     r=caja();ok('la_campana_esta_arriba_a_la_derecha_junto_al_respaldo',r['vis'] and r['t']<110 and r['x']>600 and r['r']<=r['kx'] and abs(r['kr']-r['mr'])<30)
     ok('el_icono_es_una_campana_con_insignia',pg.evaluate("!!document.querySelector('#bNotif svg path[d*=\"M6 9.5\"]')") and pg.is_visible('#ntN'))
@@ -62,15 +65,15 @@ with sync_playwright() as pw:
     ok('indica_que_calificaciones_faltan_y_de_quien','Didáctica general (Prof. Uno' in t and 'Historia de la educación' not in t and 'Filosofía antigua' not in t)
     ok('el_aviso_de_calificaciones_ignora_evaluaciones_futuras_y_muy_antiguas','Historia de la educación' not in t and 'Filosofía antigua' not in t)
     for txt,js in [('solicitud de alumno',"MOD==='esc'&&ETAB==='S'"),('planeación de docente',"MOD==='esc'&&ETAB==='D'"),('calificaciones sin subir',"MOD==='esc'&&ETAB==='K'"),('solicitud de eliminación',"MOD==='not'"),('transferencia por confirmar',"MOD==='pagos'"),('pago por verificar',"MOD==='ver'"),('acuerdo de pago vencido',"MOD==='acu'")]:
-        pg.keyboard.press('Escape');pg.evaluate("ir('home')");pg.click('#bNotif');pg.wait_for_selector('#pNot:not([hidden])');pg.locator('#pNot .nt-i:has-text("%s")'%txt).first.click();W(pg,js);ok('lleva_a_'+txt.replace(' ','_'),True and pg.is_hidden('#pNot'))
+        pg.keyboard.press('Escape');pg.evaluate("ir('home')");fijaNots(pg);pg.click('#bNotif');pg.wait_for_selector('#pNot:not([hidden])');pg.locator('#pNot .nt-i:has-text("%s")'%txt).first.click();W(pg,js);ok('lleva_a_'+txt.replace(' ','_'),True and pg.is_hidden('#pNot'))
     pg.evaluate("ir('home')");pg.click('#bNotif');pg.wait_for_selector('#pNot:not([hidden])');pg.keyboard.press('Escape');ok('con_escape_se_cierra',pg.is_hidden('#pNot'))
     pg.click('#bNotif');pg.wait_for_selector('#pNot:not([hidden])');pg.mouse.click(300,500);ok('al_pulsar_fuera_se_cierra',pg.is_hidden('#pNot'))
     # resolver algo baja el contador
-    pg.evaluate("NOTS={pendientes:[{id:'b1'}]};ntRender()")
+    fijaNots(pg)
     put('solicitudes/so1',{'id':'so1','tipo':'justificante','sid':'s1','nombre':'Ana López','desde':iso(hoy),'hasta':iso(hoy),'motivo':'Cita médica','estado':'aprobada','resp':{'por':'Control escolar','fecha':iso(hoy)},'leida':False,'creada':ahora})
-    W(pg,"solPend().length===0");pg.evaluate("NOTS={pendientes:[{id:'b1'}]};ntRender()");ok('al_resolver_una_solicitud_baja_el_numero',pg.inner_text('#ntN')=='6')
+    W(pg,"solPend().length===0");fijaNots(pg);ok('al_resolver_una_solicitud_baja_el_numero',pg.inner_text('#ntN')=='6')
     put('solicitudes/so1',{'id':'so1','tipo':'justificante','sid':'s1','nombre':'Ana López','desde':iso(hoy),'hasta':iso(hoy),'motivo':'Cita médica','estado':'pendiente','creada':ahora});W(pg,"solPend().length===1")
-    put('calif/s2',{'items':[{'id':'i2','mid':'m1','mat':'Didáctica general','plan':'Pedagogía','per':PER,'cuat':2,'cal':8}]});W(pg,"califPend().length===0");pg.evaluate("NOTS={pendientes:[{id:'b1'}]};ntRender()");ok('al_subir_las_calificaciones_se_quita_el_aviso',pg.inner_text('#ntN')=='6')
+    put('calif/s2',{'items':[{'id':'i2','mid':'m1','mat':'Didáctica general','plan':'Pedagogía','per':PER,'cuat':2,'cal':8}]});W(pg,"califPend().length===0");fijaNots(pg);ok('al_subir_las_calificaciones_se_quita_el_aviso',pg.inner_text('#ntN')=='6')
     put('calif/s2',{'items':[]});W(pg,"califPend().length===1")
     pg.screenshot(path='/tmp/nt_1_admin.png');pg.click('#bNotif');pg.wait_for_selector('#pNot:not([hidden])');pg.screenshot(path='/tmp/nt_2_panel_admin.png',clip={'x':500,'y':0,'width':600,'height':720})
     # ================== otros roles ==================

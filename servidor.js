@@ -228,6 +228,10 @@ function puedeLeer(s, col, id) {
   const P = s.perm || {};
   if (col === 'planeaciones') return P.escolar === 'editar' || (!!(P.docente && P.docente !== 'none') && esPlaneacionPropia(s, id));
   if (col === 'solicitudes') return P.escolar === 'editar';
+  /* Los contratos llevan datos fiscales y honorarios: solo Control escolar (editar) y la nómina docente los leen */
+  if (col === 'contratos') return P.escolar === 'editar' || (!!P.nomina_doc && P.nomina_doc !== 'none');
+  /* Las fichas de inscripción firmadas llevan firmas: las lee Inscripción (cualquier nivel) y Control escolar con edición; las escribe Inscripción con edición */
+  if (col === 'fichasins') return P.escolar === 'editar' || (!!P.inscripcion && P.inscripcion !== 'none');
   if (col === 'config') {
     if (id === 'nomina') return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].nomina);
     if (id === 'plans') return Object.keys(P).some(m => P[m] !== 'none' && MODULOS[m] && MODULOS[m].plans);
@@ -243,6 +247,8 @@ function puedeEscribir(s, col, id) {
   const P = s.perm || {};
   if (col === 'planeaciones' && P.escolar !== 'editar') return P.docente === 'editar' && esPlaneacionPropia(s, id);
   if (col === 'solicitudes') return P.escolar === 'editar';
+  if (col === 'contratos') return P.escolar === 'editar';
+  if (col === 'fichasins') return P.inscripcion === 'editar';
   if (col === 'config') return id === 'nomina' && P.nomina_doc === 'editar';
   return Object.keys(P).some(m => P[m] === 'editar' && MODULOS[m] && MODULOS[m].E.includes(col));
 }
@@ -276,7 +282,7 @@ function validaModulos(m) {
 /* ---------- Borrados protegidos ----------
    Nadie que no sea Administrador borra nada sin autorización: o la contraseña del encargado, o su aprobación.
    Es un borrado: eliminar un documento o un archivo, o quitar elementos de un documento (un pago, un gasto, un documento cargado…). */
-const NOMBRES_COL = { students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura' };
+const NOMBRES_COL = { students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura', contratos: 'Contrato de docente', fichasins: 'Ficha de inscripción firmada' };
 const EXENTAS_PUT = new Set(['meta', 'calif', 'criterios', 'contenidos', 'cortes', 'config', 'fotos', 'planeaciones']);
 const VENTANA_BORRADO = 10 * 60000, RACHA_BORRADO = 15000;
 function alumnoDe(col, id) { if (['students', 'ledger', 'calif', 'constancias', 'fotos', 'egresados'].includes(col)) { const r = q.uno.get('students', id); if (r) { try { return JSON.parse(r.data).nombre || ''; } catch (e) {} } } return ''; }
@@ -470,7 +476,7 @@ async function aseguraLibs() { for (const [n, u] of LIBS) { const d = path.join(
 /* ---------- Cabeceras de seguridad ---------- */
 const CSP = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob:; connect-src 'self'; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
 function cabeceras(req, res) {
-  const base = { 'Content-Security-Policy': CSP, 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'same-origin', 'Permissions-Policy': 'camera=(), microphone=(), geolocation=()' };
+  const base = { 'Content-Security-Policy': CSP, 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'same-origin', 'Permissions-Policy': 'camera=(self), microphone=(), geolocation=()' };
   if (esSegura(req)) base['Strict-Transport-Security'] = 'max-age=31536000';
   const wh = res.writeHead.bind(res); res.writeHead = (cod, h) => wh(cod, Object.assign({}, base, h || {}));
 }
@@ -658,7 +664,7 @@ async function api(req, res, partes) {
     }
     else if (!puedeArchivos(s, privSolicitado)) return responde(res, 403, { error: 'No tienes permiso para subir archivos.' });
     if (m === 'DELETE' && ID_ARCH.test(a || '') && s.rol !== 'admin') { const inf2 = q.uArch.get(a); if (q.archRef.get('%' + a + '%') && protegeBorrado(s, req, res, { accion: 'ARCHIVO', col: 'archivo', id: a, descripcion: 'Eliminar el archivo «' + ((inf2 && inf2.nombre) || a) + '»' })) return; }
-    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (['planeacion', 'solicitud', 'resguardo', 'certificado'].includes(req.headers['x-categoria']) ? req.headers['x-categoria'] : '');
+    const nombre = () => decodeURIComponent(String(req.headers['x-nombre'] || 'archivo')).slice(0, 200), mime = () => String(req.headers['content-type'] || 'application/octet-stream').slice(0, 100), priv = () => (req.headers['x-privado'] === '1' ? 1 : 0), cat = () => (['planeacion', 'solicitud', 'resguardo', 'certificado', 'contrato'].includes(req.headers['x-categoria']) ? req.headers['x-categoria'] : '');
     if (m === 'POST' && !a) { const buf = await leeCuerpo(req, s.rol === 'alumno' ? 10 * 1024 * 1024 : 26 * 1024 * 1024), id = crypto.randomBytes(16).toString('hex'); fs.writeFileSync(path.join(ARCH, id), buf); q.ponArch.run(id, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id, sizeBytes: buf.length }); }
     if (ID_ARCH.test(a || '')) {
       if (m === 'PUT') { const buf = await leeCuerpo(req, 26 * 1024 * 1024); fs.writeFileSync(path.join(ARCH, a), buf); q.ponArch.run(a, nombre(), mime(), buf.length, Date.now(), priv(), s.u, cat()); return responde(res, 200, { id: a, sizeBytes: buf.length }); }
@@ -791,6 +797,21 @@ async function api(req, res, partes) {
     if (m === 'POST' && !a) { try { const d = respaldar(); audita(s.u, req, 'Respaldo manual en el servidor'); return responde(res, 200, { ok: true, carpeta: d }); } catch (e) { return responde(res, 500, { error: e.message }); } }
     if (m === 'GET' && a === 'descargar') { audita(s.u, req, 'Descargó el respaldo completo'); try { await respaldoCompleto(res); } catch (e) { console.error(e.message); try { res.end(); } catch (x) {} } return; }
   }
+  /* Fotografía del rostro del docente: él mismo la ve y la cambia (solo ese campo de su expediente) */
+  if (tipo === 'docente' && a === 'foto') {
+    const did = s.rol === 'docente' ? s.doc : '';
+    if (!did || !NOMBRE_OK.test(did)) return responde(res, 403, { error: 'Solo un docente con su usuario puede cambiar su fotografía.' });
+    const rg = q.uno.get('docentes_docs', did); let exp = {}; try { exp = rg ? JSON.parse(rg.data) : {}; } catch (e) { exp = {}; }
+    if (m === 'GET') return responde(res, 200, { foto: exp.foto || null });
+    if (m === 'PUT') {
+      const c = await leeJSON(req, 400000), f = String(c.foto || '');
+      if (!/^data:image\/jpeg;base64,[A-Za-z0-9+/]+=*$/.test(f) || f.length > 250000) return responde(res, 400, { error: 'La fotografía no es válida (debe ser una imagen JPG de tamaño normal).' });
+      exp.foto = f; exp.fotoPor = s.u; exp.fotoFecha = new Date().toISOString();
+      q.pon.run('docentes_docs', did, JSON.stringify(exp), Date.now()); difunde('docentes_docs', did);
+      audita(s.u, req, 'Cambió su fotografía de perfil', 'docente ' + did);
+      return responde(res, 200, { ok: true });
+    }
+  }
   if (tipo === 'almacenamiento' && m === 'GET') {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
     const a1 = infoAlmacenamiento(), c = qCreada.get(), d = qUltDesc.get();
@@ -818,7 +839,7 @@ const servidor = http.createServer(async (req, res) => {
       const id = ruta.slice(7), f = path.join(ARCH, id);
       if (!ID_ARCH.test(id) || !fs.existsSync(f)) { res.writeHead(404); return res.end('No encontrado'); }
       const info = q.uArch.get(id) || {};
-      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || (info.cat === 'certificado' ? nivel(sBlob, 'a286') === 'editar' : (info.cat === 'planeacion' || info.cat === 'solicitud' || info.cat === 'resguardo') ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
+      const verPriv = sBlob.rol === 'admin' || info.dueno === sBlob.u || (info.cat === 'certificado' ? nivel(sBlob, 'a286') === 'editar' : (info.cat === 'planeacion' || info.cat === 'solicitud' || info.cat === 'resguardo' || info.cat === 'contrato') ? nivel(sBlob, 'escolar') === 'editar' : nivel(sBlob, 'expedientes') !== 'none');
       if (info.privado && !verPriv) { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Este archivo es confidencial: solo lo puede ver el Administrador.'); }
       res.writeHead(200, { 'Content-Type': info.tipo || 'application/octet-stream', 'Content-Disposition': "inline; filename*=UTF-8''" + encodeURIComponent(info.nombre || id), 'Cache-Control': 'private, no-store' });
       return fs.createReadStream(f).pipe(res);

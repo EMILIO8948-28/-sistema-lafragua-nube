@@ -157,6 +157,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <button class="mod" id="mNom" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.7 3-6 6.5-6 1.2 0 2.3.3 3.2.8"/><circle cx="17.5" cy="16.5" r="4"/><path d="M17.5 14.5v2l1.4 1"/></svg></span><b>Nómina docente</b><span>Pago mensual a docentes por asignatura y horas: $120 por hora, y $150 en Enfermería, maestría y doctorado.</span><span class="st" id="mNomS"></span></button>
     <button class="mod" id="mNa" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3 12.5h18"/><path d="M11 12.5v2h2v-2"/></svg></span><b>Nómina administrativa</b><span>Sueldos del personal administrativo: empleados, periodos, bonos, descuentos y recibos. Cuenta como gasto en el corte de caja y en el estado de cuenta final.</span><span class="st" id="mNaS"></span></button>
     <button class="mod" id="mNot" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5a6 6 0 0 1 12 0c0 6 2 7.5 2 7.5H4s2-1.5 2-7.5"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span><b>Notificaciones</b><span>Cuando alguien del personal quiere borrar algo, te llega aquí para que lo apruebes o lo deniegues.</span><span class="st" id="mNotS"></span></button>
+    <button class="mod" id="mAv" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/><path d="M8 21l2.5-3.5h5L18 21"/></svg></span><b>Avisos por correo y WhatsApp</b><span>Avisa fuera de la plataforma: adeudos, respuestas a solicitudes, planeaciones, calificaciones y avisos generales.</span><span class="st" id="mAvS"></span></button>
     <button class="mod" id="mBk" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="11" cy="5.5" rx="7" ry="3"/><path d="M4 5.5v6c0 1.66 3.13 3 7 3 .9 0 1.77-.08 2.57-.22"/><path d="M4 11.5v6c0 1.66 3.13 3 7 3 .5 0 1-.03 1.5-.08"/><path d="M18 12l4 1.6v3.2c0 2.5-1.7 4.3-4 5.2-2.3-.9-4-2.7-4-5.2v-3.2z"/><path d="M16.3 17.3l1.3 1.3 2.4-2.6"/></svg></span><b>Respaldos y seguridad</b><span>Respaldo automático diario, copia fuera del servidor, cifrado y prueba de restauración.</span><span class="st" id="mBkS"></span></button>
     <button class="mod" id="mUsr" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/><circle cx="12" cy="10" r="2.3"/><path d="M8.3 16.2c.6-1.9 2-2.8 3.7-2.8s3.1.9 3.7 2.8"/></svg></span><b>Usuarios y permisos</b><span>Crea usuarios y decide a qué módulos entra cada uno y con qué privilegio: solo ver o editar.</span><span class="st" id="mUsrS"></span></button>
     <button class="mod" id="mVer" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.6 2.6L16 9.5"/></svg></span><b>Verificación de pagos</b><span>Transferencias por verificar en la app del banco, según los recibos emitidos.</span><span class="st" id="mVerS"></span></button>
@@ -402,7 +403,73 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <h2 style="margin-top:16px">Historial</h2>
      <div class="wrap"><table style="min-width:720px"><thead><tr><th>Fecha</th><th>Usuario</th><th>Qué quiso borrar</th><th>Resultado</th></tr></thead><tbody id="ntHist"></tbody></table></div>
    </div>
-   <div id="vBk" hidden>
+   <div id="vAv" hidden>
+  <div id="avSinNube" class="mod" style="cursor:default" hidden><b>Avisos por correo y WhatsApp</b><span>Esta función necesita la versión en la nube de la plataforma.</span></div>
+  <div id="avCuerpo">
+  <p class="hint">Avisa a alumnos y docentes <b>fuera de la plataforma</b>, por correo y por WhatsApp, sin que tengan que entrar. Respeta a quien no quiere recibir avisos y nunca manda lo mismo dos veces.</p>
+  <div id="avApag" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:10px" hidden><b>⚠ Los avisos están apagados</b><span>No se enviará nada hasta que el Administrador los active en la pestaña Configuración.</span></div>
+  <div class="bar"><button id="avTres" class="p">Resumen</button><button id="avTenv">Enviar un aviso</button><button id="avTmsg">Mensajes</button><button id="avTsin">Sin avisos</button><button id="avTcfg" hidden>Configuración</button></div>
+  <div id="avPres">
+    <div id="avEst" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-bottom:12px"></div>
+    <div class="bar"><button id="avReint" hidden>Reintentar los mensajes fallidos</button></div>
+    <p class="hint" id="avRes"></p>
+    <h2>Qué se avisa solo</h2>
+    <ul class="hint" style="line-height:1.6"><li><b>Adeudos:</b> cada aviso de cobranza también sale al correo o WhatsApp del alumno.</li><li><b>Solicitudes:</b> al aprobar, denegar o atender un justificante, boleta o constancia, el alumno recibe la respuesta.</li><li><b>Planeaciones:</b> el docente sabe cuando se aprueba o se niega (con el motivo).</li><li><b>Calificaciones:</b> el día de la evaluación, y los siguientes, se recuerda al docente lo que falta subir.</li><li><b>Resumen diario:</b> la dirección recibe por correo lo que espera su atención.</li></ul>
+  </div>
+  <div id="avPenv" hidden>
+    <div class="row">
+      <label class="full">¿A quién?<select id="avDest"><option value="alumnos">Todos los alumnos activos</option><option value="plan">Alumnos de un plan de estudios</option><option value="grupo">Alumnos de un grupo</option><option value="alumno">Un alumno</option><option value="docentes">Todos los docentes</option><option value="docente">Un docente</option></select></label>
+      <label class="full" id="avPlanL" hidden>Plan<select id="avPlan"></select></label>
+      <label class="full" id="avGrpL" hidden>Grupo<select id="avGrp"></select></label>
+      <label class="full" id="avAlL" hidden>Alumno<select id="avAl"></select></label>
+      <label class="full" id="avDocL" hidden>Docente<select id="avDoc"></select></label>
+      <label class="full">Asunto (para el correo)<input id="avAsu" maxlength="120" placeholder="Ej. Suspensión de clases"></label>
+      <label class="full">Mensaje<textarea id="avTxt" rows="4" maxlength="900" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></textarea><span class="hint" id="avCont">0 / 900</span></label>
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avCcor" type="checkbox" checked style="width:auto"> <span id="avCorTxt">Correo</span></label>
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avCwa" type="checkbox" checked style="width:auto"> <span id="avWaTxt">WhatsApp</span></label>
+    </div>
+    <div class="bar"><button id="avRev">Revisar destinatarios</button><button class="p" id="avEnvGo" hidden>Enviar ahora</button><button id="avWaMano" hidden>Abrir en WhatsApp (a mano)</button></div>
+    <p class="hint" id="avEnvMsg" style="min-height:1.4em"></p>
+    <p class="hint">Primero pulsa <b>Revisar destinatarios</b> para ver a cuántas personas llegaría; luego aparece el botón para enviar.</p>
+  </div>
+  <div id="avPmsg" hidden>
+    <div class="bar"><input id="avFq" class="grow" type="search" placeholder="Buscar por nombre, correo, teléfono o texto"><select id="avFe"><option value="">Todos los estados</option><option value="enviado">Enviados</option><option value="pendiente">En cola</option><option value="reintento">Por reintentar</option><option value="fallido">Fallidos</option><option value="omitido">Omitidos</option></select><select id="avFc"><option value="">Correo y WhatsApp</option><option value="correo">Correo</option><option value="whatsapp">WhatsApp</option></select><select id="avFv"><option value="">Todos los tipos</option><option value="adeudo">Adeudo</option><option value="solicitud">Solicitud</option><option value="planeacion">Planeación</option><option value="calificaciones">Calificaciones</option><option value="manual">Aviso manual</option><option value="resumen">Resumen</option></select></div>
+    <div class="wrap"><table style="min-width:900px"><thead><tr><th>Fecha</th><th>Canal</th><th>Para</th><th>Tipo</th><th>Mensaje</th><th>Estado</th><th></th></tr></thead><tbody id="avMTb"></tbody></table></div>
+  </div>
+  <div id="avPsin" hidden>
+    <p class="hint">Marca a quien pidió no recibir avisos. Esas personas se omiten en todos los envíos, automáticos y manuales.</p>
+    <input id="avSq" type="search" placeholder="Buscar alumno o docente" style="width:100%;margin-bottom:8px">
+    <p class="hint" id="avSinS"></p>
+    <div class="wrap"><table style="min-width:520px"><thead><tr><th>Nombre</th><th>Tipo</th><th></th></tr></thead><tbody id="avSinTb"></tbody></table></div>
+  </div>
+  <div id="avPcfg" hidden>
+    <div class="row"><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avAct" type="checkbox" style="width:auto"> Activar los avisos</label><label>Nombre de la escuela (aparece en los mensajes)<input id="avEsc" maxlength="80"></label></div>
+    <h2 style="margin-top:12px">Correo</h2>
+    <p class="hint">Usa una cuenta de correo de la escuela. Con Gmail, activa la verificación en dos pasos y crea una «contraseña de aplicación».</p>
+    <div class="row"><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avCoA" type="checkbox" style="width:auto"> Enviar avisos por correo</label><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avCoR" type="checkbox" style="width:auto"> Usar la misma cuenta de correo de los respaldos</label>
+      <label>Servidor (SMTP)<input id="avCoH" placeholder="smtp.gmail.com"></label><label>Puerto<input id="avCoP" type="number" min="1" max="65535" value="587"></label><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avCoS" type="checkbox" style="width:auto"> Conexión segura directa (SSL, puerto 465)</label>
+      <label>Usuario<input id="avCoU" autocomplete="off"></label><label>Contraseña<input id="avCoC" type="password" autocomplete="new-password"></label>
+      <label>Correo remitente<input id="avCoD" placeholder="avisos@tuescuela.mx"></label><label>Nombre del remitente<input id="avCoN" placeholder="Universidad Lafragua"></label>
+      <label class="full">Enviar un correo de prueba a<input id="avCoPara" type="email" placeholder="tu@correo.mx"></label></div>
+    <div class="bar"><button id="avCoT">Guardar y enviar correo de prueba</button></div>
+    <h2 style="margin-top:12px">WhatsApp (WhatsApp Business de Meta)</h2>
+    <p class="hint">Necesitas una cuenta de WhatsApp Business con la API en la nube de Meta, un número verificado y una <b>plantilla de mensaje aprobada</b>. Si todavía no la tienes, puedes usar el botón «Abrir en WhatsApp (a mano)» en la pestaña Enviar un aviso.</p>
+    <div class="row"><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avWaA" type="checkbox" style="width:auto"> Enviar avisos por WhatsApp</label>
+      <label>Phone number ID<input id="avWaI" placeholder="Identificador del número"></label><label>Token de acceso<input id="avWaT" type="password" autocomplete="new-password"></label>
+      <label>Versión de la API<input id="avWaV" value="v21.0"></label><label>Nombre de la plantilla<input id="avWaP" value="aviso_escolar"></label>
+      <label>Idioma de la plantilla<input id="avWaL" value="es_MX"></label><label>Código de país (sin +)<input id="avWaC" value="52"></label>
+      <label class="full">Enviar un WhatsApp de prueba a (10 dígitos)<input id="avWaPara" type="tel" placeholder="7221234567"></label></div>
+    <div class="bar"><button id="avWaTb">Guardar y enviar WhatsApp de prueba</button></div>
+    <details><summary style="cursor:pointer;font-weight:600">Cómo crear la plantilla en Meta</summary><div class="hf-txt" style="max-height:none;margin-top:8px"><ol style="margin:0;padding-left:20px;line-height:1.55"><li>En el Administrador de WhatsApp de Meta, crea una plantilla de categoría <b>Utilidad</b>, idioma <b>Español (México)</b>, con el nombre que escribiste arriba (por defecto <code>aviso_escolar</code>).</li><li>Texto del cuerpo: <code>Hola {{1}}. {{2}} — Universidad Lafragua</code></li><li>Espera a que Meta la apruebe (suele tardar minutos u horas).</li><li>Copia el <b>Phone number ID</b> y genera un <b>token permanente</b> de un usuario del sistema; pégalos aquí.</li></ol></div></details>
+    <h2 style="margin-top:12px">Qué se avisa y por dónde</h2>
+    <div class="wrap"><table style="min-width:420px"><thead><tr><th>Aviso</th><th class="n">Correo</th><th class="n">WhatsApp</th></tr></thead><tbody><tr><td>Adeudo (cobranza)</td><td class="n"><input type="checkbox" id="avE_adeudo_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_adeudo_w" style="width:auto"></td></tr><tr><td>Respuesta a solicitudes</td><td class="n"><input type="checkbox" id="avE_solicitud_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_solicitud_w" style="width:auto"></td></tr><tr><td>Planeación aprobada o denegada</td><td class="n"><input type="checkbox" id="avE_planeacion_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_planeacion_w" style="width:auto"></td></tr><tr><td>Calificaciones por subir (docentes)</td><td class="n"><input type="checkbox" id="avE_calificaciones_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_calificaciones_w" style="width:auto"></td></tr><tr><td>Avisos manuales</td><td class="n"><input type="checkbox" id="avE_manual_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_manual_w" style="width:auto"></td></tr><tr><td>Resumen diario a la dirección</td><td class="n"><input type="checkbox" id="avE_resumen_c" style="width:auto"></td><td class="n">—</td></tr></tbody></table></div>
+    <div class="row" style="margin-top:8px"><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avRecCal" type="checkbox" style="width:auto"> Recordar a los docentes las calificaciones por subir</label><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avResA" type="checkbox" style="width:auto"> Enviar el resumen diario</label><label>Hora del resumen (0 a 23, hora de la Ciudad de México)<input id="avResH" type="number" min="0" max="23" value="8"></label><label class="full">Correos que reciben el resumen (separados por coma)<input id="avResP" placeholder="direccion@tuescuela.mx, control@tuescuela.mx"></label></div>
+    <div class="bar"><button class="p" id="avGuarda">Guardar configuración</button></div>
+    <p class="hint" id="avCfgMsg" style="min-height:1.4em"></p>
+  </div>
+  </div>
+</div>
+<div id="vBk" hidden>
   <p class="hint">Aquí cuidas que la información de la escuela no se pierda: el sistema hace un respaldo cada día, lo <b>verifica</b> (lo abre como si lo fuera a restaurar) y lo manda <b>fuera del servidor</b>. Puede ir cifrado, para que solo tú lo abras.</p>
   <div id="rbLocalAv" class="mod" style="cursor:default" hidden><b>Respaldos automáticos</b><span>Esta versión no tiene un servidor propio: usa el respaldo desde el navegador.</span><div class="bar" style="margin:8px 0 0"><button class="p" id="rbLocalOld">Respaldo desde el navegador</button></div></div>
   <div id="rbSrv">
@@ -2307,12 +2374,12 @@ function ir(m){
   if(m!=="home"&&!accesoVista(m))m="home";
   var rv=m==="home"?BASEROL:rolDeVista(m);if(rv&&rv!==ROL)setRol(rv);
   MOD=m;var home=m==="home";
-  $("vUsr").hidden=m!=="usr";$("vBk").hidden=m!=="bk";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
+  $("vUsr").hidden=m!=="usr";$("vBk").hidden=m!=="bk";$("vAv").hidden=m!=="av";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
   $("vHome").hidden=!home;$("vEsc").hidden=m!=="esc";$("vIns").hidden=m!=="ins";$("vAcu").hidden=m!=="acu";$("vDoc").hidden=m!=="doc";$("vTit").hidden=m!=="tit";$("vA2").hidden=m!=="a2";$("vVer").hidden=m!=="ver";$("vNom").hidden=m!=="nom";$("vNa").hidden=m!=="na";
   $("tabs").hidden=m!=="pagos";$("nav").hidden=home||m==="por";$("subt").hidden=m!=="pagos";$("warn").hidden=m!=="pagos";
-  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":(m==="bk"?"Respaldos y seguridad":"Control escolar")))))))))))));
+  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":(m==="bk"?"Respaldos y seguridad":(m==="av"?"Avisos por correo y WhatsApp":"Control escolar"))))))))))))));
   if(FIN.indexOf(m)>-1)$("ttl").textContent="Finanzas";renderFinTabs(m);
-  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="bk")renderBk();if(m==="por")renderPor();if(m==="not")cargaNot();
+  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="bk")renderBk();if(m==="av")renderAv();if(m==="por")renderPor();if(m==="not")cargaNot();
   if(home){if(typeof MODDEF!=="undefined"&&MODDEF)aplicaModulos();renderHome()}
   if(typeof cargaAlm==="function")cargaAlm();if(typeof actualizaInsigniaBk==="function")actualizaInsigniaBk();if(typeof ntProgramar==="function")ntProgramar();if(typeof cargaMiFoto==="function"){pintaPerfil();cargaMiFoto()}
 }
@@ -5723,13 +5790,14 @@ function accesoVista(m){
   if(m==="por")return !!(APP&&APP.rol==="alumno");
   if(APP&&APP.rol==="alumno")return false;
   if(m==="usr"||m==="bk")return esAdminReal()&&BASEROL==="admin";
+  if(m==="av")return (esAdminReal()&&BASEROL==="admin")||permiso("escolar")==="editar";
   if(m==="pagos")return permiso("pagos")!=="none"||permiso("corte")!=="none"||permiso("estado")!=="none";
   if(m==="esc")return permiso("escolar")!=="none"||permiso("constancias")!=="none";
   if(m==="doc")return permiso("docente")!=="none"&&!!(APP&&APP.doc);
   return !!MODV[m]&&permiso(MODV[m])!=="none";
 }
 function rolDeVista(m){
-  if(m==="usr"||m==="por"||m==="not"||m==="bk")return BASEROL;
+  if(m==="usr"||m==="por"||m==="not"||m==="bk"||m==="av")return BASEROL;
   if(m==="pagos")return efectivoRol(permiso("pagos")!=="none"?"pagos":(permiso("corte")!=="none"?"corte":"estado"));
   if(m==="esc")return mayorRol(efectivoRol("escolar"),efectivoRol("constancias"));
   return efectivoRol(MODV[m]);
@@ -5745,7 +5813,7 @@ function aplicaModulos(){
     if(m[0]==="docente")vis=vis&&!!(APP&&APP.doc);
     $(t).hidden=!vis;
   });
-  $("mUsr").hidden=!accesoVista("usr");$("mBk").hidden=!accesoVista("bk");
+  $("mUsr").hidden=!accesoVista("usr");$("mBk").hidden=!accesoVista("bk");$("mAv").hidden=!accesoVista("av");
   $("mNot").hidden=!accesoVista("not");if(typeof renderNotBadge==="function")renderNotBadge();
   if(accesoVista("not")&&typeof cargaNot==="function"&&!aplicaModulos.nt){aplicaModulos.nt=1;setTimeout(cargaNot,50)}
 }
@@ -5765,7 +5833,7 @@ function renderUsr(){
   $("usTb").innerHTML=L.length?L.map(function(u){var doc=u.doc&&DOC[u.doc];return '<tr><td>'+esc(u.name)+(doc?'<br><span class="hint">Docente: '+esc(doc.nombre)+'</span>':'')+'</td><td>'+esc(u.u)+'</td><td>'+esc(ROLTXT[u.rol]||u.rol)+'</td><td style="white-space:normal;min-width:260px"><span class="hint">'+esc(resumenMods(u))+'</span></td><td>'+(u.rol==="alumno"?(window.LF_NUBE?'<button data-ra="'+esc(u.alumno)+'">Restablecer contraseña</button> ':''):'<button data-ed="'+esc(u.u)+'">Editar</button> ')+'<button class="d" data-dl="'+esc(u.u)+'">'+(USCONF===u.u?"Confirmar":"Eliminar")+'</button></td></tr>'}).join(""):'<tr><td colspan="5" class="empty">'+(USERS.length?"Sin resultados.":"Aún no hay usuarios. Mientras no existan, el sistema no pide contraseña.")+'</td></tr>';
   $("mUsrS").textContent=(USERS||[]).length+((USERS||[]).length===1?" usuario":" usuarios");
 }
-$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mBk").onclick=function(){ir("bk")};
+$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mBk").onclick=function(){ir("bk")};$("mAv").onclick=function(){ir("av")};
 $("mUsr").onclick=function(){ir("usr")};
 function nivelesMods(){var o={};Array.prototype.forEach.call($("usMods").querySelectorAll("select[data-m]"),function(s){if(s.value!=="none")o[s.dataset.m]=s.value});return o}
 function pintaMods(p,bloqueado){
@@ -8266,6 +8334,129 @@ $("rbProbarRes").onclick=async function(){
 $("rbDesc").onclick=function(){location.href="/api/respaldo/descargar";setTimeout(function(){ALM=null;ALMT=0;cargaAlm()},6000)};
 $("rbOld").onclick=function(){abreDlgBk()};
 $("rbLocalOld").onclick=function(){abreDlgBk()};
+/* ===== Avisos por correo y WhatsApp ===== */
+var AVD=null,AVTAB="res",AVMS=[];
+function avTab(t){
+  AVTAB=t;["res","env","msg","sin","cfg"].forEach(function(k){var p=$("avP"+k),b=$("avT"+k);if(p)p.hidden=k!==t;if(b)b.className=k===t?"p":""});
+  if(t==="msg")avMensajes();if(t==="sin")avSin();if(t==="env")avEnvDest();
+}
+function avHace(ts){if(!ts)return "—";var f=new Date(ts);return pad2(f.getDate())+"/"+pad2(f.getMonth()+1)+"/"+f.getFullYear()+" "+pad2(f.getHours())+":"+pad2(f.getMinutes())}
+function avTarj(t,estado,txt,det){var col=estado==="ok"?"var(--ok)":estado==="warn"?"var(--warn)":"var(--bad)",ic=estado==="ok"?"✔":estado==="warn"?"⚠":"✖";return '<div class="mod" style="cursor:default;border-color:'+col+'"><span class="hint">'+esc(t)+'</span><b style="color:'+col+'">'+ic+" "+esc(txt)+'</b><span>'+esc(det)+'</span></div>'}
+function avCampos(c){
+  $("avAct").checked=!!c.activo;$("avEsc").value=c.escuela||"";
+  var m=c.correo||{},w=c.whatsapp||{},r=c.resumen||{};
+  $("avCoA").checked=!!m.activo;$("avCoR").checked=!!m.usarRespaldos;$("avCoH").value=m.host||"";$("avCoP").value=m.puerto||587;$("avCoS").checked=!!m.seguro;$("avCoU").value=m.usuario||"";$("avCoC").value="";$("avCoC").placeholder=m.claveGuardada?"Guardada":"Contraseña";$("avCoD").value=m.de||"";$("avCoN").value=m.nombre||"";
+  $("avWaA").checked=!!w.activo;$("avWaI").value=w.phoneId||"";$("avWaT").value="";$("avWaT").placeholder=w.tokenGuardado?"Guardado":"Token de acceso";$("avWaV").value=w.version||"v21.0";$("avWaP").value=w.plantilla||"aviso_escolar";$("avWaL").value=w.idioma||"es_MX";$("avWaC").value=w.pais||"52";
+  ["adeudo","solicitud","planeacion","calificaciones","manual","resumen"].forEach(function(e){var x=(c.eventos||{})[e]||{};$("avE_"+e+"_c").checked=!!x.correo;var wa=$("avE_"+e+"_w");if(wa)wa.checked=!!x.whatsapp});
+  $("avRecCal").checked=(c.recordatorios||{}).calificaciones!==false;$("avResA").checked=!!r.activo;$("avResH").value=r.hora==null?8:r.hora;$("avResP").value=(r.para||[]).join(", ");
+  avCoUI();
+}
+function avCoUI(){var u=$("avCoR").checked;["avCoH","avCoP","avCoS","avCoU","avCoC","avCoD","avCoN"].forEach(function(i){$(i).disabled=u})}
+function avLee(){
+  var ev={};["adeudo","solicitud","planeacion","calificaciones","manual","resumen"].forEach(function(e){var wa=$("avE_"+e+"_w");ev[e]={correo:$("avE_"+e+"_c").checked,whatsapp:wa?wa.checked:false}});
+  return {activo:$("avAct").checked,escuela:$("avEsc").value.trim(),
+    correo:{activo:$("avCoA").checked,usarRespaldos:$("avCoR").checked,host:$("avCoH").value.trim(),puerto:+$("avCoP").value,seguro:$("avCoS").checked,usuario:$("avCoU").value.trim(),clave:$("avCoC").value,de:$("avCoD").value.trim(),nombre:$("avCoN").value.trim()},
+    whatsapp:{activo:$("avWaA").checked,phoneId:$("avWaI").value.trim(),token:$("avWaT").value,version:$("avWaV").value.trim(),plantilla:$("avWaP").value.trim(),idioma:$("avWaL").value.trim(),pais:$("avWaC").value.trim()},
+    eventos:ev,recordatorios:{calificaciones:$("avRecCal").checked},resumen:{activo:$("avResA").checked,hora:+$("avResH").value,para:$("avResP").value}};
+}
+function avRender(j,llena){
+  AVD=j;var c=j.config,r=j.resumen,adm=j.esAdmin;
+  $("avTcfg").hidden=!adm;
+  $("avApag").hidden=!!c.activo;
+  $("avEst").innerHTML=
+    avTarj("Correo",c.correo.activo?"ok":"bad",c.correo.activo?"Activo":"Apagado",c.correo.activo?"Los avisos pueden ir por correo.":"Configúralo para avisar por correo.")+
+    avTarj("WhatsApp",c.whatsapp.activo?"ok":"bad",c.whatsapp.activo?"Activo":"Apagado",c.whatsapp.activo?"Los avisos pueden ir por WhatsApp.":"Configúralo (WhatsApp Business) o usa el botón «Abrir en WhatsApp».")+
+    avTarj("Mensajes",r.fallidos?"warn":"ok",r.enviadosHoy+" enviados hoy",r.enviados7+" en 7 días · "+r.pendientes+" en cola · "+r.fallidos+" fallidos"+(r.omitidos?" · "+r.omitidos+" omitidos (sin contacto)":""));
+  $("avReint").hidden=!r.fallidos;
+  if(llena&&adm)avCampos(c);
+}
+async function avCarga(llena){
+  if(!window.LF_NUBE){$("avSinNube").hidden=false;$("avCuerpo").hidden=true;return}
+  $("avSinNube").hidden=true;$("avCuerpo").hidden=false;
+  try{var r=await cbApi("GET","/api/avisos");if(r.ok){avRender(r.j,llena!==false&&!AVD);if(AVTAB==="msg")avMensajes()}}catch(e){}
+}
+function renderAv(){avTab(AVTAB);avCarga(true)}
+function avMsg(id,t,bad){var e=$(id);e.style.color=bad?"var(--bad)":"var(--ok)";e.textContent=t}
+/* ---- enviar un aviso ---- */
+function avEnvDest(){
+  var t=$("avDest").value;
+  $("avPlanL").hidden=t!=="plan";$("avGrpL").hidden=t!=="grupo";$("avAlL").hidden=t!=="alumno";$("avDocL").hidden=t!=="docente";
+  setOpts($("avPlan"),PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
+  var po=periodos(),gs=Object.keys(GRP).map(function(k){return Object.assign({id:k},GRP[k])}).sort(function(a,b){return po.indexOf(b.per)-po.indexOf(a.per)||String(a.plan).localeCompare(String(b.plan))||a.cuat-b.cuat});
+  setOpts($("avGrp"),gs.map(function(g){return '<option value="'+attr(g.id)+'">'+esc("Grupo "+g.num+" · "+g.plan+" · "+g.per+" · cuat. "+g.cuat)+'</option>'}).join(""));
+  setOpts($("avAl"),S.filter(function(s){return !esEgr(s.id)}).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))}).map(function(s){return '<option value="'+attr(s.id)+'">'+esc(s.mat+" · "+s.nombre)+'</option>'}).join(""));
+  setOpts($("avDoc"),Object.keys(DOC).sort(function(a,b){return String(DOC[a].nombre).localeCompare(String(DOC[b].nombre))}).map(function(k){return '<option value="'+attr(k)+'">'+esc(DOC[k].nombre)+'</option>'}).join(""));
+  var c=AVD&&AVD.config;$("avCcor").disabled=!(c&&c.correo.activo);$("avCwa").disabled=!(c&&c.whatsapp.activo);
+  $("avCorTxt").textContent=c&&c.correo.activo?"Correo":"Correo (apagado)";$("avWaTxt").textContent=c&&c.whatsapp.activo?"WhatsApp":"WhatsApp (apagado)";
+  var u=t==="alumno"||t==="docente";$("avWaMano").hidden=!u;
+}
+function avDestino(){var t=$("avDest").value;return t==="plan"?{tipo:"plan",plan:$("avPlan").value}:t==="grupo"?{tipo:"grupo",id:$("avGrp").value}:t==="alumno"?{tipo:"alumno",id:$("avAl").value}:t==="docente"?{tipo:"docente",id:$("avDoc").value}:{tipo:t}}
+function avCanales(){var c=[];if($("avCcor").checked&&!$("avCcor").disabled)c.push("correo");if($("avCwa").checked&&!$("avCwa").disabled)c.push("whatsapp");return c}
+async function avEnviar(simular){
+  var texto=$("avTxt").value.trim(),m="avEnvMsg";
+  if(!texto){avMsg(m,"Escribe el mensaje.",true);return}
+  var ca=avCanales();if(!ca.length){avMsg(m,"Elige al menos un canal activo.",true);return}
+  try{
+    var r=await cbApi("POST","/api/avisos/enviar",{destino:avDestino(),asunto:$("avAsu").value.trim(),texto:texto,canales:ca,simular:!!simular});
+    if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo.");var j=r.j;
+    var det=j.personas+(j.personas===1?" persona":" personas")+" · correo: "+j.correo+" · WhatsApp: "+j.whatsapp+(j.sinContacto?" · sin contacto: "+j.sinContacto:"")+(j.omitidos?" · sin avisos o canal apagado: "+j.omitidos:"");
+    if(simular){avMsg(m,"Se enviaría a "+det+(j.muestra&&j.muestra.length?" (por ejemplo: "+j.muestra.join(", ")+")":"")+".",false);$("avEnvGo").hidden=false}
+    else{avMsg(m,"Listo: "+(j.correo+j.whatsapp)+" mensajes en cola ("+det+"). Los ves en la pestaña Mensajes.",false);$("avEnvGo").hidden=true;avCarga(false)}
+  }catch(e){avMsg(m,e.message,true)}
+}
+$("avRev").onclick=function(){avEnviar(true)};
+$("avEnvGo").onclick=function(){if(confirm("¿Enviar el aviso?"))avEnviar(false)};
+["avDest","avPlan","avGrp","avAl","avDoc","avTxt","avAsu"].forEach(function(i){$(i).addEventListener(i==="avDest"?"change":"input",function(){$("avEnvGo").hidden=true;if(i==="avDest")avEnvDest();$("avCont").textContent=$("avTxt").value.length+" / 900"})});
+$("avDest").onchange=function(){$("avEnvGo").hidden=true;avEnvDest()};
+$("avWaMano").onclick=function(){
+  var t=$("avDest").value,p=t==="alumno"?S.find(function(s){return s.id===$("avAl").value}):DOC[$("avDoc").value],tel=String(p&&p.tel||"").replace(/\D/g,"");
+  if(tel.length<10){avMsg("avEnvMsg","Esa persona no tiene un teléfono registrado.",true);return}
+  if(tel.length===10)tel="52"+tel;window.open("https://wa.me/"+tel+"?text="+encodeURIComponent($("avTxt").value.trim()),"_blank","noopener")
+};
+/* ---- mensajes ---- */
+async function avMensajes(){
+  var q="?limite=100"+($("avFe").value?"&estado="+$("avFe").value:"")+($("avFc").value?"&canal="+$("avFc").value:"")+($("avFv").value?"&evento="+$("avFv").value:"")+($("avFq").value?"&q="+encodeURIComponent($("avFq").value):"");
+  try{var r=await cbApi("GET","/api/avisos/mensajes"+q);if(!r.ok)return;AVMS=r.j.mensajes;
+    var ET={adeudo:"Adeudo",solicitud:"Solicitud",planeacion:"Planeación",calificaciones:"Calificaciones",manual:"Aviso manual",resumen:"Resumen"};
+    $("avMTb").innerHTML=AVMS.length?AVMS.map(function(m){var tg=m.estado==="enviado"?"pagado":m.estado==="fallido"?"sin":"parcial";
+      var tel=m.canal==="whatsapp"&&/^\d{10,15}$/.test(m.para);
+      return '<tr><td>'+avHace(m.ts)+'</td><td>'+(m.canal==="correo"?"Correo":"WhatsApp")+'</td><td style="white-space:normal">'+esc(m.nombre||"")+'<br><span class="hint">'+esc(m.para)+'</span></td><td>'+esc(ET[m.evento]||m.evento||"")+'</td><td style="white-space:normal;min-width:220px">'+esc((m.asunto?m.asunto+": ":"")+m.texto).slice(0,160)+'</td><td><span class="tag '+tg+'">'+esc(m.estado)+'</span>'+(m.error?'<br><span class="hint" style="white-space:normal">'+esc(m.error)+'</span>':'')+'</td><td style="white-space:normal">'+(m.estado==="fallido"?'<button data-avr="'+attr(m.id)+'">Reintentar</button> ':'')+(tel&&m.estado!=="enviado"?'<a class="hint" target="_blank" rel="noopener" href="https://wa.me/'+m.para+'?text='+encodeURIComponent(m.texto)+'">Abrir en WhatsApp</a>':'')+'</td></tr>'}).join(""):vacio(7,"Todavía no hay mensajes con esos filtros.");
+  }catch(e){}
+}
+["avFe","avFc","avFv"].forEach(function(i){$(i).onchange=avMensajes});$("avFq").oninput=function(){clearTimeout(window.__avq);window.__avq=setTimeout(avMensajes,300)};
+$("avMTb").onclick=async function(e){var id=e.target.dataset&&e.target.dataset.avr;if(!id)return;await cbApi("POST","/api/avisos/reintentar",{ids:[id]});setTimeout(function(){avCarga(false)},800)};
+$("avReint").onclick=async function(){var r=await cbApi("POST","/api/avisos/reintentar",{todos:true});avMsg("avRes","Se reintentan "+((r.j&&r.j.reintentados)||0)+" mensajes fallidos.",false);setTimeout(function(){avCarga(false)},1200)};
+/* ---- personas que no quieren avisos ---- */
+function avSinLista(){return (AVD&&AVD.config&&AVD.config.sin)||[]}
+function avSin(){
+  var sin=avSinLista(),q=($("avSq").value||"").toLowerCase(),L=[];
+  S.forEach(function(s){L.push({id:s.id,n:s.nombre,t:"Alumno · "+s.mat})});Object.keys(DOC).forEach(function(k){L.push({id:k,n:DOC[k].nombre,t:"Docente"})});
+  var f=L.filter(function(x){return !q?sin.indexOf(x.id)>-1:(x.n+" "+x.t).toLowerCase().indexOf(q)>-1}).sort(function(a,b){return String(a.n).localeCompare(String(b.n))}).slice(0,100);
+  $("avSinS").textContent=sin.length+(sin.length===1?" persona no recibe avisos.":" personas no reciben avisos.")+(q?"":" Escribe un nombre para buscar a alguien más.");
+  $("avSinTb").innerHTML=f.length?f.map(function(x){return '<tr><td>'+esc(x.n)+'</td><td>'+esc(x.t)+'</td><td><label style="flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input type="checkbox" data-avs="'+attr(x.id)+'" style="width:auto" '+(sin.indexOf(x.id)>-1?"checked":"")+'> No enviar avisos</label></td></tr>'}).join(""):vacio(3,q?"Nadie coincide con la búsqueda.":"Nadie está marcado.");
+}
+$("avSq").oninput=avSin;
+$("avSinTb").onchange=async function(e){
+  var id=e.target.dataset&&e.target.dataset.avs;if(!id)return;var sin=avSinLista().slice(),i=sin.indexOf(id);
+  if(e.target.checked&&i<0)sin.push(id);else if(!e.target.checked&&i>-1)sin.splice(i,1);
+  var r=await cbApi("PUT","/api/avisos/sin",{ids:sin});if(r.ok){AVD.config.sin=sin;avSin()}else{e.target.checked=!e.target.checked}
+};
+/* ---- configuración ---- */
+$("avCoR").onchange=avCoUI;
+$("avGuarda").onclick=async function(){
+  var b=this;b.disabled=true;
+  try{var r=await cbApi("PUT","/api/avisos/config",avLee());if(!r.ok)throw new Error((r.j&&r.j.error)||"No se pudo guardar.");AVD.config=r.j.config;avCampos(r.j.config);avMsg("avCfgMsg","Configuración guardada.",false);avCarga(false)}catch(e){avMsg("avCfgMsg",e.message,true)}
+  b.disabled=false;
+};
+async function avProbar(canal,btn){
+  var para=(canal==="correo"?$("avCoPara"):$("avWaPara")).value.trim();btn.disabled=true;avMsg("avCfgMsg","Probando…",false);
+  try{var g=await cbApi("PUT","/api/avisos/config",avLee());if(!g.ok)throw new Error((g.j&&g.j.error)||"No se pudo guardar.");avCampos(g.j.config);AVD.config=g.j.config;
+    var r=await cbApi("POST","/api/avisos/probar",{canal:canal,para:para});avMsg("avCfgMsg",(r.j&&(r.j.msg||r.j.error))||"Sin respuesta.",!(r.j&&r.j.ok))}
+  catch(e){avMsg("avCfgMsg",e.message,true)}
+  btn.disabled=false;
+}
+$("avCoT").onclick=function(){avProbar("correo",this)};$("avWaTb").onclick=function(){avProbar("whatsapp",this)};
+["res","env","msg","sin","cfg"].forEach(function(k){$("avT"+k).onclick=function(){avTab(k)}});
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}

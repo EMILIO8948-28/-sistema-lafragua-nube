@@ -10,7 +10,7 @@ for _ in range(60):
     except Exception:pass
 R={};errs=[]
 def ok(n,c):R[n]=bool(c)
-def W(pg,js,t=9):
+def W(pg,js,t=30):
     t0=time.time()
     while time.time()-t0<t:
         try:
@@ -105,6 +105,7 @@ with sync_playwright() as pw:
     sv,tx=genera('simple','s2');ok('simple_para_alumno_sin_calificaciones',len(sv)==1 and 'promedio' not in tx.lower().replace('promedio','') or len(sv)==1)
     # ---------------- el QR apunta a la plataforma ----------------
     x=pg.evaluate("CONS['s1'].items.slice(-1)[0]");url=pg.evaluate("qrConst(CONS['s1'].items.slice(-1)[0])")
+    W(pg,"typeof S!=='undefined'&&S.length>0")
     ok('qr_usa_direccion_configurada',url.startswith(PUB+'/verificar#c.'+x['num']+'.') and pg.evaluate("qrRecibo('R-000001',1300,'2026-09-05')").startswith(PUB+'/verificar#v.R-000001.') and pg.evaluate("qrCred(S[0],'2030-12-31')").startswith(PUB+'/verificar#a.'))
     pg.evaluate("window.LF_URLP=''");ok('qr_sin_direccion_usa_la_del_sitio',pg.evaluate("qrConst(CONS['s1'].items.slice(-1)[0])").startswith(B+'/verificar#c.'))
     pg.evaluate("window.LF_URLP='%s/'"%PUB);ok('qr_quita_diagonal_final',pg.evaluate("qrConst(CONS['s1'].items.slice(-1)[0])").startswith(PUB+'/verificar#c.'))

@@ -36,5 +36,7 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_cuatrimestres.py` · cuatrimestres de cada plan: cambio desde Plan de estudios y desde Costos y planes, medios cuatrimestres, mínimo por grupos y asignaturas, aviso del efecto, recálculo de cobros y permisos (31).
 - `test_almacenamiento.py` · aviso de disco temporal y recordatorio de respaldo (18).
 - `test_actualizacion.py` · reiniciar el servidor con los mismos datos no borra nada (8).
+- `test_respaldo_boton.py` · botón de respaldo arriba a la derecha: posición, insignia roja/amarilla, tiempos, celular y permisos (23).
+- `test_iconos.py` · iconos de las tarjetas del panel: uno por opción, distintos, decorativos, modo oscuro, celular y otros roles (11).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

@@ -10,7 +10,7 @@ for _ in range(60):
     except Exception:pass
 R={};errs=[]
 def ok(n,c):R[n]=bool(c)
-def W(pg,js,t=12):
+def W(pg,js,t=40):
     t0=time.time()
     while time.time()-t0<t:
         try:

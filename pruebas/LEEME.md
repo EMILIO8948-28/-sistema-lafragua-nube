@@ -34,5 +34,7 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_tarifas.py` · tarifa por hora de los docentes: general, por plan, por docente y por asignatura en un mes, nóminas pagadas, recibo, renombrar un plan y permisos (29).
 - `test_finanzas.py` · módulo Finanzas: tarjeta del panel, secciones (pagos, verificación, nómina docente y administrativa), acceso según permisos, título y nombres en Usuarios y permisos (25).
 - `test_cuatrimestres.py` · cuatrimestres de cada plan: cambio desde Plan de estudios y desde Costos y planes, medios cuatrimestres, mínimo por grupos y asignaturas, aviso del efecto, recálculo de cobros y permisos (31).
+- `test_almacenamiento.py` · aviso de disco temporal y recordatorio de respaldo (18).
+- `test_actualizacion.py` · reiniciar el servidor con los mismos datos no borra nada (8).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

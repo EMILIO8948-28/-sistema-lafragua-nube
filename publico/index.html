@@ -92,6 +92,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
 <div class="bar" id="finTabs" hidden><button data-fm="pagos">Pagos de alumnos</button><button data-fm="ver">Verificación de pagos</button><button data-fm="nom">Nómina docente</button><button data-fm="na">Nómina administrativa</button></div>
 <div id="vHome">
   <p class="sub" id="hSal"></p>
+  <div id="hAlm" class="mod" style="cursor:default;margin-bottom:12px" hidden><b id="hAlmT"></b><span id="hAlmS"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hAlmGo">Descargar respaldo completo ahora</button></div></div>
   <div id="hSo" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:12px" hidden><b>📨 Solicitudes de alumnos por atender</b><span id="hSoT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hSoGo">Ver solicitudes</button></div></div>
   <div id="hPl" class="mod" style="cursor:default;border-color:var(--brand);margin-bottom:12px" hidden><b>📋 Planeaciones por revisar</b><span id="hPlT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hPlGo">Revisar planeaciones</button></div></div>
   <div id="hNot" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:12px" hidden><b>🔔 Solicitudes de eliminación por revisar</b><span id="hNotT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hNotGo">Revisar notificaciones</button></div></div>
@@ -1149,6 +1150,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <p class="hint">Descarga una copia de todos los datos de la plataforma: alumnos, pagos, calificaciones, grupos, docentes, titulaciones, Acuerdo 286, nómina y demás. Sirve como copia de seguridad y como punto de partida para migrar a otra plataforma. <b>Guárdalo en un lugar seguro: contiene datos personales.</b></p>
   <p class="hint">Las contraseñas de los usuarios no se incluyen. Los archivos adjuntos (PDF e imágenes) se descargan aparte, en ZIP.</p>
   <div class="bar"><button class="p" id="bkJson">Descargar datos (JSON)</button><button id="bkZip">Descargar archivos adjuntos (ZIP)</button><button class="p" id="bkSrv">Respaldo completo del servidor (ZIP)</button></div>
+  <p class="hint" id="bkAlm" style="min-height:1.2em"></p>
   <p class="hint" id="bkRes"></p>
   <p class="hint" id="bkMsg" style="min-height:1.4em"></p>
   <div class="bar" style="justify-content:flex-end;margin:0"><button id="bkCls">Cerrar</button></div>
@@ -2163,6 +2165,7 @@ var _setRol2=setRol;setRol=function(r){_setRol2(r);render();if(r==="consulta"){T
 /* Panel principal con los módulos */
 function renderHome(){
   var n=APP?APP.name:(PNAME||"");
+  if(typeof cargaAlm==="function")cargaAlm();
   $("hSal").textContent=(n?"Hola, "+n+". ":"")+"Elige un módulo para empezar.";
   if(typeof renderPlBadge==="function")renderPlBadge();
   if(typeof solBadge==="function")solBadge();
@@ -5029,7 +5032,7 @@ async function armaRespaldo(msg){
   return datos;
 }
 function textoResumen(d){var r=d.resumen,c=r.documentosPorColeccion;return c.students+" alumnos · "+r.pagos+" pagos · "+c.docentes+" docentes · "+c.grupos+" grupos · "+c.titulaciones+" titulaciones · "+c.acuerdo286+" trámites de Acuerdo 286 · "+r.archivos+" archivos adjuntos"}
-$("bBk").onclick=function(){if(ROL==="admin"){$("bkMsg").textContent="";$("bkRes").textContent=BKLAST?"Último respaldo generado en esta sesión: "+textoResumen(BKLAST):"";$("dBk").showModal()}};
+$("bBk").onclick=function(){if(ROL==="admin"){$("bkMsg").textContent="";$("bkRes").textContent=BKLAST?"Último respaldo generado en esta sesión: "+textoResumen(BKLAST):"";$("bkAlm").textContent="";$("dBk").showModal();ALMT=0;cargaAlm().then(function(){$("bkAlm").textContent=almTexto()})}};
 $("bkCls").onclick=function(){$("dBk").close()};
 $("bkJson").onclick=async function(){
   if(ROL!=="admin"||!DBH)return;
@@ -7271,6 +7274,30 @@ $("cuOk").onclick=async function(){
   try{P.n=n;await guardaPlanes();$("dCu").close();$("pPlan").value=plan;renderPlan();pJm("«"+plan+"» ahora dura "+durTxt(n)+" ("+n+" colegiaturas).",false)}
   catch(er){P.n=antes;dberr(er);b.disabled=false}
 };
+/* ===== Dónde viven los datos y respaldos (solo nube) ===== */
+var ALM=null,ALMT=0;
+function fAlm(iso){return iso?fd(String(iso).slice(0,10)):"—"}
+function almTexto(){
+  if(!ALM)return "";
+  var a=ALM,dias=a.ultimaDescarga?Math.floor((Date.now()-Date.parse(a.ultimaDescarga))/86400000):null;
+  return "Almacenamiento: "+(a.persistente===true?"disco persistente ✓":a.persistente===false?"DISCO TEMPORAL ⚠":"no se pudo comprobar")+" · Base de datos creada el "+fAlm(a.creada)+" · Último respaldo completo descargado: "+(dias===null?"nunca":fAlm(a.ultimaDescarga)+" (hace "+dias+(dias===1?" día":" días")+")")+".";
+}
+async function cargaAlm(){
+  if(!window.LF_NUBE||typeof APP==="undefined"||!APP||APP.rol!=="admin"||BASEROL!=="admin")return;
+  if(ALM&&Date.now()-ALMT<6*3600*1000){renderAlm();return}
+  try{var r=await cbApi("GET","/api/almacenamiento");if(r.ok){ALM=r.j;ALMT=Date.now();renderAlm()}}catch(e){}
+}
+function renderAlm(){
+  var b=$("hAlm");if(!b)return;
+  if(!ALM||MOD!=="home"||!APP||APP.rol!=="admin"){b.hidden=true;return}
+  var a=ALM,dias=a.ultimaDescarga?Math.floor((Date.now()-Date.parse(a.ultimaDescarga))/86400000):null,rojo=a.persistente===false,viejo=dias===null||dias>7;
+  if(!rojo&&!viejo){b.hidden=true;return}
+  b.style.borderColor=rojo?"var(--bad)":"var(--warn)";
+  $("hAlmT").textContent=rojo?"⚠ Tus datos se guardan en un disco temporal":(dias===null?"Aún no has descargado un respaldo completo":"Hace "+dias+" días que no descargas un respaldo completo");
+  $("hAlmS").textContent=(rojo?"Se borrarán cuando el servicio se actualice o se reinicie (por eso pueden desaparecer registros, como la nómina administrativa, después de subir una versión nueva). Configura el disco persistente: en Render, tu servicio > Disks, con el nombre «datos» y la ruta /data (y la variable DATA_DIR con el valor /data). Mientras tanto, descarga un respaldo completo antes de cada actualización. ":"Descárgalo y guárdalo fuera del servidor (USB o tu nube). ")+"Esta base de datos se creó el "+fAlm(a.creada)+(rojo?"; si esa fecha es reciente y no esperabas empezar de cero, los datos ya se reiniciaron.":".");
+  b.hidden=false;
+}
+$("hAlmGo").onclick=function(){location.href="/api/respaldo/descargar";ALM=null;ALMT=0;setTimeout(function(){cargaAlm()},6000)};
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}

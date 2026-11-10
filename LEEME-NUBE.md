@@ -43,6 +43,14 @@ Servidor propio de la escuela publicado en internet con HTTPS. Cada persona entr
 ## Actualizar el sistema
 Cuando te entregue una versión nueva, sube los archivos cambiados al repositorio de GitHub. Render publica solo; durante el cambio el sistema se interrumpe unos instantes (los servicios con disco no se actualizan sin pausa).
 
+## Si después de actualizar faltan datos
+Actualizar el sistema (subir archivos nuevos a GitHub) **no borra datos**: el servidor solo cambia de programa y vuelve a abrir la misma base de datos. Si desaparecen registros después de una actualización, casi siempre es porque la base está en un **disco temporal** y no en el disco persistente. Cómo revisarlo:
+1. Entra como Administrador: si los datos están en un disco temporal, el panel principal muestra un aviso rojo («Tus datos se guardan en un disco temporal»). En el botón **Respaldo** también aparece el estado del almacenamiento y la fecha en que se creó la base de datos (si es reciente y no esperabas empezar de cero, los datos se reiniciaron).
+2. En Render, tu servicio > **Disks** debe mostrar un disco llamado `datos` con la ruta `/data`, y en **Environment** debe existir `DATA_DIR` = `/data`. Si el servicio es gratuito o se creó sin disco, hay que usar el plan Starter con disco (ver «Costos»).
+3. Mientras no esté resuelto, **descarga un respaldo completo antes de cada actualización** (botón Respaldo > «Respaldo completo del servidor (ZIP)»); el panel te lo recuerda si pasan más de 7 días.
+4. Para recuperar: Render guarda copias del disco (Disks > Snapshots) si el disco existe; el servidor deja respaldos diarios en `/data/respaldos`; y los respaldos descargados se restauran en `herramientas.html` (al restaurar, los registros con el mismo nombre se **reemplazan** por los del respaldo y los demás se conservan; antes de restaurar el servidor hace un respaldo propio).
+Para silenciar el aviso si tu disco sí es persistente pero el sistema no lo detecta, agrega la variable `LF_DISCO_OK` = `1`.
+
 ## Cosas a saber
 - Es **un solo servidor** (no se debe aumentar a varias copias): para ~300 alumnos sobra.
 - Los QR de recibos, constancias y credenciales llevan la dirección de este sistema. Si después pones dominio propio, los QR nuevos usarán esa dirección; los ya impresos conservan la anterior (la dirección de Render seguirá funcionando).

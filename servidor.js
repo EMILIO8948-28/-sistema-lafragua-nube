@@ -791,6 +791,11 @@ async function api(req, res, partes) {
     if (m === 'POST' && !a) { try { const d = respaldar(); audita(s.u, req, 'Respaldo manual en el servidor'); return responde(res, 200, { ok: true, carpeta: d }); } catch (e) { return responde(res, 500, { error: e.message }); } }
     if (m === 'GET' && a === 'descargar') { audita(s.u, req, 'Descargó el respaldo completo'); try { await respaldoCompleto(res); } catch (e) { console.error(e.message); try { res.end(); } catch (x) {} } return; }
   }
+  if (tipo === 'almacenamiento' && m === 'GET') {
+    if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
+    const a1 = infoAlmacenamiento(), c = qCreada.get(), d = qUltDesc.get();
+    return responde(res, 200, Object.assign(a1, { creada: c && c.f ? new Date(c.f).toISOString() : null, ultimaDescarga: d && d.f ? new Date(d.f).toISOString() : null, respaldosEnServidor: (() => { try { return fs.readdirSync(RESP).filter(n => /^\d{4}-\d{2}-\d{2}$/.test(n)).length; } catch (e) { return 0; } })() }));
+  }
   if (tipo === 'info' && m === 'GET') {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
     let disco = 0; try { fs.readdirSync(ARCH).forEach(f => { disco += fs.statSync(path.join(ARCH, f)).size; }); } catch (e) {}
@@ -1057,6 +1062,28 @@ async function rutaCobranza(s, req, res, m, a) {
   }
   return responde(res, 404, { error: 'No existe.' });
 }
+
+/* ---------- Dónde viven los datos: aviso si el disco es temporal ---------- */
+function leeMontajes() {
+  const arch = ENV.LF_MOUNTINFO_ARCHIVO || '/proc/self/mountinfo';
+  const dec = s => String(s).replace(/\\([0-7]{3})/g, (m, o) => String.fromCharCode(parseInt(o, 8)));
+  return fs.readFileSync(arch, 'utf8').split('\n').filter(Boolean).map(l => { const p = l.split(' '), g = p.indexOf('-'); return { punto: dec(p[4]), fs: p[g + 1], fuente: p[g + 2] }; });
+}
+function infoAlmacenamiento() {
+  const r = { persistente: null, montaje: '', sistema: '', ruta: DATOS, motivo: '' };
+  if (ENV.LF_DISCO_OK === '1') { r.persistente = true; r.motivo = 'Confirmado por LF_DISCO_OK.'; return r; }
+  if (!(ENV.RENDER || ENV.LF_MODO === 'nube' || ENV.LF_VERIFICAR_DISCO === '1')) { r.motivo = 'No es un servidor en la nube.'; return r; }
+  try {
+    let mejor = null;
+    leeMontajes().forEach(m => { const ok = DATOS === m.punto || DATOS.startsWith(m.punto === '/' ? '/' : m.punto + '/'); if (ok && (!mejor || m.punto.length > mejor.punto.length)) mejor = m; });
+    if (!mejor) { r.motivo = 'No se pudo ubicar el disco.'; return r; }
+    r.montaje = mejor.punto; r.sistema = mejor.fs;
+    r.persistente = mejor.punto !== '/' && !['tmpfs', 'ramfs', 'overlay'].includes(mejor.fs);
+    r.motivo = r.persistente ? 'Los datos están en un disco montado aparte (' + mejor.punto + ').' : 'Los datos están en el almacenamiento temporal del contenedor.';
+  } catch (e) { r.motivo = 'No se pudo revisar el disco.'; }
+  return r;
+}
+const qCreada = db.prepare('SELECT MIN(creado) AS f FROM usuarios'), qUltDesc = db.prepare("SELECT MAX(fecha) AS f FROM auditoria WHERE accion = 'Descargó el respaldo completo'");
 
 try { precarga(); } catch (e) { console.error('No se pudo aplicar la precarga:', e.message); }
 

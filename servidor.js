@@ -764,7 +764,9 @@ async function api(req, res, partes) {
         const rc = q.uno.get(a, b), vc = rc ? JSON.parse(rc.data) : {}, rp = q.uno.get('planeaciones', b);
         if (rp && JSON.stringify(vc.items || []) !== JSON.stringify(nuevo.items || [])) { const dp = JSON.parse(rp.data); if (dp.estado === 'aprobada' || dp.estado === 'denegada') { dp.estado = 'pendiente'; delete dp.revisor; delete dp.revFecha; delete dp.motivo; reabre = dp; } }
       }
+      const viejoAv = (a === 'solicitudes' || a === 'planeaciones') ? q.uno.get(a, b) : null;
       q.pon.run(a, b, JSON.stringify(nuevo), Date.now()); difunde(a, b); cobHook(a, b);
+      if (a === 'solicitudes' || (a === 'planeaciones' && (s.rol === 'admin' || (s.perm || {}).escolar === 'editar'))) { try { const vv = viejoAv ? JSON.parse(viejoAv.data) : null; if (a === 'solicitudes') AV.hookSolicitud(b, vv, nuevo); else AV.hookPlaneacion(b, vv, nuevo); } catch (e) { console.error('Avisos:', e.message); } }
       if (reabre) { q.pon.run('planeaciones', b, JSON.stringify(reabre), Date.now()); difunde('planeaciones', b); }
       return responde(res, 200, { ok: true });
     }
@@ -920,6 +922,21 @@ async function api(req, res, partes) {
     if (m === 'GET' && a === 'descargar') { audita(s.u, req, 'Descargó el respaldo completo'); try { await respaldoCompleto(res); } catch (e) { console.error(e.message); try { res.end(); } catch (x) {} } return; }
   }
 
+  /* Avisos por correo y WhatsApp */
+  if (tipo === 'avisos') {
+    const adm = rol === 'admin', staff = adm || (s.perm || {}).escolar === 'editar';
+    if (!staff) return responde(res, 403, { error: 'No tienes permiso para los avisos.' });
+    const limita = c => { if (adm) return c; const o = JSON.parse(JSON.stringify(c)); o.correo = { activo: c.correo.activo, usarRespaldos: c.correo.usarRespaldos }; o.whatsapp = { activo: c.whatsapp.activo }; o.resumen = { activo: c.resumen.activo, hora: c.resumen.hora, para: [] }; return o; };
+    if (m === 'GET' && !a) return responde(res, 200, { config: limita(AV.cfgPublica()), resumen: AV.resumen(), esAdmin: adm });
+    if (m === 'GET' && a === 'mensajes') { const u = new URL(req.url, 'http://x').searchParams; return responde(res, 200, { mensajes: AV.mensajes({ estado: u.get('estado') || '', canal: u.get('canal') || '', evento: u.get('evento') || '', q: u.get('q') || '', limite: u.get('limite') || 100 }) }); }
+    if (m === 'PUT' && a === 'config') { if (!adm) return responde(res, 403, { error: 'Solo el Administrador.' }); try { AV.guardaCfg(await leeJSON(req, 20000)); audita(s.u, req, 'Cambió la configuración de avisos'); return responde(res, 200, { ok: true, config: AV.cfgPublica() }); } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); } }
+    if (m === 'PUT' && a === 'sin') { const c = await leeJSON(req, 400000); const n = AV.setSin(Array.isArray(c.ids) ? c.ids : []); audita(s.u, req, 'Actualizó la lista de personas sin avisos', n + ' personas'); return responde(res, 200, { ok: true, total: n }); }
+    if (m === 'POST' && a === 'probar') { if (!adm) return responde(res, 403, { error: 'Solo el Administrador.' }); const c = await leeJSON(req, 5000); try { await AV.probar(c.canal === 'whatsapp' ? 'whatsapp' : 'correo', c.para); return responde(res, 200, { ok: true, msg: 'Mensaje de prueba enviado.' }); } catch (e) { return responde(res, 200, { ok: false, msg: e.message }); } }
+    if (m === 'POST' && a === 'enviar') { try { const c = await leeJSON(req, 20000), r = AV.enviarManual(s.u, c); if (!c.simular) { audita(s.u, req, 'Envió un aviso', (c.destino && c.destino.tipo) + ' · ' + r.personas + ' personas'); AV.procesa(40).catch(() => {}); } return responde(res, 200, r); } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); } }
+    if (m === 'POST' && a === 'reintentar') { const c = await leeJSON(req, 20000); const n = AV.reintenta(c.todos ? 'todos' : c.ids); AV.procesa(40).catch(() => {}); return responde(res, 200, { ok: true, reintentados: n }); }
+    if (m === 'POST' && a === 'procesar') { if (!adm) return responde(res, 403, { error: 'Solo el Administrador.' }); return responde(res, 200, await AV.procesa(100)); }
+    if (m === 'POST' && a === 'diario') { if (!adm) return responde(res, 403, { error: 'Solo el Administrador.' }); const c = await leeJSON(req, 2000); const r = AV.diarios(c.job === 'resumen' ? 'resumen' : 'calificaciones'); AV.procesa(60).catch(() => {}); return responde(res, 200, r); }
+  }
   /* Respaldos automáticos (solo el Administrador) */
   if (tipo === 'respaldos') {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
@@ -1131,7 +1148,7 @@ function textoAviso(n, est, ad, cfg, hoy) {
   if (n === 2) return { titulo: 'Recordatorio de adeudo (2 de 3)', mensaje: 'Hola, ' + nom + '. Te recordamos que ' + base + ' Aún no registramos tu pago ni un abono. Te invitamos amablemente a pasar a Control escolar para regularizar tu situación.' };
   return { titulo: 'Último aviso de adeudo (3 de 3)', mensaje: 'Hola, ' + nom + '. Este es tu último aviso: ' + base + ' Si antes del ' + fechaLargaMx(sumaDias(hoy, cfg.graciaDias)) + ' no pasas a Control escolar a realizar al menos un abono, tu usuario y contraseña de la plataforma se bloquearán por falta de pago y, de no regularizar tu situación, podría proceder una baja temporal.' };
 }
-function guardaAviso(id, doc) { q.pon.run('avisos', id, JSON.stringify(doc), Date.now()); difunde('avisos', id); }
+function guardaAviso(id, doc) { q.pon.run('avisos', id, JSON.stringify(doc), Date.now()); difunde('avisos', id); try { AV.hookAviso(id, doc); } catch (e) { console.error('Avisos:', e.message); } }
 function bloqueadoPorPago(sid) { if (!sid) return false; const d = leeDoc('cobranza', sid); return !!(d && d.estado === 'bloqueado'); }
 /* Evalúa a un alumno. opciones: { simular } no escribe nada; { alivio } solo permite cerrar avisos o desbloquear (cuando se registra un pago). Devuelve la acción propuesta/ejecutada. */
 function evaluaAlumnoCob(sid, ctx, op) {
@@ -1185,6 +1202,8 @@ function corridaCobranza(op) {
   sidsConAcceso().forEach(sid => { try { const r = evaluaAlumnoCob(sid, ctx, op); if (r && r.accion) out.push(r); } catch (e) { console.error('Cobranza (' + sid + '):', e.message); } });
   return { activa: ctx.cfg.activa, acciones: out };
 }
+/* ---------- Avisos fuera de la plataforma (correo y WhatsApp) ---------- */
+const AV = require('./avisos.js').crea({ db, q, leeDoc, cifra, descifra, smtpEnvia: RESPA.smtpEnvia, hoyMx: () => hoyMx(), horaMx: () => RESPA.fechaMx(new Date()).hora, audita, cfgCorreoRespaldos: () => cfgResp().correo, ENV });
 const cobPend = new Set(); let cobTodos = false, cobTimer = null;
 function cobHook(col, id) {
   if (!['ledger', 'students', 'calif', 'constancias', 'acuerdos', 'config', 'egresados'].includes(col)) return;
@@ -1279,7 +1298,7 @@ servidor.listen(PUERTO, '0.0.0.0', () => {
     if (!ENV.LF_SETUP_TOKEN) { SETUP_AUTO = crypto.randomBytes(9).toString('hex'); console.log('==> Aún no hay usuarios. Código de configuración inicial: ' + SETUP_AUTO + ' (usa la página /configurar)'); }
     else console.log('==> Aún no hay usuarios. Abre /configurar y usa el código de configuración de tus variables de entorno (LF_SETUP_TOKEN).');
   }
-  respaldoDiario(); setInterval(respaldoDiario, 3600000).unref(); aseguraLibs(); programaCobranza(); programaRespaldos();
+  respaldoDiario(); setInterval(respaldoDiario, 3600000).unref(); aseguraLibs(); programaCobranza(); programaRespaldos(); AV.programa();
 });
 function cierra() { try { respaldar(); } catch (e) {} try { db.close(); } catch (e) {} process.exit(0); }
 process.on('SIGINT', cierra); process.on('SIGTERM', cierra);

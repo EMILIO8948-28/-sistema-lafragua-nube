@@ -1,0 +1,787 @@
+{
+ "app": "colegiaturas-universidad-lafragua",
+ "formato": 1,
+ "exportado": "2026-11-10T01:32:23.000Z",
+ "exportadoPor": "Carga del plan de estudios de Arquitectura",
+ "colecciones": {
+  "catalogo": {
+   "arquitectura": {
+    "plan": "Arquitectura",
+    "items": [
+     {
+      "id": "arq-arquitectura-y-las-artes",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Arquitectura y las artes",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-principios-fisicos-aplicados-a-la-arquitectura",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Principios físicos aplicados a la arquitectura",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-fundamentos-de-calculo-estructural",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Fundamentos de cálculo estructural",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-introduccion-a-la-composicion-arquitectonica",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Introducción a la composición arquitectónica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-aplicaciones-matematicas-a-la-arquitectura",
+      "cuat": 1,
+      "clave": "",
+      "nom": "Aplicaciones matemáticas a la arquitectura",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-pensamiento-creativo-y-pensamiento-critico",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Pensamiento creativo y pensamiento crítico",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-historia-de-la-arquitectura",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Historia de la arquitectura",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-cualidades-artisticas-de-la-arquitectura",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Cualidades artísticas de la arquitectura",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-calculo-estructural-del-concreto",
+      "cuat": 2,
+      "clave": "",
+      "nom": "Cálculo estructural del concreto",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-y-composicion-arquitectonica",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Diseño y composición arquitectónica",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-aplicaciones-de-geometria",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Aplicaciones de geometría",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-introduccion-a-los-sistemas-constructivos",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Introducción a los sistemas constructivos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-tecnicas-de-representacion",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Técnicas de representación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-arquitectura-mexicana-y-del-mundo",
+      "cuat": 3,
+      "clave": "",
+      "nom": "Arquitectura mexicana y del mundo",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-urbanismo",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Urbanismo",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-aplicaciones-de-calculo-estructural",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Aplicaciones de cálculo estructural",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-de-viviendas",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Diseño de viviendas",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-manejo-de-programas-de-diseno-arquitectonico",
+      "cuat": 4,
+      "clave": "",
+      "nom": "Manejo de programas de diseño arquitectónico",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-analisis-de-los-sistemas-constructivos",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Análisis de los sistemas constructivos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-de-edificios",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Diseño de edificios",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-arquitectura-contemporanea",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Arquitectura contemporánea",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-y-elaboracion-de-maquetas",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Diseño y elaboración de maquetas",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-planeacion-del-proyecto-arquitectonico",
+      "cuat": 5,
+      "clave": "",
+      "nom": "Planeación del proyecto arquitectónico",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-de-espacios-para-descanso-y-recreacion",
+      "cuat": 6,
+      "clave": "",
+      "nom": "Diseño de espacios para descanso y recreación",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-manejo-avanzado-de-programas-de-diseno-arquitectonico",
+      "cuat": 6,
+      "clave": "",
+      "nom": "Manejo avanzado de programas de diseño arquitectónico",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-sostenibilidad-y-arquitectura",
+      "cuat": 6,
+      "clave": "",
+      "nom": "Sostenibilidad y arquitectura",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-analisis-de-los-materiales-de-construccion",
+      "cuat": 6,
+      "clave": "",
+      "nom": "Análisis de los materiales de construcción",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-negociacion-y-resolucion-de-conflictos",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Negociación y resolución de conflictos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-de-interiores",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Diseño de interiores",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-de-instalaciones",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Diseño de instalaciones",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-de-recintos-para-eventos-masivos",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Diseño de recintos para eventos masivos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-comunicacion-y-liderazgo",
+      "cuat": 7,
+      "clave": "",
+      "nom": "Comunicación y liderazgo",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-administracion-de-proyectos-arquitectonicos",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Administración de proyectos arquitectónicos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-estudios-para-el-proyecto-arquitectonico",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Estudios para el proyecto arquitectónico",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-de-espacios-exteriores",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Diseño de espacios exteriores",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-herramientas-y-avances-tecnologicos-en-la-arquitectura",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Herramientas y avances tecnológicos en la arquitectura",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-elaboracion-de-reportes-de-proyecto",
+      "cuat": 8,
+      "clave": "",
+      "nom": "Elaboración de reportes de proyecto",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-de-espacios-para-servicios-publicos",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Diseño de espacios para servicios públicos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-talento-humano-en-los-proyectos-arquitectonicos",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Talento humano en los proyectos arquitectónicos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-arquitectura-contemporanea-mexicana",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Arquitectura contemporánea mexicana",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-mantenimiento-de-las-instalaciones-y-servicios",
+      "cuat": 9,
+      "clave": "",
+      "nom": "Mantenimiento de las instalaciones y servicios",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-tecnicas-de-restauracion",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Técnicas de restauración",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-diseno-sostenible-e-incluyente",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Diseño sostenible e incluyente",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-tecnicas-tradicionales-de-construccion-y-ecotecnias",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Técnicas tradicionales de construcción y ecotecnias",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-practicas-de-diseno-arquitectonico",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Prácticas de diseño arquitectónico",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-direccion-de-proyectos-arquitectonicos",
+      "cuat": 10,
+      "clave": "",
+      "nom": "Dirección de proyectos arquitectónicos",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-tendencias-de-la-arquitectura-contemporanea",
+      "cuat": 11,
+      "clave": "",
+      "nom": "Tendencias de la arquitectura contemporánea",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     },
+     {
+      "id": "arq-proyecto-final",
+      "cuat": 11,
+      "clave": "",
+      "nom": "Proyecto final",
+      "cred": null,
+      "hrs": null,
+      "ct": 1,
+      "pdf": 0
+     }
+    ]
+   }
+  }
+ },
+ "documentos": {},
+ "contenidos": {
+  "arq-arquitectura-y-las-artes": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará la relación de la arquitectura con las demás artes y con la cultura de cada época, con la finalidad de interpretar obras arquitectónicas y fundamentar sus decisiones de diseño con criterio artístico.\n\nCONTENIDO TEMÁTICO\n1. CONCEPTO DE ARQUITECTURA Y DE ARTE\n   1.1 Definiciones de arquitectura: arte, técnica y ciencia\n   1.2 Concepto de arte y funciones del arte\n   1.3 La arquitectura como arte del espacio habitable\n   1.4 El papel del arquitecto como creador y como profesional\n\n2. ARQUITECTURA Y ARTES PLÁSTICAS\n   2.1 Arquitectura y escultura: volumen, masa y espacio\n   2.2 Arquitectura y pintura: color, perspectiva y composición\n   2.3 Integración plástica en la arquitectura\n   2.4 Muralismo y arte en el espacio público\n\n3. ARQUITECTURA, MÚSICA Y LITERATURA\n   3.1 Ritmo, proporción y armonía en música y arquitectura\n   3.2 La arquitectura como lenguaje y narración\n   3.3 El espacio en la literatura y en el cine\n   3.4 La fotografía y el dibujo como registro de la arquitectura\n\n4. EL ARTE COMO EXPRESIÓN DE LA ÉPOCA\n   4.1 Contexto social, político y económico del arte\n   4.2 Estilos y movimientos artísticos y su reflejo en la arquitectura\n   4.3 Vanguardias del siglo XX y arquitectura moderna\n\n5. LECTURA E INTERPRETACIÓN DE OBRAS\n   5.1 Métodos de análisis formal, funcional y simbólico\n   5.2 Análisis de obras representativas\n   5.3 Elaboración de un ensayo crítico sobre una obra\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-principios-fisicos-aplicados-a-la-arquitectura": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los principios de la física relacionados con las fuerzas, la energía, el calor, la luz y el sonido, con la finalidad de comprender el comportamiento de los edificios y tomar decisiones de diseño fundamentadas.\n\nCONTENIDO TEMÁTICO\n1. MAGNITUDES Y UNIDADES\n   1.1 Sistema Internacional de unidades y conversiones\n   1.2 Cantidades escalares y vectoriales\n   1.3 Operaciones con vectores aplicadas a las fuerzas\n\n2. ESTÁTICA\n   2.1 Fuerzas, momentos y pares de fuerzas\n   2.2 Condiciones de equilibrio\n   2.3 Centro de gravedad y centroides de figuras\n   2.4 Fricción y su importancia en la construcción\n\n3. MECÁNICA DE LOS MATERIALES: INTRODUCCIÓN\n   3.1 Esfuerzo y deformación\n   3.2 Elasticidad y resistencia de los materiales\n   3.3 Cargas muertas, vivas y accidentales\n\n4. TERMODINÁMICA Y CONFORT TÉRMICO\n   4.1 Calor, temperatura y formas de transmisión del calor\n   4.2 Aislamiento y masa térmica en los materiales\n   4.3 Ganancias y pérdidas de calor en un edificio\n\n5. ÓPTICA Y ACÚSTICA ARQUITECTÓNICA\n   5.1 Luz natural y artificial: iluminancia y deslumbramiento\n   5.2 Propagación del sonido, reverberación y aislamiento acústico\n   5.3 Aplicación en el diseño de espacios habitables\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-fundamentos-de-calculo-estructural": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno calculará las reacciones, los esfuerzos y las dimensiones preliminares de elementos estructurales sencillos, con la finalidad de comprender el funcionamiento de las estructuras y colaborar con el especialista estructural.\n\nCONTENIDO TEMÁTICO\n1. CONCEPTOS BÁSICOS DE ESTRUCTURAS\n   1.1 Función de la estructura en un edificio\n   1.2 Tipos de elementos estructurales: vigas, columnas, losas, muros y cimientos\n   1.3 Tipos de apoyos y vínculos\n   1.4 Estabilidad e isostaticidad\n\n2. CARGAS EN LAS ESTRUCTURAS\n   2.1 Cargas muertas, vivas, de viento y de sismo\n   2.2 Bajada de cargas en un edificio sencillo\n   2.3 Combinaciones de carga y factores de seguridad\n\n3. ANÁLISIS DE VIGAS\n   3.1 Cálculo de reacciones\n   3.2 Fuerza cortante y momento flexionante\n   3.3 Diagramas de cortante y de momento\n   3.4 Esfuerzos por flexión y por cortante\n\n4. ELEMENTOS A COMPRESIÓN Y TENSIÓN\n   4.1 Columnas cortas y esbeltas: pandeo\n   4.2 Elementos sometidos a tensión\n   4.3 Propiedades geométricas de las secciones: área, inercia y módulo de sección\n\n5. PREDIMENSIONAMIENTO\n   5.1 Criterios prácticos de predimensionamiento de losas, vigas y columnas\n   5.2 Ejemplo integrador de un edificio de pocos niveles\n   5.3 Interpretación de planos estructurales\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-introduccion-a-la-composicion-arquitectonica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los elementos y los principios de la composición en ejercicios de forma y espacio, con la finalidad de desarrollar un lenguaje arquitectónico propio y coherente.\n\nCONTENIDO TEMÁTICO\n1. ELEMENTOS DE LA COMPOSICIÓN\n   1.1 Punto, línea, plano y volumen\n   1.2 Forma, textura y color\n   1.3 Luz y sombra\n\n2. PRINCIPIOS DE LA COMPOSICIÓN\n   2.1 Orden, equilibrio y simetría\n   2.2 Ritmo, repetición y variedad\n   2.3 Proporción, escala y jerarquía\n   2.4 Contraste, unidad y armonía\n\n3. ESPACIO ARQUITECTÓNICO\n   3.1 Espacio y lugar: límites y transiciones\n   3.2 Relaciones espaciales: contiguidad, inclusión y superposición\n   3.3 Organización del espacio: centralizada, lineal, radial y en trama\n\n4. COMPOSICIÓN DE LA FORMA\n   4.1 Sustracción y adición de volúmenes\n   4.2 Transformaciones formales\n   4.3 Módulos y sistemas de medidas: el Modulor\n\n5. EJERCICIOS DE COMPOSICIÓN\n   5.1 Composiciones bidimensionales y tridimensionales\n   5.2 Análisis compositivo de una obra de referencia\n   5.3 Presentación y crítica de los ejercicios\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-aplicaciones-matematicas-a-la-arquitectura": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno resolverá problemas de aritmética, álgebra, trigonometría y estadística aplicados a la arquitectura y a la construcción, con la finalidad de calcular medidas, superficies, volúmenes y costos en sus proyectos.\n\nCONTENIDO TEMÁTICO\n1. ARITMÉTICA Y ÁLGEBRA APLICADAS\n   1.1 Operaciones con fracciones, porcentajes y proporciones\n   1.2 Ecuaciones y sistemas de ecuaciones\n   1.3 Escalas y conversión de unidades\n\n2. GEOMETRÍA Y TRIGONOMETRÍA\n   2.1 Ángulos, triángulos y teorema de Pitágoras\n   2.2 Funciones trigonométricas y resolución de triángulos\n   2.3 Aplicación a pendientes, alturas y distancias\n\n3. ÁREAS Y VOLÚMENES\n   3.1 Áreas de figuras planas y de superficies irregulares\n   3.2 Volúmenes de cuerpos geométricos\n   3.3 Cálculo de cantidades de obra: concreto, muros y acabados\n\n4. FUNCIONES Y GRÁFICAS\n   4.1 Función lineal, cuadrática y exponencial\n   4.2 Interpretación de gráficas y tablas\n   4.3 Introducción al cálculo diferencial aplicado a optimización\n\n5. ESTADÍSTICA Y MATEMÁTICAS FINANCIERAS BÁSICAS\n   5.1 Estadística descriptiva y probabilidad\n   5.2 Interés simple y compuesto\n   5.3 Elaboración de un presupuesto sencillo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-pensamiento-creativo-y-pensamiento-critico": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará técnicas de pensamiento creativo y de análisis crítico, con la finalidad de generar ideas originales, evaluarlas con argumentos y tomar decisiones fundamentadas en el diseño arquitectónico.\n\nCONTENIDO TEMÁTICO\n1. EL PROCESO CREATIVO\n   1.1 Concepto de creatividad y fases del proceso creativo\n   1.2 Bloqueos y facilitadores de la creatividad\n   1.3 Inspiración, referentes y observación del entorno\n\n2. TÉCNICAS PARA GENERAR IDEAS\n   2.1 Lluvia de ideas y mapas mentales\n   2.2 Analogías, metáforas y pensamiento lateral\n   2.3 Bocetos rápidos y exploración visual\n   2.4 Trabajo creativo en equipo\n\n3. PENSAMIENTO CRÍTICO\n   3.1 Elementos del razonamiento y estándares intelectuales\n   3.2 Argumentos, falacias y sesgos\n   3.3 Evaluación de fuentes de información\n\n4. ANÁLISIS Y SOLUCIÓN DE PROBLEMAS DE DISEÑO\n   4.1 Definición y delimitación del problema\n   4.2 Generación y evaluación de alternativas\n   4.3 Toma de decisiones con criterios\n\n5. COMUNICACIÓN DE IDEAS\n   5.1 Argumentación oral y escrita\n   5.2 Presentación de propuestas y manejo de la crítica\n   5.3 Portafolio de ejercicios creativos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-historia-de-la-arquitectura": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá la evolución de la arquitectura desde la antigüedad hasta el siglo XX, con la finalidad de reconocer los estilos, los sistemas constructivos y las ideas que han influido en la arquitectura actual.\n\nCONTENIDO TEMÁTICO\n1. LA ARQUITECTURA EN LA ANTIGÜEDAD\n   1.1 Prehistoria y primeras civilizaciones\n   1.2 Egipto y Mesopotamia\n   1.3 Grecia: los órdenes arquitectónicos\n   1.4 Roma: arco, bóveda, concreto y urbanismo\n\n2. LA EDAD MEDIA\n   2.1 Arquitectura paleocristiana y bizantina\n   2.2 Románico\n   2.3 Gótico: estructura y simbolismo\n   2.4 Arquitectura islámica\n\n3. RENACIMIENTO, MANIERISMO Y BARROCO\n   3.1 Renacimiento: proporción y tratados\n   3.2 Manierismo\n   3.3 Barroco y rococó\n\n4. SIGLOS XVIII Y XIX\n   4.1 Neoclasicismo y romanticismo\n   4.2 Revolución industrial: hierro, vidrio y nuevos programas\n   4.3 Eclecticismo, Arts and Crafts y Art Nouveau\n\n5. SIGLO XX: ARQUITECTURA MODERNA\n   5.1 Escuela de Chicago, Bauhaus y racionalismo\n   5.2 Le Corbusier, Mies van der Rohe, Wright y Aalto\n   5.3 Movimiento moderno y su crisis\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-cualidades-artisticas-de-la-arquitectura": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno identificará y valorará las cualidades estéticas, simbólicas y expresivas de la arquitectura, con la finalidad de incorporarlas de manera consciente en el diseño de espacios.\n\nCONTENIDO TEMÁTICO\n1. ESTÉTICA Y ARQUITECTURA\n   1.1 Concepto de estética y de belleza\n   1.2 Teorías de la belleza arquitectónica\n   1.3 Utilitas, firmitas y venustas\n\n2. FORMA Y PROPORCIÓN\n   2.1 Proporciones armónicas y sección áurea\n   2.2 Escala humana y monumentalidad\n   2.3 Simetría y asimetría\n\n3. LUZ, COLOR Y TEXTURA\n   3.1 La luz como material arquitectónico\n   3.2 Psicología del color en los espacios\n   3.3 Texturas y materiales expresivos\n\n4. SIMBOLISMO Y SIGNIFICADO\n   4.1 Arquitectura religiosa, cívica y doméstica como símbolo\n   4.2 Identidad, memoria y lugar\n   4.3 Arquitectura y cultura popular\n\n5. PERCEPCIÓN DEL ESPACIO\n   5.1 Percepción visual y recorrido arquitectónico\n   5.2 Experiencia sensorial del espacio\n   5.3 Análisis estético de una obra elegida\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-calculo-estructural-del-concreto": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno diseñará elementos de concreto reforzado de edificios sencillos de acuerdo con la normatividad vigente, con la finalidad de dimensionar y armar vigas, losas, columnas y cimentaciones.\n\nCONTENIDO TEMÁTICO\n1. PROPIEDADES DEL CONCRETO Y DEL ACERO DE REFUERZO\n   1.1 Componentes y dosificación del concreto\n   1.2 Resistencia a la compresión y módulo de elasticidad\n   1.3 Acero de refuerzo: tipos, grados y recubrimientos\n\n2. FUNDAMENTOS DEL CONCRETO REFORZADO\n   2.1 Comportamiento a flexión, cortante y compresión\n   2.2 Métodos de diseño y normativa aplicable\n   2.3 Hipótesis de diseño y factores de resistencia\n\n3. DISEÑO DE VIGAS Y LOSAS\n   3.1 Dimensionamiento y armado de vigas por flexión\n   3.2 Diseño por cortante y estribos\n   3.3 Losas en una y en dos direcciones\n\n4. DISEÑO DE COLUMNAS\n   4.1 Columnas con carga axial y flexión\n   4.2 Cuantías mínimas y máximas, y separación de estribos\n   4.3 Detalles de armado y traslapes\n\n5. CIMENTACIONES\n   5.1 Zapatas aisladas y corridas\n   5.2 Losas de cimentación\n   5.3 Interpretación de planos de armado\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-y-composicion-arquitectonica": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno desarrollará proyectos arquitectónicos de baja complejidad a partir de un programa, un sitio y un concepto de diseño, con la finalidad de integrar función, forma y espacio en una propuesta coherente.\n\nCONTENIDO TEMÁTICO\n1. METODOLOGÍA DEL DISEÑO ARQUITECTÓNICO\n   1.1 Etapas del proceso de diseño\n   1.2 Análisis del problema, del usuario y del sitio\n   1.3 Programa de necesidades y diagrama de funcionamiento\n\n2. CONCEPTO Y PARTIDO ARQUITECTÓNICO\n   2.1 Del concepto a la idea generadora\n   2.2 Exploración formal con bocetos y maquetas de estudio\n   2.3 Selección del partido\n\n3. DESARROLLO DEL ANTEPROYECTO\n   3.1 Zonificación y circulaciones\n   3.2 Plantas, cortes y fachadas\n   3.3 Relación del edificio con el contexto\n\n4. COMPOSICIÓN Y LENGUAJE ARQUITECTÓNICO\n   4.1 Proporción, ritmo y jerarquía en la fachada\n   4.2 Materiales y expresión\n   4.3 Iluminación y ventilación naturales\n\n5. PRESENTACIÓN DEL PROYECTO\n   5.1 Láminas y representación del proyecto\n   5.2 Maqueta de presentación\n   5.3 Defensa y crítica del proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-aplicaciones-de-geometria": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno resolverá problemas de geometría plana y descriptiva y representará formas en el espacio, con la finalidad de trazar y analizar con precisión los elementos de un proyecto arquitectónico.\n\nCONTENIDO TEMÁTICO\n1. GEOMETRÍA PLANA\n   1.1 Trazos fundamentales: perpendiculares, paralelas y bisectrices\n   1.2 Polígonos regulares y su construcción\n   1.3 Tangencias, enlaces y curvas técnicas\n\n2. CURVAS GEOMÉTRICAS\n   2.1 Elipse, parábola e hipérbola\n   2.2 Espirales y hélices\n   2.3 Arcos y bóvedas en la arquitectura\n\n3. GEOMETRÍA DESCRIPTIVA\n   3.1 Sistema diédrico: punto, recta y plano\n   3.2 Verdaderas magnitudes y abatimientos\n   3.3 Intersecciones de planos y de sólidos\n\n4. SUPERFICIES Y SÓLIDOS\n   4.1 Poliedros, cilindros, conos y esferas\n   4.2 Desarrollo de superficies\n   4.3 Cubiertas y superficies regladas\n\n5. APLICACIÓN A LA ARQUITECTURA\n   5.1 Trazo de escaleras, rampas y cubiertas inclinadas\n   5.2 Geometría en estructuras y bóvedas\n   5.3 Ejercicio integrador de trazo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-introduccion-a-los-sistemas-constructivos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno describirá los principales sistemas constructivos de una edificación y su proceso, con la finalidad de reconocer la relación entre el diseño, los materiales y la construcción.\n\nCONTENIDO TEMÁTICO\n1. EL PROCESO CONSTRUCTIVO\n   1.1 Etapas de una obra: preliminares, cimentación, estructura y acabados\n   1.2 Agentes que intervienen en la construcción\n   1.3 Planos y especificaciones de construcción\n\n2. TRABAJOS PRELIMINARES Y CIMENTACIÓN\n   2.1 Limpieza, trazo y nivelación\n   2.2 Excavaciones y rellenos\n   2.3 Tipos de cimentación: superficial y profunda\n\n3. ESTRUCTURA Y MUROS\n   3.1 Sistemas a base de muros de carga, marcos y esqueletos\n   3.2 Mampostería, concreto, acero y madera\n   3.3 Muros divisorios y de contención\n\n4. ENTREPISOS Y CUBIERTAS\n   4.1 Losas macizas, aligeradas y prefabricadas\n   4.2 Cubiertas planas, inclinadas y ligeras\n   4.3 Impermeabilización y drenaje pluvial\n\n5. ACABADOS Y OBRA COMPLEMENTARIA\n   5.1 Recubrimientos de pisos, muros y plafones\n   5.2 Carpintería, herrería y cancelería\n   5.3 Visitas a obras y reporte de observación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-tecnicas-de-representacion": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno representará ideas y proyectos arquitectónicos mediante dibujo técnico, croquis y perspectivas, con la finalidad de comunicar con claridad sus propuestas de diseño.\n\nCONTENIDO TEMÁTICO\n1. DIBUJO TÉCNICO ARQUITECTÓNICO\n   1.1 Instrumentos, formatos, líneas y rotulación\n   1.2 Escalas y acotaciones\n   1.3 Plantas, cortes, fachadas y simbología\n\n2. REPRESENTACIÓN AXONOMÉTRICA\n   2.1 Isométrico, dimétrico y trimétrico\n   2.2 Perspectiva caballera y militar\n   2.3 Vistas explosionadas\n\n3. PERSPECTIVA CÓNICA\n   3.1 Perspectiva de uno, dos y tres puntos de fuga\n   3.2 Trazo de interiores y exteriores\n   3.3 Sombras proyectadas\n\n4. CROQUIS Y DIBUJO A MANO ALZADA\n   4.1 Dibujo de observación y bocetos de proyecto\n   4.2 Proporción y escala humana\n   4.3 Representación de materiales y vegetación\n\n5. TÉCNICAS DE COLOR Y PRESENTACIÓN\n   5.1 Lápiz, tinta, marcadores y acuarela\n   5.2 Composición de láminas\n   5.3 Portafolio de representación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-arquitectura-mexicana-y-del-mundo": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará la arquitectura de México y de otras regiones del mundo en sus distintas épocas, con la finalidad de reconocer sus influencias, sus particularidades y su vigencia en el diseño actual.\n\nCONTENIDO TEMÁTICO\n1. ARQUITECTURA PREHISPÁNICA\n   1.1 Mesoamérica: urbanismo y arquitectura ceremonial\n   1.2 Culturas olmeca, maya, teotihuacana y mexica\n   1.3 Sistemas constructivos y simbolismo\n\n2. ARQUITECTURA VIRREINAL\n   2.1 Conventos, templos y ciudades novohispanas\n   2.2 Barroco novohispano\n   2.3 Arquitectura civil y militar\n\n3. SIGLO XIX Y PORFIRIATO\n   3.1 Neoclásico y eclecticismo en México\n   3.2 Arquitectura de la industria y del ferrocarril\n   3.3 Arquitectura mexicana moderna: Barragán, O’Gorman y Candela\n\n4. ARQUITECTURA DEL MUNDO\n   4.1 Arquitectura de Asia: China, Japón e India\n   4.2 Arquitectura islámica y africana\n   4.3 Arquitectura europea y norteamericana del siglo XX\n\n5. ANÁLISIS COMPARATIVO\n   5.1 Influencias entre México y el mundo\n   5.2 Arquitectura vernácula y regional\n   5.3 Ensayo sobre una obra o un arquitecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-urbanismo": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará la estructura y el desarrollo de las ciudades y los instrumentos de planeación urbana, con la finalidad de integrar criterios urbanos en el diseño de proyectos arquitectónicos.\n\nCONTENIDO TEMÁTICO\n1. CONCEPTOS Y EVOLUCIÓN DEL URBANISMO\n   1.1 Ciudad, urbanismo y desarrollo urbano\n   1.2 Evolución histórica de la ciudad\n   1.3 Teorías urbanas: ciudad jardín, ciudad funcional y ciudad compacta\n\n2. ELEMENTOS DE LA ESTRUCTURA URBANA\n   2.1 Uso de suelo, densidad y traza\n   2.2 Vialidad y transporte\n   2.3 Espacio público, equipamiento e imagen urbana\n\n3. INFRAESTRUCTURA Y SERVICIOS URBANOS\n   3.1 Agua potable, drenaje y energía\n   3.2 Residuos sólidos y servicios públicos\n   3.3 Vivienda y crecimiento de las ciudades\n\n4. PLANEACIÓN Y MARCO LEGAL\n   4.1 Ley General de Asentamientos Humanos, Ordenamiento Territorial y Desarrollo Urbano\n   4.2 Planes y programas de desarrollo urbano\n   4.3 Licencias, alineamientos y reglamentos de construcción\n\n5. PROBLEMÁTICA URBANA CONTEMPORÁNEA\n   5.1 Movilidad, informalidad y segregación\n   5.2 Ciudades sostenibles y resilientes\n   5.3 Diagnóstico urbano de una localidad\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-aplicaciones-de-calculo-estructural": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará y dimensionará estructuras de acero, madera y mampostería, así como cimentaciones y marcos sencillos, con la finalidad de seleccionar soluciones estructurales adecuadas para sus proyectos.\n\nCONTENIDO TEMÁTICO\n1. ANÁLISIS DE ESTRUCTURAS ISOSTÁTICAS\n   1.1 Armaduras: método de los nodos y de las secciones\n   1.2 Arcos y cables\n   1.3 Deflexiones en vigas\n\n2. MARCOS Y ESTRUCTURAS HIPERESTÁTICAS\n   2.1 Concepto de hiperestaticidad\n   2.2 Vigas continuas y marcos sencillos\n   2.3 Uso de software de análisis estructural\n\n3. ESTRUCTURAS DE ACERO Y MADERA\n   3.1 Propiedades y perfiles de acero estructural\n   3.2 Diseño de vigas, columnas y conexiones\n   3.3 Estructuras de madera y de bambú\n\n4. MAMPOSTERÍA Y CIMENTACIONES\n   4.1 Diseño de muros de mampostería confinada\n   4.2 Cimentaciones y muros de contención\n   4.3 Capacidad de carga del suelo\n\n5. ACCIONES SÍSMICAS Y EÓLICAS\n   5.1 Peligro sísmico y regionalización\n   5.2 Conceptos de diseño sismorresistente\n   5.3 Efecto del viento en las edificaciones\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-de-viviendas": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proyectará viviendas unifamiliares y plurifamiliares que cumplan con la normatividad y respondan a las necesidades de sus usuarios, con la finalidad de integrar función, estructura, instalaciones y expresión arquitectónica.\n\nCONTENIDO TEMÁTICO\n1. LA VIVIENDA: ANTECEDENTES Y TIPOLOGÍAS\n   1.1 Evolución de la vivienda\n   1.2 Vivienda unifamiliar, dúplex y multifamiliar\n   1.3 Vivienda de interés social, media y residencial\n\n2. ANÁLISIS DEL USUARIO Y DEL SITIO\n   2.1 Necesidades, hábitos y presupuesto del usuario\n   2.2 Orientación, clima, topografía y normativa del terreno\n   2.3 Programa arquitectónico y áreas mínimas\n\n3. PROYECTO DE UNA VIVIENDA UNIFAMILIAR\n   3.1 Zonificación y circulaciones\n   3.2 Anteproyecto: plantas, cortes y fachadas\n   3.3 Criterios de estructura, instalaciones y acabados\n\n4. PROYECTO DE VIVIENDA PLURIFAMILIAR\n   4.1 Densificación y conjunto habitacional\n   4.2 Áreas comunes, estacionamiento y accesibilidad\n   4.3 Normativa aplicable y seguridad\n\n5. PRESENTACIÓN DEL PROYECTO\n   5.1 Planos arquitectónicos y de acabados\n   5.2 Maqueta y perspectiva\n   5.3 Costo aproximado y defensa del proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-manejo-de-programas-de-diseno-arquitectonico": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno utilizará programas de dibujo y modelado digital para elaborar planos y modelos tridimensionales de proyectos, con la finalidad de agilizar el diseño y la documentación arquitectónica.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN AL DISEÑO ASISTIDO POR COMPUTADORA\n   1.1 Interfaz, unidades y configuración\n   1.2 Comandos básicos de dibujo y edición\n   1.3 Capas, bloques y plantillas\n\n2. DIBUJO DE PLANOS ARQUITECTÓNICOS\n   2.1 Plantas, cortes y fachadas\n   2.2 Acotación, textos y simbología\n   2.3 Impresión y escalas de trazado\n\n3. MODELADO TRIDIMENSIONAL\n   3.1 Volúmenes, extrusiones y superficies\n   3.2 Modelado de un edificio sencillo\n   3.3 Materiales, luces y cámaras\n\n4. PRESENTACIÓN DIGITAL\n   4.1 Renderizado básico\n   4.2 Láminas y composición de presentación\n   4.3 Exportación a distintos formatos\n\n5. PROYECTO INTEGRADOR\n   5.1 Documentación de una vivienda en 2D y 3D\n   5.2 Revisión de buenas prácticas de archivo\n   5.3 Entrega y exposición del proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-analisis-de-los-sistemas-constructivos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno comparará los sistemas constructivos tradicionales e industrializados considerando su desempeño, costo y sostenibilidad, con la finalidad de seleccionar el más adecuado para cada proyecto.\n\nCONTENIDO TEMÁTICO\n1. CRITERIOS PARA ANALIZAR UN SISTEMA CONSTRUCTIVO\n   1.1 Desempeño estructural, térmico y acústico\n   1.2 Costo, tiempo y mano de obra\n   1.3 Durabilidad, mantenimiento e impacto ambiental\n\n2. SISTEMAS TRADICIONALES\n   2.1 Muros de carga de piedra, tabique y block\n   2.2 Estructuras de concreto colado en sitio\n   2.3 Cubiertas y entrepisos tradicionales\n\n3. SISTEMAS DE ACERO Y MADERA\n   3.1 Estructuras metálicas y conexiones\n   3.2 Estructuras de madera laminada\n   3.3 Sistemas de muros ligeros\n\n4. SISTEMAS INDUSTRIALIZADOS Y PREFABRICADOS\n   4.1 Elementos prefabricados y presforzados\n   4.2 Paneles y sistemas modulares\n   4.3 Construcción en seco y vidrio estructural\n\n5. ESTUDIO COMPARATIVO\n   5.1 Matriz de decisión de sistemas constructivos\n   5.2 Visita a una obra y análisis de su sistema\n   5.3 Informe técnico comparativo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-de-edificios": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proyectará edificios de varios niveles de uso mixto o institucional, considerando estructura, circulaciones y seguridad, con la finalidad de resolver proyectos de mayor complejidad con criterio técnico y arquitectónico.\n\nCONTENIDO TEMÁTICO\n1. TIPOLOGÍAS DE EDIFICIOS\n   1.1 Edificios de oficinas, comerciales y de usos mixtos\n   1.2 Edificios institucionales y de servicios\n   1.3 Análisis de casos análogos\n\n2. PROGRAMA Y ESTRATEGIA DE PROYECTO\n   2.1 Programa arquitectónico, áreas y relaciones funcionales\n   2.2 Análisis del terreno y de la normativa\n   2.3 Volumetría y partido arquitectónico\n\n3. SISTEMAS VERTICALES Y ESTRUCTURA\n   3.1 Circulaciones verticales: escaleras, rampas y elevadores\n   3.2 Retícula estructural y modulación\n   3.3 Núcleos de servicio y fachadas\n\n4. SEGURIDAD Y ACCESIBILIDAD\n   4.1 Rutas de evacuación y protección contra incendio\n   4.2 Accesibilidad universal\n   4.3 Normativa aplicable\n\n5. DESARROLLO Y PRESENTACIÓN\n   5.1 Planos arquitectónicos y de cortes por fachada\n   5.2 Maqueta y modelo digital\n   5.3 Presentación y defensa del proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-arquitectura-contemporanea": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará los movimientos, los arquitectos y las obras más representativos de la arquitectura de finales del siglo XX y del siglo XXI, con la finalidad de reconocer las ideas y los debates que orientan el diseño actual.\n\nCONTENIDO TEMÁTICO\n1. DE LA CRISIS DEL MOVIMIENTO MODERNO AL POSMODERNISMO\n   1.1 Críticas al movimiento moderno\n   1.2 Posmodernismo y contextualismo\n   1.3 Regionalismo crítico\n\n2. TENDENCIAS Y MOVIMIENTOS\n   2.1 High-tech y arquitectura tecnológica\n   2.2 Deconstructivismo\n   2.3 Minimalismo y neomodernidad\n\n3. ARQUITECTOS Y OBRAS REPRESENTATIVAS\n   3.1 Obras de arquitectos internacionales reconocidos\n   3.2 Arquitectura emblemática y ciudad global\n   3.3 Análisis de obras premiadas\n\n4. NUEVOS TEMAS DE LA ARQUITECTURA\n   4.1 Sostenibilidad, inclusión y participación\n   4.2 Reciclaje y reúso de edificios\n   4.3 Arquitectura y tecnologías digitales\n\n5. ANÁLISIS CRÍTICO\n   5.1 Lectura de obras y de textos críticos\n   5.2 Exposición de una obra contemporánea\n   5.3 Ensayo de análisis\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-y-elaboracion-de-maquetas": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno elaborará maquetas de estudio y de presentación utilizando materiales y técnicas adecuados, con la finalidad de explorar, comunicar y evaluar tridimensionalmente sus proyectos.\n\nCONTENIDO TEMÁTICO\n1. FUNCIÓN Y TIPOS DE MAQUETAS\n   1.1 Maquetas de estudio, de trabajo y de presentación\n   1.2 Escalas y selección de materiales\n   1.3 Seguridad en el taller\n\n2. MATERIALES Y HERRAMIENTAS\n   2.1 Cartón, madera, acrílico y espuma\n   2.2 Corte, ensamble y adhesivos\n   2.3 Herramientas manuales y de corte digital\n\n3. MAQUETAS DE VOLUMEN Y DE CONTEXTO\n   3.1 Maqueta de estudio volumétrico\n   3.2 Topografía y base de la maqueta\n   3.3 Maqueta de conjunto urbano\n\n4. MAQUETAS DE INTERIORES Y DE DETALLE\n   4.1 Maqueta seccionada\n   4.2 Maqueta de interiores y mobiliario\n   4.3 Detalles constructivos\n\n5. ACABADOS Y PRESENTACIÓN\n   5.1 Color, textura y vegetación\n   5.2 Iluminación y fotografía de maquetas\n   5.3 Exposición y evaluación de la maqueta final\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-planeacion-del-proyecto-arquitectonico": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno planeará las etapas, los recursos y los entregables de un proyecto arquitectónico, con la finalidad de organizar su desarrollo de manera ordenada y cumplir con tiempos y alcances.\n\nCONTENIDO TEMÁTICO\n1. EL PROYECTO ARQUITECTÓNICO COMO PROCESO\n   1.1 Etapas: programa, anteproyecto, proyecto básico y ejecutivo\n   1.2 Participantes y responsabilidades\n   1.3 Normatividad y trámites previos\n\n2. PROGRAMA ARQUITECTÓNICO\n   2.1 Necesidades del cliente y del usuario\n   2.2 Programa de áreas y relaciones funcionales\n   2.3 Presupuesto preliminar\n\n3. ESTUDIOS PRELIMINARES\n   3.1 Levantamiento del sitio y del contexto\n   3.2 Normativa de uso de suelo\n   3.3 Análisis de factibilidad\n\n4. PLANEACIÓN DEL DESARROLLO DEL PROYECTO\n   4.1 Alcances y entregables\n   4.2 Cronograma de actividades y ruta crítica\n   4.3 Honorarios y contrato de servicios\n\n5. CASO PRÁCTICO\n   5.1 Elaboración de un plan de proyecto\n   5.2 Seguimiento y control de avances\n   5.3 Presentación del plan\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-de-espacios-para-descanso-y-recreacion": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proyectará espacios destinados al descanso, la recreación y el turismo, con la finalidad de resolver programas que integren confort, paisaje y seguridad.\n\nCONTENIDO TEMÁTICO\n1. ESPACIOS RECREATIVOS Y TURÍSTICOS\n   1.1 Tipologías: hoteles, spas, clubes y parques\n   1.2 Usuarios y necesidades de recreación\n   1.3 Análisis de casos análogos\n\n2. ANÁLISIS DEL SITIO Y DEL PAISAJE\n   2.1 Clima, asoleamiento y vistas\n   2.2 Topografía, vegetación y recursos naturales\n   2.3 Normativa de uso de suelo y de imagen\n\n3. PROGRAMA Y PARTIDO ARQUITECTÓNICO\n   3.1 Zonificación: alojamiento, servicios y áreas comunes\n   3.2 Circulaciones y relación interior-exterior\n   3.3 Concepto y volumetría\n\n4. DESARROLLO DEL PROYECTO\n   4.1 Habitaciones y espacios de descanso\n   4.2 Albercas, terrazas y áreas deportivas\n   4.3 Instalaciones y materiales apropiados al clima\n\n5. PRESENTACIÓN\n   5.1 Planos y perspectivas del conjunto\n   5.2 Maqueta del proyecto\n   5.3 Defensa y crítica\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-manejo-avanzado-de-programas-de-diseno-arquitectonico": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno utilizará herramientas de modelado de información de construcción (BIM) y de visualización avanzada, con la finalidad de desarrollar, coordinar y presentar proyectos arquitectónicos de manera integrada.\n\nCONTENIDO TEMÁTICO\n1. INTRODUCCIÓN AL MODELADO DE INFORMACIÓN DE CONSTRUCCIÓN (BIM)\n   1.1 Concepto, ventajas y flujo de trabajo BIM\n   1.2 Niveles de desarrollo y estándares\n   1.3 Plantillas y familias paramétricas\n\n2. MODELADO ARQUITECTÓNICO PARAMÉTRICO\n   2.1 Muros, losas, cubiertas y escaleras\n   2.2 Modelado de volumen y de sitio\n   2.3 Vistas, cortes y fachadas automáticos\n\n3. DOCUMENTACIÓN DEL PROYECTO\n   3.1 Tablas de cantidades y programas\n   3.2 Planos, etiquetas y anotaciones\n   3.3 Control de cambios y revisiones\n\n4. VISUALIZACIÓN AVANZADA\n   4.1 Materiales, iluminación y render fotorrealista\n   4.2 Recorridos y animaciones\n   4.3 Realidad virtual aplicada a la presentación\n\n5. COORDINACIÓN Y PROYECTO INTEGRADOR\n   5.1 Trabajo colaborativo y detección de interferencias\n   5.2 Modelo integrado de un edificio\n   5.3 Entrega y exposición del proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-sostenibilidad-y-arquitectura": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los principios de la sostenibilidad y del diseño bioclimático en proyectos arquitectónicos, con la finalidad de reducir el impacto ambiental de las edificaciones y mejorar el bienestar de sus usuarios.\n\nCONTENIDO TEMÁTICO\n1. DESARROLLO SOSTENIBLE Y ARQUITECTURA\n   1.1 Concepto y dimensiones de la sostenibilidad\n   1.2 Impacto ambiental de la construcción\n   1.3 Marco normativo y compromisos nacionales e internacionales\n\n2. DISEÑO BIOCLIMÁTICO\n   2.1 Clima, microclima y confort\n   2.2 Orientación, asoleamiento y ventilación natural\n   2.3 Envolvente y estrategias pasivas\n\n3. ENERGÍA Y AGUA EN LOS EDIFICIOS\n   3.1 Eficiencia energética y energías renovables\n   3.2 Captación de lluvia y reutilización del agua\n   3.3 Iluminación natural y artificial eficiente\n\n4. MATERIALES Y CONSTRUCCIÓN SOSTENIBLES\n   4.1 Ciclo de vida de los materiales\n   4.2 Materiales locales, reciclados y de baja huella\n   4.3 Gestión de residuos de obra\n\n5. CERTIFICACIONES Y CASOS\n   5.1 Sistemas de certificación de edificios sostenibles\n   5.2 Análisis de un edificio sostenible\n   5.3 Propuesta de mejoras a un proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-analisis-de-los-materiales-de-construccion": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno identificará las propiedades y los usos de los principales materiales de construcción y las pruebas para verificar su calidad, con la finalidad de especificarlos correctamente en sus proyectos.\n\nCONTENIDO TEMÁTICO\n1. PROPIEDADES GENERALES DE LOS MATERIALES\n   1.1 Propiedades físicas, mecánicas y químicas\n   1.2 Normas y pruebas de laboratorio\n   1.3 Criterios de selección y especificación\n\n2. PÉTREOS, CERÁMICOS Y AGLOMERANTES\n   2.1 Piedras, arenas y gravas\n   2.2 Cal, cemento y yeso\n   2.3 Tabiques, block y recubrimientos cerámicos\n\n3. CONCRETO Y MORTEROS\n   3.1 Dosificación y revenimiento\n   3.2 Elaboración de especímenes y pruebas a compresión\n   3.3 Aditivos y concretos especiales\n\n4. METALES, MADERA Y VIDRIO\n   4.1 Acero y aluminio\n   4.2 Madera: tipos, tratamientos y derivados\n   4.3 Vidrio y sus aplicaciones\n\n5. POLÍMEROS, PINTURAS Y MATERIALES INNOVADORES\n   5.1 Plásticos, impermeabilizantes y aislantes\n   5.2 Pinturas y recubrimientos\n   5.3 Materiales sostenibles e innovadores\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-negociacion-y-resolucion-de-conflictos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará técnicas de negociación y de manejo de conflictos en el ejercicio de la arquitectura, con la finalidad de alcanzar acuerdos favorables con clientes, contratistas y equipos de trabajo.\n\nCONTENIDO TEMÁTICO\n1. EL CONFLICTO EN LOS PROYECTOS\n   1.1 Concepto, tipos y causas del conflicto\n   1.2 Conflictos frecuentes con clientes, contratistas y autoridades\n   1.3 Estilos de manejo del conflicto\n\n2. FUNDAMENTOS DE LA NEGOCIACIÓN\n   2.1 Elementos y etapas de la negociación\n   2.2 Intereses, posiciones y alternativas\n   2.3 Negociación basada en principios\n\n3. HABILIDADES PARA NEGOCIAR\n   3.1 Comunicación asertiva y escucha activa\n   3.2 Manejo de emociones y de objeciones\n   3.3 Persuasión ética\n\n4. MEDIACIÓN Y ASPECTOS CONTRACTUALES\n   4.1 Mediación, conciliación y arbitraje\n   4.2 Cláusulas contractuales para prevenir conflictos\n   4.3 Documentación y seguimiento de acuerdos\n\n5. SIMULACIONES\n   5.1 Negociación de honorarios y alcances\n   5.2 Resolución de un conflicto de obra\n   5.3 Análisis y retroalimentación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-de-interiores": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proyectará espacios interiores funcionales y confortables, seleccionando materiales, mobiliario, color e iluminación, con la finalidad de lograr ambientes adecuados a las necesidades de sus usuarios.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DEL DISEÑO DE INTERIORES\n   1.1 Antecedentes y estilos del interiorismo\n   1.2 Ergonomía y antropometría\n   1.3 Relación entre arquitectura e interiores\n\n2. ESPACIO, COLOR Y LUZ\n   2.1 Distribución del espacio y circulaciones\n   2.2 Psicología y armonía del color\n   2.3 Iluminación natural y artificial en interiores\n\n3. MOBILIARIO Y MATERIALES\n   3.1 Selección y diseño de mobiliario\n   3.2 Acabados de pisos, muros y plafones\n   3.3 Textiles, accesorios y arte\n\n4. PROYECTO DE UN ESPACIO INTERIOR\n   4.1 Levantamiento, programa y concepto\n   4.2 Planos de distribución, de acabados y de iluminación\n   4.3 Detalles de carpintería y mobiliario\n\n5. PRESENTACIÓN\n   5.1 Perspectivas, tableros de materiales y presupuesto\n   5.2 Maqueta o modelo digital\n   5.3 Presentación al cliente\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-de-instalaciones": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno diseñará y coordinará las instalaciones hidráulicas, sanitarias, eléctricas y especiales de edificios, con la finalidad de integrarlas al proyecto arquitectónico y cumplir con la normatividad.\n\nCONTENIDO TEMÁTICO\n1. INSTALACIONES HIDRÁULICAS\n   1.1 Fuentes de abastecimiento y dotaciones\n   1.2 Cálculo de tuberías, tinacos y cisternas\n   1.3 Sistemas de agua caliente y de bombeo\n\n2. INSTALACIONES SANITARIAS Y PLUVIALES\n   2.1 Redes de drenaje y ventilación\n   2.2 Cálculo de diámetros y pendientes\n   2.3 Captación y aprovechamiento de agua pluvial\n\n3. INSTALACIONES ELÉCTRICAS\n   3.1 Conceptos básicos y cálculo de cargas\n   3.2 Circuitos, tableros y protecciones\n   3.3 Alumbrado y sistemas de tierra\n\n4. INSTALACIONES ESPECIALES\n   4.1 Gas, aire acondicionado y ventilación\n   4.2 Voz, datos y seguridad\n   4.3 Protección contra incendio y sistemas de emergencia\n\n5. COORDINACIÓN DE INSTALACIONES\n   5.1 Planos de instalaciones y simbología\n   5.2 Interferencias con la estructura y con la arquitectura\n   5.3 Normas oficiales y reglamento aplicable\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-de-recintos-para-eventos-masivos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proyectará edificios para espectáculos y eventos con gran concentración de personas, con la finalidad de resolver adecuadamente la visibilidad, la acústica, la evacuación y la seguridad.\n\nCONTENIDO TEMÁTICO\n1. TIPOLOGÍAS Y ANÁLISIS DE CASOS\n   1.1 Auditorios, teatros, estadios, arenas y ferias\n   1.2 Evolución de los recintos para espectáculos\n   1.3 Análisis de edificios representativos\n\n2. PROGRAMA Y CAPACIDAD\n   2.1 Aforo y usuarios\n   2.2 Áreas de público, de artistas y de servicios\n   2.3 Estacionamiento y accesos\n\n3. VISIBILIDAD Y ACÚSTICA\n   3.1 Isóptica y diseño de gradas y plateas\n   3.2 Acústica de salas y control de ruido\n   3.3 Iluminación y equipo escénico\n\n4. SEGURIDAD Y EVACUACIÓN\n   4.1 Rutas de evacuación y salidas de emergencia\n   4.2 Protección civil y normativa\n   4.3 Accesibilidad para todos los usuarios\n\n5. PROYECTO Y PRESENTACIÓN\n   5.1 Anteproyecto del recinto\n   5.2 Maqueta y perspectivas\n   5.3 Defensa del proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-comunicacion-y-liderazgo": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará habilidades de comunicación y de liderazgo en equipos de trabajo del ámbito arquitectónico, con la finalidad de coordinar personas y presentar sus ideas de manera efectiva.\n\nCONTENIDO TEMÁTICO\n1. LA COMUNICACIÓN EN LA PRÁCTICA PROFESIONAL\n   1.1 Elementos y barreras de la comunicación\n   1.2 Comunicación verbal, no verbal y escrita\n   1.3 Comunicación con clientes, equipo y autoridades\n\n2. PRESENTACIONES EFECTIVAS\n   2.1 Estructura y recursos de una presentación\n   2.2 Exposición de proyectos arquitectónicos\n   2.3 Manejo de preguntas y de la crítica\n\n3. FUNDAMENTOS DEL LIDERAZGO\n   3.1 Liderazgo, poder y autoridad\n   3.2 Estilos de liderazgo\n   3.3 Inteligencia emocional\n\n4. TRABAJO EN EQUIPO\n   4.1 Formación y desarrollo de equipos\n   4.2 Roles, delegación y motivación\n   4.3 Reuniones productivas\n\n5. PLAN DE DESARROLLO DE LIDERAZGO\n   5.1 Autoevaluación de competencias\n   5.2 Liderazgo ético y responsabilidad social\n   5.3 Plan personal de desarrollo\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-administracion-de-proyectos-arquitectonicos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará las herramientas de la administración al desarrollo de proyectos arquitectónicos, con la finalidad de controlar el alcance, el tiempo, el costo y la calidad desde el diseño hasta la entrega.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DE LA ADMINISTRACIÓN DE PROYECTOS\n   1.1 Concepto de proyecto y de administración de proyectos\n   1.2 Ciclo de vida de un proyecto de arquitectura y construcción\n   1.3 Áreas de conocimiento y partes interesadas\n\n2. ALCANCE Y PLANEACIÓN\n   2.1 Definición del alcance y estructura de desglose del trabajo\n   2.2 Programación: diagrama de Gantt y ruta crítica\n   2.3 Asignación de recursos\n\n3. COSTOS Y PRESUPUESTOS\n   3.1 Costos directos e indirectos y utilidad\n   3.2 Análisis de precios unitarios\n   3.3 Presupuesto base y flujo de efectivo\n\n4. EJECUCIÓN, CONTROL Y CALIDAD\n   4.1 Seguimiento de avances y control de costos\n   4.2 Gestión de cambios y de riesgos\n   4.3 Control de calidad y supervisión de obra\n\n5. CONTRATACIÓN Y CIERRE\n   5.1 Contratos de obra, licitaciones y concursos\n   5.2 Entrega-recepción y garantías\n   5.3 Lecciones aprendidas y casos prácticos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-estudios-para-el-proyecto-arquitectonico": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno realizará los estudios previos necesarios para sustentar un proyecto arquitectónico, con la finalidad de tomar decisiones de diseño informadas sobre el sitio, el usuario, la factibilidad y el impacto.\n\nCONTENIDO TEMÁTICO\n1. ESTUDIOS DEL SITIO\n   1.1 Levantamiento topográfico y de linderos\n   1.2 Estudio del entorno: infraestructura, vialidad e imagen urbana\n   1.3 Clima, asoleamiento y vientos\n\n2. ESTUDIOS GEOTÉCNICOS Y DE RIESGOS\n   2.1 Mecánica de suelos y capacidad de carga\n   2.2 Riesgos naturales: sismo, inundación y deslizamientos\n   2.3 Interpretación de un informe geotécnico\n\n3. ESTUDIOS NORMATIVOS\n   3.1 Uso de suelo, coeficientes y restricciones\n   3.2 Reglamento de construcción, licencias y permisos\n   3.3 Normas de accesibilidad y de seguridad\n\n4. ESTUDIOS DE FACTIBILIDAD\n   4.1 Estudio de mercado y de demanda\n   4.2 Factibilidad técnica, legal y económica\n   4.3 Rentabilidad y análisis financiero básico\n\n5. IMPACTO Y DIAGNÓSTICO INTEGRAL\n   5.1 Evaluación del impacto ambiental, social y urbano\n   5.2 Síntesis de los estudios y conclusiones para el proyecto\n   5.3 Informe de estudios previos\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-de-espacios-exteriores": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proyectará espacios exteriores como plazas, parques y jardines, integrando paisaje, vegetación y mobiliario, con la finalidad de crear lugares seguros, atractivos y sostenibles.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DEL DISEÑO DE EXTERIORES\n   1.1 Paisaje, arquitectura del paisaje y espacio público\n   1.2 Historia de jardines y de plazas\n   1.3 Percepción y uso del espacio exterior\n\n2. ANÁLISIS DEL SITIO\n   2.1 Topografía, hidrología y suelos\n   2.2 Clima y microclima\n   2.3 Normativa y contexto urbano\n\n3. ELEMENTOS DEL PAISAJE\n   3.1 Vegetación: selección, función y mantenimiento\n   3.2 Pavimentos, taludes y elementos de agua\n   3.3 Mobiliario urbano e iluminación exterior\n\n4. DISEÑO DE PLAZAS, PARQUES Y JARDINES\n   4.1 Programa y zonificación\n   4.2 Circulaciones, accesibilidad y seguridad\n   4.3 Soluciones sostenibles: riego eficiente y drenaje pluvial\n\n5. DESARROLLO Y PRESENTACIÓN\n   5.1 Planos de conjunto, de paisaje y de detalles\n   5.2 Perspectivas y maqueta\n   5.3 Defensa del proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-herramientas-y-avances-tecnologicos-en-la-arquitectura": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará y aplicará las tecnologías emergentes en el diseño, la construcción y la operación de edificios, con la finalidad de incorporarlas de forma crítica a su práctica profesional.\n\nCONTENIDO TEMÁTICO\n1. TECNOLOGÍA Y TRANSFORMACIÓN DE LA PRÁCTICA ARQUITECTÓNICA\n   1.1 Evolución de las herramientas de diseño\n   1.2 Transformación digital de la construcción\n   1.3 Criterios para evaluar una tecnología\n\n2. DISEÑO COMPUTACIONAL Y MODELADO\n   2.1 Diseño paramétrico y generativo\n   2.2 Modelado de información de construcción (BIM)\n   2.3 Gemelos digitales y simulación del desempeño\n\n3. FABRICACIÓN Y CONSTRUCCIÓN AVANZADAS\n   3.1 Impresión 3D y fabricación digital\n   3.2 Prefabricación, robótica y drones en obra\n   3.3 Materiales inteligentes y avances en construcción\n\n4. REALIDAD VIRTUAL, AUMENTADA E INTELIGENCIA ARTIFICIAL\n   4.1 Visualización inmersiva de proyectos\n   4.2 Inteligencia artificial en el diseño y en la gestión\n   4.3 Ética y límites en el uso de la tecnología\n\n5. EDIFICIOS INTELIGENTES\n   5.1 Domótica y automatización\n   5.2 Sensores y gestión de energía\n   5.3 Análisis de un edificio con tecnología avanzada\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-elaboracion-de-reportes-de-proyecto": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno elaborará documentos técnicos que describan y sustenten un proyecto arquitectónico, con la finalidad de comunicar sus decisiones y su alcance a clientes, autoridades y constructores.\n\nCONTENIDO TEMÁTICO\n1. LA DOCUMENTACIÓN DEL PROYECTO\n   1.1 Tipos de documentos del proyecto\n   1.2 Memorias descriptivas, de cálculo y de criterios\n   1.3 Normas de redacción técnica\n\n2. MEMORIA DESCRIPTIVA Y ESPECIFICACIONES\n   2.1 Descripción del concepto y del programa\n   2.2 Especificaciones de materiales y de acabados\n   2.3 Catálogos de conceptos y de cantidades\n\n3. PRESUPUESTO Y PROGRAMA DE OBRA\n   3.1 Integración de un presupuesto\n   3.2 Programa de obra y calendario de suministros\n   3.3 Control de costos\n\n4. REPORTES DE AVANCE Y DE SUPERVISIÓN\n   4.1 Bitácora de obra e informes de visita\n   4.2 Reportes fotográficos y de calidad\n   4.3 Actas de entrega-recepción\n\n5. PRESENTACIÓN DEL REPORTE\n   5.1 Estructura y diseño de un informe ejecutivo\n   5.2 Presentación oral al cliente\n   5.3 Entrega de un expediente de proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-de-espacios-para-servicios-publicos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proyectará edificios de servicios públicos como escuelas, centros de salud y bibliotecas, con la finalidad de resolver con criterio social, normativo y de accesibilidad las necesidades de la comunidad.\n\nCONTENIDO TEMÁTICO\n1. EL EQUIPAMIENTO PÚBLICO\n   1.1 Concepto y tipos de equipamiento urbano\n   1.2 Normas y sistemas de equipamiento\n   1.3 Análisis de casos análogos\n\n2. EDIFICIOS EDUCATIVOS Y CULTURALES\n   2.1 Escuelas: aulas, patios y servicios\n   2.2 Bibliotecas, museos y casas de cultura\n   2.3 Criterios de confort y seguridad\n\n3. EDIFICIOS DE SALUD Y ADMINISTRATIVOS\n   3.1 Centros de salud y clínicas: zonificación y flujos\n   3.2 Oficinas públicas y de atención ciudadana\n   3.3 Normas aplicables\n\n4. ACCESIBILIDAD UNIVERSAL Y SEGURIDAD\n   4.1 Diseño para todos los usuarios\n   4.2 Protección civil y evacuación\n   4.3 Señalización\n\n5. PROYECTO Y PRESENTACIÓN\n   5.1 Anteproyecto del edificio\n   5.2 Maqueta y modelo digital\n   5.3 Defensa del proyecto\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-talento-humano-en-los-proyectos-arquitectonicos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los principios de la gestión del talento humano en despachos y obras de arquitectura, con la finalidad de integrar, motivar y desarrollar equipos de trabajo eficientes.\n\nCONTENIDO TEMÁTICO\n1. EL TALENTO HUMANO EN LA ORGANIZACIÓN\n   1.1 Concepto e importancia del talento humano\n   1.2 Estructura de un despacho de arquitectura y de una obra\n   1.3 Marco laboral: derechos y obligaciones\n\n2. RECLUTAMIENTO, SELECCIÓN Y CONTRATACIÓN\n   2.1 Descripción de puestos y perfiles\n   2.2 Entrevistas y evaluación de candidatos\n   2.3 Contratos laborales y por obra determinada\n\n3. CAPACITACIÓN Y DESARROLLO\n   3.1 Detección de necesidades de capacitación\n   3.2 Planes de formación y de carrera\n   3.3 Cultura de seguridad y salud en el trabajo\n\n4. DESEMPEÑO, MOTIVACIÓN Y CLIMA LABORAL\n   4.1 Evaluación del desempeño\n   4.2 Motivación, reconocimiento e incentivos\n   4.3 Comunicación y resolución de conflictos en el equipo\n\n5. CASO PRÁCTICO\n   5.1 Integración del equipo de un proyecto\n   5.2 Plan de gestión del talento de un despacho\n   5.3 Presentación y retroalimentación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-arquitectura-contemporanea-mexicana": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará la arquitectura mexicana de finales del siglo XX y del siglo XXI, con la finalidad de identificar sus protagonistas, sus tendencias y sus aportaciones al contexto nacional e internacional.\n\nCONTENIDO TEMÁTICO\n1. ANTECEDENTES: DE LA MODERNIDAD MEXICANA A LA ACTUALIDAD\n   1.1 Arquitectura moderna mexicana y sus protagonistas\n   1.2 Transformaciones sociales y urbanas desde 1970\n   1.3 Reconocimiento internacional de la arquitectura mexicana\n\n2. ARQUITECTOS Y DESPACHOS REPRESENTATIVOS\n   2.1 Obras e ideas de arquitectos mexicanos contemporáneos\n   2.2 Generaciones y tendencias\n   2.3 Premios y reconocimientos\n\n3. TEMAS Y TIPOLOGÍAS\n   3.1 Vivienda, espacio público y equipamiento\n   3.2 Arquitectura cultural, educativa y de salud\n   3.3 Arquitectura comercial y corporativa\n\n4. MATERIALES, TÉCNICAS Y CONTEXTO\n   4.1 Uso contemporáneo de materiales tradicionales\n   4.2 Arquitectura regional y vernácula reinterpretada\n   4.3 Sostenibilidad y resiliencia en México\n\n5. ANÁLISIS CRÍTICO\n   5.1 Visita o análisis documental de una obra\n   5.2 Ensayo crítico\n   5.3 Exposición de resultados\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-mantenimiento-de-las-instalaciones-y-servicios": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno planeará y supervisará el mantenimiento de las instalaciones y los servicios de un edificio, con la finalidad de prolongar su vida útil, garantizar su seguridad y optimizar su operación.\n\nCONTENIDO TEMÁTICO\n1. FUNDAMENTOS DEL MANTENIMIENTO\n   1.1 Concepto y tipos de mantenimiento: preventivo, correctivo y predictivo\n   1.2 Ciclo de vida y costo de operación de un edificio\n   1.3 Manual de uso y de mantenimiento\n\n2. MANTENIMIENTO DE LA ENVOLVENTE Y DE LA ESTRUCTURA\n   2.1 Diagnóstico de fallas: humedad, grietas y corrosión\n   2.2 Impermeabilización, pintura y acabados\n   2.3 Inspecciones periódicas\n\n3. MANTENIMIENTO DE INSTALACIONES\n   3.1 Instalaciones hidráulicas y sanitarias\n   3.2 Instalaciones eléctricas y de gas\n   3.3 Aire acondicionado, elevadores y sistemas de emergencia\n\n4. SERVICIOS Y SEGURIDAD\n   4.1 Limpieza, jardinería y manejo de residuos\n   4.2 Seguridad, protección civil y normatividad\n   4.3 Contratación y supervisión de proveedores\n\n5. PROGRAMA DE MANTENIMIENTO\n   5.1 Elaboración de un programa y presupuesto de mantenimiento\n   5.2 Bitácoras y control\n   5.3 Caso práctico en un edificio real\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-tecnicas-de-restauracion": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará los criterios y las técnicas de conservación y restauración del patrimonio arquitectónico, con la finalidad de diagnosticar edificios históricos y proponer intervenciones respetuosas de su valor.\n\nCONTENIDO TEMÁTICO\n1. PATRIMONIO Y MARCO NORMATIVO\n   1.1 Concepto de patrimonio cultural y arquitectónico\n   1.2 Cartas y criterios internacionales de restauración\n   1.3 Legislación nacional y autoridades competentes\n\n2. INVESTIGACIÓN Y DIAGNÓSTICO\n   2.1 Investigación histórica y levantamiento arquitectónico\n   2.2 Registro fotográfico y catálogo de daños\n   2.3 Análisis de materiales y sistemas constructivos históricos\n\n3. CAUSAS DE DETERIORO\n   3.1 Deterioro por humedad, sismo, intemperismo y biológico\n   3.2 Alteraciones por uso y por intervenciones previas\n   3.3 Patologías de la mampostería, la madera y el concreto\n\n4. TÉCNICAS DE INTERVENCIÓN\n   4.1 Consolidación, liberación e integración\n   4.2 Reestructuración y refuerzo de elementos\n   4.3 Morteros, aplanados y recubrimientos tradicionales\n\n5. PROYECTO DE RESTAURACIÓN\n   5.1 Propuesta de intervención y de nuevo uso\n   5.2 Presupuesto y programa de obra de restauración\n   5.3 Plan de conservación y mantenimiento\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-diseno-sostenible-e-incluyente": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno proyectará edificios y espacios que integren criterios de sostenibilidad, accesibilidad e inclusión social, con la finalidad de responder a las necesidades de todas las personas y reducir el impacto ambiental.\n\nCONTENIDO TEMÁTICO\n1. SOSTENIBILIDAD E INCLUSIÓN EN EL DISEÑO\n   1.1 Diseño universal y accesibilidad\n   1.2 Equidad, diversidad y participación social\n   1.3 Objetivos de desarrollo sostenible y arquitectura\n\n2. ESTRATEGIAS SOSTENIBLES DE PROYECTO\n   2.1 Implantación y diseño bioclimático\n   2.2 Eficiencia energética, agua y residuos\n   2.3 Materiales y sistemas constructivos de bajo impacto\n\n3. ESPACIOS INCLUYENTES\n   3.1 Accesibilidad física, sensorial y cognitiva\n   3.2 Ergonomía y antropometría de usuarios diversos\n   3.3 Normativa y señalización\n\n4. PROYECTO PARTICIPATIVO\n   4.1 Diagnóstico con la comunidad usuaria\n   4.2 Co-diseño y consulta\n   4.3 Evaluación de alternativas\n\n5. DESARROLLO Y PRESENTACIÓN\n   5.1 Planos y especificaciones sostenibles e incluyentes\n   5.2 Maqueta y modelo digital\n   5.3 Evaluación del proyecto con una lista de verificación\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-tecnicas-tradicionales-de-construccion-y-ecotecnias": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará técnicas tradicionales de construcción y ecotecnias, con la finalidad de proponer soluciones de bajo costo, de bajo impacto ambiental y apropiadas al contexto cultural y climático.\n\nCONTENIDO TEMÁTICO\n1. CONSTRUCCIÓN TRADICIONAL Y VERNÁCULA\n   1.1 Arquitectura vernácula de México y sus regiones\n   1.2 Sabiduría constructiva local y clima\n   1.3 Valoración y conservación de técnicas tradicionales\n\n2. TIERRA, PIEDRA Y OTROS MATERIALES LOCALES\n   2.1 Adobe, tapial y bahareque\n   2.2 Cal, piedra y tabique artesanal\n   2.3 Bambú, madera y fibras naturales\n\n3. CUBIERTAS Y ELEMENTOS TRADICIONALES\n   3.1 Bóvedas, techos de palma y teja\n   3.2 Aplanados y pinturas naturales\n   3.3 Prácticas de taller de construcción\n\n4. ECOTECNIAS PARA EL AGUA Y LOS RESIDUOS\n   4.1 Captación de agua de lluvia\n   4.2 Tratamiento de aguas grises y humedales\n   4.3 Sanitarios secos y biodigestores\n\n5. ECOTECNIAS PARA LA ENERGÍA Y EL CONFORT\n   5.1 Calentadores solares y estufas eficientes\n   5.2 Techos y muros verdes\n   5.3 Diseño de una vivienda con ecotecnias\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de métodos y resolución guiada de ejercicios\n• Prácticas con software, instrumentos o materiales bajo la supervisión del docente\n• Resolución de problemas y casos en el aula\n• Revisión grupal de resultados\n\nDe manera independiente\n• Resolución de problemarios y ejercicios\n• Elaboración de reportes de práctica o de cálculo\n• Investigación bibliográfica y de la normatividad aplicable\n• Estudio dirigido y autoevaluaciones\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 30%\n• Prácticas y ejercicios en clase: 30%\n• Problemarios y reportes: 25%\n• Ejercicio integrador: 15%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-practicas-de-diseno-arquitectonico": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno desarrollará un proyecto arquitectónico completo en una situación cercana al ejercicio profesional, con la finalidad de integrar los conocimientos de diseño, técnica, normatividad y gestión adquiridos.\n\nCONTENIDO TEMÁTICO\n1. ENCARGO Y ESTUDIOS PREVIOS\n   1.1 Planteamiento del encargo y del cliente\n   1.2 Estudios del sitio y de la normativa\n   1.3 Programa arquitectónico y presupuesto objetivo\n\n2. ANTEPROYECTO\n   2.1 Concepto y estrategias de diseño\n   2.2 Plantas, cortes, fachadas y volumetría\n   2.3 Revisión crítica con el cliente\n\n3. PROYECTO EJECUTIVO\n   3.1 Planos arquitectónicos y constructivos\n   3.2 Coordinación con estructura e instalaciones\n   3.3 Especificaciones y catálogo de conceptos\n\n4. TRÁMITES Y GESTIÓN\n   4.1 Licencias y permisos\n   4.2 Presupuesto y programa de obra\n   4.3 Contratación y supervisión\n\n5. ENTREGA DEL PROYECTO\n   5.1 Expediente del proyecto\n   5.2 Presentación y defensa ante un jurado\n   5.3 Evaluación de la práctica\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de conceptos y análisis de referentes arquitectónicos\n• Desarrollo de ejercicios y de proyecto en taller con asesoría del docente\n• Revisiones críticas individuales y grupales de los avances\n• Presentación de propuestas ante el grupo\n\nDe manera independiente\n• Investigación y análisis de casos análogos\n• Elaboración de bocetos, planos y modelos\n• Desarrollo de láminas, maquetas o modelos digitales\n• Preparación de la presentación final\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Ejercicios y avances de proyecto: 40%\n• Revisiones y participación en taller: 20%\n• Entrega final del proyecto (láminas, planos y maqueta o modelo): 40%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-direccion-de-proyectos-arquitectonicos": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno aplicará las competencias de dirección y de liderazgo en proyectos y despachos de arquitectura, con la finalidad de coordinar equipos multidisciplinarios y garantizar resultados con calidad, ética y rentabilidad.\n\nCONTENIDO TEMÁTICO\n1. EL ARQUITECTO COMO DIRECTOR DE PROYECTO\n   1.1 Funciones del director de proyecto y de obra\n   1.2 Competencias directivas\n   1.3 Estructuras de despachos y modelos de práctica profesional\n\n2. COORDINACIÓN MULTIDISCIPLINARIA\n   2.1 Trabajo con ingenierías, consultores y contratistas\n   2.2 Gestión de la información y de la comunicación\n   2.3 Coordinación en obra\n\n3. ASPECTOS ECONÓMICOS Y LEGALES\n   3.1 Honorarios y contratos de servicios profesionales\n   3.2 Responsabilidad civil y profesional\n   3.3 Propiedad intelectual y ética profesional\n\n4. GESTIÓN DE LA CALIDAD Y DEL RIESGO\n   4.1 Sistemas de calidad en proyectos\n   4.2 Gestión de riesgos y de seguros\n   4.3 Seguridad y salud en la obra\n\n5. CREACIÓN Y DIRECCIÓN DE UN DESPACHO\n   5.1 Plan de negocios de un despacho\n   5.2 Mercadotecnia y portafolio profesional\n   5.3 Casos de éxito y presentación del plan\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-tendencias-de-la-arquitectura-contemporanea": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno analizará las tendencias actuales y emergentes de la arquitectura y del urbanismo, con la finalidad de formarse una postura crítica y ubicar su práctica profesional ante los retos del futuro.\n\nCONTENIDO TEMÁTICO\n1. PANORAMA DE LA ARQUITECTURA ACTUAL\n   1.1 Debates y corrientes contemporáneas\n   1.2 Arquitectura global y arquitectura local\n   1.3 Obras y arquitectos que marcan tendencia\n\n2. CAMBIO CLIMÁTICO Y RESILIENCIA\n   2.1 Arquitectura regenerativa y de emisiones netas cero\n   2.2 Adaptación de las ciudades al clima\n   2.3 Reúso adaptativo y economía circular\n\n3. TECNOLOGÍA Y NUEVAS FORMAS DE CONSTRUIR\n   3.1 Construcción industrializada y madera de ingeniería\n   3.2 Diseño digital, robótica e inteligencia artificial\n   3.3 Arquitectura temporal, modular y flexible\n\n4. SOCIEDAD, CIUDAD Y VIVIENDA\n   4.1 Vivienda asequible y nuevas formas de habitar\n   4.2 Espacio público, movilidad y ciudades saludables\n   4.3 Arquitectura social y participativa\n\n5. PROSPECTIVA Y POSTURA PROFESIONAL\n   5.1 Escenarios futuros de la profesión\n   5.2 Ensayo sobre una tendencia elegida\n   5.3 Exposición y debate\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Exposición de temas en clase y análisis grupal de los contenidos\n• Resolución de ejercicios y cuestionarios en el aula\n• Análisis de casos y de obras arquitectónicas en equipo\n• Debate y socialización de los temas del curso\n\nDe manera independiente\n• Investigación bibliográfica y elaboración de fichas de trabajo\n• Elaboración de resúmenes, mapas conceptuales y cuadros comparativos\n• Lecturas dirigidas con reporte de lectura\n• Elaboración de un trabajo escrito sobre un tema del curso\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Examen parcial: 40%\n• Actividades efectuadas en las sesiones con el docente: 30%\n• Trabajos y tareas independientes: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  },
+  "arq-proyecto-final": {
+   "txt": "OBJETIVO GENERAL DE LA ASIGNATURA\nAl finalizar el curso, el alumno desarrollará y presentará un proyecto arquitectónico integral de su elección, con la finalidad de demostrar las competencias adquiridas durante la licenciatura y cumplir con el requisito de titulación.\n\nCONTENIDO TEMÁTICO\n1. DEFINICIÓN DEL PROYECTO\n   1.1 Elección del tema y del sitio\n   1.2 Planteamiento del problema, objetivos y alcances\n   1.3 Asignación del asesor y calendario de trabajo\n\n2. INVESTIGACIÓN Y ESTUDIOS PREVIOS\n   2.1 Marco teórico, referentes y casos análogos\n   2.2 Análisis del sitio, del usuario y de la normativa\n   2.3 Programa arquitectónico y partido\n\n3. DESARROLLO DEL ANTEPROYECTO\n   3.1 Concepto, zonificación y volumetría\n   3.2 Plantas, cortes y fachadas\n   3.3 Revisiones con el asesor\n\n4. DESARROLLO DEL PROYECTO EJECUTIVO\n   4.1 Planos arquitectónicos, estructurales y de instalaciones\n   4.2 Criterios sostenibles y presupuesto\n   4.3 Memoria descriptiva y especificaciones\n\n5. PRESENTACIÓN FINAL\n   5.1 Láminas, maqueta y modelo digital\n   5.2 Documento final del proyecto\n   5.3 Defensa ante el jurado\n\nACTIVIDADES DE APRENDIZAJE\nBajo la conducción del docente\n• Asesoría grupal sobre el desarrollo del proyecto\n• Revisión y retroalimentación de los avances\n• Exposición de avances ante el grupo\n• Simulacro de la defensa del proyecto\n\nDe manera independiente\n• Investigación y estudios previos del proyecto\n• Desarrollo del anteproyecto y del proyecto ejecutivo\n• Elaboración de láminas, maqueta y memoria\n• Preparación de la presentación para el jurado\n\nCRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN\n• Avances del proyecto: 50%\n• Presentación de avances: 20%\n• Defensa ante jurado: 30%\nTotal: 100%\n",
+   "pdf": null,
+   "ts": "2026-11-10T01:32:23.000Z",
+   "byn": "Propuesta de contenido (pendiente de revisión académica)"
+  }
+ },
+ "archivos": []
+}

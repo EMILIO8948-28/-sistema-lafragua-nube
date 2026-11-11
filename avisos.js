@@ -6,9 +6,9 @@
    Sin dependencias.
    =========================================================================== */
 const http = require('http'), https = require('https');
-const EVENTOS = ['adeudo', 'solicitud', 'planeacion', 'evaluacion', 'calificaciones', 'pago', 'manual', 'resumen'];
+const EVENTOS = ['adeudo', 'solicitud', 'planeacion', 'evaluacion', 'calificaciones', 'pago', 'prospecto', 'manual', 'resumen'];
 const PLAZO_CAL = 3;   /* días después de la evaluación para capturar calificaciones */
-const CFG0 = { activo: false, escuela: 'Universidad Lafragua', correo: { activo: false, usarRespaldos: false, host: '', puerto: 587, seguro: false, usuario: '', clave: '', de: '', nombre: '' }, whatsapp: { activo: false, phoneId: '', token: '', version: 'v21.0', plantilla: 'aviso_escolar', idioma: 'es_MX', pais: '52' }, eventos: { adeudo: { correo: true, whatsapp: true }, solicitud: { correo: true, whatsapp: true }, planeacion: { correo: true, whatsapp: false }, evaluacion: { correo: true, whatsapp: true }, pago: { correo: true, whatsapp: false }, calificaciones: { correo: true, whatsapp: true }, manual: { correo: true, whatsapp: true }, resumen: { correo: true, whatsapp: false } }, recordatorios: { calificaciones: true }, resumen: { activo: true, hora: 8, para: [] }, sin: [] };
+const CFG0 = { activo: false, escuela: 'Universidad Lafragua', correo: { activo: false, usarRespaldos: false, host: '', puerto: 587, seguro: false, usuario: '', clave: '', de: '', nombre: '' }, whatsapp: { activo: false, phoneId: '', token: '', version: 'v21.0', plantilla: 'aviso_escolar', idioma: 'es_MX', pais: '52' }, eventos: { adeudo: { correo: true, whatsapp: true }, solicitud: { correo: true, whatsapp: true }, planeacion: { correo: true, whatsapp: false }, evaluacion: { correo: true, whatsapp: true }, pago: { correo: true, whatsapp: false }, prospecto: { correo: true, whatsapp: false }, calificaciones: { correo: true, whatsapp: true }, manual: { correo: true, whatsapp: true }, resumen: { correo: true, whatsapp: false } }, recordatorios: { calificaciones: true }, resumen: { activo: true, hora: 8, para: [] }, sin: [] };
 const MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 function telWa(t, pais) { const d = String(t || '').replace(/\D/g, ''); if (d.length < 10) return ''; if (d.length === 10) return (pais || '52') + d; if (d.length === 13 && d.startsWith('521')) return '52' + d.slice(3); return d.length <= 15 ? d : ''; }
 function limpiaWa(t, max) { return String(t || '').replace(/[\r\n\t]+/g, ' · ').replace(/ {3,}/g, '  ').trim().slice(0, max); }
@@ -213,7 +213,8 @@ function crea(ctx) {
     const tick = async () => { try { diarios(); await procesa(40); } catch (e) { console.error('Avisos:', e.message); } };
     const t = setInterval(tick, parseInt(ENV.LF_AVISOS_TICK_MS || '30000', 10)); t.unref(); return t;
   }
+  function avisaProspecto(p) { const c = cfg(); encola('prospecto', { id: 'pros:' + p.id, tipo: 'prospecto', nombre: p.nombre, mail: MAIL.test(String(p.correo || '')) ? p.correo : '', tel: p.tel }, 'Gracias por tu interés en ' + c.escuela, 'Recibimos tus datos y un asesor te contactará muy pronto para darte la información' + (p.programa ? ' de ' + p.programa : '') + '. Si ya no deseas que te contactemos, responde a este mensaje.', 'pros:' + p.id, 'automático'); }
   function avisaAlumno(evento, sid, asunto, texto, ref) { const p = alumno(sid); if (p) encola(evento, p, asunto, texto, ref, 'automático'); }
-  return { avisaAlumno, cfgPublica, guardaCfg, setSin, hookAviso, hookSolicitud, hookPlaneacion, hookEvaluacion, diarios, procesa, destinatarios, enviarManual, mensajes, resumen, reintenta, probar, programa, califPendientes, resumenPendientes, cfg };
+  return { avisaProspecto, avisaAlumno, cfgPublica, guardaCfg, setSin, hookAviso, hookSolicitud, hookPlaneacion, hookEvaluacion, diarios, procesa, destinatarios, enviarManual, mensajes, resumen, reintenta, probar, programa, califPendientes, resumenPendientes, cfg };
 }
 module.exports = { crea, telWa, limpiaWa, MAIL };

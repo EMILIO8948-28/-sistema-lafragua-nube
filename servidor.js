@@ -166,7 +166,9 @@ const MODULOS = {
   nomina_doc:   { L: ['nomina', 'docentes', 'materias'], E: ['nomina', 'meta'], nomina: true, nominaE: true },
   nomina_adm:   { L: ['empleados', 'nomina_admin'], E: ['empleados', 'nomina_admin', 'meta'] },
   docente:      { L: ['students', 'grupos', 'materias', 'docentes', 'calif', 'criterios', 'catalogo', 'contenidos', 'ciclos', 'justificantes'], E: ['calif', 'criterios'] },
-  expedientes:  { L: ['docentes_docs'], E: ['docentes_docs'], archivos: true, privados: true }
+  expedientes:  { L: ['docentes_docs'], E: ['docentes_docs'], archivos: true, privados: true },
+  atencion:     { L: ['atencion', 'students', 'grupos', 'egresados'], E: ['atencion'] },
+  prospectos:   { L: ['prospectos', 'campanas', 'students'], E: ['prospectos', 'campanas'], plans: true }
 };
 const VER_ALUMNOS_COMPLETOS = ['pagos', 'corte', 'estado', 'ver', 'inscripcion', 'escolar', 'constancias', 'acuerdos'];
 const PLANTILLAS = {
@@ -298,7 +300,8 @@ function validaModulos(m) {
 /* ---------- Borrados protegidos ----------
    Nadie que no sea Administrador borra nada sin autorización: o la contraseña del encargado, o su aprobación.
    Es un borrado: eliminar un documento o un archivo, o quitar elementos de un documento (un pago, un gasto, un documento cargado…). */
-const NOMBRES_COL = { students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura', contratos: 'Contrato de docente', fichasins: 'Ficha de inscripción firmada' };
+const NOMBRES_COL = { atencion: 'Registro de atención personalizada', prospectos: 'Prospecto', campanas: 'Campaña', students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura', contratos: 'Contrato de docente', fichasins: 'Ficha de inscripción firmada' };
+const visibleAtencion = (s, d) => s.rol === 'admin' || !d.privado || d.creador === s.u;
 const idPer = per => String(per || '').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
 const cicloDe = per => { if (!per) return null; const r = q.uno.get('ciclos', idPer(per)); try { return r ? JSON.parse(r.data) : null; } catch (e) { return null; } };
 const perCerrado = per => { const c = cicloDe(per); return !!(c && c.cerrado); };
@@ -723,6 +726,11 @@ async function api(req, res, partes) {
     nuevaSesion(req, res, usr.u); audita(usr.u, req, 'Inicio de sesión');
     return responde(res, 200, { usuario: publicoUsuario(usr) });
   }
+  if (tipo === 'registro' && m === 'POST') {
+    if (limite('reg|' + ip, 40, 3600000)) return responde(res, 429, { error: 'Demasiados registros desde esta conexión. Inténtalo más tarde.' });
+    const c = await leeJSON(req, 6000); falla('reg|' + ip, 3600000);
+    try { return responde(res, 200, CAP.registra(c)); } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
   if (tipo === 'login2fa' && m === 'POST') {
     const c = await leeJSON(req, 2000);
     if (limite('f2|' + ip, 40, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' }); falla('f2|' + ip, 900000);
@@ -768,11 +776,11 @@ async function api(req, res, partes) {
       return responde(res, 200, { docs });
     }
     if (!puedeLeer(s, a, null)) return responde(res, 200, { docs: [] });
-    return responde(res, 200, { docs: q.lista.all(a).filter(r => (a !== 'planeaciones' && a !== 'asistencia') || puedeLeer(s, a, r.id)).map(r => ({ id: r.id, data: reduce(s, a, JSON.parse(r.data)) })) });
+    return responde(res, 200, { docs: q.lista.all(a).filter(r => ((a !== 'planeaciones' && a !== 'asistencia') || puedeLeer(s, a, r.id)) && (a !== 'atencion' || visibleAtencion(s, JSON.parse(r.data)))).map(r => ({ id: r.id, data: reduce(s, a, JSON.parse(r.data)) })) });
   }
   if (tipo === 'doc' && NOMBRE_OK.test(a || '') && NOMBRE_OK.test(b || '')) {
     if (m === 'GET' && s.rol === 'alumno') { const r0 = q.uno.get(a, b), d0 = r0 ? filtraAlumno(s, a, b, JSON.parse(r0.data), contextoAlumno(s)) : null; return responde(res, 200, d0 ? { exists: true, data: d0 } : { exists: false, data: null }); }
-    if (m === 'GET') { if (!puedeLeer(s, a, b)) return responde(res, 200, { exists: false, data: null }); const r = q.uno.get(a, b); return responde(res, 200, r ? { exists: true, data: reduce(s, a, JSON.parse(r.data)) } : { exists: false, data: null }); }
+    if (m === 'GET') { if (!puedeLeer(s, a, b)) return responde(res, 200, { exists: false, data: null }); const r = q.uno.get(a, b); if (r && a === 'atencion' && !visibleAtencion(s, JSON.parse(r.data))) return responde(res, 200, { exists: false, data: null }); return responde(res, 200, r ? { exists: true, data: reduce(s, a, JSON.parse(r.data)) } : { exists: false, data: null }); }
     if (s.rol === 'alumno' && a === 'solicitudes' && (m === 'PUT' || m === 'PATCH')) return guardaSolicitudAlumno(s, req, res, b, m);
     if (s.rol === 'alumno' && a === 'avisos' && m === 'PATCH') return guardaAvisoLeido(s, req, res, b);
     if (m === 'PUT' || m === 'PATCH' || m === 'DELETE') {
@@ -793,6 +801,12 @@ async function api(req, res, partes) {
       if (a === 'criterios' && s.rol !== 'admin' && (s.perm || {}).escolar !== 'editar') {
         const rc = q.uno.get(a, b), vc = rc ? JSON.parse(rc.data) : {}, rp = q.uno.get('planeaciones', b);
         if (rp && JSON.stringify(vc.items || []) !== JSON.stringify(nuevo.items || [])) { const dp = JSON.parse(rp.data); if (dp.estado === 'aprobada' || dp.estado === 'denegada') { dp.estado = 'pendiente'; delete dp.revisor; delete dp.revFecha; delete dp.motivo; reabre = dp; } }
+      }
+      /* Atención personalizada y prospectos: el autor queda fijo; lo confidencial es solo de su autor; las notas del seguimiento solo se agregan */
+      if (a === 'atencion' || a === 'prospectos') {
+        const rv3 = q.uno.get(a, b); let v3 = null; try { v3 = rv3 ? JSON.parse(rv3.data) : null; } catch (e) {}
+        if (a === 'atencion') { if (v3) { nuevo.creador = v3.creador; if (v3.privado && v3.creador !== s.u && s.rol !== 'admin') return responde(res, 403, { error: 'Este registro es confidencial.' }); if (nuevo.privado !== v3.privado && v3.creador !== s.u && s.rol !== 'admin') nuevo.privado = v3.privado; } else nuevo.creador = s.u; }
+        if (s.rol !== 'admin') { const ant = (v3 && v3.notas) || [], nvas = Array.isArray(nuevo.notas) ? nuevo.notas : []; if (nvas.length < ant.length || ant.some((n, i) => JSON.stringify(n) !== JSON.stringify(nvas[i]))) return responde(res, 403, { error: 'Las notas del seguimiento no se pueden editar ni borrar: agrega una nota nueva.' }); }
       }
       /* Un periodo cerrado ya no admite cambios de calificaciones ni de asistencia (solo el Administrador lo puede reabrir) */
       if (s.rol !== 'admin') {
@@ -998,7 +1012,7 @@ async function api(req, res, partes) {
       if (m === 'POST' && a === 'depurar') {
         if (limite('dep|' + s.u, 5, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' }); const c = await leeJSON(req, 2000);
         if (!claveOk(String(c.clave || ''), q.usr.get(s.u))) { falla('dep|' + s.u, 900000); await dormir(300); return responde(res, 403, { error: 'Tu contraseña no es correcta.' }); }
-        const cats = (Array.isArray(c.categorias) ? c.categorias : []).filter(x => ['ine', 'firmasContrato', 'firmasFicha', 'mensajes', 'sesionesPago', 'auditoria'].includes(x)); if (!cats.length) return responde(res, 400, { error: 'Elige qué depurar.' });
+        const cats = (Array.isArray(c.categorias) ? c.categorias : []).filter(x => ['ine', 'firmasContrato', 'firmasFicha', 'mensajes', 'sesionesPago', 'auditoria', 'prospectos'].includes(x)); if (!cats.length) return responde(res, 400, { error: 'Elige qué depurar.' });
         const r = SEG.depura(cats); audita(s.u, req, 'Depuró datos por plazo de conservación', JSON.stringify(r)); return responde(res, 200, { ok: true, resultado: r, conservacion: { config: SEG.cfgCons(), candidatos: SEG.candidatos() } });
       }
     } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
@@ -1138,6 +1152,7 @@ const servidor = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': info.tipo || 'application/octet-stream', 'Content-Disposition': "inline; filename*=UTF-8''" + encodeURIComponent(info.nombre || id), 'Cache-Control': 'private, no-store' });
       return fs.createReadStream(f).pipe(res);
     }
+    if (ruta === '/registro') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' }); return res.end(CAP.pagina(new URL(req.url, 'http://x').searchParams.get('c') || '')); }
     if (ruta === '/privacidad') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' }); return res.end(SEG.paginaPrivacidad()); }
     const rel = ruta === '/' ? '/index.html' : (ruta === '/configurar' ? '/configurar.html' : (ruta === '/verificar' ? '/verificar.html' : ruta));
     const f = path.normalize(path.join(PUB, rel));
@@ -1339,6 +1354,8 @@ function avisaAlumnoSrv(evento, sid, titulo, mensaje, ref) {
 const PL = require('./pagoslinea.js').crea({ q, leeDoc, cifra, descifra, hoyMx: () => hoyMx(), audita, difunde, cobHook: (c, i) => cobHook(c, i), pendientesSrv, avisaAlumno: avisaAlumnoSrv, candados, ENV });
 /* ---------- Seguridad y privacidad ---------- */
 const SEG = require('./seguridad.js').crea({ db, q, leeDoc, cifra, descifra, audita, claveOk, ARCH, difunde, hoyMx: () => hoyMx(), ENV }); SEG.reiniciarPorEntorno();
+/* ---------- Captación de prospectos (formulario público por campaña) ---------- */
+const CAP = require('./captacion.js').crea({ q, leeDoc, difunde, audita, avisaProspecto: p => AV.avisaProspecto(p), version: () => SEG.cfgPriv().version });
 const cobPend = new Set(); let cobTodos = false, cobTimer = null;
 function cobHook(col, id) {
   if (!['ledger', 'students', 'calif', 'constancias', 'acuerdos', 'config', 'egresados'].includes(col)) return;

@@ -84,7 +84,7 @@ with sync_playwright() as pw:
     ok('al_activarla_ya_puede_cerrarlo',pa.is_visible('#sxCerrar'));pa.click('#sxCerrar');ok('y_trabajar_con_normalidad',pa.evaluate("document.getElementById('dSx').open")==False)
     # ---- conservación ----
     pa.evaluate("ir('sp')");W(pa,"MOD==='sp'&&SXD");pa.click('#sxTcon');pa.wait_for_timeout(300)
-    ok('muestra_los_plazos_y_lo_pendiente',pa.input_value('#cnIne')=='1' and pa.input_value('#cnFir')=='5' and pa.locator('#cnTb tr').count()==6)
+    ok('muestra_los_plazos_y_lo_pendiente',pa.input_value('#cnIne')=='1' and pa.input_value('#cnFir')=='5' and pa.locator('#cnTb tr').count()==7)
     pa.fill('#cnIne','20');pa.click('#cnGuarda');pa.wait_for_timeout(600);ok('un_plazo_fuera_de_rango_se_explica','0 a 15' in pa.inner_text('#cnMsg'));pa.fill('#cnIne','1')
     pa.click('#cnDep');pa.wait_for_timeout(400);ok('exige_elegir_que_depurar','Elige qué depurar' in pa.inner_text('#cnMsg'))
     ok('sin_registros_viejos_no_hay_nada_que_marcar',pa.locator('#cnTb input[type=checkbox]:not([disabled])').count()>=0)

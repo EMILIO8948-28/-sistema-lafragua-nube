@@ -159,6 +159,8 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <button class="mod" id="mNom" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.7 3-6 6.5-6 1.2 0 2.3.3 3.2.8"/><circle cx="17.5" cy="16.5" r="4"/><path d="M17.5 14.5v2l1.4 1"/></svg></span><b>Nómina docente</b><span>Pago mensual a docentes por asignatura y horas: $120 por hora, y $150 en Enfermería, maestría y doctorado.</span><span class="st" id="mNomS"></span></button>
     <button class="mod" id="mNa" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5"/><path d="M3 12.5h18"/><path d="M11 12.5v2h2v-2"/></svg></span><b>Nómina administrativa</b><span>Sueldos del personal administrativo: empleados, periodos, bonos, descuentos y recibos. Cuenta como gasto en el corte de caja y en el estado de cuenta final.</span><span class="st" id="mNaS"></span></button>
     <button class="mod" id="mNot" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5a6 6 0 0 1 12 0c0 6 2 7.5 2 7.5H4s2-1.5 2-7.5"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span><b>Notificaciones</b><span>Cuando alguien del personal quiere borrar algo, te llega aquí para que lo apruebes o lo deniegues.</span><span class="st" id="mNotS"></span></button>
+    <button class="mod" id="mAt" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/><path d="M9 11h6M12 8v6"/></svg></span><b>Atención personalizada</b><span>Registro confidencial de orientación y seguimiento de alumnos y otras personas, fuera del área administrativa.</span></button>
+    <button class="mod" id="mPr" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg></span><b>Prospectos y campañas</b><span>Interesados que llegan de redes sociales: registro, seguimiento y resultados de cada campaña.</span><span class="st" id="mPrS"></span></button>
     <button class="mod" id="mSp" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><rect x="9" y="10.5" width="6" height="5" rx="1"/><path d="M10.5 10.5V9a1.5 1.5 0 013 0v1.5"/></svg></span><b>Seguridad y privacidad</b><span>Verificación en dos pasos, aviso de privacidad y plazos de conservación de datos.</span><span class="st" id="mSpS"></span></button>
     <button class="mod" id="mAv" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/><path d="M8 21l2.5-3.5h5L18 21"/></svg></span><b>Avisos por correo y WhatsApp</b><span>Avisa fuera de la plataforma: adeudos, respuestas a solicitudes, planeaciones, calificaciones y avisos generales.</span><span class="st" id="mAvS"></span></button>
     <button class="mod" id="mBk" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="11" cy="5.5" rx="7" ry="3"/><path d="M4 5.5v6c0 1.66 3.13 3 7 3 .9 0 1.77-.08 2.57-.22"/><path d="M4 11.5v6c0 1.66 3.13 3 7 3 .5 0 1-.03 1.5-.08"/><path d="M18 12l4 1.6v3.2c0 2.5-1.7 4.3-4 5.2-2.3-.9-4-2.7-4-5.2v-3.2z"/><path d="M16.3 17.3l1.3 1.3 2.4-2.6"/></svg></span><b>Respaldos y seguridad</b><span>Respaldo automático diario, copia fuera del servidor, cifrado y prueba de restauración.</span><span class="st" id="mBkS"></span></button>
@@ -409,7 +411,39 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <h2 style="margin-top:16px">Historial</h2>
      <div class="wrap"><table style="min-width:720px"><thead><tr><th>Fecha</th><th>Usuario</th><th>Qué quiso borrar</th><th>Resultado</th></tr></thead><tbody id="ntHist"></tbody></table></div>
    </div>
-   <div id="vSp" hidden>
+   <div id="vAt" hidden>
+  <p class="hint">Aquí se registran los temas de <b>atención personalizada</b> que no son administrativos: orientación académica, situaciones personales o familiares, conducta, salud, becas, quejas o sugerencias. Lo marcado como <b>confidencial 🔒</b> solo lo ven quien lo registró y el Administrador. Las notas del seguimiento solo se agregan: no se pueden editar ni borrar.</p>
+  <div id="axTar" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:10px"></div>
+  <div class="bar"><button class="p" id="axNuevo">Nuevo registro</button><input id="axBus" class="grow" type="search" placeholder="Buscar por nombre, matrícula o asunto"><select id="axFe"><option value="">Todos los estados</option><option value="abierto">Abiertos</option><option value="seguimiento">En seguimiento</option><option value="cerrado">Cerrados</option></select><select id="axFt"></select><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="axMios" type="checkbox" style="width:auto"> Solo los míos</label></div>
+  <div class="wrap"><table style="min-width:900px"><thead><tr><th>Fecha</th><th>Persona</th><th>Tipo</th><th>Asunto</th><th>Estado</th><th>Seguimiento</th><th>Registró</th><th></th></tr></thead><tbody id="axTb"></tbody></table></div>
+</div>
+<div id="vPr" hidden>
+  <p class="hint" id="pxEnlaceAv" hidden>El formulario público y los enlaces de campaña necesitan la versión en la nube de la plataforma.</p>
+  <div class="bar"><button class="p" id="pxTp">Prospectos</button><button id="pxTc">Campañas</button><button id="pxTr">Resultados</button><button id="pxTi">Importar</button></div>
+  <div id="pxPp">
+    <div class="bar"><button class="p" id="pxNuevo">Nuevo prospecto</button><input id="pxBus" class="grow" type="search" placeholder="Buscar por nombre, teléfono o correo"><select id="pxFe"><option value="">Todos los estados</option><option value="nuevo">Nuevos</option><option value="contactado">Contactados</option><option value="interesado">Interesados</option><option value="cita">Cita o visita</option><option value="inscrito">Inscritos</option><option value="descartado">Descartados</option></select><select id="pxFc"></select><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="pxMios" type="checkbox" style="width:auto"> Solo los míos</label></div>
+    <div id="pxEmb" class="bar"></div><p class="hint" id="pxCnt"></p>
+    <div class="wrap"><table style="min-width:980px"><thead><tr><th>Registro</th><th>Prospecto</th><th>Programa</th><th>Campaña</th><th>Estado</th><th>Próximo contacto</th><th>Asignado</th><th></th></tr></thead><tbody id="pxTb"></tbody></table></div>
+  </div>
+  <div id="pxPc" hidden>
+    <p class="hint">Crea una campaña por cada anuncio o publicación. Cada una tiene su <b>enlace de registro</b>: ponlo en tus anuncios, en la biografía de Instagram o en un mensaje de WhatsApp. Quien lo abra deja sus datos y entra solo a la lista de prospectos con la campaña correcta.</p>
+    <div class="bar"><button class="p" id="cmNueva">Nueva campaña</button></div>
+    <div class="wrap"><table style="min-width:1000px"><thead><tr><th>Campaña</th><th>Fechas</th><th>Estado</th><th class="n">Prospectos</th><th class="n">Contactados</th><th class="n">Inscritos</th><th class="n">Inversión</th><th class="n">Por prospecto</th><th class="n">Por inscrito</th><th></th></tr></thead><tbody id="cmTb"></tbody></table></div>
+  </div>
+  <div id="pxPr" hidden>
+    <h2>Embudo</h2><div id="rsEmb"></div><p class="hint" id="rsCosto"></p>
+    <h2 style="margin-top:12px">Por canal</h2><div class="wrap"><table style="min-width:420px"><thead><tr><th>Canal</th><th class="n">Prospectos</th><th class="n">Inscritos</th><th class="n">Conversión</th></tr></thead><tbody id="rsCanal"></tbody></table></div>
+    <h2 style="margin-top:12px">Por programa de interés</h2><div class="wrap"><table style="min-width:420px"><thead><tr><th>Programa</th><th class="n">Prospectos</th><th class="n">Inscritos</th><th class="n">Conversión</th></tr></thead><tbody id="rsProg"></tbody></table></div>
+  </div>
+  <div id="pxPi" hidden>
+    <p class="hint">Importa la lista que descargas de Facebook o Instagram (Lead Ads) o de una hoja de Excel guardada como <b>CSV</b>. Necesita al menos las columnas de <b>nombre</b> y <b>teléfono</b> (también reconoce full_name, phone_number, email, created_time, platform…). Los repetidos no se importan.</p>
+    <div class="row"><label>Archivo CSV<input id="pxFile" type="file" accept=".csv,text/csv"></label><label>Campaña<select id="pxImpC"></select></label><label>Canal (opcional; si el archivo no lo trae)<input id="pxImpCanal" placeholder="Facebook"></label></div>
+    <div id="pxImpPrev"></div>
+    <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="pxImpOk" type="checkbox" style="width:auto"> Confirmo que estas personas autorizaron que las contactemos (por ejemplo, al llenar el formulario del anuncio).</label>
+    <div class="bar"><button class="p" id="pxImpGo" disabled>Importar prospectos</button></div><p class="hint" id="pxImpMsg" style="min-height:1.3em"></p>
+  </div>
+</div>
+<div id="vSp" hidden>
   <div id="sxSinNube" class="mod" style="cursor:default" hidden><b>Seguridad y privacidad</b><span>Esta función necesita la versión en la nube de la plataforma.</span></div>
   <div id="sxCuerpo">
   <div class="bar"><button id="sxTdos" class="p">Verificación en dos pasos</button><button id="sxTpri">Aviso de privacidad</button><button id="sxTcon">Conservación de datos</button></div>
@@ -428,7 +462,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
   <div id="sxPcon" hidden>
     <p class="hint">Define cuánto tiempo conservas estos datos y depura lo que ya pasó el plazo. <b>Borrar es permanente</b>: descarga un respaldo antes. El expediente académico no se borra.</p>
-    <div class="row"><label>Copia de INE de contratos (años después del contrato)<input id="cnIne" type="number" min="0" max="15"></label><label>Imágenes de firma (años después del documento)<input id="cnFir" type="number" min="1" max="30"></label><label>Registro de avisos enviados (meses)<input id="cnMen" type="number" min="1" max="120"></label><label>Registro de pagos en línea (meses)<input id="cnPag" type="number" min="6" max="120"></label><label>Registro de actividad (meses)<input id="cnAud" type="number" min="12" max="240"></label></div>
+    <div class="row"><label>Copia de INE de contratos (años después del contrato)<input id="cnIne" type="number" min="0" max="15"></label><label>Imágenes de firma (años después del documento)<input id="cnFir" type="number" min="1" max="30"></label><label>Registro de avisos enviados (meses)<input id="cnMen" type="number" min="1" max="120"></label><label>Registro de pagos en línea (meses)<input id="cnPag" type="number" min="6" max="120"></label><label>Registro de actividad (meses)<input id="cnAud" type="number" min="12" max="240"></label><label>Prospectos que no se inscriben (meses desde el último contacto)<input id="cnPro" type="number" min="3" max="120"></label></div>
     <div class="bar"><button id="cnGuarda">Guardar plazos</button></div>
     <h2 style="margin-top:10px">Lo que ya pasó su plazo</h2>
     <div class="wrap"><table style="min-width:420px"><thead><tr><th>Dato</th><th class="n">Registros</th></tr></thead><tbody id="cnTb"></tbody></table></div>
@@ -496,7 +530,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <div class="bar"><button id="avWaTb">Guardar y enviar WhatsApp de prueba</button></div>
     <details><summary style="cursor:pointer;font-weight:600">Cómo crear la plantilla en Meta</summary><div class="hf-txt" style="max-height:none;margin-top:8px"><ol style="margin:0;padding-left:20px;line-height:1.55"><li>En el Administrador de WhatsApp de Meta, crea una plantilla de categoría <b>Utilidad</b>, idioma <b>Español (México)</b>, con el nombre que escribiste arriba (por defecto <code>aviso_escolar</code>).</li><li>Texto del cuerpo: <code>Hola {{1}}. {{2}} — Universidad Lafragua</code></li><li>Espera a que Meta la apruebe (suele tardar minutos u horas).</li><li>Copia el <b>Phone number ID</b> y genera un <b>token permanente</b> de un usuario del sistema; pégalos aquí.</li></ol></div></details>
     <h2 style="margin-top:12px">Qué se avisa y por dónde</h2>
-    <div class="wrap"><table style="min-width:420px"><thead><tr><th>Aviso</th><th class="n">Correo</th><th class="n">WhatsApp</th></tr></thead><tbody><tr><td>Adeudo (cobranza)</td><td class="n"><input type="checkbox" id="avE_adeudo_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_adeudo_w" style="width:auto"></td></tr><tr><td>Respuesta a solicitudes</td><td class="n"><input type="checkbox" id="avE_solicitud_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_solicitud_w" style="width:auto"></td></tr><tr><td>Planeación aprobada o denegada</td><td class="n"><input type="checkbox" id="avE_planeacion_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_planeacion_w" style="width:auto"></td></tr><tr><td>Evaluación programada o prórroga (docentes)</td><td class="n"><input type="checkbox" id="avE_evaluacion_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_evaluacion_w" style="width:auto"></td></tr><tr><td>Pago recibido y factura lista (alumnos)</td><td class="n"><input type="checkbox" id="avE_pago_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_pago_w" style="width:auto"></td></tr><tr><td>Calificaciones por subir (docentes)</td><td class="n"><input type="checkbox" id="avE_calificaciones_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_calificaciones_w" style="width:auto"></td></tr><tr><td>Avisos manuales</td><td class="n"><input type="checkbox" id="avE_manual_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_manual_w" style="width:auto"></td></tr><tr><td>Resumen diario a la dirección</td><td class="n"><input type="checkbox" id="avE_resumen_c" style="width:auto"></td><td class="n">—</td></tr></tbody></table></div>
+    <div class="wrap"><table style="min-width:420px"><thead><tr><th>Aviso</th><th class="n">Correo</th><th class="n">WhatsApp</th></tr></thead><tbody><tr><td>Adeudo (cobranza)</td><td class="n"><input type="checkbox" id="avE_adeudo_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_adeudo_w" style="width:auto"></td></tr><tr><td>Respuesta a solicitudes</td><td class="n"><input type="checkbox" id="avE_solicitud_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_solicitud_w" style="width:auto"></td></tr><tr><td>Planeación aprobada o denegada</td><td class="n"><input type="checkbox" id="avE_planeacion_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_planeacion_w" style="width:auto"></td></tr><tr><td>Evaluación programada o prórroga (docentes)</td><td class="n"><input type="checkbox" id="avE_evaluacion_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_evaluacion_w" style="width:auto"></td></tr><tr><td>Pago recibido y factura lista (alumnos)</td><td class="n"><input type="checkbox" id="avE_pago_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_pago_w" style="width:auto"></td></tr><tr><td>Gracias por tu interés (prospectos)</td><td class="n"><input type="checkbox" id="avE_prospecto_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_prospecto_w" style="width:auto"></td></tr><tr><td>Calificaciones por subir (docentes)</td><td class="n"><input type="checkbox" id="avE_calificaciones_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_calificaciones_w" style="width:auto"></td></tr><tr><td>Avisos manuales</td><td class="n"><input type="checkbox" id="avE_manual_c" style="width:auto"></td><td class="n"><input type="checkbox" id="avE_manual_w" style="width:auto"></td></tr><tr><td>Resumen diario a la dirección</td><td class="n"><input type="checkbox" id="avE_resumen_c" style="width:auto"></td><td class="n">—</td></tr></tbody></table></div>
     <div class="row" style="margin-top:8px"><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avRecCal" type="checkbox" style="width:auto"> Recordar a los docentes las calificaciones por subir</label><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="avResA" type="checkbox" style="width:auto"> Enviar el resumen diario</label><label>Hora del resumen (0 a 23, hora de la Ciudad de México)<input id="avResH" type="number" min="0" max="23" value="8"></label><label class="full">Correos que reciben el resumen (separados por coma)<input id="avResP" placeholder="direccion@tuescuela.mx, control@tuescuela.mx"></label></div>
     <div class="bar"><button class="p" id="avGuarda">Guardar configuración</button></div>
     <p class="hint" id="avCfgMsg" style="min-height:1.4em"></p>
@@ -1311,6 +1345,43 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="pvAc" type="checkbox" style="width:auto"> He leído y acepto el aviso de privacidad</label>
      <p class="hint" id="pvMsg" style="min-height:1.3em"></p>
      <div class="bar" style="justify-content:flex-end"><button class="p" id="pvOk" disabled>Continuar</button></div>
+   </dialog>
+
+   <dialog id="dAx" style="width:min(640px,98vw)">
+     <h2>Nuevo registro de atención</h2>
+     <div class="bar" style="margin:0 0 6px"><label style="flex-direction:row;gap:6px;align-items:center;color:var(--ink)"><input type="radio" name="axP" id="axPA" checked style="width:auto"> Alumno de la escuela</label> <label style="flex-direction:row;gap:6px;align-items:center;color:var(--ink)"><input type="radio" name="axP" id="axPO" style="width:auto"> Otra persona</label></div>
+     <div id="axAlW" class="row"><label class="full">Buscar alumno<input id="axAlBus" type="search" placeholder="Nombre o matrícula"></label><label class="full">Alumno<select id="axAl"></select></label></div>
+     <div id="axOtW" class="row" hidden><label>Nombre<input id="axNom" maxlength="120"></label><label>Relación (padre, docente, aspirante…)<input id="axRel" maxlength="60"></label><label>Teléfono (opcional)<input id="axTel" maxlength="20"></label></div>
+     <div class="row"><label>Fecha<input id="axFec" type="date"></label><label>Tipo de atención<select id="axTipo"></select></label><label class="full">Asunto<input id="axAsu" maxlength="150"></label><label class="full">Lo que se atendió y acuerdos<textarea id="axTxt" rows="5" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></textarea></label><label>Próximo seguimiento (opcional)<input id="axProx" type="date"></label><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="axPriv" type="checkbox" style="width:auto"> Confidencial (solo yo y el Administrador lo vemos)</label></div>
+     <p class="hint" id="axNMsg" style="min-height:1.3em"></p>
+     <div class="bar" style="justify-content:flex-end"><button id="axCls">Cancelar</button><button class="p" id="axGuarda">Guardar</button></div>
+   </dialog>
+
+   <dialog id="dAxD" style="width:min(680px,98vw)">
+     <h2 id="axDT"></h2><p id="axDI"></p><p class="hint" id="axDPr"></p>
+     <div class="row"><label>Estado<select id="axDEst"><option value="abierto">Abierto</option><option value="seguimiento">En seguimiento</option><option value="cerrado">Cerrado</option></select></label><label>Próximo seguimiento<input id="axDProx" type="date"></label><label class="full">Agregar una nota (queda en el historial y no se puede editar)<textarea id="axDNota" rows="3" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></textarea></label></div>
+     <p class="hint" id="axDMsg" style="min-height:1.3em"></p>
+     <div class="bar" style="justify-content:flex-end"><button id="axDCls">Cerrar</button><button class="p" id="axDGo">Guardar</button></div>
+     <h2 style="margin-top:10px">Historial</h2><div id="axDTl"></div>
+   </dialog>
+
+   <dialog id="dPx" style="width:min(680px,98vw)">
+     <h2 id="pxDT">Prospecto</h2>
+     <div id="pxDDatos"><p id="pxDInfo"></p></div>
+     <div id="pxDNew" class="row"><label>Nombre<input id="pxNNom" maxlength="120"></label><label>Teléfono (10 dígitos)<input id="pxNTel" type="tel" maxlength="20"></label><label>Correo (opcional)<input id="pxNMail" type="email"></label><label>Programa<select id="pxNProg"></select></label><label>Campaña<select id="pxNCamp"></select></label><label>Canal (opcional)<input id="pxNCanal" placeholder="Facebook, visita, recomendación…"></label></div>
+     <div id="pxDEst" class="row"><label>Estado<select id="pxDEstS"></select></label><label>Asignado a<select id="pxDAsig"></select></label><label>Próximo contacto<input id="pxDProx" type="date"></label><label>Programa de interés<select id="pxDProg"></select></label><label class="full">Agregar una nota (llamada, WhatsApp, acuerdos…)<textarea id="pxDNota" rows="3" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></textarea></label></div>
+     <p class="hint" id="pxDMsg" style="min-height:1.3em"></p>
+     <div class="bar" id="pxDEstW"><a id="pxDWa" target="_blank" rel="noopener"><button type="button" style="color:var(--ink)">Escribir por WhatsApp</button></a><button id="pxDIns">Inscribir…</button></div>
+     <div class="bar" style="justify-content:flex-end"><button id="pxDCls">Cerrar</button><button class="p" id="pxDGo">Guardar</button></div>
+     <div id="pxDTl"></div>
+   </dialog>
+
+   <dialog id="dCm" style="width:min(600px,98vw)">
+     <h2 id="cmT">Campaña</h2>
+     <div class="row"><label class="full">Nombre de la campaña<input id="cmNom" maxlength="120" placeholder="Ej. Inscripciones enero · Instagram"></label><label>Plataforma<select id="cmPlat"></select></label><label>Programa que promueve (opcional)<select id="cmProg"></select></label><label>Inicio<input id="cmIni" type="date"></label><label>Fin (opcional)<input id="cmFin" type="date"></label><label>Inversión en pesos (opcional)<input id="cmPres" type="number" min="0" step="0.01"></label><label>Meta de prospectos (opcional)<input id="cmMeta" type="number" min="0" step="1"></label><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="cmAct" type="checkbox" style="width:auto"> Campaña activa (recibe registros)</label></div>
+     <div id="cmEnl" class="mod" style="cursor:default;margin-top:8px" hidden><b>Enlace de registro</b><span id="cmUrl" style="word-break:break-all"></span><div style="display:flex;gap:12px;align-items:center;margin-top:8px"><div id="cmQR"></div><div class="bar" style="margin:0"><button id="cmCopia">Copiar enlace</button></div></div><span class="hint">Pon este enlace (o su código QR) en tus anuncios y publicaciones.</span></div>
+     <p class="hint" id="cmMsg" style="min-height:1.3em"></p>
+     <div class="bar" style="justify-content:flex-end"><button id="cmCls">Cerrar</button><button class="p" id="cmGo">Guardar</button></div>
    </dialog>
 
    <dialog id="dNP" style="width:min(560px,96vw)">
@@ -2494,12 +2565,12 @@ function ir(m){
   if(m!=="home"&&!accesoVista(m))m="home";
   var rv=m==="home"?BASEROL:rolDeVista(m);if(rv&&rv!==ROL)setRol(rv);
   MOD=m;var home=m==="home";
-  $("vUsr").hidden=m!=="usr";$("vBk").hidden=m!=="bk";$("vAv").hidden=m!=="av";$("vSp").hidden=m!=="sp";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
+  $("vUsr").hidden=m!=="usr";$("vBk").hidden=m!=="bk";$("vAv").hidden=m!=="av";$("vSp").hidden=m!=="sp";$("vAt").hidden=m!=="at";$("vPr").hidden=m!=="pr";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
   $("vHome").hidden=!home;$("vEsc").hidden=m!=="esc";$("vIns").hidden=m!=="ins";$("vAcu").hidden=m!=="acu";$("vDoc").hidden=m!=="doc";$("vTit").hidden=m!=="tit";$("vA2").hidden=m!=="a2";$("vVer").hidden=m!=="ver";$("vNom").hidden=m!=="nom";$("vNa").hidden=m!=="na";
   $("tabs").hidden=m!=="pagos";$("nav").hidden=home||m==="por";$("subt").hidden=m!=="pagos";$("warn").hidden=m!=="pagos";
-  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":(m==="bk"?"Respaldos y seguridad":(m==="av"?"Avisos por correo y WhatsApp":(m==="sp"?"Seguridad y privacidad":"Control escolar")))))))))))))));
+  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":(m==="bk"?"Respaldos y seguridad":(m==="av"?"Avisos por correo y WhatsApp":(m==="sp"?"Seguridad y privacidad":(m==="at"?"Atención personalizada":(m==="pr"?"Prospectos y campañas":"Control escolar")))))))))))))))));
   if(FIN.indexOf(m)>-1)$("ttl").textContent="Finanzas";renderFinTabs(m);
-  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="bk")renderBk();if(m==="av")renderAv();if(m==="sp")renderSp();if(m==="por")renderPor();if(m==="not")cargaNot();
+  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="bk")renderBk();if(m==="av")renderAv();if(m==="sp")renderSp();if(m==="at")renderAt();if(m==="pr")renderPr();if(m==="por")renderPor();if(m==="not")cargaNot();
   if(home){if(typeof MODDEF!=="undefined"&&MODDEF)aplicaModulos();renderHome()}
   if(typeof cargaAlm==="function")cargaAlm();if(typeof actualizaInsigniaBk==="function")actualizaInsigniaBk();if(typeof ntProgramar==="function")ntProgramar();if(typeof cargaMiFoto==="function"){pintaPerfil();cargaMiFoto()}
 }
@@ -5441,7 +5512,7 @@ function verCred(sid,vig,code){
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
 /* ===== Respaldo completo (datos y archivos) ===== */
-var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas"];
+var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas"];
 var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioR","meta/folioRC","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT","meta/folioCH"];
 var BKLAST=null;
 function leeCol(n){
@@ -5890,7 +5961,9 @@ var MODDEF=[
   ["nomina_doc","Finanzas · Nómina docente","Pago a docentes por asignatura y horas","admin","mNom",NIV3],
   ["nomina_adm","Finanzas · Nómina administrativa","Empleados y pago de sueldos del personal administrativo","admin","mNa",NIV3],
   ["docente","Mis asignaturas (sesión de docente)","Listas y calificaciones de un docente; requiere elegir a qué docente corresponde el usuario","docente","mDoc",[["none","Sin acceso"],["editar","Con acceso"]]],
-  ["expedientes","Expedientes de docentes","Documentos personales y fotografía de los docentes (información confidencial)","admin",null,[["none","Sin acceso"],["editar","Con acceso"]]]
+  ["expedientes","Expedientes de docentes","Documentos personales y fotografía de los docentes (información confidencial)","admin",null,[["none","Sin acceso"],["editar","Con acceso"]]],
+  ["atencion","Atención personalizada","Registro confidencial de orientación y seguimiento de alumnos y otras personas (temas fuera del área administrativa)","admin","mAt",NIV3],
+  ["prospectos","Prospectos y campañas","Interesados de redes sociales: registro, seguimiento, campañas e importación","admin","mPr",NIV3]
 ];
 var PLANT={
   caja:{pagos:"editar",corte:"editar",ver:"editar",acuerdos:"editar",escolar:"ver",constancias:"editar"},
@@ -5917,7 +5990,7 @@ function efectivoRol(id){
   var d=MODDEF.find(function(m){return m[0]===id}),min=d?d[3]:"consulta";
   return limitaPlat(n==="ver"&&id!=="estado"?"consulta":min);
 }
-var MODV={pagos:"pagos",ins:"inscripcion",esc:"escolar",acu:"acuerdos",doc:"docente",tit:"titulaciones",a2:"a286",ver:"ver",nom:"nomina_doc",na:"nomina_adm"};
+var MODV={at:"atencion",pr:"prospectos",pagos:"pagos",ins:"inscripcion",esc:"escolar",acu:"acuerdos",doc:"docente",tit:"titulaciones",a2:"a286",ver:"ver",nom:"nomina_doc",na:"nomina_adm"};
 function accesoVista(m){
   if(m==="not")return !!window.LF_NUBE&&esAdminReal()&&BASEROL==="admin";
   if(m==="por")return !!(APP&&APP.rol==="alumno");
@@ -5966,7 +6039,7 @@ function renderUsr(){
   $("usTb").innerHTML=L.length?L.map(function(u){var doc=u.doc&&DOC[u.doc];return '<tr><td>'+esc(u.name)+(doc?'<br><span class="hint">Docente: '+esc(doc.nombre)+'</span>':'')+'</td><td>'+esc(u.u)+'</td><td>'+esc(ROLTXT[u.rol]||u.rol)+'</td><td style="white-space:normal;min-width:260px"><span class="hint">'+esc(resumenMods(u))+'</span></td><td>'+(u.rol==="alumno"?(window.LF_NUBE?'<button data-ra="'+esc(u.alumno)+'">Restablecer contraseña</button> ':''):'<button data-ed="'+esc(u.u)+'">Editar</button> ')+'<button class="d" data-dl="'+esc(u.u)+'">'+(USCONF===u.u?"Confirmar":"Eliminar")+'</button></td></tr>'}).join(""):'<tr><td colspan="5" class="empty">'+(USERS.length?"Sin resultados.":"Aún no hay usuarios. Mientras no existan, el sistema no pide contraseña.")+'</td></tr>';
   $("mUsrS").textContent=(USERS||[]).length+((USERS||[]).length===1?" usuario":" usuarios");
 }
-$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mBk").onclick=function(){ir("bk")};$("mAv").onclick=function(){ir("av")};$("mSp").onclick=function(){ir("sp")};
+$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mBk").onclick=function(){ir("bk")};$("mAv").onclick=function(){ir("av")};$("mAt").onclick=function(){ir("at")};$("mPr").onclick=function(){ir("pr")};$("mSp").onclick=function(){ir("sp")};
 $("mUsr").onclick=function(){ir("usr")};
 function nivelesMods(){var o={};Array.prototype.forEach.call($("usMods").querySelectorAll("select[data-m]"),function(s){if(s.value!=="none")o[s.dataset.m]=s.value});return o}
 function pintaMods(p,bloqueado){
@@ -7845,6 +7918,13 @@ function ntItems(){
       I({id:id,ico:ap?"ok":"no",titulo:"Planeación "+(ap?"aprobada":"denegada"),detalle:c.nom+" ("+c.plan+")"+(ap?"":(d.motivo?" · Motivo: "+d.motivo:""))+(d.revisor?" · Revisó: "+d.revisor:""),fecha:d.revFecha,leida:!!ntLeidasLoc()[id],go:irDoc,marca:function(){ntMarcaLoc([id]);return Promise.resolve()}});
     });
   }else{
+    if(permiso("prospectos")!=="none"){
+      var pn=Object.keys(PRO).filter(function(k){return PRO[k].estado==="nuevo"}).length;if(pn)T({id:"t:pxn",ico:"sol",n:pn,titulo:ntPlural(pn,"prospecto nuevo por contactar","prospectos nuevos por contactar"),detalle:"Llegaron de tus campañas. Contáctalos pronto: responder rápido sube la inscripción.",go:function(){ir("pr")}});
+      var pv=Object.keys(PRO).filter(function(k){var x=PRO[k];return pxVence(x)&&(!x.asignado||x.asignado===APP.u)}).length;if(pv)T({id:"t:pxv",ico:"clock",n:pv,titulo:ntPlural(pv,"prospecto con contacto pendiente","prospectos con contacto pendiente"),detalle:"Tienen programado un seguimiento para hoy o ya vencido.",go:function(){ir("pr")}});
+    }
+    if(permiso("atencion")!=="none"){
+      var av=Object.keys(ATN).filter(function(k){var x=ATN[k];return axVence(x)&&x.creador===APP.u}).length;if(av)T({id:"t:axv",ico:"clock",n:av,titulo:ntPlural(av,"seguimiento de atención personalizada pendiente","seguimientos de atención personalizada pendientes"),detalle:"Tienes registros con seguimiento para hoy o vencido.",go:function(){ir("at")}});
+    }
     if(permiso("escolar")==="editar"){
       var ns=solPend().length;if(ns)T({id:"t:sol",ico:"sol",n:ns,titulo:ntPlural(ns,"solicitud de alumno por atender","solicitudes de alumnos por atender"),detalle:"Justificantes, boletas y constancias esperan tu respuesta: aprobarlas o denegarlas.",go:function(){ir("esc");etab("S")}});
       var pcc=perPorCerrar();if(pcc.length)T({id:"t:cic",ico:"sol",n:pcc.length,titulo:ntPlural(pcc.length,"periodo terminado por cerrar","periodos terminados por cerrar"),detalle:pcc.join(", ")+". Cierra el ciclo para pasar a los alumnos al siguiente cuatrimestre.",go:function(){ir("esc");etab("G")}});
@@ -8498,13 +8578,13 @@ function avCampos(c){
   var m=c.correo||{},w=c.whatsapp||{},r=c.resumen||{};
   $("avCoA").checked=!!m.activo;$("avCoR").checked=!!m.usarRespaldos;$("avCoH").value=m.host||"";$("avCoP").value=m.puerto||587;$("avCoS").checked=!!m.seguro;$("avCoU").value=m.usuario||"";$("avCoC").value="";$("avCoC").placeholder=m.claveGuardada?"Guardada":"Contraseña";$("avCoD").value=m.de||"";$("avCoN").value=m.nombre||"";
   $("avWaA").checked=!!w.activo;$("avWaI").value=w.phoneId||"";$("avWaT").value="";$("avWaT").placeholder=w.tokenGuardado?"Guardado":"Token de acceso";$("avWaV").value=w.version||"v21.0";$("avWaP").value=w.plantilla||"aviso_escolar";$("avWaL").value=w.idioma||"es_MX";$("avWaC").value=w.pais||"52";
-  ["adeudo","solicitud","planeacion","evaluacion","calificaciones","pago","manual","resumen"].forEach(function(e){var x=(c.eventos||{})[e]||{};$("avE_"+e+"_c").checked=!!x.correo;var wa=$("avE_"+e+"_w");if(wa)wa.checked=!!x.whatsapp});
+  ["adeudo","solicitud","planeacion","evaluacion","calificaciones","pago","prospecto","manual","resumen"].forEach(function(e){var x=(c.eventos||{})[e]||{};$("avE_"+e+"_c").checked=!!x.correo;var wa=$("avE_"+e+"_w");if(wa)wa.checked=!!x.whatsapp});
   $("avRecCal").checked=(c.recordatorios||{}).calificaciones!==false;$("avResA").checked=!!r.activo;$("avResH").value=r.hora==null?8:r.hora;$("avResP").value=(r.para||[]).join(", ");
   avCoUI();
 }
 function avCoUI(){var u=$("avCoR").checked;["avCoH","avCoP","avCoS","avCoU","avCoC","avCoD","avCoN"].forEach(function(i){$(i).disabled=u})}
 function avLee(){
-  var ev={};["adeudo","solicitud","planeacion","evaluacion","calificaciones","pago","manual","resumen"].forEach(function(e){var wa=$("avE_"+e+"_w");ev[e]={correo:$("avE_"+e+"_c").checked,whatsapp:wa?wa.checked:false}});
+  var ev={};["adeudo","solicitud","planeacion","evaluacion","calificaciones","pago","prospecto","manual","resumen"].forEach(function(e){var wa=$("avE_"+e+"_w");ev[e]={correo:$("avE_"+e+"_c").checked,whatsapp:wa?wa.checked:false}});
   return {activo:$("avAct").checked,escuela:$("avEsc").value.trim(),
     correo:{activo:$("avCoA").checked,usarRespaldos:$("avCoR").checked,host:$("avCoH").value.trim(),puerto:+$("avCoP").value,seguro:$("avCoS").checked,usuario:$("avCoU").value.trim(),clave:$("avCoC").value,de:$("avCoD").value.trim(),nombre:$("avCoN").value.trim()},
     whatsapp:{activo:$("avWaA").checked,phoneId:$("avWaI").value.trim(),token:$("avWaT").value,version:$("avWaV").value.trim(),plantilla:$("avWaP").value.trim(),idioma:$("avWaL").value.trim(),pais:$("avWaC").value.trim()},
@@ -8962,17 +9042,17 @@ function sxRender(campos){
   $("sxUsTb").innerHTML=d.usuarios.map(function(u){return '<tr><td>'+esc(u.name)+'<br><span class="hint">'+esc(u.u)+'</span></td><td>'+esc(u.rol)+'</td><td>'+(u.dosPasos?'<span class="tag pagado">Activada</span>':'<span class="tag '+(u.rol==="admin"?"sin":"parcial")+'">No</span>')+'</td><td>'+(u.dosPasos?'<button data-sxr="'+attr(u.u)+'">Reiniciar</button>':'')+'</td></tr>'}).join("");
   if(campos){
     $("pvEnt").value=p.entidad||"";$("pvDom").value=p.domicilio||"";$("pvCor").value=p.correo||"";$("pvTel").value=p.telefono||"";$("pvRes").value=p.responsable||"";$("pvEx").value=p.extra||"";$("pvAcep").checked=!!p.aceptacion;
-    $("cnIne").value=c.config.ineAnios;$("cnFir").value=c.config.firmasAnios;$("cnMen").value=c.config.mensajesMeses;$("cnPag").value=c.config.sesionesPagoMeses;$("cnAud").value=c.config.auditoriaMeses;
+    $("cnIne").value=c.config.ineAnios;$("cnFir").value=c.config.firmasAnios;$("cnMen").value=c.config.mensajesMeses;$("cnPag").value=c.config.sesionesPagoMeses;$("cnAud").value=c.config.auditoriaMeses;$("cnPro").value=c.config.prospectosMeses;
   }
   $("pvInfo").textContent="Versión "+p.version+(p.actualizado?" · actualizada el "+fd(p.actualizado):"")+" · "+(p.aceptacion?p.aceptaciones.vigentes+" personas la han aceptado":"No se pide aceptación al entrar");
-  var cd=c.candidatos,N={ine:["Copias de INE de contratos","ine"],firmasContrato:["Imágenes de firma en contratos","firmasContrato"],firmasFicha:["Imágenes de firma en fichas de inscripción","firmasFicha"],mensajes:["Registro de avisos enviados","mensajes"],sesionesPago:["Registro de pagos en línea","sesionesPago"],auditoria:["Registro de actividad","auditoria"]};
+  var cd=c.candidatos,N={ine:["Copias de INE de contratos","ine"],firmasContrato:["Imágenes de firma en contratos","firmasContrato"],firmasFicha:["Imágenes de firma en fichas de inscripción","firmasFicha"],mensajes:["Registro de avisos enviados","mensajes"],sesionesPago:["Registro de pagos en línea","sesionesPago"],auditoria:["Registro de actividad","auditoria"],prospectos:["Prospectos que no se inscribieron","prospectos"]};
   $("cnTb").innerHTML=Object.keys(N).map(function(k){var n=Array.isArray(cd[k])?cd[k].length:cd[k];return '<tr><td><label style="flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input type="checkbox" data-cnk="'+k+'" style="width:auto"'+(n?"":" disabled")+'> '+esc(N[k][0])+'</label></td><td class="n"><b>'+n+'</b></td></tr>'}).join("");
 }
 ["dos","pri","con"].forEach(function(k){$("sxT"+k).onclick=function(){sxTab(k)}});
 $("sxGExigir").onclick=async function(){var r=await cbApi("PUT","/api/seguridad/config",{exigir2fa:$("sxExigir").checked});sxMsg("sxDosMsg",r.ok?"Política guardada.":((r.j&&r.j.error)||"No se pudo guardar."),!r.ok);if(r.ok)SXD.config=r.j.config};
 $("sxUsTb").onclick=async function(e){var u=e.target.dataset&&e.target.dataset.sxr;if(!u||!confirm("¿Reiniciar la verificación en dos pasos de "+u+"? Tendrá que activarla de nuevo."))return;var r=await cbApi("POST","/api/seguridad/reset",{u:u});if(r.ok)sxCarga();else sxMsg("sxDosMsg",(r.j&&r.j.error)||"No se pudo.",true)};
 $("pvGuarda").onclick=async function(){var r=await cbApi("PUT","/api/seguridad/privacidad",{entidad:$("pvEnt").value,domicilio:$("pvDom").value,correo:$("pvCor").value,telefono:$("pvTel").value,responsable:$("pvRes").value,extra:$("pvEx").value,aceptacion:$("pvAcep").checked});if(r.ok){SXD.privacidad=r.j.privacidad;sxRender(false);sxMsg("pvMsg2","Aviso guardado.",false)}else sxMsg("pvMsg2",(r.j&&r.j.error)||"No se pudo guardar.",true)};
-$("cnGuarda").onclick=async function(){var r=await cbApi("PUT","/api/seguridad/conservacion",{ineAnios:$("cnIne").value,firmasAnios:$("cnFir").value,mensajesMeses:$("cnMen").value,sesionesPagoMeses:$("cnPag").value,auditoriaMeses:$("cnAud").value});if(r.ok){SXD.conservacion=r.j.conservacion;sxRender(false);sxMsg("cnMsg","Plazos guardados.",false)}else sxMsg("cnMsg",(r.j&&r.j.error)||"No se pudo guardar.",true)};
+$("cnGuarda").onclick=async function(){var r=await cbApi("PUT","/api/seguridad/conservacion",{ineAnios:$("cnIne").value,firmasAnios:$("cnFir").value,mensajesMeses:$("cnMen").value,sesionesPagoMeses:$("cnPag").value,auditoriaMeses:$("cnAud").value,prospectosMeses:$("cnPro").value});if(r.ok){SXD.conservacion=r.j.conservacion;sxRender(false);sxMsg("cnMsg","Plazos guardados.",false)}else sxMsg("cnMsg",(r.j&&r.j.error)||"No se pudo guardar.",true)};
 $("cnDep").onclick=async function(){
   var cats=Array.prototype.filter.call($("cnTb").querySelectorAll("input[data-cnk]"),function(i){return i.checked}).map(function(i){return i.dataset.cnk});
   if(!cats.length){sxMsg("cnMsg","Elige qué depurar.",true);return}
@@ -8987,6 +9067,214 @@ function sxArranque(){
   $("bSeg").hidden=false;
   if(me.debeActivar2fa)abreSeg(true);else if(me.privacidadPendiente)abrePriv(me.privacidadPendiente);
 }
+/* ===== Atención personalizada ===== */
+var ATN={},AXID=null,AXPRIV=["Personal o emocional","Familiar","Salud"];
+var AXTIPOS=["Orientación académica","Personal o emocional","Conducta","Familiar","Salud","Económico o beca","Vocacional","Queja o sugerencia","Otro"];
+var AXEST={abierto:"Abierto",seguimiento:"En seguimiento",cerrado:"Cerrado"};
+function axAl(r){return r.sid?S.find(function(s){return s.id===r.sid}):null}
+function axNom(r){var s=axAl(r);return s?s.nombre:((r.persona&&r.persona.nombre)||"—")}
+function axHM(t){var d=new Date(t);return fd(String(t).slice(0,10))+" "+pad2(d.getHours())+":"+pad2(d.getMinutes())}
+function axLista(){return Object.keys(ATN).map(function(k){return Object.assign({id:k},ATN[k])}).sort(function(a,b){return String(b.ultimo||b.creado).localeCompare(String(a.ultimo||a.creado))})}
+function axVence(r){return r.estado!=="cerrado"&&r.proxima&&r.proxima<=today()}
+function renderAt(){
+  var L=axLista(),hoy=today(),ab=L.filter(function(r){return r.estado==="abierto"}).length,se=L.filter(function(r){return r.estado==="seguimiento"}).length,vn=L.filter(axVence).length;
+  $("axTar").innerHTML='<div class="mod" style="cursor:default"><span class="hint">Abiertos</span><b>'+ab+'</b></div><div class="mod" style="cursor:default"><span class="hint">En seguimiento</span><b>'+se+'</b></div><div class="mod" style="cursor:default;'+(vn?"border-color:var(--warn)":"")+'"><span class="hint">Seguimientos de hoy o vencidos</span><b>'+vn+'</b></div>';
+  var q=($("axBus").value||"").toLowerCase(),fe=$("axFe").value,ft=$("axFt").value,mios=$("axMios").checked;
+  var F=L.filter(function(r){var s=axAl(r);return (!fe||r.estado===fe)&&(!ft||r.tipo===ft)&&(!mios||r.creador===(APP&&APP.u))&&(!q||(axNom(r)+" "+(s?s.mat:"")+" "+(r.asunto||"")).toLowerCase().indexOf(q)>-1)});
+  $("axTb").innerHTML=F.length?F.map(function(r){var s=axAl(r),tg=r.estado==="cerrado"?"pagado":(r.estado==="seguimiento"?"parcial":"sin");
+    return '<tr><td>'+esc(fd(r.fecha))+'</td><td style="white-space:normal">'+esc(axNom(r))+(s?'<br><span class="hint">'+esc(s.mat)+' · '+esc(planDe(s))+'</span>':'<br><span class="hint">'+esc((r.persona&&r.persona.rel)||"Otra persona")+'</span>')+'</td><td>'+esc(r.tipo)+(r.privado?' 🔒':'')+'</td><td style="white-space:normal;min-width:200px">'+esc(r.asunto)+'</td><td><span class="tag '+tg+'">'+esc(AXEST[r.estado]||r.estado)+'</span></td><td>'+(r.proxima?(axVence(r)?'<b style="color:var(--bad)">':'')+esc(fd(r.proxima))+(axVence(r)?'</b>':''):'—')+'</td><td>'+esc(r.creadorNombre||r.creador||"")+'</td><td><button data-axo="'+attr(r.id)+'">Abrir</button></td></tr>'}).join(""):vacio(8,"Todavía no hay registros con esos filtros.");
+}
+["axBus","axFe","axFt","axMios"].forEach(function(i){$(i).addEventListener(i==="axBus"?"input":"change",renderAt)});
+setOpts($("axFt"),'<option value="">Todos los tipos</option>'+AXTIPOS.map(function(t){return '<option>'+esc(t)+'</option>'}).join(""));
+function axAlOpts(){
+  var q=($("axAlBus").value||"").toLowerCase(),L=S.filter(function(s){return !esEgr(s.id)&&(!q||(s.nombre+" "+s.mat).toLowerCase().indexOf(q)>-1)}).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))}).slice(0,60);
+  setOpts($("axAl"),L.map(function(s){return '<option value="'+attr(s.id)+'">'+esc(s.nombre+" · "+s.mat)+'</option>'}).join(""));
+}
+function axPersonaUI(){var al=$("axPA").checked;$("axAlW").hidden=!al;$("axOtW").hidden=al}
+$("axNuevo").onclick=function(){
+  $("axPA").checked=true;$("axAlBus").value="";axAlOpts();$("axNom").value="";$("axRel").value="";$("axTel").value="";$("axFec").value=today();$("axTipo").value=AXTIPOS[0];$("axAsu").value="";$("axTxt").value="";$("axPriv").checked=false;$("axProx").value="";$("axNMsg").textContent="";axPersonaUI();$("dAx").showModal();
+};
+$("axAlBus").oninput=axAlOpts;$("axPA").onchange=$("axPO").onchange=axPersonaUI;
+$("axTipo").onchange=function(){if(AXPRIV.indexOf(this.value)>-1)$("axPriv").checked=true};
+setOpts($("axTipo"),AXTIPOS.map(function(t){return '<option>'+esc(t)+'</option>'}).join(""));
+$("axCls").onclick=function(){$("dAx").close()};
+$("axGuarda").onclick=async function(){
+  var m=$("axNMsg"),bad=function(t){m.style.color="var(--bad)";m.textContent=t};
+  var al=$("axPA").checked,sid=al?$("axAl").value:"",nom=$("axNom").value.trim();
+  if(al&&!sid)return bad("Elige al alumno.");if(!al&&nom.length<3)return bad("Escribe el nombre de la persona.");
+  if($("axAsu").value.trim().length<3)return bad("Escribe el asunto.");if($("axTxt").value.trim().length<3)return bad("Describe lo que se atendió.");
+  var ahora=new Date().toISOString(),d={fecha:$("axFec").value||today(),tipo:$("axTipo").value,asunto:$("axAsu").value.trim(),privado:$("axPriv").checked,estado:$("axProx").value?"seguimiento":"abierto",proxima:$("axProx").value||"",creador:APP.u,creadorNombre:APP.name,creado:ahora,ultimo:ahora,notas:[{t:ahora,u:APP.u,n:APP.name,tipo:"apertura",txt:$("axTxt").value.trim()}]};
+  if(al)d.sid=sid;else d.persona={nombre:nom,rel:$("axRel").value.trim(),tel:$("axTel").value.trim()};
+  var b=this;b.disabled=true;try{var id=uid();await DBH.doc("atencion/"+id).set(d);ATN[id]=d;$("dAx").close();renderAt()}catch(e){dberr(e)}b.disabled=false;
+};
+function axDetalle(){
+  var r=ATN[AXID];if(!r)return;var s=axAl(r),cer=r.estado==="cerrado";
+  $("axDT").textContent=r.asunto;
+  $("axDI").innerHTML='<b>'+esc(axNom(r))+'</b>'+(s?' · '+esc(s.mat)+' · '+esc(planDe(s)):(r.persona&&r.persona.rel?' · '+esc(r.persona.rel):'')+(r.persona&&r.persona.tel?' · '+esc(r.persona.tel):''))+'<br><span class="hint">'+esc(r.tipo)+' · '+esc(fd(r.fecha))+' · registró '+esc(r.creadorNombre||r.creador)+'</span>';
+  $("axDPr").textContent=r.privado?"🔒 Confidencial: solo lo ven quien lo registró y el Administrador.":"Visible para el equipo de atención personalizada.";
+  $("axDEst").value=r.estado;$("axDProx").value=r.proxima||"";$("axDNota").value="";$("axDMsg").textContent="";
+  $("axDTl").innerHTML=(r.notas||[]).slice().reverse().map(function(n){return '<div class="mod" style="cursor:default;margin:6px 0"><span class="hint">'+esc(axHM(n.t))+' · '+esc(n.n||n.u)+(n.tipo==="estado"||n.tipo==="seguimiento"?' · cambio':n.tipo==="apertura"?' · apertura':'')+'</span><span style="white-space:pre-wrap;color:var(--ink)">'+esc(n.txt)+'</span></div>'}).join("");
+}
+$("axTb").onclick=function(e){var id=e.target.dataset&&e.target.dataset.axo;if(!id)return;AXID=id;axDetalle();$("dAxD").showModal()};
+$("axDCls").onclick=function(){$("dAxD").close()};
+$("axDGo").onclick=async function(){
+  var r=ATN[AXID];if(!r)return;var m=$("axDMsg"),bad=function(t){m.style.color="var(--bad)";m.textContent=t};
+  var nota=$("axDNota").value.trim(),est=$("axDEst").value,prox=$("axDProx").value||"",ahora=new Date().toISOString(),notas=(r.notas||[]).slice(),cambio=false;
+  if(est==="cerrado"&&r.estado!=="cerrado"&&nota.length<3)return bad("Para cerrar el caso escribe una nota con el resultado o la conclusión.");
+  if(est!==r.estado){notas.push({t:ahora,u:APP.u,n:APP.name,tipo:"estado",txt:"Estado: "+AXEST[r.estado]+" → "+AXEST[est]});cambio=true}
+  if(prox!==(r.proxima||"")){notas.push({t:ahora,u:APP.u,n:APP.name,tipo:"seguimiento",txt:prox?"Próximo seguimiento: "+fd(prox):"Se quitó el próximo seguimiento"});cambio=true}
+  if(nota){notas.push({t:ahora,u:APP.u,n:APP.name,tipo:"nota",txt:nota});cambio=true}
+  if(!cambio)return bad("No hay nada que guardar.");
+  var d=Object.assign({},r,{estado:est,proxima:est==="cerrado"?"":prox,ultimo:ahora,notas:notas});
+  var b=this;b.disabled=true;try{await DBH.doc("atencion/"+AXID).set(d);ATN[AXID]=d;renderAt();axDetalle();m.style.color="var(--ok)";m.textContent="Guardado."}catch(e){bad(e.message||"No se pudo guardar.")}b.disabled=false;
+};
+/* ===== Prospectos y campañas ===== */
+var PRO={},CMP={},PXTAB="p",PXID=null,CMID=null,PXIMP=null;
+var PXEST={nuevo:"Nuevo",contactado:"Contactado",interesado:"Interesado",cita:"Cita o visita",inscrito:"Inscrito",descartado:"Descartado"};
+var PXORD=["nuevo","contactado","interesado","cita","inscrito"];
+var PXPLAT=["Facebook","Instagram","TikTok","WhatsApp","Google","YouTube","Otra"];
+function pxTag(e){return '<span class="tag '+(e==="inscrito"?"pagado":e==="descartado"?"sin":"parcial")+'">'+esc(PXEST[e]||e)+'</span>'}
+function pxTel(t){var d=String(t||"").replace(/\D/g,"");return d.length===10?"52"+d:d}
+function pxWa(p){var txt="Hola "+String(p.nombre||"").split(" ")[0]+", soy "+(APP?APP.name:"")+" de "+(typeof ESCUELA!=="undefined"?ESCUELA:"la universidad")+". Vi que te interesó"+(p.programa?" "+p.programa:" información de nuestros programas")+". ¿Te puedo ayudar con tus dudas?";return "https://wa.me/"+pxTel(p.tel)+"?text="+encodeURIComponent(txt)}
+function pxVence(p){return p.estado!=="inscrito"&&p.estado!=="descartado"&&p.proxima&&p.proxima<=today()}
+function pxLista(){return Object.keys(PRO).map(function(k){return Object.assign({id:k},PRO[k])}).sort(function(a,b){return String(b.creado).localeCompare(String(a.creado))})}
+function renderPr(){
+  prTab(PXTAB);
+  if(!window.LF_NUBE){$("pxEnlaceAv").hidden=false}
+}
+function prTab(t){PXTAB=t;["p","c","r","i"].forEach(function(k){$("pxP"+k).hidden=k!==t;$("pxT"+k).className=k===t?"p":""});if(t==="p")prProspectos();if(t==="c")prCampanas();if(t==="r")prResumen();if(t==="i")prImportaUI()}
+function prFiltros(){
+  var cs=Object.keys(CMP).map(function(k){return Object.assign({id:k},CMP[k])}).sort(function(a,b){return String(b.inicio||"").localeCompare(String(a.inicio||""))}),v=$("pxFc").value;
+  setOpts($("pxFc"),'<option value="">Todas las campañas</option>'+cs.map(function(c){return '<option value="'+attr(c.id)+'">'+esc(c.nombre)+'</option>'}).join(""));$("pxFc").value=v;
+}
+function prProspectos(){
+  prFiltros();var L=pxLista(),fe=$("pxFe").value,fc=$("pxFc").value,q=($("pxBus").value||"").toLowerCase(),mios=$("pxMios").checked,hoy=today();
+  $("pxEmb").innerHTML=PXORD.concat(["descartado"]).map(function(e){var n=L.filter(function(p){return p.estado===e}).length;return '<button class="'+(fe===e?"p":"")+'" data-pxe="'+e+'">'+esc(PXEST[e])+' · '+n+'</button>'}).join(" ")+(fe?' <button data-pxe="">Ver todos</button>':'');
+  var F=L.filter(function(p){return (!fe||p.estado===fe)&&(!fc||p.campana===fc)&&(!mios||p.asignado===(APP&&APP.u))&&(!q||(p.nombre+" "+p.tel+" "+(p.correo||"")).toLowerCase().indexOf(q)>-1)});
+  $("pxTb").innerHTML=F.length?F.slice(0,300).map(function(p){
+    return '<tr><td>'+esc(fd(String(p.creado).slice(0,10)))+'</td><td style="white-space:normal"><b>'+esc(p.nombre)+'</b><br><span class="hint">'+esc(p.tel)+(p.correo?' · '+esc(p.correo):'')+'</span></td><td style="white-space:normal">'+esc(p.programa||"—")+'</td><td style="white-space:normal">'+esc(p.campanaNombre||p.canal||"—")+'<br><span class="hint">'+esc(p.canal||"")+(p.origen&&p.origen!=="formulario"?" · "+esc(p.origen):"")+'</span></td><td>'+pxTag(p.estado)+'</td><td>'+(p.proxima?(pxVence(p)?'<b style="color:var(--bad)">':'')+esc(fd(p.proxima))+(pxVence(p)?'</b>':''):'—')+'</td><td style="white-space:normal">'+esc(p.asignado?pxNomUsr(p.asignado):"Sin asignar")+'</td><td style="white-space:normal"><a href="'+attr(pxWa(p))+'" target="_blank" rel="noopener"><button type="button" style="color:var(--ink)">WhatsApp</button></a> <button data-pxo="'+attr(p.id)+'">Abrir</button></td></tr>'}).join(""):vacio(8,"No hay prospectos con esos filtros.");
+  $("pxCnt").textContent=F.length+(F.length===1?" prospecto":" prospectos")+(F.length>300?" (se muestran 300)":"");
+}
+function pxNomUsr(u){var x=(typeof USERS!=="undefined"?USERS:[]).find(function(y){return y.u===u});return x?x.name:(APP&&APP.u===u?APP.name:u)}
+["pxBus","pxFe","pxFc","pxMios"].forEach(function(i){$(i).addEventListener(i==="pxBus"?"input":"change",prProspectos)});
+$("pxEmb").onclick=function(e){var d=e.target.dataset;if(d&&d.pxe!==undefined){$("pxFe").value=d.pxe;prProspectos()}};
+["p","c","r","i"].forEach(function(k){$("pxT"+k).onclick=function(){prTab(k)}});
+function pxProgOpts(v){return '<option value="">Sin definir</option>'+PL.map(function(p){return '<option'+(p.k===v?' selected':'')+'>'+esc(p.k)+'</option>'}).join("")}
+function pxCampOpts(v){return '<option value="">Sin campaña</option>'+Object.keys(CMP).map(function(k){return '<option value="'+attr(k)+'"'+(k===v?' selected':'')+'>'+esc(CMP[k].nombre)+'</option>'}).join("")}
+function pxAbre(id){
+  PXID=id;var p=id?PRO[id]:null;$("pxDMsg").textContent="";
+  $("pxDT").textContent=p?p.nombre:"Nuevo prospecto";
+  $("pxDDatos").hidden=!!p;$("pxDNew").hidden=!!p;$("pxDEst").hidden=!p;
+  $("pxNNom").value="";$("pxNTel").value="";$("pxNMail").value="";$("pxNProg").innerHTML=pxProgOpts("");$("pxNCamp").innerHTML=pxCampOpts("");$("pxNCanal").value="";
+  if(p){
+    $("pxDInfo").innerHTML='<b>'+esc(p.tel)+'</b>'+(p.correo?' · '+esc(p.correo):'')+'<br><span class="hint">'+esc(p.campanaNombre||"Sin campaña")+' · '+esc(p.canal||"")+' · registrado '+esc(fd(String(p.creado).slice(0,10)))+(p.mensaje?' · «'+esc(p.mensaje)+'»':'')+(p.consentimiento&&p.consentimiento.fecha?' · aceptó el aviso de privacidad':'')+'</span>';
+    $("pxDEstS").innerHTML=PXORD.concat(["descartado"]).map(function(e){return '<option value="'+e+'"'+(e===p.estado?' selected':'')+'>'+esc(PXEST[e])+'</option>'}).join("");
+    $("pxDProg").innerHTML=pxProgOpts(p.programa);$("pxDProx").value=p.proxima||"";
+    var us=(typeof USERS!=="undefined"?USERS:[]).filter(function(u){return u.rol!=="alumno"&&u.rol!=="docente"});
+    $("pxDAsig").innerHTML='<option value="">Sin asignar</option><option value="'+attr(APP.u)+'"'+(p.asignado===APP.u?' selected':'')+'>Yo ('+esc(APP.name)+')</option>'+us.filter(function(u){return u.u!==APP.u}).map(function(u){return '<option value="'+attr(u.u)+'"'+(p.asignado===u.u?' selected':'')+'>'+esc(u.name)+'</option>'}).join("")+(p.asignado&&p.asignado!==APP.u&&!us.some(function(u){return u.u===p.asignado})?'<option value="'+attr(p.asignado)+'" selected>'+esc(pxNomUsr(p.asignado))+'</option>':'');
+    $("pxDNota").value="";
+    $("pxDTl").innerHTML=(p.notas||[]).slice().reverse().map(function(n){return '<div class="mod" style="cursor:default;margin:6px 0"><span class="hint">'+esc(axHM(n.t))+' · '+esc(n.n||n.u)+'</span><span style="white-space:pre-wrap;color:var(--ink)">'+esc(n.txt)+'</span></div>'}).join("")||'<p class="hint">Sin notas todavía.</p>';
+    $("pxDWa").href=pxWa(p);$("pxDIns").hidden=p.estado==="inscrito";
+  }
+  $("pxDEstW").hidden=!p;$("dPx").showModal();
+}
+$("pxNuevo").onclick=function(){pxAbre(null)};
+$("pxTb").onclick=function(e){var id=e.target.dataset&&e.target.dataset.pxo;if(id)pxAbre(id)};
+$("pxDCls").onclick=function(){$("dPx").close()};
+$("pxDGo").onclick=async function(){
+  var m=$("pxDMsg"),bad=function(t){m.style.color="var(--bad)";m.textContent=t},ahora=new Date().toISOString(),b=this;
+  if(!PXID){
+    var nom=$("pxNNom").value.trim(),tel=$("pxNTel").value.replace(/\D/g,""),mail=$("pxNMail").value.trim().toLowerCase();
+    if(nom.length<3)return bad("Escribe el nombre.");if(tel.length<10||tel.length>15)return bad("Escribe el teléfono a 10 dígitos.");if(mail&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail))return bad("El correo no parece válido.");
+    var dup=pxLista().find(function(p){return p.estado!=="descartado"&&((p.tel||"").slice(-10)===tel.slice(-10)||(mail&&(p.correo||"")===mail))});if(dup&&!confirm("Ya existe «"+dup.nombre+"» con ese teléfono o correo. ¿Registrar de todos modos?"))return;
+    var c=CMP[$("pxNCamp").value],d={nombre:nom,tel:tel.slice(-10),correo:mail,programa:$("pxNProg").value,mensaje:"",campana:c?$("pxNCamp").value:"",campanaNombre:c?c.nombre:"",canal:$("pxNCanal").value.trim()||(c?c.plataforma:"Directo"),origen:"manual",estado:"nuevo",creado:ahora,ultimo:ahora,asignado:APP.u,proxima:"",notas:[{t:ahora,u:APP.u,n:APP.name,tipo:"sistema",txt:"Registrado manualmente por "+APP.name}]};
+    b.disabled=true;try{var id=uid();await DBH.doc("prospectos/"+id).set(d);PRO[id]=d;$("dPx").close();prProspectos()}catch(e){dberr(e)}b.disabled=false;return;
+  }
+  var p=PRO[PXID],est=$("pxDEstS").value,prox=$("pxDProx").value||"",asig=$("pxDAsig").value,prog=$("pxDProg").value,nota=$("pxDNota").value.trim(),notas=(p.notas||[]).slice(),cambio=false,add=function(t,tx){notas.push({t:ahora,u:APP.u,n:APP.name,tipo:t,txt:tx});cambio=true};
+  if(est==="descartado"&&p.estado!=="descartado"&&nota.length<3)return bad("Para descartar escribe el motivo en la nota.");
+  if(est!==p.estado)add("estado","Estado: "+PXEST[p.estado]+" → "+PXEST[est]);
+  if(asig!==(p.asignado||""))add("asignacion","Asignado a: "+(asig?pxNomUsr(asig):"nadie"));
+  if(prox!==(p.proxima||""))add("seguimiento",prox?"Próximo contacto: "+fd(prox):"Se quitó el próximo contacto");
+  if(prog!==(p.programa||""))add("sistema","Programa de interés: "+(prog||"sin definir"));
+  if(nota)add("nota",nota);
+  if(!cambio)return bad("No hay nada que guardar.");
+  var d=Object.assign({},p,{estado:est,asignado:asig,proxima:(est==="inscrito"||est==="descartado")?"":prox,programa:prog,ultimo:ahora,notas:notas});
+  b.disabled=true;try{await DBH.doc("prospectos/"+PXID).set(d);PRO[PXID]=d;prProspectos();pxAbre(PXID);$("pxDMsg").style.color="var(--ok)";$("pxDMsg").textContent="Guardado."}catch(e){bad(e.message||"No se pudo guardar.")}b.disabled=false;
+};
+$("pxDIns").onclick=function(){
+  var p=PRO[PXID];if(!p)return;$("dPx").close();
+  if(typeof ir==="function"&&accesoVista("ins")){ir("ins");setTimeout(function(){try{$("inNom").value=p.nombre;if(p.programa)$("inPlan").value=p.programa;if($("inTutTel"))$("inTutTel").value=p.tel}catch(e){}},80)}
+  else alert("Para inscribirlo necesitas el permiso de Inscripción de alumnos. Cuando se inscriba, marca al prospecto como «Inscrito».");
+};
+/* ---- campañas ---- */
+function prCampStats(id){var L=pxLista().filter(function(p){return p.campana===id});return {n:L.length,cont:L.filter(function(p){return p.estado!=="nuevo"}).length,ins:L.filter(function(p){return p.estado==="inscrito"}).length}}
+function prCampanas(){
+  var L=Object.keys(CMP).map(function(k){return Object.assign({id:k},CMP[k])}).sort(function(a,b){return String(b.inicio||"").localeCompare(String(a.inicio||""))});
+  $("cmTb").innerHTML=L.length?L.map(function(c){var s=prCampStats(c.id),pres=+c.presupuesto||0;
+    return '<tr><td style="white-space:normal"><b>'+esc(c.nombre)+'</b><br><span class="hint">'+esc(c.plataforma||"")+(c.programa?' · '+esc(c.programa):'')+'</span></td><td>'+(c.inicio?esc(fd(c.inicio)):'—')+(c.fin?' a '+esc(fd(c.fin)):'')+'</td><td>'+(c.activa===false?'<span class="tag sin">Pausada</span>':'<span class="tag pagado">Activa</span>')+'</td><td class="n">'+s.n+(c.meta?' / '+c.meta:'')+'</td><td class="n">'+s.cont+'</td><td class="n">'+s.ins+'</td><td class="n">'+(pres?mx.format(pres):'—')+'</td><td class="n">'+(pres&&s.n?mx.format(pres/s.n):'—')+'</td><td class="n">'+(pres&&s.ins?mx.format(pres/s.ins):'—')+'</td><td style="white-space:normal"><button data-cme="'+attr(c.id)+'">Editar</button> <button data-cml="'+attr(c.id)+'">Copiar enlace</button></td></tr>'}).join(""):vacio(10,"Todavía no hay campañas. Crea una para obtener su enlace de registro.");
+}
+function cmEnlace(id){return location.origin+"/registro?c="+id}
+$("cmNueva").onclick=function(){cmAbre(null)};
+function cmAbre(id){
+  CMID=id;var c=id?CMP[id]:null;$("cmMsg").textContent="";$("cmT").textContent=c?"Editar campaña":"Nueva campaña";
+  $("cmNom").value=c?c.nombre:"";$("cmPlat").innerHTML=PXPLAT.map(function(x){return '<option'+(c&&c.plataforma===x?' selected':'')+'>'+x+'</option>'}).join("");$("cmIni").value=c?c.inicio||"":today();$("cmFin").value=c?c.fin||"":"";$("cmPres").value=c?c.presupuesto||"":"";$("cmMeta").value=c?c.meta||"":"";$("cmProg").innerHTML=pxProgOpts(c?c.programa:"");$("cmAct").checked=c?c.activa!==false:true;
+  $("cmEnl").hidden=!c;if(c){$("cmUrl").textContent=cmEnlace(id);$("cmQR").innerHTML=qrSVG(cmEnlace(id),160)}
+  $("dCm").showModal();
+}
+$("cmTb").onclick=async function(e){var d=e.target.dataset||{};if(d.cme)cmAbre(d.cme);else if(d.cml){try{await navigator.clipboard.writeText(cmEnlace(d.cml));e.target.textContent="Copiado"}catch(er){prompt("Copia el enlace:",cmEnlace(d.cml))}}};
+$("cmCls").onclick=function(){$("dCm").close()};
+$("cmGo").onclick=async function(){
+  var m=$("cmMsg"),bad=function(t){m.style.color="var(--bad)";m.textContent=t};if(permiso("prospectos")!=="editar")return bad("No tienes permiso para editar campañas.");
+  var nom=$("cmNom").value.trim();if(nom.length<3)return bad("Escribe el nombre de la campaña.");if($("cmIni").value&&$("cmFin").value&&$("cmFin").value<$("cmIni").value)return bad("La fecha final no puede ser anterior a la inicial.");
+  var d={nombre:nom,plataforma:$("cmPlat").value,inicio:$("cmIni").value||"",fin:$("cmFin").value||"",presupuesto:Math.max(0,+$("cmPres").value||0),meta:Math.max(0,Math.round(+$("cmMeta").value||0)),programa:$("cmProg").value,activa:$("cmAct").checked,creada:(CMID&&CMP[CMID]&&CMP[CMID].creada)||new Date().toISOString()};
+  var b=this;b.disabled=true;try{var id=CMID||uid();await DBH.doc("campanas/"+id).set(d);CMP[id]=d;prCampanas();if(!CMID){CMID=id;cmAbre(id);$("cmMsg").style.color="var(--ok)";$("cmMsg").textContent="Campaña creada. Usa este enlace en tus anuncios."}else{$("dCm").close()}}catch(er){dberr(er)}b.disabled=false;
+};
+$("cmCopia").onclick=async function(){try{await navigator.clipboard.writeText(cmEnlace(CMID));this.textContent="Copiado"}catch(e){prompt("Copia el enlace:",cmEnlace(CMID))}};
+/* ---- resumen ---- */
+function prResumen(){
+  var L=pxLista(),tot=L.length,por=function(f){return L.filter(f).length},pct=function(a,b){return b?Math.round(a/b*1000)/10+" %":"—"};
+  var cont=por(function(p){return p.estado!=="nuevo"}),int=por(function(p){return ["interesado","cita","inscrito"].indexOf(p.estado)>-1}),cit=por(function(p){return ["cita","inscrito"].indexOf(p.estado)>-1}),ins=por(function(p){return p.estado==="inscrito"}),des=por(function(p){return p.estado==="descartado"});
+  var emb=[["Prospectos",tot],["Contactados",cont],["Interesados",int],["Cita o visita",cit],["Inscritos",ins]];
+  $("rsEmb").innerHTML=emb.map(function(x,i){var w=tot?Math.round(x[1]/tot*100):0;return '<div style="margin:6px 0"><div style="display:flex;justify-content:space-between"><span>'+esc(x[0])+'</span><b>'+x[1]+(i?' <span class="hint">('+pct(x[1],tot)+')</span>':'')+'</b></div><div style="height:10px;border-radius:6px;background:var(--line)"><div style="height:10px;border-radius:6px;background:var(--accent);width:'+w+'%"></div></div></div>'}).join("")+'<p class="hint">Descartados: '+des+' · Conversión de prospecto a inscrito: <b>'+pct(ins,tot)+'</b></p>';
+  var gr=function(k){var o={};L.forEach(function(p){var c=p[k]||"Sin dato";o[c]=o[c]||{n:0,ins:0};o[c].n++;if(p.estado==="inscrito")o[c].ins++});return o};
+  var tabla=function(o){return Object.keys(o).sort(function(a,b){return o[b].n-o[a].n}).map(function(k){return '<tr><td>'+esc(k)+'</td><td class="n">'+o[k].n+'</td><td class="n">'+o[k].ins+'</td><td class="n">'+pct(o[k].ins,o[k].n)+'</td></tr>'}).join("")||vacio(4,"Sin datos.")};
+  $("rsCanal").innerHTML=tabla(gr("canal"));$("rsProg").innerHTML=tabla(gr("programa"));
+  var costo=Object.keys(CMP).reduce(function(a,k){return a+(+CMP[k].presupuesto||0)},0);
+  $("rsCosto").textContent=costo?"Inversión total en campañas: "+mx.format(costo)+(tot?" · costo por prospecto: "+mx.format(costo/tot):"")+(ins?" · costo por inscrito: "+mx.format(costo/ins):""):"Captura el presupuesto de cada campaña para ver cuánto cuesta cada prospecto y cada inscrito.";
+}
+/* ---- importar ---- */
+function csvParse(t){
+  t=String(t).replace(/^\uFEFF/,"");var l1=t.split(/\r?\n/)[0]||"",sep=(l1.split(";").length>l1.split(",").length)?";":(l1.split("\t").length>l1.split(",").length?"\t":","),rows=[],row=[],f="",q=false;
+  for(var i=0;i<t.length;i++){var c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true;else if(c===sep){row.push(f);f=""}else if(c==="\n"||c==="\r"){if(c==="\r"&&t[i+1]==="\n")i++;row.push(f);f="";if(row.some(function(x){return x.trim()}))rows.push(row);row=[]}else f+=c}
+  row.push(f);if(row.some(function(x){return x.trim()}))rows.push(row);return rows;
+}
+function hNorm(h){return String(h).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"")}
+var PXMAP={nombre:["nombre","nombrecompleto","fullname","name","nombreyapellido"],tel:["telefono","tel","celular","whatsapp","phone","phonenumber","telefonocelular","movil"],correo:["correo","email","mail","correoelectronico"],programa:["programa","licenciatura","carrera","programadeinteres","interes","maestria"],fecha:["fecha","createdtime","date","fechaderegistro"],campana:["campana","campaign","campaignname","campana"],canal:["canal","plataforma","platform","origen","source"]};
+function prImportaUI(){
+  setOpts($("pxImpC"),'<option value="">Sin campaña</option>'+Object.keys(CMP).map(function(k){return '<option value="'+attr(k)+'">'+esc(CMP[k].nombre)+'</option>'}).join(""));
+}
+$("pxFile").onchange=async function(){
+  var f=this.files[0];$("pxImpMsg").textContent="";$("pxImpPrev").innerHTML="";PXIMP=null;$("pxImpGo").disabled=true;if(!f)return;
+  var rows=csvParse(await f.text());if(rows.length<2){$("pxImpMsg").style.color="var(--bad)";$("pxImpMsg").textContent="El archivo no tiene filas para importar.";return}
+  var H=rows[0].map(hNorm),ix={};Object.keys(PXMAP).forEach(function(k){ix[k]=H.findIndex(function(h){return PXMAP[k].indexOf(h)>-1})});
+  if(ix.nombre<0){var a=H.indexOf("firstname"),b=H.indexOf("lastname");if(a>-1){ix.nombre=-2;ix.n1=a;ix.n2=b}}
+  if(ix.nombre===-1||ix.tel<0){$("pxImpMsg").style.color="var(--bad)";$("pxImpMsg").textContent="No encontré las columnas de nombre y teléfono. El archivo debe traer encabezados como «nombre» y «telefono» (o full_name y phone_number).";return}
+  var recs=rows.slice(1).map(function(r){var nom=ix.nombre===-2?((r[ix.n1]||"")+" "+(ix.n2>-1?r[ix.n2]||"":"")).trim():(r[ix.nombre]||"").trim();return {nombre:nom,tel:String(r[ix.tel]||"").replace(/\D/g,"").slice(-10),correo:ix.correo>-1?(r[ix.correo]||"").trim().toLowerCase():"",programa:ix.programa>-1?(r[ix.programa]||"").trim():"",fecha:ix.fecha>-1?(r[ix.fecha]||"").slice(0,10):"",canal:ix.canal>-1?(r[ix.canal]||"").trim():""}});
+  var vistos={};pxLista().forEach(function(p){if(p.tel)vistos[String(p.tel).slice(-10)]=1;if(p.correo)vistos[p.correo]=1});
+  var ok=[],mal=0,dup=0;recs.forEach(function(r){if(r.nombre.length<3||r.tel.length!==10){mal++;return}if(vistos[r.tel]||(r.correo&&vistos[r.correo])){dup++;return}vistos[r.tel]=1;if(r.correo)vistos[r.correo]=1;ok.push(r)});
+  PXIMP=ok;$("pxImpPrev").innerHTML='<p>Se encontraron <b>'+recs.length+'</b> filas: <b>'+ok.length+'</b> nuevas, '+dup+' repetidas (ya existen) y '+mal+' sin nombre o con teléfono no válido.</p>'+(ok.length?'<div class="wrap"><table style="min-width:420px"><thead><tr><th>Nombre</th><th>Teléfono</th><th>Correo</th><th>Programa</th></tr></thead><tbody>'+ok.slice(0,5).map(function(r){return '<tr><td>'+esc(r.nombre)+'</td><td>'+esc(r.tel)+'</td><td>'+esc(r.correo)+'</td><td>'+esc(r.programa)+'</td></tr>'}).join("")+'</tbody></table></div>':"");
+  $("pxImpGo").disabled=!ok.length||!$("pxImpOk").checked;
+};
+$("pxImpOk").onchange=function(){$("pxImpGo").disabled=!(PXIMP&&PXIMP.length)||!this.checked};
+$("pxImpGo").onclick=async function(){
+  if(!PXIMP||!PXIMP.length||permiso("prospectos")!=="editar")return;var c=CMP[$("pxImpC").value],canal=$("pxImpCanal").value.trim(),b=this,m=$("pxImpMsg"),n=0;b.disabled=true;m.style.color="var(--muted)";
+  try{for(var i=0;i<PXIMP.length;i++){var r=PXIMP[i],ahora=new Date().toISOString(),id=uid(),d={nombre:r.nombre,tel:r.tel,correo:r.correo,programa:PL.some(function(p){return p.k===r.programa})?r.programa:"",mensaje:r.programa&&!PL.some(function(p){return p.k===r.programa})?"Interés indicado: "+r.programa:"",campana:c?$("pxImpC").value:"",campanaNombre:c?c.nombre:"",canal:canal||r.canal||(c?c.plataforma:"Importado"),origen:"importado",estado:"nuevo",creado:r.fecha&&/^\d{4}-\d{2}-\d{2}/.test(r.fecha)?r.fecha+"T12:00:00.000Z":ahora,ultimo:ahora,asignado:"",proxima:"",notas:[{t:ahora,u:APP.u,n:APP.name,tipo:"sistema",txt:"Importado de un archivo por "+APP.name}],consentimiento:{importado:true,fecha:ahora}};await DBH.doc("prospectos/"+id).set(d);PRO[id]=d;n++;m.textContent="Importando… "+n+" de "+PXIMP.length}
+    m.style.color="var(--ok)";m.textContent="Listo: se importaron "+n+" prospectos.";PXIMP=null;$("pxFile").value="";$("pxImpPrev").innerHTML="";$("pxImpOk").checked=false;prProspectos()}
+  catch(e){m.style.color="var(--bad)";m.textContent="Se detuvo tras "+n+" prospectos: "+((e&&e.message)||"error")}
+  b.disabled=true;
+};
 /* ===== Inicio de sesión de la app: usuario y contraseña por persona ===== */
 var USERS=[],APP=null,PLAT="consulta",PNAME="",OWNER_BYPASS=false,ITER=150000;
 function nrm(u){return String(u||"").trim().toLowerCase()}
@@ -9103,7 +9391,7 @@ $("usL").onclick=async function(e){
     else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN}).catch(function(){});
     rebuild();
   },onErr);
-  [["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+  [["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
     DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(typeof ntProgramar==="function")ntProgramar();if(c[0]==="calif"||c[0]==="constancias")render();if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
   DBH.collection("gastos").onSnapshot(function(s){G={};s.docs.forEach(function(d){G[d.id]=d.data()});if(!$("vGa").hidden)renderCaja()},onErr);

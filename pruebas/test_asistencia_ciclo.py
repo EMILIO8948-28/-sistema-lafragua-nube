@@ -35,7 +35,7 @@ with sync_playwright() as pw:
     put('docentes/d1',{'nombre':'Mtro. Pedro Soto','esp':'Historia','asig':[]});put('docentes/d2',{'nombre':'Mtra. Rosa Luna','esp':'Tesis','asig':[]})
     put('grupos/g1',{'num':'4821','plan':'Pedagogía','per':PER,'cuat':1,'alumnos':['s1','s2','s3','s4']});put('grupos/g3',{'num':'4833','plan':'Pedagogía','per':PER,'cuat':3,'alumnos':['s5']})
     put('grupos/gv',{'num':'4700','plan':'Pedagogía','per':'May–Ago 2026','cuat':1,'alumnos':[]})
-    put('materias/m1',{'per':PER,'plan':'Pedagogía','cuat':1,'nom':'Didáctica general','docId':'d1','ini':'08:00','fin':'10:00','ev':sab1});put('materias/m2',{'per':PER,'plan':'Pedagogía','cuat':1,'nom':'Historia de la educación','docId':'d1','ini':'10:00','fin':'12:00','ev':sab1});put('materias/m3',{'per':PER,'plan':'Pedagogía','cuat':3,'nom':'Tesis','docId':'d2','ini':'08:00','fin':'10:00','ev':sab1})
+    put('materias/m1',{'per':PER,'plan':'Pedagogía','cuat':1,'nom':'Didáctica general','docId':'d1','ini':'08:00','fin':'10:00','ev':datetime.date.today().isoformat()});put('materias/m2',{'per':PER,'plan':'Pedagogía','cuat':1,'nom':'Historia de la educación','docId':'d1','ini':'10:00','fin':'12:00','ev':datetime.date.today().isoformat()});put('materias/m3',{'per':PER,'plan':'Pedagogía','cuat':3,'nom':'Tesis','docId':'d2','ini':'08:00','fin':'10:00','ev':datetime.date.today().isoformat()})
     put('criterios/m1',{'items':[{'id':'cr1','nom':'Examen','peso':100}]})
     it=lambda i,mid,nm,cu,cal,pts=None:dict({'id':i,'mid':mid,'mat':nm,'plan':'Pedagogía','per':PER,'cuat':cu,'cal':cal,'fecha':sab1},**({'pts':pts} if pts else {}))
     put('calif/s1',{'items':[it('a1','m1','Didáctica general',1,9,{'cr1':9}),it('a2','m2','Historia de la educación',1,9)]})

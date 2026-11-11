@@ -6,9 +6,9 @@
    Sin dependencias.
    =========================================================================== */
 const http = require('http'), https = require('https');
-const EVENTOS = ['adeudo', 'solicitud', 'planeacion', 'evaluacion', 'calificaciones', 'pago', 'prospecto', 'manual', 'resumen'];
+const EVENTOS = ['adeudo', 'solicitud', 'planeacion', 'evaluacion', 'calificaciones', 'pago', 'prospecto', 'baja', 'manual', 'resumen'];
 const PLAZO_CAL = 3;   /* días después de la evaluación para capturar calificaciones */
-const CFG0 = { activo: false, escuela: 'Universidad Lafragua', correo: { activo: false, usarRespaldos: false, host: '', puerto: 587, seguro: false, usuario: '', clave: '', de: '', nombre: '' }, whatsapp: { activo: false, phoneId: '', token: '', version: 'v21.0', plantilla: 'aviso_escolar', idioma: 'es_MX', pais: '52' }, eventos: { adeudo: { correo: true, whatsapp: true }, solicitud: { correo: true, whatsapp: true }, planeacion: { correo: true, whatsapp: false }, evaluacion: { correo: true, whatsapp: true }, pago: { correo: true, whatsapp: false }, prospecto: { correo: true, whatsapp: false }, calificaciones: { correo: true, whatsapp: true }, manual: { correo: true, whatsapp: true }, resumen: { correo: true, whatsapp: false } }, recordatorios: { calificaciones: true }, resumen: { activo: true, hora: 8, para: [] }, sin: [] };
+const CFG0 = { activo: false, escuela: 'Universidad Lafragua', correo: { activo: false, usarRespaldos: false, host: '', puerto: 587, seguro: false, usuario: '', clave: '', de: '', nombre: '' }, whatsapp: { activo: false, phoneId: '', token: '', version: 'v21.0', plantilla: 'aviso_escolar', idioma: 'es_MX', pais: '52' }, eventos: { adeudo: { correo: true, whatsapp: true }, solicitud: { correo: true, whatsapp: true }, planeacion: { correo: true, whatsapp: false }, evaluacion: { correo: true, whatsapp: true }, pago: { correo: true, whatsapp: false }, prospecto: { correo: true, whatsapp: false }, baja: { correo: true, whatsapp: false }, calificaciones: { correo: true, whatsapp: true }, manual: { correo: true, whatsapp: true }, resumen: { correo: true, whatsapp: false } }, recordatorios: { calificaciones: true }, resumen: { activo: true, hora: 8, para: [] }, sin: [] };
 const MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 function telWa(t, pais) { const d = String(t || '').replace(/\D/g, ''); if (d.length < 10) return ''; if (d.length === 10) return (pais || '52') + d; if (d.length === 13 && d.startsWith('521')) return '52' + d.slice(3); return d.length <= 15 ? d : ''; }
 function limpiaWa(t, max) { return String(t || '').replace(/[\r\n\t]+/g, ' · ').replace(/ {3,}/g, '  ').trim().slice(0, max); }
@@ -147,7 +147,7 @@ function crea(ctx) {
   function resumenPendientes(hoy) {
     const cuenta = (col, f) => q.lista.all(col).filter(r => { try { return f(JSON.parse(r.data)); } catch (e) { return false; } }).length;
     let transf = 0; q.lista.all('ledger').forEach(r => { try { transf += (JSON.parse(r.data).pagos || []).filter(g => g.estado === 'pendiente').length; } catch (e) {} }); q.lista.all('acuerdo286').forEach(r => { try { transf += (JSON.parse(r.data).pagos || []).filter(g => g.estado === 'pendiente').length; } catch (e) {} });
-    return { solicitudes: cuenta('solicitudes', d => d.estado === 'pendiente'), planeaciones: cuenta('planeaciones', d => d.estado === 'pendiente'), transferencias: transf, calificaciones: califPendientes(hoy).length, contratos: cuenta('contratos', d => d.estado === 'generado') };
+    return { solicitudes: cuenta('solicitudes', d => d.estado === 'pendiente'), planeaciones: cuenta('planeaciones', d => d.estado === 'pendiente'), transferencias: transf, calificaciones: califPendientes(hoy).length, contratos: cuenta('contratos', d => d.estado === 'generado'), bajas: cuenta('bajas', d => d.estado === 'pendiente') };
   }
   function diarios(force) {
     const c = cfg(), hoy = hoyMx(), hora = ctx.horaMx ? ctx.horaMx() : new Date().getHours(), st = leeSis('avisos_estado', { ultimo: {} }), hecho = { calificaciones: 0, resumen: 0 };
@@ -162,10 +162,10 @@ function crea(ctx) {
       }); if (!force) st.ultimo.cal = hoy;
     }
     if (c.resumen.activo && c.resumen.para.length && (force === 'resumen' || (!force && hora >= c.resumen.hora && st.ultimo.res !== hoy))) {
-      const r = resumenPendientes(hoy), tot = r.solicitudes + r.planeaciones + r.transferencias + r.calificaciones + r.contratos;
+      const r = resumenPendientes(hoy), tot = r.solicitudes + r.planeaciones + r.transferencias + r.calificaciones + r.contratos + r.bajas;
       if (tot > 0 && c.eventos.resumen.correo && c.correo.activo) {
         const l = [];
-        if (r.solicitudes) l.push('• ' + r.solicitudes + ' solicitud(es) de alumnos por atender'); if (r.planeaciones) l.push('• ' + r.planeaciones + ' planeación(es) de docentes por revisar'); if (r.transferencias) l.push('• ' + r.transferencias + ' transferencia(s) por confirmar'); if (r.calificaciones) l.push('• ' + r.calificaciones + ' asignatura(s) con calificaciones sin subir'); if (r.contratos) l.push('• ' + r.contratos + ' contrato(s) de docentes por firmar');
+        if (r.solicitudes) l.push('• ' + r.solicitudes + ' solicitud(es) de alumnos por atender'); if (r.planeaciones) l.push('• ' + r.planeaciones + ' planeación(es) de docentes por revisar'); if (r.transferencias) l.push('• ' + r.transferencias + ' transferencia(s) por confirmar'); if (r.calificaciones) l.push('• ' + r.calificaciones + ' asignatura(s) con calificaciones sin subir'); if (r.contratos) l.push('• ' + r.contratos + ' contrato(s) de docentes por firmar'); if (r.bajas) l.push('• ' + r.bajas + ' alumno(s) pendientes de decisión: baja o prórroga');
         c.resumen.para.forEach(mail => { const rr = encola('resumen', { id: 'resumen:' + mail, tipo: 'personal', nombre: mail.split('@')[0], mail, tel: '' }, 'Pendientes de hoy · ' + c.escuela, 'Esto es lo que espera tu atención en la plataforma:\n\n' + l.join('\n') + '\n\nEntra a la plataforma para resolverlo.', 'res:' + hoy, 'automático'); hecho.resumen += rr.correo; });
       }
       if (!force) st.ultimo.res = hoy;
@@ -213,8 +213,9 @@ function crea(ctx) {
     const tick = async () => { try { diarios(); await procesa(40); } catch (e) { console.error('Avisos:', e.message); } };
     const t = setInterval(tick, parseInt(ENV.LF_AVISOS_TICK_MS || '30000', 10)); t.unref(); return t;
   }
+  function avisaDireccion(evento, asunto, texto, ref) { const c = cfg(); if (!c.activo || !c.correo.activo || !c.eventos[evento] || !c.eventos[evento].correo) return; (c.resumen.para || []).forEach(mail => encola(evento, { id: 'dir:' + mail, tipo: 'personal', nombre: mail.split('@')[0], mail, tel: '' }, asunto, texto, ref, 'automático')); }
   function avisaProspecto(p) { const c = cfg(); encola('prospecto', { id: 'pros:' + p.id, tipo: 'prospecto', nombre: p.nombre, mail: MAIL.test(String(p.correo || '')) ? p.correo : '', tel: p.tel }, 'Gracias por tu interés en ' + c.escuela, 'Recibimos tus datos y un asesor te contactará muy pronto para darte la información' + (p.programa ? ' de ' + p.programa : '') + '. Si ya no deseas que te contactemos, responde a este mensaje.', 'pros:' + p.id, 'automático'); }
   function avisaAlumno(evento, sid, asunto, texto, ref) { const p = alumno(sid); if (p) encola(evento, p, asunto, texto, ref, 'automático'); }
-  return { avisaProspecto, avisaAlumno, cfgPublica, guardaCfg, setSin, hookAviso, hookSolicitud, hookPlaneacion, hookEvaluacion, diarios, procesa, destinatarios, enviarManual, mensajes, resumen, reintenta, probar, programa, califPendientes, resumenPendientes, cfg };
+  return { avisaDireccion, avisaProspecto, avisaAlumno, cfgPublica, guardaCfg, setSin, hookAviso, hookSolicitud, hookPlaneacion, hookEvaluacion, diarios, procesa, destinatarios, enviarManual, mensajes, resumen, reintenta, probar, programa, califPendientes, resumenPendientes, cfg };
 }
 module.exports = { crea, telWa, limpiaWa, MAIL };

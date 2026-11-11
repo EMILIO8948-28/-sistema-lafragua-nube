@@ -158,7 +158,7 @@ const MODULOS = {
   estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'egresados'], E: [], plans: true, nomina: true },
   ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
   inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
-  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'resguardos', 'ciclos'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
+  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'resguardos', 'ciclos', 'bajas'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
   constancias:  { L: ['constancias', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
   acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
   a286:         { L: ['acuerdo286', 'resguardos286'], E: ['acuerdo286', 'meta', 'resguardos286'], archivos: true },
@@ -282,7 +282,7 @@ function reduce(s, col, data) {
   if (col !== 'students' || s.rol === 'admin') return data;
   const P = s.perm || {};
   if (VER_ALUMNOS_COMPLETOS.some(m => P[m] && P[m] !== 'none')) return data;
-  const o = {}; CAMPOS_DOCENTE.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o;
+  const o = {}; CAMPOS_DOCENTE.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); if (data.baja && !data.baja.revertida) o.baja = { fecha: data.baja.fecha }; return o;
 }
 function validaModulos(m) {
   if (m === undefined || m === null) return { ok: true, valor: null };
@@ -720,6 +720,7 @@ async function api(req, res, partes) {
     let ok = false;
     if (usr) ok = claveOk(clave, usr); else hashClave(clave, 'sin-usuario-sal');
     if (!ok) { falla('ip|' + ip, 900000); falla('u|' + ip + '|' + u, 900000); audita(u, req, 'Inicio de sesión fallido'); await dormir(400); return responde(res, 401, { error: 'Usuario o contraseña incorrectos.' }); }
+    if (usr.rol === 'alumno' && BJ.bajaDe(usr.alumno)) { intentos.delete('u|' + ip + '|' + u); audita(usr.u, req, 'Inicio de sesión rechazado: alumno dado de baja'); return responde(res, 403, { error: MSG_BAJA, bloqueado: true }); }
     if (usr.rol === 'alumno' && bloqueadoPorPago(usr.alumno)) { intentos.delete('u|' + ip + '|' + u); audita(usr.u, req, 'Inicio de sesión rechazado: acceso bloqueado por falta de pago'); return responde(res, 403, { error: MSG_BLOQUEO, bloqueado: true }); }
     intentos.delete('u|' + ip + '|' + u);
     if (usr.totp) return responde(res, 200, { requiere2fa: true, ticket: SEG.emiteTicket(usr.u) });
@@ -736,6 +737,7 @@ async function api(req, res, partes) {
     if (limite('f2|' + ip, 40, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' }); falla('f2|' + ip, 900000);
     try {
       const r = SEG.usaTicket(c.ticket, c.codigo), usr = q.usr.get(r.u); if (!usr) return responde(res, 401, { error: 'Usuario no encontrado.' });
+      if (usr.rol === 'alumno' && BJ.bajaDe(usr.alumno)) return responde(res, 403, { error: MSG_BAJA, bloqueado: true });
       if (usr.rol === 'alumno' && bloqueadoPorPago(usr.alumno)) return responde(res, 403, { error: MSG_BLOQUEO, bloqueado: true });
       nuevaSesion(req, res, usr.u); audita(usr.u, req, 'Inicio de sesión con verificación en dos pasos' + (r.recuperacion ? ' (código de recuperación)' : ''));
       return responde(res, 200, { usuario: publicoUsuario(usr), recuperacion: r.recuperacion, restantes: SEG.restantes(usr.u) });
@@ -808,6 +810,8 @@ async function api(req, res, partes) {
         if (a === 'atencion') { if (v3) { nuevo.creador = v3.creador; if (v3.privado && v3.creador !== s.u && s.rol !== 'admin') return responde(res, 403, { error: 'Este registro es confidencial.' }); if (nuevo.privado !== v3.privado && v3.creador !== s.u && s.rol !== 'admin') nuevo.privado = v3.privado; } else nuevo.creador = s.u; }
         if (s.rol !== 'admin') { const ant = (v3 && v3.notas) || [], nvas = Array.isArray(nuevo.notas) ? nuevo.notas : []; if (nvas.length < ant.length || ant.some((n, i) => JSON.stringify(n) !== JSON.stringify(nvas[i]))) return responde(res, 403, { error: 'Las notas del seguimiento no se pueden editar ni borrar: agrega una nota nueva.' }); }
       }
+      /* La baja de un alumno solo se registra con la decisión de Control escolar (API de bajas): editar el alumno no la quita ni la pone */
+      if (a === 'students' && s.rol !== 'admin') { const rv4 = q.uno.get('students', b); let v4 = null; try { v4 = rv4 ? JSON.parse(rv4.data) : null; } catch (e) {} if (v4 && v4.baja) nuevo.baja = v4.baja; else delete nuevo.baja; if (v4 && v4.movimientos) nuevo.movimientos = v4.movimientos; else delete nuevo.movimientos; }
       /* Un periodo cerrado ya no admite cambios de calificaciones ni de asistencia (solo el Administrador lo puede reabrir) */
       if (s.rol !== 'admin') {
         if (a === 'asistencia') { const rm = q.uno.get('materias', b); let mm = null; try { mm = rm ? JSON.parse(rm.data) : null; } catch (e) {} if (mm && matCerrada(b)) return responde(res, 403, { error: 'Esa asignatura está cerrada (su bloque o el periodo ' + mm.per + '): la asistencia ya no se puede cambiar.' }); }
@@ -987,6 +991,27 @@ async function api(req, res, partes) {
     if (m === 'GET' && nivel(s, 'prospectos') !== 'none') return responde(res, 200, CAP.cfgInicio());
     if (m === 'PUT' && nivel(s, 'prospectos') === 'editar') { try { CAP.guardaInicio(await leeJSON(req, 500)); audita(s.u, req, 'Cambió el botón Inscríbete del inicio'); return responde(res, 200, Object.assign({ ok: true }, CAP.cfgInicio())); } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); } }
     return responde(res, 403, { error: 'No tienes permiso.' });
+  }
+  /* Cambios de grupo y de plan de un alumno */
+  if (tipo === 'alumnos' && a === 'mover' && m === 'POST') {
+    if (!(rol === 'admin' || nivel(s, 'escolar') === 'editar')) return responde(res, 403, { error: 'Solo Control escolar con permiso de edición.' });
+    try {
+      const c = await leeJSON(req, 2000); if (!NOMBRE_OK.test(String(c.sid || ''))) return responde(res, 400, { error: 'Alumno no válido.' });
+      const st = c.tipo === 'plan' ? MOV.cambiaPlan(String(c.sid), c.plan, c.grupo ? String(c.grupo) : '', c.motivo, s) : (c.tipo === 'grupo' ? MOV.cambiaGrupo(String(c.sid), c.grupo, c.motivo, s) : null);
+      if (!st) return responde(res, 400, { error: 'Acción no válida.' }); return responde(res, 200, { ok: true });
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
+  /* Bajas y regularización: Control escolar decide */
+  if (tipo === 'bajas') {
+    const ed = rol === 'admin' || nivel(s, 'escolar') === 'editar', ver = ed || nivel(s, 'escolar') !== 'none';
+    if (!ver) return responde(res, 403, { error: 'No tienes permiso.' });
+    try {
+      if (m === 'GET' && a === 'config') return responde(res, 200, Object.assign({ motivos: BJ.MOTIVOS }, BJ.cfg()));
+      if (!ed) return responde(res, 403, { error: 'Solo Control escolar con permiso de edición.' });
+      if (m === 'PUT' && a === 'config') { const c = BJ.guardaCfg(await leeJSON(req, 500)); audita(s.u, req, 'Cambió la configuración de bajas'); return responde(res, 200, Object.assign({ ok: true }, c)); }
+      if (m === 'POST' && a === 'revisar') return responde(res, 200, Object.assign({ ok: true }, BJ.revisa()));
+      if (m === 'POST' && a === 'decidir') { const c = await leeJSON(req, 3000); if (!NOMBRE_OK.test(String(c.sid || ''))) return responde(res, 400, { error: 'Alumno no válido.' }); return responde(res, 200, { ok: true, caso: BJ.decide(String(c.sid), String(c.accion || ''), c, s) }); }
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
   }
   /* Verificación en dos pasos de cada usuario */
   if (tipo === '2fa') {
@@ -1226,6 +1251,7 @@ const dineroMx = n => '$' + Number(n).toLocaleString('es-MX', { minimumFractionD
 const fechaLargaMx = iso => new Date(iso + 'T12:00:00Z').toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 const MESES_C = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const COB0 = { activa: false, umbral: 2, diaLimite: 10, intervaloDias: 7, graciaDias: 7, reinicioDias: 30 };
+const MSG_BAJA = 'Tu usuario ya no tiene acceso porque causaste baja de la escuela. Si crees que es un error o quieres reincorporarte, acude a Control escolar.';
 const MSG_BLOQUEO = 'Tu acceso a la plataforma se ha bloqueado por falta de pago. Para recuperarlo, pasa a Control escolar a regularizar tu situación. De no hacerlo, podría proceder una baja temporal.';
 function leeDoc(col, id) { const r = q.uno.get(col, id); if (!r) return null; try { return JSON.parse(r.data); } catch (e) { return null; } }
 function cobCfg() {
@@ -1296,7 +1322,7 @@ function evaluaAlumnoCob(sid, ctx, op) {
   const ad = adeudoDe(sid, hoy, cfg, pe); if (!ad) return null;
   const previo = leeDoc('cobranza', sid), est = Object.assign({ sid, estado: 'ok', ciclo: 0, avisos: [] }, previo || {});
   est.mat = ad.st.mat; est.nombre = ad.st.nombre; est.plan = ad.st.programa || ad.st.carrera || ''; est.adeudo = { n: ad.n, total: ad.total, meses: ad.meses }; est.revisado = hoy;
-  const eg = leeDoc('egresados', sid), egresado = !!(eg && !eg.revertido), acVig = !est.exento && !egresado && acuerdoVigenteSrv(sid, hoy, ad.pagos), exento = !!est.exento || egresado || acVig, motivoEx = est.exento ? 'manual' : egresado ? 'egresado' : acVig ? 'acuerdo de pago vigente' : '';
+  const eg = leeDoc('egresados', sid), egresado = !!(eg && !eg.revertido), acVig = !est.exento && !egresado && acuerdoVigenteSrv(sid, hoy, ad.pagos), baja = BJ.bajaDe(sid), pro = BJ.prorrogaVigente(sid, hoy), exento = !!est.exento || egresado || baja || !!pro || acVig, motivoEx = est.exento ? 'manual' : egresado ? 'egresado' : baja ? 'baja' : pro ? 'prórroga de Control escolar vigente' : acVig ? 'acuerdo de pago vigente' : '';
   const abonoDesde = f => ad.pagos.some(g => g.estado !== 'rechazado' && Number(g.monto) > 0 && String(g.confFecha || g.fecha || '') >= f);
   let accion = '';
   if (est.estado === 'bloqueado') {
@@ -1341,6 +1367,11 @@ function corridaCobranza(op) {
   sidsConAcceso().forEach(sid => { try { const r = evaluaAlumnoCob(sid, ctx, op); if (r && r.accion) out.push(r); } catch (e) { console.error('Cobranza (' + sid + '):', e.message); } });
   return { activa: ctx.cfg.activa, acciones: out };
 }
+/* ---------- Bajas y regularización de alumnos ---------- */
+const BJ = require('./bajas.js').crea({ q, leeDoc, difunde, audita, hoyMx: () => hoyMx(), adeudoDe, cobCfg, planesYExtra, avisaAlumno: (e, sid, t, m, r) => avisaAlumnoSrv(e, sid, t, m, r), avisaDireccion: (e, a, t, r) => AV.avisaDireccion(e, a, t, r), cierraSesiones: sid => q.usrDeAlumno.all(sid).forEach(c => q.borSesU.run(c.u)), evaluaCob: sid => evaluaAlumnoCob(sid, ctxCobranza(), { alivio: true }) });
+setTimeout(() => { try { BJ.revisa(); } catch (e) { console.error('Bajas:', e.message); } }, Number(ENV.LF_BAJAS_ARRANQUE_MS) || 8000).unref();
+setInterval(() => { try { BJ.revisa(); } catch (e) { console.error('Bajas:', e.message); } }, Number(ENV.LF_BAJAS_TICK_MS) || 3600000).unref();
+const MOV = require('./movimientos.js').crea({ q, leeDoc, difunde, audita, hoyMx: () => hoyMx(), planesYExtra, perCerrado, hook: (c, i) => cobHook(c, i) });
 /* ---------- Avisos fuera de la plataforma (correo y WhatsApp) ---------- */
 const AV = require('./avisos.js').crea({ db, q, leeDoc, cifra, descifra, smtpEnvia: RESPA.smtpEnvia, hoyMx: () => hoyMx(), horaMx: () => RESPA.fechaMx(new Date()).hora, audita, cfgCorreoRespaldos: () => cfgResp().correo, ENV });
 /* ---------- Pagos en línea y facturas ---------- */
@@ -1364,6 +1395,7 @@ const SEG = require('./seguridad.js').crea({ db, q, leeDoc, cifra, descifra, aud
 const CAP = require('./captacion.js').crea({ q, leeDoc, difunde, audita, avisaProspecto: p => AV.avisaProspecto(p), version: () => SEG.cfgPriv().version });
 const cobPend = new Set(); let cobTodos = false, cobTimer = null;
 function cobHook(col, id) {
+  try { BJ.hook(col, id); } catch (e) { console.error('Bajas:', e.message); }
   if (!['ledger', 'students', 'calif', 'constancias', 'acuerdos', 'config', 'egresados'].includes(col)) return;
   if (col === 'config') { if (id !== 'plans' && id !== 'cobranza') return; cobTodos = true; if (id === 'cobranza') cobUltimaCorrida = ''; }
   else if (col === 'acuerdos') { const a = leeDoc('acuerdos', id); if (a && a.sid) cobPend.add(a.sid); else cobTodos = true; }

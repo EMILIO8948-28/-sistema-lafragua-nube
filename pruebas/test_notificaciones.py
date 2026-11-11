@@ -59,7 +59,7 @@ with sync_playwright() as pw:
     caja=lambda:pg.evaluate("(function(){var a=document.getElementById('bNotif').getBoundingClientRect(),k=document.getElementById('bBk').getBoundingClientRect(),m=document.querySelector('main').getBoundingClientRect();return {x:a.left,r:a.right,t:a.top,vis:a.width>0,kx:k.left,kr:k.right,mr:m.right}})()")
     r=caja();ok('la_campana_esta_arriba_a_la_derecha_junto_al_respaldo',r['vis'] and r['t']<110 and r['x']>600 and r['r']<=r['kx'] and abs(r['kr']-r['mr'])<30)
     ok('el_icono_es_una_campana_con_insignia',pg.evaluate("!!document.querySelector('#bNotif svg path[d*=\"M6 9.5\"]')") and pg.is_visible('#ntN'))
-    ok('el_numero_suma_lo_que_hay_por_atender',pg.inner_text('#ntN')=='8')
+    ok('el_numero_suma_lo_que_hay_por_atender',pg.inner_text('#ntN')==str(8+pg.evaluate('bjPend()')))
     pg.click('#bNotif');pg.wait_for_selector('#pNot:not([hidden])');t=pg.inner_text('#pNot')
     ok('el_panel_lista_cada_pendiente','1 solicitud de alumno por atender' in t and '1 planeación de docente por revisar' in t and '1 asignatura con calificaciones sin subir' in t and '1 solicitud de eliminación por aprobar' in t and '1 transferencia por confirmar' in t and '1 pago por verificar' in t and '1 acuerdo de pago vencido' in t)
     ok('indica_que_calificaciones_faltan_y_de_quien','Didáctica general (Prof. Uno' in t and 'Historia de la educación' not in t and 'Filosofía antigua' not in t)
@@ -71,9 +71,9 @@ with sync_playwright() as pw:
     # resolver algo baja el contador
     fijaNots(pg)
     put('solicitudes/so1',{'id':'so1','tipo':'justificante','sid':'s1','nombre':'Ana López','desde':iso(hoy),'hasta':iso(hoy),'motivo':'Cita médica','estado':'aprobada','resp':{'por':'Control escolar','fecha':iso(hoy)},'leida':False,'creada':ahora})
-    W(pg,"solPend().length===0");fijaNots(pg);ok('al_resolver_una_solicitud_baja_el_numero',pg.inner_text('#ntN')=='7')
+    W(pg,"solPend().length===0");fijaNots(pg);ok('al_resolver_una_solicitud_baja_el_numero',pg.inner_text('#ntN')==str(7+pg.evaluate('bjPend()')))
     put('solicitudes/so1',{'id':'so1','tipo':'justificante','sid':'s1','nombre':'Ana López','desde':iso(hoy),'hasta':iso(hoy),'motivo':'Cita médica','estado':'pendiente','creada':ahora});W(pg,"solPend().length===1")
-    put('calif/s2',{'items':[{'id':'i2','mid':'m1','mat':'Didáctica general','plan':'Pedagogía','per':PER,'cuat':2,'cal':8}]});W(pg,"califPend().length===0");fijaNots(pg);ok('al_subir_las_calificaciones_se_quita_el_aviso',pg.inner_text('#ntN')=='7')
+    put('calif/s2',{'items':[{'id':'i2','mid':'m1','mat':'Didáctica general','plan':'Pedagogía','per':PER,'cuat':2,'cal':8}]});W(pg,"califPend().length===0");fijaNots(pg);ok('al_subir_las_calificaciones_se_quita_el_aviso',pg.inner_text('#ntN')==str(7+pg.evaluate('bjPend()')))
     put('calif/s2',{'items':[]});W(pg,"califPend().length===1")
     pg.screenshot(path='/tmp/nt_1_admin.png');pg.click('#bNotif');pg.wait_for_selector('#pNot:not([hidden])');pg.screenshot(path='/tmp/nt_2_panel_admin.png',clip={'x':500,'y':0,'width':600,'height':720})
     # ================== otros roles ==================
@@ -81,7 +81,7 @@ with sync_playwright() as pw:
         cx=b.new_context(viewport={'width':1100,'height':900});cx.set_default_timeout(15000);pp=pagina(cx);pp.goto(B+'/');W(pp,"typeof sesion==='function'&&document.body.classList.contains('locked')")
         pp.fill('#lgU',u);pp.fill('#lgP',c);pp.click('#lgGo');W(pp,"typeof APP!=='undefined'&&APP!==null&&!document.body.classList.contains('locked')&&"+cond);pp.wait_for_timeout(900);return pp
     pe=entra('esc2','clave-esc2-123',"Object.keys(SOL).length===4&&Object.keys(MAT).length===5")
-    ok('control_escolar_ve_lo_suyo',pe.inner_text('#ntN')=='4');pe.click('#bNotif');pe.wait_for_selector('#pNot:not([hidden])');te=pe.inner_text('#pNot');ok('y_no_ve_pagos_ni_eliminaciones','solicitud de alumno' in te and 'planeación de docente' in te and 'calificaciones sin subir' in te and 'transferencia' not in te and 'eliminación' not in te and 'acuerdo' not in te)
+    ok('control_escolar_ve_lo_suyo',pe.inner_text('#ntN')==str(4+pe.evaluate('bjPend()')));pe.click('#bNotif');pe.wait_for_selector('#pNot:not([hidden])');te=pe.inner_text('#pNot');ok('y_no_ve_pagos_ni_eliminaciones','solicitud de alumno' in te and 'planeación de docente' in te and 'calificaciones sin subir' in te and 'transferencia' not in te and 'eliminación' not in te and 'acuerdo' not in te)
     pc=entra('caja1','clave-caja1-123',"S.length===2");pc.wait_for_timeout(500)
     ok('caja_ve_pagos_verificacion_y_acuerdos',pc.inner_text('#ntN')=='3');pc.click('#bNotif');pc.wait_for_selector('#pNot:not([hidden])');tc=pc.inner_text('#pNot');ok('y_no_ve_lo_de_control_escolar','transferencia por confirmar' in tc and 'pago por verificar' in tc and 'acuerdo de pago vencido' in tc and 'solicitud de alumno' not in tc and 'planeación' not in tc)
     pk=entra('con1','clave-con1-123',"S.length===2");ok('quien_solo_consulta_no_tiene_pendientes',pk.is_hidden('#ntN') and pk.is_visible('#bNotif'));pk.click('#bNotif');pk.wait_for_selector('#pNot:not([hidden])');ok('y_el_panel_dice_todo_al_dia','Todo al día' in pk.inner_text('#pNot'))

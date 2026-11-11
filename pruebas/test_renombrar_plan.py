@@ -88,7 +88,7 @@ with sync_playwright() as pw:
     ok('los_alumnos_siguen_cobrando_con_los_costos_del_plan',pg.evaluate("(function(){var s=S.find(function(x){return x.id==='s1'}),c=cargos(s);return c.filter(function(x){return /^Colegiatura/.test(x.c)}).length>=36&&planOf(s)&&planOf(s).k==='%s'})()"%NUEVO))
     # ---- recargar: el nombre anterior no vuelve ----
     pg.reload();W(pg,"typeof APP!=='undefined'&&APP!==null&&ROL==='admin'&&PL.length>=10");time.sleep(1.0)
-    ok('al_recargar_no_reaparece_el_plan_anterior',pg.evaluate("PL.filter(function(p){return p.k==='Pedagogía'}).length===0&&PL.filter(function(p){return p.k==='%s'}).length===1&&PL.length===10"%NUEVO) and 'Pedagogía' not in [x['k'] for x in get('config/plans')['data']['plans']])
+    ok('al_recargar_no_reaparece_el_plan_anterior',pg.evaluate("PL.filter(function(p){return p.k==='Pedagogía'}).length===0&&PL.filter(function(p){return p.k==='%s'}).length===1&&PL.length===11"%NUEVO) and 'Pedagogía' not in [x['k'] for x in get('config/plans')['data']['plans']])
     # ---- archivos con el nombre anterior ----
     pg.evaluate("ir('esc');etab('P')");pg.select_option('#pPlan',NUEVO)
     pg.set_input_files('#pFileJ','/tmp/rnx/viejo.json');pg.wait_for_selector('#pJBar:not([hidden])');m=pg.inner_text('#pJMsg')

@@ -163,7 +163,7 @@ adm('PUT','/api/avisos/config',cfg());dbc.execute("update mensajes set prox=0 wh
 ok('al_volver_el_correo_se_envia',r2['estado']=='enviado' and r2['intentos']==2)
 dbc.close()
 # ============ bitácora y apagado ============
-ok('filtra_por_estado_canal_y_texto',all(x['estado']=='fallido' for x in msgs(estado='fallido')) and all(x['canal']=='whatsapp' for x in msgs(canal='whatsapp')) and all('Diego' in x['nombre'] for x in msgs(q='diego')) and len(msgs(limite=5))==5)
+ok('filtra_por_estado_canal_y_texto',all(x['estado']=='fallido' for x in msgs(estado='fallido')) and all(x['canal']=='whatsapp' for x in msgs(canal='whatsapp')) and all('diego' in (x['nombre']+' '+x.get('texto','')+' '+x.get('asunto','')).lower() for x in msgs(q='diego')) and len(msgs(limite=5))==5)
 s,j=adm('GET','/api/avisos');ok('el_resumen_cuenta_enviados_pendientes_y_fallidos',j['resumen']['enviados7']>10 and j['resumen']['pendientes']<=2 and j['resumen']['fallidos']>=1 and j['resumen']['omitidos']>=2)
 a=dict(cfg());a['activo']=False;adm('PUT','/api/avisos/config',a);n=len(msgs(limite=300))
 put('solicitudes/so5',sol('so5','pendiente'));esc('PUT','/api/doc/solicitudes/so5',sol('so5','aprobada',resp={'por':'x','fecha':'2026-11-12'}));time.sleep(0.5)

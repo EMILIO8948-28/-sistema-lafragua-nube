@@ -1481,6 +1481,26 @@ function infoAlmacenamiento() {
 const qCreada = db.prepare('SELECT MIN(creado) AS f FROM usuarios'), qUltDesc = db.prepare("SELECT MAX(fecha) AS f FROM auditoria WHERE accion = 'Descargó el respaldo completo'");
 
 try { precarga(); } catch (e) { console.error('No se pudo aplicar la precarga:', e.message); }
+/* Migración única: el Doctorado en Educación pasa de 5 a 4 cuatrimestres (4 seminarios por cuatrimestre). Solo si el plan sigue tal cual
+   se cargó la primera vez (mismas 16 claves en la distribución anterior); si el Administrador ya lo cambió, no se toca nada. */
+function migraDoctorado4() {
+  const marca = 'migracion-doctorado-4cuat'; if (q.uno.get('meta', marca)) return;
+  try {
+    const ANT = {}, NUE = {}; for (let i = 1; i <= 16; i++) { const k = 'ED' + String(i).padStart(2, '0'); NUE[k] = Math.floor((i - 1) / 4) + 1; ANT[k] = i <= 4 ? 1 : i <= 7 ? 2 : i <= 10 ? 3 : i <= 13 ? 4 : 5; }
+    const r = q.uno.get('catalogo', 'doctorado');
+    if (r) {
+      const cat = JSON.parse(r.data), items = cat.items || [];
+      if (items.length === 16 && items.every(i => ANT[i.clave] === i.cuat)) {
+        items.forEach(i => { i.cuat = NUE[i.clave]; }); q.pon.run('catalogo', 'doctorado', JSON.stringify(cat), Date.now());
+        let dur = '';
+        const pr = q.uno.get('config', 'plans'); if (pr) { const P = JSON.parse(pr.data), nm = (P.ren && P.ren[cat.plan]) || cat.plan, pl = (P.plans || []).find(x => x.k === nm); if (pl && Number(pl.n) === 20) { pl.n = 16; q.pon.run('config', 'plans', JSON.stringify(P), Date.now()); dur = ' y la duración pasó de 20 a 16 colegiaturas'; difunde('config', 'plans'); } }
+        difunde('catalogo', 'doctorado'); audita(null, null, 'Migración: Doctorado en Educación redistribuido en 4 cuatrimestres', '16 seminarios, 4 por cuatrimestre' + dur); console.log('Migración: Doctorado en Educación redistribuido en 4 cuatrimestres' + dur + '.');
+      }
+    }
+    q.pon.run('meta', marca, JSON.stringify({ fecha: new Date().toISOString() }), Date.now());
+  } catch (e) { console.error('No se pudo migrar el Doctorado:', e.message); }
+}
+try { migraDoctorado4(); } catch (e) { console.error('Migración del Doctorado:', e.message); }
 
 servidor.listen(PUERTO, '0.0.0.0', () => {
   console.log('Sistema escolar Lafragua (nube) escuchando en el puerto ' + PUERTO + '. Datos en ' + DATOS);

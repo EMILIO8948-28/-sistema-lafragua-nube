@@ -33,26 +33,26 @@ os.system('rm -rf /tmp/alm60 /tmp/alm61 /tmp/alm62 && mkdir -p /tmp/alm60 /tmp/a
 with sync_playwright() as pw:
     # ============ 1. cargar el archivo desde el botón (plan sin duración) ============
     B='http://127.0.0.1:3141';p=arranca(3141,'/tmp/alm60',False);b,ctx,pg=admin(pw,B)
-    ok('el_plan_nuevo_por_defecto_dura_5_cuatrimestres',planes(ctx,B)['Doctorado']['n']==20)
+    ok('el_plan_nuevo_por_defecto_dura_4_cuatrimestres',planes(ctx,B)['Doctorado']['n']==16)
     pl=planes(ctx,B);pl['Doctorado']['n']=0   # una plataforma anterior: Doctorado sin duración
     assert ctx.request.put(B+'/api/doc/config/plans',data=json.dumps({'plans':list(pl.values()),'extra':{'costo':300,'min':8},'cons':{'costo':0},'ren':{}}),headers=HDR).status==200
     pg.reload();W(pg,"typeof APP!=='undefined'&&APP!==null&&PL.find(function(p){return p.k==='Doctorado'}).n===0");time.sleep(0.8)
     pg.evaluate("ir('esc');etab('P')");pg.wait_for_selector('#pFileJ',state='attached')
     pg.set_input_files('#pFileJ','/mnt/user-data/outputs/carga_doctorado_plan_y_contenidos.json');pg.wait_for_selector('#pJBar:not([hidden])');m=pg.inner_text('#pJMsg')
-    ok('avisa_que_fijara_la_duracion','16 asignaturas de Doctorado con 16 contenidos: 16 nuevas y 0' in m and '«Doctorado» no tiene duración definida: se fijará en 5 cuatrimestres (20 colegiaturas)' in m)
+    ok('avisa_que_fijara_la_duracion','16 asignaturas de Doctorado con 16 contenidos: 16 nuevas y 0' in m and '«Doctorado» no tiene duración definida: se fijará en 4 cuatrimestres (16 colegiaturas)' in m)
     pg.click('#pJOk');W(pg,"document.getElementById('pJBar').hidden")
-    W(pg,"PL.find(function(p){return p.k==='Doctorado'}).n===20");pg.wait_for_timeout(800);m2=pg.inner_text('#pJMsg')
-    ok('al_cargar_fija_la_duracion_y_la_guarda',planes(ctx,B)['Doctorado']['n']==20 and 'Duración fijada en: Doctorado' in m2 and '16 asignaturas cargadas' in m2)
-    pg.select_option('#pPlan','Doctorado');pg.evaluate("renderPlan()");ok('el_plan_muestra_5_cuatrimestres','16 asignaturas en 5 cuatrimestres' in pg.inner_text('#pRes') and 'el plan tiene 5' in pg.inner_text('#pRes'))
-    ok('cuatrimestre_1_tiene_4_materias_y_los_demas_3',pg.evaluate("[1,2,3,4,5].map(function(c){return catItems('Doctorado').filter(function(i){return i.cuat===c}).length})")==[4,3,3,3,3])
+    W(pg,"PL.find(function(p){return p.k==='Doctorado'}).n===16");pg.wait_for_timeout(800);m2=pg.inner_text('#pJMsg')
+    ok('al_cargar_fija_la_duracion_y_la_guarda',planes(ctx,B)['Doctorado']['n']==16 and 'Duración fijada en: Doctorado' in m2 and '16 asignaturas cargadas' in m2)
+    pg.select_option('#pPlan','Doctorado');pg.evaluate("renderPlan()");ok('el_plan_muestra_4_cuatrimestres','16 asignaturas en 4 cuatrimestres' in pg.inner_text('#pRes') and 'el plan tiene 4' in pg.inner_text('#pRes'))
+    ok('cada_cuatrimestre_tiene_4_materias',pg.evaluate("[1,2,3,4].map(function(c){return catItems('Doctorado').filter(function(i){return i.cuat===c}).length})")==[4,4,4,4])
     pg.set_input_files('#pFileJ','/mnt/user-data/outputs/carga_doctorado_plan_y_contenidos.json');pg.wait_for_selector('#pJBar:not([hidden])');ok('si_ya_tiene_duracion_no_la_toca_ni_lo_menciona','duración definida' not in pg.inner_text('#pJMsg') and '16 que ya existen' in pg.inner_text('#pJMsg'));pg.click('#pJNo')
     # ---- cobros: sin costo no se generan colegiaturas ----
     ctx.request.put(B+'/api/doc/students/s1',data=json.dumps({'mat':'D001','nombre':'Dra. Prueba','carrera':'Doctorado','programa':'Doctorado','ingreso':2026,'nuevo':True}),headers=HDR)
     W(pg,"S.length===1")
     cols=lambda:pg.evaluate("cargos(S[0]).filter(function(c){return /^Colegiatura/.test(c.c)}).length")
     ok('sin_costo_de_colegiatura_no_genera_cobros_en_cero',cols()==0)
-    pg.evaluate("PL.find(function(p){return p.k==='Doctorado'}).col=2500;refreshTotals()");ok('con_costo_genera_20_colegiaturas',cols()==20 and pg.evaluate("cargos(S[0]).filter(function(c){return /^Reinscripci/.test(c.c)}).length")==0)
-    pg.evaluate("PL.find(function(p){return p.k==='Doctorado'}).rein=900;refreshTotals()");ok('y_4_reinscripciones',pg.evaluate("cargos(S[0]).filter(function(c){return /^Reinscripci/.test(c.c)}).length")==4)
+    pg.evaluate("PL.find(function(p){return p.k==='Doctorado'}).col=2500;refreshTotals()");ok('con_costo_genera_16_colegiaturas',cols()==16 and pg.evaluate("cargos(S[0]).filter(function(c){return /^Reinscripci/.test(c.c)}).length")==0)
+    pg.evaluate("PL.find(function(p){return p.k==='Doctorado'}).rein=900;refreshTotals()");ok('y_3_reinscripciones',pg.evaluate("cargos(S[0]).filter(function(c){return /^Reinscripci/.test(c.c)}).length")==3)
     b.close();p.terminate();time.sleep(0.5)
     # ============ 2. precarga del servidor: fija la duración si el plan no la tenía ============
     B2='http://127.0.0.1:3142';p=arranca(3142,'/tmp/alm61',False);b,ctx,pg=admin(pw,B2)
@@ -60,7 +60,7 @@ with sync_playwright() as pw:
     ctx.request.put(B2+'/api/doc/config/plans',data=json.dumps({'plans':list(pl.values()),'extra':{'costo':300,'min':8},'cons':{'costo':0},'ren':{}}),headers=HDR)
     b.close();p.terminate();time.sleep(0.6)
     p=arranca(3142,'/tmp/alm61',True);time.sleep(1.5)
-    ok('la_precarga_fija_la_duracion_de_un_plan_sin_duracion',plan_db('/tmp/alm61')['Doctorado']['n']==20)
+    ok('la_precarga_fija_la_duracion_de_un_plan_sin_duracion',plan_db('/tmp/alm61')['Doctorado']['n']==16)
     c=sqlite3.connect('/tmp/alm61/lafragua.db');n=c.execute("select count(*) from docs where coleccion='catalogo' and id='doctorado'").fetchone()[0];m=c.execute("select count(*) from docs where coleccion='contenidos' and id like 'doc-ed%'").fetchone()[0];c.close()
     ok('y_carga_las_16_materias_con_contenido',n==1 and m==16)
     p.terminate();time.sleep(0.5)

@@ -667,7 +667,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="wrap"><table style="min-width:860px"><thead><tr><th>Folio</th><th>Alumno</th><th>Documentos</th><th>Evaluación</th><th>Trámite</th><th>Pagos</th><th>Certificado</th></tr></thead><tbody id="a2Tb"></tbody></table></div>
   </div>
   <div id="a2PanC" hidden>
-    <p class="hint">Aquí llevas el control de los certificados de bachillerato por Acuerdo 286 que la escuela conserva en resguardo: de quién son, dónde están guardados, cuándo se recibieron y cuándo se entregaron a su titular, con su constancia de recepción y su acta de entrega.</p>
+    <p class="hint">Aquí llevas el control de los certificados de bachillerato por Acuerdo 286 que la escuela conserva en resguardo: de quién son, dónde están guardados, cuándo se recibieron y cuándo se entregaron a su titular, con su constancia de recepción y su acta de entrega. <b>Los certificados de tiempo atrás</b> se guardan sin inscripción (y sin cobros): elige «Certificado de tiempo atrás» al registrarlos.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px">
       <div class="mod" style="cursor:default"><span class="hint">En resguardo</span><b id="rgC1" style="font-size:24px">0</b></div>
       <div class="mod" style="cursor:default"><span class="hint">Entregados</span><b id="rgC2" style="font-size:24px">0</b></div>
@@ -675,7 +675,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     </div>
     <div class="bar">
       <input id="rgQ" placeholder="Buscar por nombre, folio de inscripción o folio" aria-label="Buscar" style="flex:1;min-width:200px">
-      <select id="rgEst" aria-label="Estado"><option value="">Todos los estados</option><option value="resguardo">En resguardo</option><option value="entregado">Entregados</option></select>
+      <select id="rgEst" aria-label="Estado"><option value="">Todos los estados</option><option value="resguardo">En resguardo</option><option value="entregado">Entregados</option><option value="anterior">Certificados anteriores (sin inscripción)</option></select>
       <select id="rgTipo" aria-label="Documento"></select>
     </div>
     <div class="bar"><button class="p need-admin" id="rgNew">Registrar certificado en resguardo</button><button class="need-admin" id="rgZip">Cargar escaneos (ZIP)</button><button id="rgCsv">Exportar CSV</button></div>
@@ -1468,7 +1468,9 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
    <dialog id="dRg" style="width:min(620px,96vw)">
      <h2 id="rgT">Registrar certificado en resguardo</h2>
      <div class="row">
-       <label class="full">Inscripción (escribe su folio B286 o el nombre del alumno y elígela de la lista)<input id="rgAl" list="rgAlL" placeholder="Ej. B286-000012 — Ana López"><datalist id="rgAlL"></datalist></label>
+       <div id="rgModoW" class="full" style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:4px"><label style="flex-direction:row;gap:6px;align-items:center;color:var(--ink)"><input type="radio" name="rgModo" id="rgModoI" checked style="width:auto"> Tiene inscripción en la plataforma</label><label style="flex-direction:row;gap:6px;align-items:center;color:var(--ink)"><input type="radio" name="rgModo" id="rgModoA" style="width:auto"> Certificado de tiempo atrás (sin inscripción)</label></div>
+       <label class="full" id="rgAlW">Inscripción (escribe su folio B286 o el nombre del alumno y elígela de la lista)<input id="rgAl" list="rgAlL" placeholder="Ej. B286-000012 — Ana López"><datalist id="rgAlL"></datalist></label>
+       <div id="rgAnW" class="row full" hidden style="grid-column:1/-1"><p class="hint full">Para un certificado anterior no se pide inscripción ni se genera ningún cobro: solo se guarda en resguardo con los datos de su titular.</p><label class="full">Nombre completo del titular<input id="rgAnN" maxlength="120" placeholder="Ej. Ana López Ramírez"></label><label>CURP (opcional)<input id="rgAnC" maxlength="18" style="text-transform:uppercase"></label><label>Teléfono (opcional)<input id="rgAnT" maxlength="20" inputmode="tel"></label><label>Sexo (opcional; para las constancias)<select id="rgAnS"><option value="">No indicar</option><option>Femenino</option><option>Masculino</option></select></label></div>
        <label>Documento<select id="rgTp"></select></label>
        <label>Folio del certificado<input id="rgDf" maxlength="60"></label>
        <label>Fecha de expedición (opcional)<input id="rgFx" type="date"></label>
@@ -1505,6 +1507,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <div class="row">
        <label class="full">Archivo ZIP<input id="rgZFile" type="file" accept=".zip,application/zip,application/x-zip-compressed"></label>
        <label class="hint" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:flex-start;color:var(--ink)"><input id="rgZCrea" type="checkbox" checked style="width:auto;margin-top:3px"><span>Si la inscripción todavía no tiene el certificado en resguardo, <b>crear el registro</b> con estos datos:</span></label>
+       <label class="hint" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:flex-start;color:var(--ink)"><input id="rgZAnt" type="checkbox" checked style="width:auto;margin-top:3px"><span>Si el archivo <b>no corresponde a ninguna inscripción</b>, guardarlo como <b>certificado de tiempo atrás</b> (sin inscripción) a nombre del titular que diga el archivo. Nómbralo con el nombre completo: <b>Ana López Ramírez.pdf</b>.</span></label>
        <label>Fecha de recepción<input id="rgZFr" type="date"></label>
        <label>Ubicación en el archivo (opcional)<input id="rgZUb" maxlength="80"></label>
        <label class="hint" style="grid-column:1/-1;display:flex;flex-direction:row;gap:8px;align-items:center;color:var(--ink)"><input id="rgZRep" type="checkbox" style="width:auto"> Reemplazar los escaneos que ya estén cargados</label>
@@ -1926,7 +1929,7 @@ var PL0=[
  {k:"Arquitectura",n:42,col:1300,ins:800,rein:800,tit:23000},
  {k:"Ingeniería Industrial",n:36,col:1350,ins:1000,rein:1000,tit:23000},
  {k:"Maestría en Educación",n:16,col:1800,ins:800,rein:800,tit:25000},
- {k:"Doctorado",n:20,col:0,ins:0,rein:0,tit:30000}];
+ {k:"Doctorado",n:16,col:0,ins:0,rein:0,tit:30000}];
 function loadRen(){try{return JSON.parse(localStorage.getItem(KEY+"-ren")||"{}")||{}}catch(e){return {}}}
 var REN=loadRen();
 function saveRen(){try{localStorage.setItem(KEY+"-ren",JSON.stringify(REN))}catch(e){}}
@@ -7344,7 +7347,7 @@ function renderRg(){
   setOpts($("rgTipo"),'<option value="">Todos los documentos</option>'+RGTIPOS.map(function(t){return '<option>'+esc(t)+'</option>'}).join(""));
   var en=L.filter(function(r){return r.estado!=="entregado"}).length;
   $("rgC1").textContent=en;$("rgC2").textContent=L.length-en;$("rgC3").textContent=L.length;
-  var F=L.filter(function(r){return (!fe||r.estado===fe)&&(!ft||r.tipo===ft)&&(!q||nz([r.nombre,r.mat,r.num,r.docFolio].join(" ")).indexOf(q)>-1)}).sort(function(a,b){return String(b.num).localeCompare(String(a.num))});
+  var F=L.filter(function(r){return (!fe||(fe==="anterior"?!!r.anterior:r.estado===fe))&&(!ft||r.tipo===ft)&&(!q||nz([r.nombre,r.mat,r.num,r.docFolio,r.curp].join(" ")).indexOf(q)>-1)}).sort(function(a,b){return String(b.num).localeCompare(String(a.num))});
   $("rgTb").innerHTML=F.length?F.map(function(r){
     var ed=r.estado==="entregado";
     return '<tr><td><b>'+esc(r.num)+'</b></td><td style="white-space:normal;max-width:165px">'+esc(r.nombre)+'<br><span class="hint">'+esc(r.mat)+'</span></td><td>'+esc(r.tipo)+(r.docFolio?'<br><span class="hint">Folio/núm. '+esc(r.docFolio)+'</span>':'')+(r.fechaExp?'<br><span class="hint">Expedido '+esc(fd(r.fechaExp))+'</span>':'')+'<br><span class="hint">Recibido '+esc(fd(r.fechaRec))+' · '+esc(r.ubic||"sin ubicación")+'</span></td><td style="white-space:normal;max-width:150px">'+rgTag(r)+(ed&&r.entrega?'<br><span class="hint">'+esc(fd(r.entrega.fecha))+'<br>'+esc(r.entrega.receptor)+'</span>':'')+'</td>'+
@@ -7368,24 +7371,39 @@ function abreRg(id){
   if(ROL!=="admin")return;
   var r=id?RGD[id]:null;RGEDIT=id||null;rgAlumnos();
   $("rgT").textContent=r?"Editar certificado en resguardo":"Registrar certificado en resguardo";
-  $("rgAl").value=r?r.mat+" — "+r.nombre:"";$("rgAl").disabled=!!r;rgUsaVis();
+  $("rgAl").value=r&&!r.anterior?r.mat+" — "+r.nombre:"";$("rgAl").disabled=!!r;$("rgModoI").checked=true;$("rgModoA").checked=false;$("rgAnN").value="";$("rgAnC").value="";$("rgAnT").value="";$("rgAnS").value="";rgModoUI(r);rgUsaVis();
   $("rgTp").innerHTML=RGTIPOS.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("rgTp").value=r?r.tipo:RGTIPOS[0];
   $("rgDf").value=r?r.docFolio||"":"";$("rgFx").value=r?r.fechaExp||"":"";$("rgFr").value=r?r.fechaRec||today():today();$("rgUb").value=r?r.ubic||"":"";$("rgNt").value=r?r.notas||"":"";$("rgFile").value="";
   $("rgAr").textContent=r&&r.archivo?"Escaneo cargado: "+r.archivo.name+" (si eliges otro archivo, se reemplaza)":"";
   $("rgMsg").textContent="";$("dRg").showModal();
 }
+function rgModoUI(r){
+  var ant=r?!!r.anterior:$("rgModoA").checked;
+  $("rgModoW").style.display=r?"none":"flex";$("rgAlW").hidden=ant;$("rgAnW").hidden=!ant;
+  if(r&&r.anterior){$("rgAnN").value=r.nombre||"";$("rgAnC").value=r.curp||"";$("rgAnT").value=r.tel||"";$("rgAnS").value=r.sexo||""}
+  if(ant){$("rgUsaW").hidden=true;$("rgUsaW").style.display="none"}
+}
+$("rgModoI").onchange=$("rgModoA").onchange=function(){rgModoUI(null);rgUsaVis()};
 $("rgNew").onclick=function(){abreRg(null)};
 $("rgCan").onclick=function(){$("dRg").close()};
 $("rgOk").onclick=async function(){
   var msg=function(t,bad){$("rgMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rgMsg").textContent=t};
-  var old=RGEDIT?RGD[RGEDIT]:null,sid=old?old.sid:RGIDX[$("rgAl").value],s=sid&&rgAls().find(function(x){return x.id===sid});
-  if(!s){msg("Elige la inscripción de la lista (escribe su folio B286 o el nombre del alumno).",true);return}
+  var old=RGEDIT?RGD[RGEDIT]:null,ant=old?!!old.anterior:$("rgModoA").checked,sid=ant?"":(old?old.sid:RGIDX[$("rgAl").value]),s,anC="",anT="";
+  if(ant){
+    var anN=$("rgAnN").value.replace(/\s+/g," ").trim();anC=$("rgAnC").value.trim().toUpperCase();anT=$("rgAnT").value.trim();
+    if(anN.length<5||anN.indexOf(" ")<0){msg("Escribe el nombre completo del titular del certificado.",true);return}
+    if(anC&&!/^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/.test(anC)){msg("La CURP no tiene un formato válido (18 caracteres). Déjala vacía si no la tienes.",true);return}
+    s={id:"",nombre:anN,mat:"Sin inscripción",plan:"Acuerdo 286 (certificado anterior)",sexo:$("rgAnS").value,cert:null};
+  }else{
+    s=sid&&rgAls().find(function(x){return x.id===sid});
+    if(!s){msg("Elige la inscripción de la lista (escribe su folio B286 o el nombre del alumno).",true);return}
+  }
   var tipo=$("rgTp").value,df=$("rgDf").value.trim(),fx=$("rgFx").value,fr=$("rgFr").value,ub=$("rgUb").value.trim(),nt=$("rgNt").value.trim(),f=$("rgFile").files[0];
   if(!fr){msg("Indica la fecha en que se recibió el documento.",true);return}
   if(fr>today()){msg("La fecha de recepción no puede ser futura.",true);return}
   if(fx&&fx>today()){msg("La fecha de expedición no puede ser futura.",true);return}
-  if(rgLista().some(function(x){return x.id!==RGEDIT&&x.sid===sid&&x.tipo===tipo&&nz(x.docFolio||"")===nz(df)&&x.estado!=="entregado"}))
-    {msg("Esa inscripción ya tiene ese certificado en resguardo (mismo tipo y folio).",true);return}
+  if(rgLista().some(function(x){return x.id!==RGEDIT&&(ant?(x.anterior&&nz(x.nombre)===nz(s.nombre)):x.sid===sid)&&x.tipo===tipo&&nz(x.docFolio||"")===nz(df)&&x.estado!=="entregado"}))
+    {msg(ant?"Ya hay un certificado anterior de esa persona, del mismo tipo y folio, en resguardo.":"Esa inscripción ya tiene ese certificado en resguardo (mismo tipo y folio).",true);return}
   if(f){
     if(!/\.(pdf|jpe?g|png)$/i.test(f.name)){msg("El escaneo debe ser PDF, JPG o PNG.",true);return}
     if(f.size>10*1024*1024){msg("El escaneo pesa más de 10 MB.",true);return}
@@ -7398,10 +7416,12 @@ $("rgOk").onclick=async function(){
     if(old){
       var d=Object.assign({},old);delete d.id;
       Object.assign(d,{tipo:tipo,docFolio:df,fechaExp:fx,fechaRec:fr,ubic:ub,notas:nt,archivo:arch,mov:(old.mov||[]).concat([{f:ahora,a:"Datos corregidos"+(f?" y escaneo reemplazado":""),p:por}])});
+      if(ant)Object.assign(d,{nombre:s.nombre,curp:anC,tel:anT,sexo:s.sexo||""});
       await DBH.doc("resguardos286/"+RGEDIT).set(d);RGD[RGEDIT]=d;
     }else{
       var num=rgNum(await folios(1,"meta/folioRC")),id=uid();
-      var d2={num:num,sid:sid,nombre:s.nombre,mat:s.mat,plan:s.plan,sexo:s.sexo||"",tipo:tipo,docFolio:df,fechaExp:fx,fechaRec:fr,ubic:ub,notas:nt,archivo:arch,estado:"resguardo",recibe:por,mov:[{f:ahora,a:"Recibido en resguardo",p:por,n:ub?"Ubicación: "+ub:""}]};
+      var d2={num:num,sid:sid,nombre:s.nombre,mat:s.mat,plan:s.plan,sexo:s.sexo||"",tipo:tipo,docFolio:df,fechaExp:fx,fechaRec:fr,ubic:ub,notas:nt,archivo:arch,estado:"resguardo",recibe:por,mov:[{f:ahora,a:ant?"Recibido en resguardo (certificado anterior, sin inscripción)":"Recibido en resguardo",p:por,n:ub?"Ubicación: "+ub:""}]};
+      if(ant){d2.anterior=true;d2.curp=anC;d2.tel=anT}
       await DBH.doc("resguardos286/"+id).set(d2);RGD[id]=d2;
     }
     $("dRg").close();renderRg();
@@ -7459,13 +7479,14 @@ $("rgTb").onclick=async function(e){
 var rgT=null;
 $("rgHCls").onclick=function(){$("dRgH").close()};
 $("rgCsv").onclick=function(){
-  var L=["folio_resguardo,folio_inscripcion,nombre,plan,documento,folio_certificado,fecha_expedicion,fecha_recepcion,ubicacion,estado,fecha_entrega,recibio,identificacion"];
-  rgLista().sort(function(a,b){return String(a.num).localeCompare(String(b.num))}).forEach(function(r){var e=r.entrega||{};L.push([r.num,r.mat,r.nombre,r.plan,r.tipo,r.docFolio||"",r.fechaExp||"",r.fechaRec||"",r.ubic||"",r.estado==="entregado"?"Entregado":"En resguardo",e.fecha||"",e.receptor||"",e.idTipo?e.idTipo+" "+e.idNum:""].map(csvq).join(","))});
+  var L=["folio_resguardo,folio_inscripcion,nombre,plan,documento,folio_certificado,fecha_expedicion,fecha_recepcion,ubicacion,estado,fecha_entrega,recibio,identificacion,con_inscripcion,curp,telefono"];
+  rgLista().sort(function(a,b){return String(a.num).localeCompare(String(b.num))}).forEach(function(r){var e=r.entrega||{};L.push([r.num,r.mat,r.nombre,r.plan,r.tipo,r.docFolio||"",r.fechaExp||"",r.fechaRec||"",r.ubic||"",r.estado==="entregado"?"Entregado":"En resguardo",e.fecha||"",e.receptor||"",e.idTipo?e.idTipo+" "+e.idNum:"",r.anterior?"No":"Sí",r.curp||"",r.tel||""].map(csvq).join(","))});
   saveFile("certificados-en-resguardo-"+today()+".csv","\uFEFF"+L.join("\r\n")+"\r\n");
 };
 
 /* ===== Títulos en resguardo: cargar los escaneos desde un archivo ZIP ===== */
 var RGKW=[["parcial","Certificado parcial"],["duplicado","Duplicado del certificado"]],RGZE=[],RGZP=[],RGZZ=null;
+function rgNombreArch(base){return String(base||"").replace(/(^|[\s_.-])(parcial|duplicado|certificado|bachillerato|escaneo|cert)(?=$|[\s_.-])/gi," ").replace(/[_\-.]+/g," ").replace(/\s+/g," ").trim()}
 function rgTipoDe(base){var n=nz(base);for(var i=0;i<RGKW.length;i++)if(n.indexOf(RGKW[i][0])>-1)return RGKW[i][1];return ""}
 function rgAlDe(base){
   var hit=rgAls().filter(function(s){var m=String(s.mat||"").trim();if(!m)return false;return new RegExp("(^|[^0-9A-Za-z])"+m.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"([^0-9A-Za-z]|$)","i").test(base)});
@@ -7476,7 +7497,7 @@ function rgAlDe(base){
 }
 function abreRgZ(){
   if(ROL!=="admin")return;
-  RGZE=[];RGZP=[];RGZZ=null;$("rgZFile").value="";$("rgZRes").innerHTML="";$("rgZMsg").textContent="";$("rgZOk").hidden=true;$("rgZFr").value=today();$("rgZUb").value="";$("rgZCrea").checked=true;$("rgZRep").checked=false;$("dRgZ").showModal();
+  RGZE=[];RGZP=[];RGZZ=null;$("rgZFile").value="";$("rgZRes").innerHTML="";$("rgZMsg").textContent="";$("rgZOk").hidden=true;$("rgZFr").value=today();$("rgZUb").value="";$("rgZCrea").checked=true;$("rgZAnt").checked=true;$("rgZRep").checked=false;$("dRgZ").showModal();
 }
 function rgZPlan(){
   var crea=$("rgZCrea").checked,rep=$("rgZRep").checked,P=[],vistos={};
@@ -7485,7 +7506,16 @@ function rgZPlan(){
     if(!/\.(pdf|jpe?g|png)$/i.test(e.name)){it.a="omitir";it.m="solo se cargan PDF, JPG o PNG";P.push(it);return}
     if(e.size>10*1024*1024){it.a="omitir";it.m="pesa más de 10 MB";P.push(it);return}
     var base=e.name.replace(/^.*\//,"").replace(/\.[^.]+$/,""),r=rgAlDe(base);
-    if(r.err){it.a="omitir";it.m=r.err;P.push(it);return}
+    if(r.err){
+      if($("rgZAnt").checked&&/^no se encontró/.test(r.err)){
+        var nomA=rgNombreArch(base),tpA=rgTipoDe(base)||RGTIPOS[0],kA="ant|"+nz(nomA)+"|"+tpA;
+        if(nomA.length<5||nomA.indexOf(" ")<0||/[0-9]/.test(nomA)){it.a="omitir";it.m="no se encontró la inscripción y el nombre del archivo no parece el nombre completo de una persona (usa «Nombre Apellido Apellido.pdf», sin números; si lleva un folio B286, ese folio no existe)";P.push(it);return}
+        if(vistos[kA]){it.a="omitir";it.m="ya viene otro escaneo del mismo documento y titular en el ZIP";P.push(it);return}
+        if(rgLista().some(function(x){return x.anterior&&nz(x.nombre)===nz(nomA)&&x.tipo===tpA&&x.estado!=="entregado"})){it.a="omitir";it.m="ese titular ya tiene ese certificado anterior en resguardo";P.push(it);return}
+        vistos[kA]=1;it.a="crearAnt";it.nom=nomA;it.tipo=tpA;P.push(it);return;
+      }
+      it.a="omitir";it.m=r.err;P.push(it);return;
+    }
     var s=r.s,tp=rgTipoDe(base);it.s=s;
     var abiertos=rgLista().filter(function(x){return x.sid===s.id&&x.estado!=="entregado"}),cand=tp?abiertos.filter(function(x){return x.tipo===tp}):abiertos,rg=null;
     if(cand.length>1){it.a="omitir";it.m="tiene varios documentos en resguardo; agrega la palabra del documento al nombre (titulo, cedula, certificado o acta)";P.push(it);return}
@@ -7502,10 +7532,10 @@ function rgZPlan(){
     vistos[clave]=1;P.push(it);
   });
   RGZP=P;
-  var n={adjuntar:0,reemplazar:0,crear:0,omitir:0};P.forEach(function(x){n[x.a]++});
+  var n={adjuntar:0,reemplazar:0,crear:0,omitir:0};P.forEach(function(x){n[x.a==="crearAnt"?"crear":x.a]++});
   $("rgZRes").innerHTML='<div class="mod" style="cursor:default;margin-top:10px"><b>Resumen de la lectura</b><span>'+P.length+(P.length===1?" archivo":" archivos")+' en el ZIP: '+n.adjuntar+' se adjuntan a un registro, '+n.crear+' registros nuevos'+(n.reemplazar?', '+n.reemplazar+' escaneos se reemplazan':'')+' y '+n.omitir+' se omiten.</span></div>'+
     '<div class="wrap" style="margin-top:8px;max-height:260px;overflow:auto"><table style="min-width:560px"><thead><tr><th>Archivo</th><th>Alumno</th><th>Qué se hará</th></tr></thead><tbody>'+P.map(function(x){
-      var q=x.a==="omitir"?'<span class="hint" style="color:var(--bad)">Se omite: '+esc(x.m)+'</span>':x.a==="crear"?'Crear registro de «'+esc(x.tipo)+'» y adjuntar el escaneo':x.a==="reemplazar"?'Reemplazar el escaneo de '+esc(x.rg.num)+' ('+esc(x.tipo)+')':'Adjuntar a '+esc(x.rg.num)+' ('+esc(x.tipo)+')';
+      var q=x.a==="omitir"?'<span class="hint" style="color:var(--bad)">Se omite: '+esc(x.m)+'</span>':x.a==="crearAnt"?'Crear certificado de tiempo atrás de <b>'+esc(x.nom)+'</b> (sin inscripción) y adjuntar el escaneo':x.a==="crear"?'Crear registro de «'+esc(x.tipo)+'» y adjuntar el escaneo':x.a==="reemplazar"?'Reemplazar el escaneo de '+esc(x.rg.num)+' ('+esc(x.tipo)+')':'Adjuntar a '+esc(x.rg.num)+' ('+esc(x.tipo)+')';
       return '<tr><td style="white-space:normal;max-width:210px">'+esc(x.nombre)+'</td><td style="white-space:normal">'+(x.s?esc(x.s.nombre)+'<br><span class="hint">'+esc(x.s.mat)+'</span>':'—')+'</td><td style="white-space:normal">'+q+'</td></tr>'}).join("")+'</tbody></table></div>';
   var h=P.length-n.omitir;$("rgZOk").hidden=!h;$("rgZOk").textContent="Cargar "+h+(h===1?" escaneo":" escaneos");
 }
@@ -7530,7 +7560,7 @@ $("rgZOk").onclick=async function(){
   if(ROL!=="admin"||!RGZP.length)return;
   var b=this,msg=function(t,bad){$("rgZMsg").style.color=bad?"var(--bad)":"var(--ok)";$("rgZMsg").textContent=t};
   var L=RGZP.filter(function(x){return x.a!=="omitir"}),fr=$("rgZFr").value,ub=$("rgZUb").value.trim();
-  if(L.some(function(x){return x.a==="crear"})&&(!fr||fr>today())){msg("Indica una fecha de recepción válida para los registros nuevos.",true);return}
+  if(L.some(function(x){return x.a==="crear"||x.a==="crearAnt"})&&(!fr||fr>today())){msg("Indica una fecha de recepción válida para los registros nuevos.",true);return}
   b.disabled=true;$("rgZCan").disabled=true;var ok=0,nuevos=0,fallos=[],por=APP?APP.name:"";
   try{
     if(!(await assetsLib()))throw new Error("No se pueden subir archivos en esta sesión.");
@@ -7539,9 +7569,10 @@ $("rgZOk").onclick=async function(){
       try{
         var blob=await x.e.z.async("blob"),nom=x.nombre.replace(/^.*\//,""),file=new File([blob],nom,{type:/\.pdf$/i.test(nom)?"application/pdf":/\.png$/i.test(nom)?"image/png":"image/jpeg"});
         var up=await ASSETS.upload(file,{privado:true,categoria:"certificado"}),arch={id:up.id,name:nom,size:up.sizeBytes||file.size},ahora=new Date().toISOString();
-        if(x.a==="crear"){
-          var s=x.s,num=rgNum(await folios(1,"meta/folioRC")),id=uid();
-          var d={num:num,sid:s.id,nombre:s.nombre,mat:s.mat,plan:s.plan,sexo:s.sexo||"",tipo:x.tipo,docFolio:"",fechaExp:"",fechaRec:fr,ubic:ub,notas:"",archivo:arch,estado:"resguardo",recibe:por,mov:[{f:ahora,a:"Recibido en resguardo (carga desde ZIP)",p:por,n:nom}]};
+        if(x.a==="crear"||x.a==="crearAnt"){
+          var anZ=x.a==="crearAnt",s=anZ?{id:"",nombre:x.nom,mat:"Sin inscripción",plan:"Acuerdo 286 (certificado anterior)",sexo:""}:x.s,num=rgNum(await folios(1,"meta/folioRC")),id=uid();
+          var d={num:num,sid:s.id,nombre:s.nombre,mat:s.mat,plan:s.plan,sexo:s.sexo||"",tipo:x.tipo,docFolio:"",fechaExp:"",fechaRec:fr,ubic:ub,notas:"",archivo:arch,estado:"resguardo",recibe:por,mov:[{f:ahora,a:"Recibido en resguardo ("+(anZ?"certificado anterior, sin inscripción; ":"")+"carga desde ZIP)",p:por,n:nom}]};
+          if(anZ){d.anterior=true;d.curp="";d.tel=""}
           await DBH.doc("resguardos286/"+id).set(d);RGD[id]=d;nuevos++;
         }else{
           var r=x.rg,d2=Object.assign({},r);delete d2.id;d2.archivo=arch;d2.mov=(r.mov||[]).concat([{f:ahora,a:x.a==="reemplazar"?"Escaneo reemplazado (carga desde ZIP)":"Escaneo cargado desde ZIP",p:por,n:nom}]);
@@ -7576,7 +7607,7 @@ function acuseRecepcionCertPDF(r){
   d.setFont("helvetica","normal");d.setFontSize(10);d.text("Tejupilco de Hidalgo, Estado de México, a "+fechaLarga(r.fechaRec)+".",195,y,{align:"right"});y+=16;
   d.setFont("helvetica","bold");d.setFontSize(11);d.text("A QUIEN CORRESPONDA:",15,y);y+=12;
   d.setFont("helvetica","normal");d.setFontSize(11);
-  var t=d.splitTextToSize("Universidad Lafragua hace constar que recibió, y mantiene en resguardo en el archivo de Control escolar, el siguiente certificado original perteneciente a "+art+" "+String(r.nombre).toUpperCase()+", con folio de inscripción "+r.mat+", del programa de "+r.plan+":",180);d.text(t,15,y);y+=t.length*6.2+5;
+  var t=d.splitTextToSize("Universidad Lafragua hace constar que recibió, y mantiene en resguardo en el archivo de Control escolar, el siguiente certificado original perteneciente a "+art+" "+String(r.nombre).toUpperCase()+(r.anterior?" (certificado de tiempo atrás, sin inscripción en la plataforma)":", con folio de inscripción "+r.mat+", del programa de "+r.plan)+":",180);d.text(t,15,y);y+=t.length*6.2+5;
   [["Documento",r.tipo],["Folio del certificado",r.docFolio||"—"],["Fecha de expedición",r.fechaExp?fd(r.fechaExp):"—"],["Fecha de recepción",fd(r.fechaRec)],["Ubicación en el archivo",r.ubic||"—"],["Recibió",r.recibe||"Control escolar"]].forEach(function(p){
     d.setFont("helvetica","bold");d.text(p[0]+":",25,y);d.setFont("helvetica","normal");d.text(d.splitTextToSize(String(p[1]),95)[0],85,y);y+=7});
   y+=6;t=d.splitTextToSize("El certificado será entregado únicamente a su titular o a la persona que él autorice por escrito, previa identificación oficial vigente, y de la entrega quedará constancia firmada.",180);d.text(t,15,y);y+=t.length*6.2+16;
@@ -7594,7 +7625,7 @@ function acuseEntregaCertPDF(r){
   d.setFont("helvetica","normal");d.setFontSize(11);
   var quien=e.quien==="titular"?"el titular del certificado":"persona autorizada por el titular";
   var t=d.splitTextToSize("Universidad Lafragua hace constar que el día "+fechaLarga(e.fecha)+" entregó a "+String(e.receptor).toUpperCase()+", "+quien+", quien se identificó con "+e.idTipo+" número "+e.idNum+", el siguiente certificado original, que se encontraba en resguardo desde el "+fechaLarga(r.fechaRec)+":",180);d.text(t,15,y);y+=t.length*6.2+5;
-  [["Documento",r.tipo],["Folio del certificado",r.docFolio||"—"],["A nombre de",String(r.nombre).toUpperCase()],["Inscripción y programa",r.mat+" · "+r.plan],["Folio de resguardo",r.num]].forEach(function(p){
+  [["Documento",r.tipo],["Folio del certificado",r.docFolio||"—"],["A nombre de",String(r.nombre).toUpperCase()],[r.anterior?"Origen":"Inscripción y programa",r.anterior?"Certificado de tiempo atrás, sin inscripción":r.mat+" · "+r.plan],["Folio de resguardo",r.num]].forEach(function(p){
     d.setFont("helvetica","bold");d.text(p[0]+":",25,y);d.setFont("helvetica","normal");d.text(d.splitTextToSize(String(p[1]),95)[0],85,y);y+=7});
   y+=6;if(e.nota){t=d.splitTextToSize("Observaciones: "+e.nota,180);d.text(t,15,y);y+=t.length*6.2+3}
   t=d.splitTextToSize("Quien recibe manifiesta haber revisado el certificado y recibirlo de conformidad, por lo que la escuela queda libre de su guarda y custodia.",180);d.text(t,15,y);y+=t.length*6.2+44;

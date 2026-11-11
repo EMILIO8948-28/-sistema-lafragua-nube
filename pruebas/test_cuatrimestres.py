@@ -59,8 +59,8 @@ with sync_playwright() as pw:
     pg.click('#pCu');pg.fill('#cuN','10.5');ok('muestra_10_cuatrimestres_y_medio','10 cuatrimestres y medio' in pg.inner_text('#cuDur') and '3 años y 6 meses' in pg.inner_text('#cuDur') and '42 colegiaturas' in pg.inner_text('#cuDur'));pg.click('#cuOk');W(pg,"!document.getElementById('dCu').open");time.sleep(0.6)
     ok('guarda_10_5_como_42_colegiaturas',plan('Pedagogía')['n']==42 and col()==42 and 'el plan tiene 10 cuatrimestres y medio' in pg.inner_text('#pRes'))
     # ---- otro plan sin colegiaturas ----
-    pg.click('#pCu');pg.select_option('#cuPlan','Doctorado');ok('doctorado_dura_5_cuatrimestres_por_defecto',pg.input_value('#cuN')=='5' and '1 año y 8 meses' in pg.inner_text('#cuDur') and '20 colegiaturas' in pg.inner_text('#cuDur'));pg.fill('#cuN','4');pg.click('#cuOk');W(pg,"!document.getElementById('dCu').open");time.sleep(0.5)
-    ok('cambia_la_duracion_de_otro_plan',plan('Doctorado')['n']==16)
+    pg.click('#pCu');pg.select_option('#cuPlan','Doctorado');ok('doctorado_dura_4_cuatrimestres_por_defecto',pg.input_value('#cuN')=='4' and '1 año y 4 meses' in pg.inner_text('#cuDur') and '16 colegiaturas' in pg.inner_text('#cuDur'));pg.fill('#cuN','6');pg.click('#cuOk');W(pg,"!document.getElementById('dCu').open");time.sleep(0.5)
+    ok('cambia_la_duracion_de_otro_plan',plan('Doctorado')['n']==24)
     # ---- costos y planes (Finanzas) ----
     pg.evaluate("ir('pagos')");pg.click('#bPl');pg.wait_for_selector('#dPl[open]')
     ok('la_columna_ahora_son_cuatrimestres','Cuatrimestres' in pg.inner_text('#dPl thead') and pg.input_value('#plB tr:has-text("Pedagogía") input[data-f="cuat"]')=='10.5' and '42 colegiaturas · 10 reinscripc.' in pg.inner_text('#plB tr:has-text("Pedagogía")'))

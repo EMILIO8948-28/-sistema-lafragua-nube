@@ -115,6 +115,23 @@ with sync_playwright() as pw:
     pq.click('#pxTb [data-pxo]');pq.wait_for_selector('#dPx[open]');pq.select_option('#pxDEstS','interesado');pq.click('#pxDGo');pq.wait_for_timeout(800)
     ok('pero_no_puede_guardar_cambios',pq.evaluate("Object.values(PRO).every(function(p){return p.estado!=='interesado'})") and ('No se pudo' in pq.inner_text('#pxDMsg') or 'permiso' in pq.inner_text('#pxDMsg').lower() or pq.inner_text('#pxDMsg')!=''))
     pq.evaluate("document.getElementById('dPx').close()");pq.click('#pxTc');pq.click('#cmNueva');pq.wait_for_selector('#dCm[open]');pq.fill('#cmNom','Intento sin permiso');pq.click('#cmGo');pq.wait_for_timeout(500);ok('ni_crear_campanas','permiso' in pq.inner_text('#cmMsg'))
+
+    # ============ botón Inscríbete del inicio ============
+    pi=abre=None
+    cin=b.new_context(viewport={'width':1000,'height':900});pin=pagina(cin);pin.goto(B+'/');W(pin,"typeof sesion==='function'&&document.body.classList.contains('locked')");pin.wait_for_timeout(600)
+    ok('el_inicio_muestra_el_boton_inscribete',pin.is_visible('#lgIns') and pin.get_attribute('#lgIns a','href')=='/registro?o=inicio' and 'Inscríbete' in pin.inner_text('#lgInsBtn') and '¿Quieres estudiar con nosotros?' in pin.inner_text('#lgIns'))
+    pin.click('#lgInsBtn');pin.wait_for_url('**/registro?o=inicio');pin.wait_for_selector('#g')
+    ok('lleva_al_formulario_de_registro','Inscríbete' in pin.inner_text('h1') and pin.is_visible('#n') and pin.locator('a[href="/"]').count()>=1)
+    pin.fill('#n','Fernanda Ibarra Solís');pin.fill('#t','722 400 5566');pin.fill('#c','fer@mail.com');pin.check('#a');pin.click('#g');pin.wait_for_selector('#ok',state='visible')
+    W(pp1,"Object.values(PRO).some(function(p){return p.nombre==='Fernanda Ibarra Solís'})");pp1.click('#pxTp');pp1.wait_for_timeout(400)
+    ok('el_registro_aparece_en_prospectos_como_sitio_web','Fernanda Ibarra Solís' in pp1.inner_text('#pxTb') and 'Sitio web' in pp1.inner_text('#pxTb tr:has-text("Fernanda")'))
+    pp1.click('#pxTc');pp1.wait_for_timeout(600)
+    ok('en_campanas_se_configura_el_boton',pp1.is_checked('#ipAct') and pp1.is_enabled('#ipCamp') and '/registro?o=inicio' in pp1.inner_text('#ipUrl') and 'Sitio web' in pp1.inner_text('#ipCamp'))
+    pp1.uncheck('#ipAct');pp1.click('#ipGuarda');W(pp1,"document.getElementById('ipMsg').textContent.indexOf('Guardado')>-1")
+    pin2=pagina(b.new_context());pin2.goto(B+'/');W(pin2,"typeof sesion==='function'&&document.body.classList.contains('locked')");pin2.wait_for_timeout(600)
+    ok('al_apagarlo_el_inicio_ya_no_lo_muestra',pin2.is_hidden('#lgIns'))
+    pq.evaluate("document.getElementById('dCm').close()");pq.click('#pxTc');pq.wait_for_timeout(500)
+    ok('con_solo_ver_no_puede_cambiarlo',pq.is_disabled('#ipAct') and pq.is_hidden('#ipGuarda'))
     ok('sin_identificadores_repetidos',pg.evaluate("(function(){var c={},d=[];document.querySelectorAll('[id]').forEach(function(e){c[e.id]=(c[e.id]||0)+1});for(var k in c)if(c[k]>1)d.push(k);return d})()")==[])
     ok('sin_errores_js',len(errs)==0)
     if errs:print('ERRORES JS:',errs[:3])

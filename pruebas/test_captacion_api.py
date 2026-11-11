@@ -66,9 +66,6 @@ n0=len(adm('GET','/api/col/prospectos')[1]['docs']);s,j=reg(nombre='Robot Spam',
 time.sleep(1.5);cor=json.load(open('/tmp/fd106/correos.json')) if os.path.exists('/tmp/fd106/correos.json') else []
 ok('al_prospecto_con_correo_se_le_agradece',any('laura@correo.mx' in x['para'][0] for x in cor) and len(cor)==1)
 ms=adm('GET','/api/avisos/mensajes?evento=prospecto&limite=50')[1]['mensajes'];ok('el_aviso_queda_en_la_bitacora_y_sin_correo_no_se_manda',any(m['estado']=='enviado' and m['para']=='laura@correo.mx' and 'Gracias por tu interés' in m['asunto'] for m in ms) and not any(m['nombre'].startswith('Otra') and m['estado']=='enviado' for m in ms))
-# ============ límite de registros ============
-codes=[reg(nombre='Persona Número %d'%i,tel='72255%05d'%i,correo='',mensaje='')[0] for i in range(60)]
-ok('despues_de_40_intentos_por_hora_desde_la_misma_conexion_se_frena',429 in codes and codes[:3]==[200,200,200] and codes.index(429)>=20)
 # ============ seguimiento de prospectos ============
 ok('el_personal_con_editar_da_seguimiento',S['pr1']('PUT','/api/doc/prospectos/'+idp,dict(dd,estado='contactado',asignado='pr1',notas=dd['notas']+[{'t':'2026-11-10T10:00:00.000Z','u':'pr1','n':'Ventas Uno','tipo':'nota','txt':'Se llamó, pide informes'}]))[0]==200)
 dd=S['pr1']('GET','/api/doc/prospectos/'+idp)[1]['data']
@@ -98,6 +95,28 @@ cd=adm('GET','/api/seguridad')[1]['conservacion'];ok('el_reporte_ve_los_prospect
 ok('rechaza_un_plazo_de_prospectos_fuera_de_rango',adm('PUT','/api/seguridad/conservacion',dict(cd['config'],prospectosMeses=1))[0]==400 and adm('PUT','/api/seguridad/conservacion',{k:v for k,v in cd['config'].items() if k!='prospectosMeses'})[0]==200)
 s,j=adm('POST','/api/seguridad/depurar',{'categorias':['prospectos'],'clave':'clave-segura-1'});ok('depura_solo_los_viejos_no_inscritos',s==200 and j['resultado']=={'prospectos':1} and not adm('GET','/api/doc/prospectos/pv')[1]['exists'] and adm('GET','/api/doc/prospectos/pi')[1]['exists'] and adm('GET','/api/doc/prospectos/'+idp)[1]['exists'])
 _,t=sesion(hdr=False)('GET','/privacidad',raw=True);ok('el_aviso_de_privacidad_cubre_prospectos_y_atencion','Si eres prospecto' in t and 'Atención personalizada' in t and '18 meses' in t)
+
+# ============ botón «Inscríbete» del inicio ============
+anon2=sesion(hdr=False)
+ok('el_inicio_publico_dice_que_se_muestra_el_boton',anon2('GET','/api/yo')[1]['inscribete'] is True)
+s,t=anon2('GET','/registro?o=inicio',raw=True);ok('el_formulario_del_inicio_dice_inscribete_y_permite_volver',s==200 and '<h1>Inscríbete</h1>' in t and 'Volver al inicio' in t and 'O="inicio"' in t)
+anon2('POST','/api/registro',{'o':'inicio','nombre':'Mariana Cruz López','tel':'7225550001','correo':'mari@mail.com','programa':'Derecho','mensaje':'','acepto':True,'sitio':''},h={'x-lafragua':'1'})
+dm=[v['data'] for v in adm('GET','/api/col/prospectos')[1]['docs'] if v['data']['nombre']=='Mariana Cruz López'][0]
+ok('el_prospecto_del_inicio_queda_como_sitio_web',dm['canal']=='Sitio web' and dm['campana']=='' and dm['origen']=='formulario' and 'botón «Inscríbete»' in dm['notas'][0]['txt'])
+ok('quien_administra_prospectos_ve_y_cambia_la_configuracion',S['prv']('GET','/api/captacion/inicio')[1]=={'activo':True,'campana':''} and S['prv']('PUT','/api/captacion/inicio',{'activo':False,'campana':''})[0]==403 and caja('GET','/api/captacion/inicio')[0]==403 and caja('PUT','/api/captacion/inicio',{'activo':False})[0]==403 and anon2('GET','/api/captacion/inicio')[0]==401)
+ok('una_campana_inexistente_se_rechaza',S['pr1']('PUT','/api/captacion/inicio',{'activo':True,'campana':'nada'})[0]==400)
+ok('se_puede_ligar_el_boton_a_una_campana',S['pr1']('PUT','/api/captacion/inicio',{'activo':True,'campana':'c1'})[0]==200)
+anon2('POST','/api/registro',{'o':'inicio','nombre':'Pablo Ramos Díaz','tel':'7225550002','correo':'','programa':'','mensaje':'','acepto':True,'sitio':''},h={'x-lafragua':'1'})
+dp=[v['data'] for v in adm('GET','/api/col/prospectos')[1]['docs'] if v['data']['nombre']=='Pablo Ramos Díaz'][0]
+ok('con_campana_ligada_el_prospecto_entra_a_esa_campana',dp['campana']=='c1' and dp['canal']=='Instagram' and 'Inscripciones enero' in dp['campanaNombre'])
+S['pr1']('PUT','/api/captacion/inicio',{'activo':False,'campana':''})
+ok('apagado_ya_no_se_muestra_el_boton',anon2('GET','/api/yo')[1]['inscribete'] is False)
+s,t=anon2('GET','/registro?o=inicio',raw=True);ok('y_la_pagina_lo_explica',s==200 and 'no estamos recibiendo solicitudes' in t and 'id="g"' not in t)
+ok('tampoco_se_aceptan_registros_del_inicio',anon2('POST','/api/registro',{'o':'inicio','nombre':'Alguien Más','tel':'7225550003','acepto':True,'sitio':''},h={'x-lafragua':'1'})[0]==403)
+ok('pero_el_enlace_de_una_campana_sigue_funcionando',anon2('POST','/api/registro',{'c':'c1','nombre':'Con Campaña Directa','tel':'7225550004','acepto':True,'sitio':''},h={'x-lafragua':'1'})[0]==200)
+# ============ límite de registros ============
+codes=[reg(nombre='Persona Número %d'%i,tel='72255%05d'%i,correo='',mensaje='')[0] for i in range(60)]
+ok('despues_de_40_intentos_por_hora_desde_la_misma_conexion_se_frena',429 in codes and codes[:3]==[200,200,200] and codes.index(429)>=20)
 ok('el_respaldo_incluye_las_colecciones_nuevas',True)
 p.terminate();fake.terminate()
 print(len(R),'comprobaciones');print('FALLAN:',[k for k,v in R.items() if not v])

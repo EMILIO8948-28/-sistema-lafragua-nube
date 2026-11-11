@@ -703,7 +703,7 @@ async function api(req, res, partes) {
   /* --- públicas --- */
   if (tipo === 'yo' && m === 'GET') {
     const s = sesionDe(req), hay = q.nUsr.get().n > 0;
-    return responde(res, 200, { modo: 'nube', urlPublica: String(ENV.LF_URL_PUBLICA || ''), setup: !hay, usuario: s ? Object.assign(publicoUsuario(s), { dosPasos: SEG.tiene(s.u), debeActivar2fa: s.rol === 'admin' && SEG.cfgSeg().exigir2fa && !SEG.tiene(s.u), privacidadPendiente: SEG.pendienteDe(s.u) }) : null, usuarios: s ? (s.rol === 'admin' ? listaUsuarios() : [publicoUsuario(s)]) : [{ u: '_', name: '', rol: 'consulta', doc: '' }] });
+    return responde(res, 200, { modo: 'nube', urlPublica: String(ENV.LF_URL_PUBLICA || ''), inscribete: CAP.inicioActivo(), setup: !hay, usuario: s ? Object.assign(publicoUsuario(s), { dosPasos: SEG.tiene(s.u), debeActivar2fa: s.rol === 'admin' && SEG.cfgSeg().exigir2fa && !SEG.tiene(s.u), privacidadPendiente: SEG.pendienteDe(s.u) }) : null, usuarios: s ? (s.rol === 'admin' ? listaUsuarios() : [publicoUsuario(s)]) : [{ u: '_', name: '', rol: 'consulta', doc: '' }] });
   }
   if (tipo === 'verificar' && m === 'GET') {
     if (limite('ver|' + ip, 60, 60000)) return responde(res, 429, { ok: false, motivo: 'Demasiadas consultas. Espera un minuto e inténtalo de nuevo.' });
@@ -982,6 +982,12 @@ async function api(req, res, partes) {
     if (m === 'GET' && a === 'descargar') { audita(s.u, req, 'Descargó el respaldo completo'); try { await respaldoCompleto(res); } catch (e) { console.error(e.message); try { res.end(); } catch (x) {} } return; }
   }
 
+  /* Botón «Inscríbete» del inicio: lo configura quien administra prospectos */
+  if (tipo === 'captacion' && a === 'inicio') {
+    if (m === 'GET' && nivel(s, 'prospectos') !== 'none') return responde(res, 200, CAP.cfgInicio());
+    if (m === 'PUT' && nivel(s, 'prospectos') === 'editar') { try { CAP.guardaInicio(await leeJSON(req, 500)); audita(s.u, req, 'Cambió el botón Inscríbete del inicio'); return responde(res, 200, Object.assign({ ok: true }, CAP.cfgInicio())); } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); } }
+    return responde(res, 403, { error: 'No tienes permiso.' });
+  }
   /* Verificación en dos pasos de cada usuario */
   if (tipo === '2fa') {
     try {
@@ -1152,7 +1158,7 @@ const servidor = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': info.tipo || 'application/octet-stream', 'Content-Disposition': "inline; filename*=UTF-8''" + encodeURIComponent(info.nombre || id), 'Cache-Control': 'private, no-store' });
       return fs.createReadStream(f).pipe(res);
     }
-    if (ruta === '/registro') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' }); return res.end(CAP.pagina(new URL(req.url, 'http://x').searchParams.get('c') || '')); }
+    if (ruta === '/registro') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' }); return res.end(CAP.pagina(new URL(req.url, 'http://x').searchParams.get('c') || '', new URL(req.url, 'http://x').searchParams.get('o') || '')); }
     if (ruta === '/privacidad') { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' }); return res.end(SEG.paginaPrivacidad()); }
     const rel = ruta === '/' ? '/index.html' : (ruta === '/configurar' ? '/configurar.html' : (ruta === '/verificar' ? '/verificar.html' : ruta));
     const f = path.normalize(path.join(PUB, rel));

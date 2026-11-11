@@ -99,5 +99,5 @@
   });
   /* Respaldo completo del servidor */
   $("bkSrv").onclick=function(){location.href="/api/respaldo/descargar"};
-  (window.LF_LISTO||Promise.resolve()).then(function(){$("bPw").hidden=!window.LF_ME;if(window.LF_ME)document.body.setAttribute("data-nube","1");if(typeof sxArranque==="function")sxArranque()});
+  (window.LF_LISTO||Promise.resolve()).then(function(){if($("lgIns"))$("lgIns").hidden=!window.LF_INS;$("bPw").hidden=!window.LF_ME;if(window.LF_ME)document.body.setAttribute("data-nube","1");if(typeof sxArranque==="function")sxArranque()});
 })();

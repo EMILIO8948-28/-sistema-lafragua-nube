@@ -15,7 +15,7 @@
       if(r.status===401&&YO&&YO.usuario)aviso401();var e=new Error(j.error||("Error "+r.status));e.code=String(r.status);throw e}return j})});
   }
   function cargaYo(){if(!YO)YO=fetch("/api/yo",{credentials:"same-origin",cache:"no-store"}).then(function(r){return r.json()}).then(function(j){
-    window.LF_NUBE=true;window.LF_URLP=String(j.urlPublica||"");window.LF_ME=j.usuario||null;window.LF_USERS=j.usuarios||[];window.LF_SETUP=!!j.setup;
+    window.LF_NUBE=true;window.LF_URLP=String(j.urlPublica||"");window.LF_ME=j.usuario||null;window.LF_USERS=j.usuarios||[];window.LF_SETUP=!!j.setup;window.LF_INS=!!j.inscribete;
     if(j.setup&&!/configurar/.test(location.pathname)){location.replace("/configurar.html")}
     return j}).catch(function(){window.LF_ME=null;window.LF_USERS=[];return {}});return YO}
   var yoLista=cargaYo();window.LF_LISTO=yoLista;

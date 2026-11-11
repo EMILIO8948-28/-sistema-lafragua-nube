@@ -129,6 +129,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <p id="lgE" class="hint" style="color:var(--bad);margin:0;min-height:1.4em"></p>
   <button class="p" id="lgGo">Entrar</button>
   <button id="lgOwn" hidden>Entrar como propietario de la página</button>
+  <div id="lgIns" hidden style="border-top:1px solid var(--line);margin-top:10px;padding-top:12px;text-align:center"><b style="font-size:17px">¿Quieres estudiar con nosotros?</b><p class="hint" style="margin:4px 0 8px">Déjanos tus datos y un asesor te contactará.</p><a href="/registro?o=inicio" style="text-decoration:none"><button class="p" type="button" id="lgInsBtn" style="width:100%">Inscríbete</button></a></div>
   <p class="hint" style="text-align:center;margin:4px 0 0"><a href="/privacidad" target="_blank" rel="noopener">Aviso de privacidad</a></p>
 </div></div>
 <main>
@@ -427,6 +428,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
   <div id="pxPc" hidden>
     <p class="hint">Crea una campaña por cada anuncio o publicación. Cada una tiene su <b>enlace de registro</b>: ponlo en tus anuncios, en la biografía de Instagram o en un mensaje de WhatsApp. Quien lo abra deja sus datos y entra solo a la lista de prospectos con la campaña correcta.</p>
+    <div class="mod" style="cursor:default;margin-bottom:10px"><b>Botón «Inscríbete» en el inicio de la plataforma</b><span>Aparece en la pantalla donde las personas inician sesión y lleva al formulario de registro. Quien lo llene entra a Prospectos.</span><div class="row" style="margin-top:8px"><label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="ipAct" type="checkbox" style="width:auto"> Mostrar el botón «Inscríbete»</label><label>Campaña a la que se suman (opcional)<select id="ipCamp"></select></label></div><div class="bar" style="margin:0"><button id="ipGuarda">Guardar</button></div><p class="hint" id="ipMsg" style="min-height:1.2em"></p><p class="hint">Enlace directo: <b id="ipUrl"></b></p></div>
     <div class="bar"><button class="p" id="cmNueva">Nueva campaña</button></div>
     <div class="wrap"><table style="min-width:1000px"><thead><tr><th>Campaña</th><th>Fechas</th><th>Estado</th><th class="n">Prospectos</th><th class="n">Contactados</th><th class="n">Inscritos</th><th class="n">Inversión</th><th class="n">Por prospecto</th><th class="n">Por inscrito</th><th></th></tr></thead><tbody id="cmTb"></tbody></table></div>
   </div>
@@ -9208,7 +9210,15 @@ $("pxDIns").onclick=function(){
 };
 /* ---- campañas ---- */
 function prCampStats(id){var L=pxLista().filter(function(p){return p.campana===id});return {n:L.length,cont:L.filter(function(p){return p.estado!=="nuevo"}).length,ins:L.filter(function(p){return p.estado==="inscrito"}).length}}
+async function prInicio(){
+  if(!window.LF_NUBE)return;var r=await cbApi("GET","/api/captacion/inicio");if(!r.ok)return;
+  setOpts($("ipCamp"),'<option value="">Sin campaña (canal «Sitio web»)</option>'+Object.keys(CMP).map(function(k){return '<option value="'+attr(k)+'">'+esc(CMP[k].nombre)+'</option>'}).join(""));
+  $("ipAct").checked=!!r.j.activo;$("ipCamp").value=r.j.campana||"";$("ipUrl").textContent=location.origin+"/registro?o=inicio";
+  var ed=permiso("prospectos")==="editar";$("ipAct").disabled=!ed;$("ipCamp").disabled=!ed;$("ipGuarda").hidden=!ed;
+}
+$("ipGuarda").onclick=async function(){var r=await cbApi("PUT","/api/captacion/inicio",{activo:$("ipAct").checked,campana:$("ipCamp").value});$("ipMsg").style.color=r.ok?"var(--ok)":"var(--bad)";$("ipMsg").textContent=r.ok?"Guardado. "+($("ipAct").checked?"El botón se muestra en el inicio.":"El botón ya no se muestra."):((r.j&&r.j.error)||"No se pudo guardar.");if(r.ok)window.LF_INS=$("ipAct").checked};
 function prCampanas(){
+  prInicio();
   var L=Object.keys(CMP).map(function(k){return Object.assign({id:k},CMP[k])}).sort(function(a,b){return String(b.inicio||"").localeCompare(String(a.inicio||""))});
   $("cmTb").innerHTML=L.length?L.map(function(c){var s=prCampStats(c.id),pres=+c.presupuesto||0;
     return '<tr><td style="white-space:normal"><b>'+esc(c.nombre)+'</b><br><span class="hint">'+esc(c.plataforma||"")+(c.programa?' · '+esc(c.programa):'')+'</span></td><td>'+(c.inicio?esc(fd(c.inicio)):'—')+(c.fin?' a '+esc(fd(c.fin)):'')+'</td><td>'+(c.activa===false?'<span class="tag sin">Pausada</span>':'<span class="tag pagado">Activa</span>')+'</td><td class="n">'+s.n+(c.meta?' / '+c.meta:'')+'</td><td class="n">'+s.cont+'</td><td class="n">'+s.ins+'</td><td class="n">'+(pres?mx.format(pres):'—')+'</td><td class="n">'+(pres&&s.n?mx.format(pres/s.n):'—')+'</td><td class="n">'+(pres&&s.ins?mx.format(pres/s.ins):'—')+'</td><td style="white-space:normal"><button data-cme="'+attr(c.id)+'">Editar</button> <button data-cml="'+attr(c.id)+'">Copiar enlace</button></td></tr>'}).join(""):vacio(10,"Todavía no hay campañas. Crea una para obtener su enlace de registro.");

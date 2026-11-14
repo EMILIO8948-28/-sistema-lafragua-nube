@@ -24,7 +24,9 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_boleta_qr.py` · QR de la boleta: verificación pública, PDF, lectura con cámara (necesita `opencv-python` y `numpy`) y verificación dentro de la aplicación (28).
 - `test_solicitudes.py` · solicitudes del alumno (justificante, boleta, constancia), atención de Control escolar, notificaciones del alumno, QR del justificante y privacidad (59).
 - `test_fusion.py` · fusión de grupos de dos licenciaturas: calendario, docente, calificaciones por plan, portal y Control escolar (30).
-- `test_credencial.py` · credencial nueva: PDF (tarjeta y hoja carta), foto circular, nombre largo, vista previa y portal (15). Usa `/tmp/cred_replay.py` para el registro de dibujo; adáptalo a tu ruta.
+- `test_credencial_pvc.py` · credencial vertical CR80 para PVC (diseño A): tamaños de página (54 × 85.6, con sangrado y carta), datos, solo QR, cargo de $80 y reposición, validez al dar de baja y reincorporar (verificación pública y en pantalla) y sin credenciales de Acuerdo 286 (33). Usa un registro de dibujo en lugar de jsPDF y deja imágenes en `/tmp/cpvc_*.png`.
+- `test_asistencia_personal.py` · asistencia del personal con reloj checador: configuración, carga de CSV (dos formatos), reglas de administrativos (faltas y retardos) y docentes (minutos), justificaciones, checada manual, nómina, recibos y permisos del servidor (41). Usa octubre de 2026 para no depender de la fecha de hoy.
+- `test_buscador_y_dias_admin.py` · buscador del panel principal (alumnos y funciones, permisos, teclado) y días de los administrativos: días de la semana, marca día por día, «Se presentó» masivo y descuento en la nómina (53).
 - `test_plan_nuevo.py` · crear planes nuevos (diálogo y archivos), que aparezcan en todos los módulos y sesiones, plan predeterminado que no llegaba y permisos (31).
 - `test_resguardos.py` · títulos en resguardo: registro, edición, entrega, acuses en PDF, filtros, CSV, permisos y autorización para quitar (47).
 - `test_resguardos_zip.py` · carga de escaneos de resguardo desde un ZIP: asignación por matrícula, nombre y palabra, reemplazo, registros nuevos y permisos (33).

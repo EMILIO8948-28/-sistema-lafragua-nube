@@ -100,6 +100,8 @@ input,select{font:inherit;padding:10px;border:1px solid var(--line);border-radiu
         tabla([["Documento",j.titulo],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Periodo",j.periodo],["Cuatrimestre",j.cuatrimestre],["Grupo",j.grupo],["Promedio del cuatrimestre",j.promedio],["Fecha de emisión",fd(j.emitida)]])+
         '<div class="sec"><h2>Calificaciones registradas</h2><dl>'+j.materias.map(function(x){return '<dt>'+esc(x.asignatura)+(x.docente?'<br><span style="font-size:12px">'+esc(x.docente)+'</span>':'')+'</dt><dd>'+(x.cal==null?"—":Number(x.cal).toFixed(1))+' · '+esc(x.estatus)+'</dd>'}).join("")+'</dl></div>'+
         '<div class="nota">Las calificaciones mostradas son las registradas actualmente en el sistema. Compáralas con las de la boleta que tienes: si alguna no coincide, el documento pudo haber sido alterado o corregido después de emitirse.</div>';
+    }else if(j.tipo==="credencial"&&j.baja){
+      h=sello("bad","✖","Credencial NO válida","Esta credencial ya no es válida: la persona ya no es alumna de Universidad Lafragua. No la aceptes como identificación.");
     }else if(j.tipo==="credencial"){
       h=(j.vigente?sello("ok","✔","Credencial auténtica y vigente","Esta credencial de estudiante existe en la base de datos de Universidad Lafragua."):sello("warn","!",j.egresado?"Credencial auténtica · persona egresada":"Credencial auténtica · vigencia terminada",j.egresado?"La persona ya aparece como egresada.":"La vigencia de esta credencial ya terminó."))+
         tabla([["Documento","Credencial de estudiante"],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Vigencia",fd(j.vigencia)]]);

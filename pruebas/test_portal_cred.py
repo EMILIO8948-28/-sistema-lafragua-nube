@@ -63,12 +63,12 @@ with sync_playwright() as pw:
         pa.fill('#lgU',u);pa.fill('#lgP',c);pa.click('#lgGo');W(pa,"typeof APP!=='undefined'&&APP!==null&&APP.rol==='alumno'&&MOD==='por'&&S.length===1&&!document.getElementById('dPw').open",15);pa.wait_for_timeout(600);pa.evaluate(MOCK);return pa
     pa=portal('1001','clave-ana-77');tx=pa.inner_text('#poBody')
     ok('seccion_credencial','Mi credencial digital' in tx and pa.is_visible('#poCred'))
-    cred=pa.inner_text('#poBody div[style*="342px"]') if pa.locator('#poBody div[style*="342px"]').count() else ''
+    cred=pa.inner_text('#poBody div[style*="270px"]') if pa.locator('#poBody div[style*="270px"]').count() else ''
     ok('credencial_tiene_sus_datos','Ana López' in tx and '1001' in tx and 'Derecho' in tx and 'Rosa López' in tx and '7261234567' in tx and 'Vigencia: 31/12/2026' in tx)
     ok('credencial_con_foto_y_qr',pa.locator('#poBody img[src^="data:image/jpeg"]').count()>=1 and (pa.locator('#poBody svg').count()>=1 or pa.locator('#poBody canvas').count()>=1))
-    ok('credencial_frente_y_reverso',pa.locator('#poBody div[style*="342px"]').count()==2)
+    ok('credencial_frente_y_reverso',pa.locator('#poBody div[style*="270px"]').count()==2)
     pa.click('#poCred');pa.wait_for_timeout(250);t=json.dumps(pa.evaluate("window.__txt"),ensure_ascii=False)
-    ok('credencial_pdf',pa.evaluate("window.__sav")==['credencial-1001.pdf'] and 'ANA LÓPEZ' in t and '1001' in t)
+    ok('credencial_pdf',pa.evaluate("window.__sav")==['credencial-1001.pdf'] and 'LÓPEZ' in t and 'Ana' in t and '1001' in t and 'CICLO SEP–DIC 2026' in t and 'VIGENCIA 31/12/2026' in t)
     # ---- recibos ----
     ok('recibo_solo_si_confirmado',pa.locator('#poBody [data-rc]').count()==1 and 'Se emite al confirmar' in tx)
     pa.evaluate("window.__sav=[];window.__txt=[];0");pa.click('#poBody [data-rc]');pa.wait_for_timeout(300)

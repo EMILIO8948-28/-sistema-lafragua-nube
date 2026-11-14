@@ -99,6 +99,16 @@ dialog::backdrop{background:rgba(10,20,35,.55)}
 @media print{html,body{background:#fff!important}body>*:not(#tk){display:none!important}#tk{display:block!important;width:72mm;color:#000;font:12px/1.35 "Courier New",monospace}@page{size:80mm auto;margin:3mm}}
 .hint{font-size:13px;color:var(--muted)}
 [hidden]{display:none!important}
+#hBusW{margin:0 0 16px}
+#hBus{width:100%;padding:11px 14px;font-size:15px;border-radius:10px}
+#hBusR{margin-top:6px;border:1px solid var(--line);border-radius:10px;background:var(--surface);max-height:62vh;overflow:auto}
+.hb-g{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:10px 14px 4px}
+.hb-i{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 14px;border:0;border-top:1px solid var(--line);border-radius:0;background:transparent;color:var(--ink);cursor:pointer;font-weight:400}
+.hb-i:hover,.hb-i:focus-visible{background:var(--bg)}
+.hb-i b{font-weight:600}.hb-i small{display:block;color:var(--muted);font-size:12.5px}
+.hb-al{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 14px;border-top:1px solid var(--line);flex-wrap:wrap}
+.hb-al .hb-b{display:flex;gap:6px;flex-wrap:wrap}.hb-al .hb-b button{padding:5px 10px;font-size:13px}
+.hb-no{padding:14px;color:var(--muted)}
 .mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .mod .ico{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:4px;color:var(--ink);background:rgba(22,37,59,.07);background:color-mix(in srgb,var(--ink) 8%,transparent)}
 .mod .ico svg{width:26px;height:26px}
@@ -148,6 +158,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
 <div class="bar" id="finTabs" hidden><button data-fm="pagos">Pagos de alumnos</button><button data-fm="ver">Verificación de pagos</button><button data-fm="nom">Nómina docente</button><button data-fm="na">Nómina administrativa</button></div>
 <div id="vHome">
   <p class="sub" id="hSal"></p>
+  <div id="hBusW"><input id="hBus" type="search" placeholder="Buscar un alumno (nombre o matrícula) o una función: nómina, credenciales, respaldos, reloj checador…" aria-label="Buscar en la plataforma" autocomplete="off"><div id="hBusR" role="list" hidden></div></div>
   <div id="hAlm" class="mod" style="cursor:default;margin-bottom:12px" hidden><b id="hAlmT"></b><span id="hAlmS"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hAlmGo">Descargar respaldo completo ahora</button></div></div>
   <div id="hSo" class="mod" style="cursor:default;border-color:var(--warn);margin-bottom:12px" hidden><b>📨 Solicitudes de alumnos por atender</b><span id="hSoT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hSoGo">Ver solicitudes</button></div></div>
   <div id="hPl" class="mod" style="cursor:default;border-color:var(--accent);margin-bottom:12px" hidden><b>📋 Planeaciones por revisar</b><span id="hPlT"></span><div class="bar" style="margin:8px 0 0"><button class="p" id="hPlGo">Revisar planeaciones</button></div></div>
@@ -301,8 +312,9 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
       <label id="crAlL" class="full">Alumno<input id="crQ" type="search" placeholder="Buscar por nombre o matrícula"><select id="crAl"></select></label>
       <label id="crGrL" class="full" hidden>Grupo<select id="crGr"></select></label>
       <label id="crPlL" class="full" hidden>Plan de estudios<select id="crPl"></select></label>
-      <label>Formato<select id="crModo"><option value="tarjeta">Una credencial por página (tamaño tarjeta, para impresora de credenciales)</option><option value="hoja">Hoja carta con varias credenciales para recortar</option></select></label>
+      <label>Formato<select id="crModo"><option value="tarjeta">PVC: una credencial por página, tamaño exacto (54 × 85.6 mm)</option><option value="sangrado">PVC: una por página con 3 mm de sangrado (60 × 91.6 mm)</option><option value="hoja">Hoja carta, 9 por hoja (pruebas en papel)</option></select></label>
       <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="crSoloFoto" type="checkbox" style="width:auto"> Solo alumnos con fotografía</label>
+      <label id="crCobL" class="full" style="flex-direction:row;align-items:center;gap:8px;color:var(--ink)"><input id="crCob" type="checkbox" style="width:auto"> <span id="crCobT">Cargar el costo de la credencial a la cuenta del alumno</span></label>
     </div>
     <p class="hint" id="crInfo"></p>
     <div class="bar"><button class="p" id="crPdf">Generar credenciales (PDF)</button></div>
@@ -611,10 +623,10 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
      <div class="bar"><button class="p" id="naT1">Nómina del periodo</button><button id="naT2">Empleados</button></div>
      <div id="naP1">
        <p class="hint">Sueldos del personal administrativo. El sueldo del periodo sale del sueldo mensual del empleado (la mitad en cada quincena); puedes sumar bonos o restar descuentos antes de pagar. Cada pago queda como gasto en el corte de caja y en el estado de cuenta final.</p>
-       <div class="bar"><select id="naM" aria-label="Mes"></select><select id="naY" aria-label="Año"></select><select id="naPer" aria-label="Periodo"></select><button id="naXls">Descargar (Excel)</button><button id="naRecibos">Recibos del mes (PDF)</button><button class="p need-admin" id="naPagarT">Pagar todos los pendientes</button></div>
+       <div class="bar"><select id="naM" aria-label="Mes"></select><select id="naY" aria-label="Año"></select><select id="naPer" aria-label="Periodo"></select><button id="naXls">Descargar (Excel)</button><button id="naRecibos">Recibos del mes (PDF)</button><button id="naAsis">Asistencia y reloj checador</button><button class="p need-admin" id="naPagarT">Pagar todos los pendientes</button></div>
        <p class="hint" id="naMsg" style="min-height:1.3em"></p>
        <p class="hint" id="naRes" style="font-weight:600;color:var(--ink)"></p>
-       <div class="wrap"><table style="min-width:980px"><thead><tr><th>Empleado</th><th class="n">Sueldo</th><th class="n">Bonos</th><th class="n">Descuentos</th><th>Motivo</th><th class="n">Neto</th><th>Estado</th><th></th></tr></thead><tbody id="naTb"></tbody></table></div>
+       <div class="wrap"><table style="min-width:1060px"><thead><tr><th>Empleado</th><th class="n">Sueldo</th><th class="n">Bonos</th><th class="n">Descuentos</th><th class="n">Desc. por asistencia</th><th>Motivo</th><th class="n">Neto</th><th>Estado</th><th></th></tr></thead><tbody id="naTb"></tbody></table></div>
      </div>
      <div id="naP2" hidden>
        <div class="bar"><input id="emBus" class="grow" type="search" placeholder="Buscar por nombre, puesto o área" aria-label="Buscar empleado"><button class="p need-admin" id="emNew">Nuevo empleado</button></div>
@@ -626,6 +638,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="bar">
     <select id="nmM" aria-label="Mes"></select><select id="nmY" aria-label="Año"></select>
     <button id="nmXls">Descargar nómina del mes (Excel)</button>
+    <button id="nmAsis">Asistencia y reloj checador</button>
     <button id="nmRecibos">Recibos del mes (PDF)</button>
   </div>
   <div class="row">
@@ -928,6 +941,9 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <h2 style="margin-top:14px">Constancia de estudios</h2>
   <div class="row"><label>Costo ($)<input id="exCons" type="number" min="0" step="0.01"></label></div>
   <p class="hint">Se cobra al generar cada constancia en Control escolar.</p>
+  <h2 style="margin-top:14px">Credencial de estudiante (PVC)</h2>
+  <div class="row"><label>Costo ($)<input id="exCred" type="number" min="0" step="0.01"></label></div>
+  <p class="hint">Al generar credenciales en Control escolar puedes cargar este costo a la cuenta del alumno (primera credencial o reposición). Las credenciales dejan de ser válidas si el alumno causa baja. No se hacen credenciales del Acuerdo 286.</p>
   <div class="bar" style="justify-content:flex-end;margin:12px 0 0"><button id="plCan">Cancelar</button><button class="p" id="plOk">Guardar costos</button></div>
 </dialog>
 
@@ -1699,6 +1715,77 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="bar" style="justify-content:flex-end;margin:0"><button id="cfCan">Cancelar</button><button class="p" id="cfOk">Confirmar pago</button></div>
 </dialog>
 
+<dialog id="dAP" style="width:min(1000px,98vw)">
+  <h2>Asistencia del personal (reloj checador)</h2>
+  <p class="hint">Carga el archivo que exporta el reloj y la plataforma calcula faltas, retardos y descuentos para la nómina. <b>Administrativos:</b> una falta descuenta un día de sueldo (sueldo mensual entre 30) y cada cierto número de retardos cuenta como una falta. <b>Docentes:</b> se descuentan los minutos de retardo y de salida anticipada, o la clase completa si no hay checada; las clases son los sábados. Los permisos y las incapacidades justificadas no descuentan.</p>
+  <div class="bar"><button class="p" id="apT1">Resumen del mes</button><button id="apT2">Cargar archivo del reloj</button><button id="apT3">Configuración</button></div>
+  <p class="hint" id="apMsg" style="min-height:1.3em"></p>
+  <div id="apP1">
+    <div class="bar"><select id="apM" aria-label="Mes"></select><select id="apY" aria-label="Año"></select><select id="apG" aria-label="Personal"></select><span id="apQL"><select id="apQ" aria-label="Periodo"></select></span></div>
+    <p class="hint" id="apCob"></p>
+    <div id="apResW"><div class="wrap"><table style="min-width:820px"><thead id="apTh"></thead><tbody id="apTb"></tbody></table></div></div>
+    <div id="apDetW" hidden>
+      <div class="bar"><button id="apBack">← Volver al resumen</button></div>
+      <h2 id="apDetT" style="margin-top:6px"></h2>
+      <div id="apAdmBox" hidden style="margin-top:12px">
+        <h3 style="margin:8px 0 4px">Días que se presenta</h3>
+        <p class="hint">Marca los días de la semana en que le toca asistir. Los demás días no se le evalúan.</p>
+        <div id="apWD" style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:4px 0 8px"></div>
+        <div class="bar ap-ed"><button id="apWDok">Guardar días de la semana</button></div>
+        <h3 style="margin:12px 0 4px">Marcar día por día</h3>
+        <p class="hint">Sirve para quien no usa el reloj, o para corregir un día. Lo que marques aquí manda sobre el reloj. «No se presentó» cuenta como falta y «Se presentó con retardo» como retardo; «Descanso» quita ese día de la evaluación. Solo se pueden marcar días que ya pasaron.</p>
+        <div class="bar ap-ed"><button id="apMAll">Marcar «Se presentó» los días que le tocaban y siguen sin marca</button></div>
+        <div class="wrap"><table style="min-width:520px"><thead><tr><th>Fecha</th><th>Día</th><th>Le toca</th><th>Marca</th></tr></thead><tbody id="apMTb"></tbody></table></div>
+      </div>
+      <h3 style="margin:12px 0 4px">Resultado de los días evaluados</h3>
+      <div class="wrap"><table style="min-width:620px"><thead><tr><th>Fecha</th><th>Día</th><th>Checadas</th><th>Estado</th><th></th></tr></thead><tbody id="apDetTb"></tbody></table></div>
+      <div id="apForm" hidden style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:10px">
+        <p class="hint" id="apFF" style="font-weight:600;color:var(--ink)"></p>
+        <div class="row">
+          <label>Motivo<select id="apFT"><option>Permiso</option><option>Incapacidad</option><option>Comisión</option><option>Vacaciones</option><option>Suspensión de clases</option><option>Otro</option></select></label>
+          <label class="full">Nota (opcional)<input id="apFN" maxlength="200"></label>
+        </div>
+        <div class="bar"><button class="p" id="apFJ">Justificar este día (no descuenta)</button><button class="d" id="apFQ">Quitar justificación</button></div>
+        <div class="row"><label>Checada olvidada (hora)<input id="apFH" type="time"></label></div>
+        <div class="bar"><button id="apFM">Agregar checada manual</button><button id="apFX">Quitar mis checadas manuales de este día</button></div>
+      </div>
+    </div>
+  </div>
+  <div id="apP2" hidden>
+    <p class="hint" id="apImpInfo"></p>
+    <div class="ap-ed"><input id="apFile" type="file" accept=".csv,.txt,.xlsx,.xls" aria-label="Archivo del reloj"></div>
+    <div id="apImpMap" hidden>
+      <div class="row">
+        <label>Columna del ID de la persona<select id="apCI"></select></label>
+        <label>Columna del nombre<select id="apCN"></select></label>
+        <label>Columna de fecha y hora<select id="apCFH"></select></label>
+        <label>Columna de la fecha<select id="apCF"></select></label>
+        <label>Columna de la hora<select id="apCH"></select></label>
+        <label>Formato de las fechas<select id="apFmt"><option value="dmy">Día/mes/año (México)</option><option value="mdy">Mes/día/año</option></select></label>
+      </div>
+      <div id="apImpPrev"></div>
+      <div class="bar ap-ed"><button class="p" id="apImpGo">Importar checadas</button></div>
+      <p class="hint">Al importar se suman a las que ya estaban (no se duplican), así que puedes volver a cargar el mismo rango sin problema. Las checadas se guardan por el ID del reloj; si cambias después a quién corresponde un ID, la nómina se recalcula.</p>
+    </div>
+  </div>
+  <div id="apP3" hidden>
+    <div class="row">
+      <label>Tolerancia de retardo (minutos)<input id="apTol" type="number" min="0" max="120"></label>
+      <label>Retardos que cuentan como 1 falta (administrativos)<input id="apRet" type="number" min="1" max="30"></label>
+    </div>
+    <h3 style="margin:10px 0 4px">Horario general de los administrativos</h3>
+    <div class="row"><label>Entrada<input id="apHEnt" type="time"></label><label>Salida<input id="apHSal" type="time"></label></div>
+    <div id="apHDias" style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:4px 0 8px"></div>
+    <h3 style="margin:10px 0 4px">Días inhábiles (no se evalúan: feriados, vacaciones, suspensión)</h3>
+    <div class="bar ap-ed"><input id="apInhF" type="date" aria-label="Fecha"><input id="apInhN" class="grow" placeholder="Motivo (por ejemplo, Día de la Revolución)" maxlength="80"><button id="apInhAdd">Agregar</button></div>
+    <div id="apInhL" style="margin-bottom:8px"></div>
+    <h3 style="margin:10px 0 4px">ID de cada persona en el reloj</h3>
+    <p class="hint">Escribe el número con el que cada persona está dada de alta en el reloj. Quien no tenga ID o (en administrativos) horario no se evalúa y no recibe descuentos.</p>
+    <div class="wrap" style="max-height:340px;overflow:auto"><table style="min-width:640px"><thead><tr><th>Persona</th><th>ID en el reloj</th><th>Entrada / salida</th><th>Días</th></tr></thead><tbody id="apCfTb"></tbody></table></div>
+    <div class="bar ap-ed"><button class="p" id="apCfOk">Guardar configuración</button></div>
+  </div>
+  <div class="bar" style="margin:8px 0 0"><button class="p" id="apCls">Cerrar</button></div>
+</dialog>
 <dialog id="dNm" style="width:min(820px,98vw)">
   <h2 id="nmT"></h2>
   <p class="hint" id="nmS"></p>
@@ -1942,7 +2029,7 @@ function planOf(s){return PL.find(function(p){return p.k===s.programa})||null}
 /* Cargos del alumno: inscripción (nuevo ingreso), 4 colegiaturas por cuatrimestre, reinscripción al iniciar cada cuatrimestre siguiente, titulación */
 var MES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 function cargos(s){
-  var L=cargos0(s).concat(extraCargos(s)).concat(constCargos(s)),b=s.beca;
+  var L=cargos0(s).concat(extraCargos(s)).concat(constCargos(s)).concat(credCargos(s)),b=s.beca;
   if(!b||!(b.monto>0))return L;
   return L.map(function(x){
     return /^Colegiatura/.test(x.c)?{id:x.id,c:x.c,k:x.k,m:Math.max(Math.round((x.m-b.monto)*100)/100,0)}:x;
@@ -2094,7 +2181,7 @@ function filaPl(p,i){return '<tr><td>'+esc(p.k)+'</td>'+["n","col","ins","rein",
     return f==="n"?'<td class="n"><input type="number" min="0" max="12" step="0.5" data-i="'+i+'" data-f="cuat" data-o="'+p.n+'" value="'+cuatTxt(p.n)+'"><br><span class="hint" data-r="'+i+'">'+detCuat(p.n)+'</span></td>':'<td><input type="number" min="0" step="0.01" data-i="'+i+'" data-f="'+f+'" value="'+p[f]+'"></td>'}).join("")+'</tr>'}
 function detCuat(n){return n+" colegiaturas · "+Math.max(Math.ceil(n/4)-1,0)+" reinscripc."}
 function openPl(){
-  $("exCosto").value=EXTRA.costo;$("exMin").value=EXTRA.min;$("exCons").value=CONSC.costo;
+  $("exCosto").value=EXTRA.costo;$("exMin").value=EXTRA.min;$("exCons").value=CONSC.costo;$("exCred").value=credCosto();
   $("plB").innerHTML=PL.map(filaPl).join("");
   $("dPl").showModal();
 }
@@ -2445,7 +2532,7 @@ $("plOk").onclick=async function(){
   if(cambios.length&&!confirm("¿Cambiar la duración de "+(cambios.length===1?"este plan":"estos planes")+"?\n\n"+cambios.map(function(c){var x=c.split("|");return impactoTxt(x[0],+x[1])}).join("\n\n")))return;
   var previo=PL.map(function(p){return Object.assign({},p)});
   PL.forEach(function(p,i){Object.assign(p,nuevos[i])});
-  EXTRA={costo:Math.max(parseFloat($("exCosto").value)||0,0),min:Math.min(Math.max(parseFloat($("exMin").value)||0,0),10)};
+  EXTRA={costo:Math.max(parseFloat($("exCosto").value)||0,0),min:Math.min(Math.max(parseFloat($("exMin").value)||0,0),10),cred:Math.max(parseFloat($("exCred").value)||0,0)};
   CONSC={costo:Math.max(parseFloat($("exCons").value)||0,0)};
   try{await DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN});$("dPl").close();rebuild();if(MOD==="esc"&&ETAB==="P")renderPlan()}catch(e){PL.forEach(function(p,i){Object.assign(p,previo[i])});dberr(e)}
 };
@@ -2602,7 +2689,7 @@ function ir(m){
   if(typeof APP!=="undefined"&&APP&&APP.rol==="alumno")m="por";   /* los alumnos solo tienen su portal */
   if(m!=="home"&&!accesoVista(m))m="home";
   var rv=m==="home"?BASEROL:rolDeVista(m);if(rv&&rv!==ROL)setRol(rv);
-  MOD=m;var home=m==="home";
+  MOD=m;var home=m==="home";if(!home&&typeof $("hBus")!=="undefined"&&$("hBus")&&$("hBus").value){$("hBus").value="";$("hBusR").hidden=true;$("hBusR").innerHTML=""}
   $("vUsr").hidden=m!=="usr";$("vBk").hidden=m!=="bk";$("vAv").hidden=m!=="av";$("vSp").hidden=m!=="sp";$("vAt").hidden=m!=="at";$("vPr").hidden=m!=="pr";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
   $("vHome").hidden=!home;$("vEsc").hidden=m!=="esc";$("vIns").hidden=m!=="ins";$("vAcu").hidden=m!=="acu";$("vDoc").hidden=m!=="doc";$("vTit").hidden=m!=="tit";$("vA2").hidden=m!=="a2";$("vVer").hidden=m!=="ver";$("vNom").hidden=m!=="nom";$("vNa").hidden=m!=="na";
   $("tabs").hidden=m!=="pagos";$("nav").hidden=home||m==="por";$("subt").hidden=m!=="pagos";$("warn").hidden=m!=="pagos";
@@ -2706,6 +2793,93 @@ function renderHome(){
 }
 $("mPag").onclick=irFin;$("mIns").onclick=function(){ir("ins")};$("mAcu").onclick=function(){ir("acu")};$("mDoc").onclick=function(){ir("doc")};$("mTit").onclick=function(){ir("tit")};$("mA2").onclick=function(){ir("a2")};$("mVer").onclick=function(){ir("ver")};$("mNom").onclick=function(){ir("nom")};$("mNa").onclick=function(){ir("na")};$("mEsc").onclick=function(){ir("esc")};$("nHome").onclick=function(){ir("home")};
 ir("home");
+/* ===== Buscador del panel principal: alumnos y funciones de la plataforma ===== */
+function hbNrm(x){return String(x==null?"":x).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
+function hbClic(id){var b=$(id);if(b&&b.offsetParent!==null)b.click()}
+function hbFunciones(){
+  var L=[],pe=permiso("escolar")!=="none",ee=permiso("escolar")==="editar",pc=permiso("constancias")!=="none",pp=permiso("pagos")!=="none",adm=esAdminReal()&&BASEROL==="admin";
+  Array.prototype.forEach.call(document.querySelectorAll("#vHome .mods button.mod"),function(b){
+    if(b.hidden)return;var n=b.querySelector("b"),d=Array.prototype.filter.call(b.querySelectorAll("span"),function(s){return !s.classList.contains("ico")&&!s.classList.contains("st")})[0];
+    if(n)L.push({t:n.textContent,d:d?d.textContent:"",k:"",tipo:"Módulo",go:function(){b.click()}});
+  });
+  function F(t,k,ok,go,d){if(ok)L.push({t:t,d:d||"",k:k,tipo:"Función",go:go})}
+  F("Finanzas · Pagos de alumnos","cobrar cobro abono recibo colegiatura inscripcion estado de cuenta ticket",pp,function(){ir("pagos");vista("al")});
+  F("Finanzas · Acuerdo 286 (pagos)","bachillerato",pp,function(){ir("pagos");vista("a86")});
+  F("Finanzas · Pagos en línea y facturas","tarjeta mercado pago factura cfdi",pp,function(){ir("pagos");vista("fl")});
+  F("Finanzas · Gastos y corte de caja","gasto egreso caja cierre corte efectivo",permiso("corte")!=="none",function(){ir("pagos");vista("ga")});
+  F("Finanzas · Estado de cuenta final","ingresos egresos resultado balance utilidad",permiso("estado")!=="none",function(){ir("pagos");vista("ef")});
+  F("Finanzas · Verificación de pagos","transferencia banco confirmar",accesoVista("ver"),function(){ir("ver")});
+  F("Finanzas · Nómina docente","maestros profesores pago horas honorarios recibo",accesoVista("nom"),function(){ir("nom")});
+  F("Finanzas · Nómina administrativa","sueldos empleados bonos descuentos recibo quincena",accesoVista("na"),function(){ir("na")});
+  F("Nómina administrativa · Empleados","alta nuevo empleado sueldo puesto area",accesoVista("na"),function(){ir("na");hbClic("emNew")});
+  F("Asistencia de administrativos (reloj checador)","checadas faltas retardos descuento asistencia personal",accesoVista("na"),function(){ir("na");abreAP("adm")});
+  F("Asistencia de docentes (reloj checador)","checadas faltas retardos minutos descuento asistencia maestros",accesoVista("nom"),function(){ir("nom");abreAP("doc")});
+  F("Cargar archivo del reloj checador","hikvision dahua importar checadas csv excel",accesoVista("na")||accesoVista("nom"),function(){var g=accesoVista("na")?"adm":"doc";ir(g==="adm"?"na":"nom");abreAP(g);APTAB=2;renderAP()});
+  F("Días que se presentan los administrativos y horarios","dias laborables horario entrada salida tolerancia dias inhabiles marcar dia presento falta descanso",accesoVista("na"),function(){ir("na");abreAP("adm");APTAB=3;APCFGV=null;renderAP()});
+  F("Costos y planes","precios colegiatura inscripcion credencial costo tarifa plan",pp&&adm,function(){ir("pagos");vista("al");hbClic("bPl")});
+  F("Cobranza y avisos","adeudos recordatorios cobrar mora bloqueo",pp&&adm,function(){ir("pagos");vista("al");hbClic("bCob")});
+  F("Estado de cuenta general (PDF)","reporte general alumnos",pp,function(){ir("pagos");vista("al");hbClic("bGen")});
+  F("Nuevo alumno","alta agregar registrar alumno",pp&&adm,function(){ir("pagos");vista("al");hbClic("bNew")});
+  F("Importar alumnos o pagos (CSV)","cargar excel masivo",pp&&adm,function(){ir("pagos");vista("al");hbClic("bImp")});
+  F("Exportar alumnos (CSV)","descargar excel respaldo lista",pp&&adm,function(){ir("pagos");vista("al");hbClic("bExp")});
+  [["A","Control escolar · Alumnos","lista fichas expediente perfil",pe],["P","Control escolar · Plan de estudios","materias asignaturas cuatrimestre mapa curricular",pe],["G","Control escolar · Grupos","grupo fusion cierre de ciclo",pe],
+   ["K","Control escolar · Calendario escolar","horario clases sabados materias docentes aula evaluacion",pe],["C","Control escolar · Calificaciones","boleta notas promedio",pe],["E","Control escolar · Egresados","egreso titulo certificado",pe],
+   ["B","Control escolar · Bajas y regularización","baja prorroga adeudo sin calificaciones regularizar",ee],["J","Control escolar · Justificantes","justificante falta permiso alumno",pe],["R","Control escolar · Credenciales","credencial gafete tarjeta pvc qr imprimir",ee],
+   ["D","Control escolar · Docentes","maestros profesores expediente contrato foto acceso",pe],["N","Control escolar · Constancias","constancia estudios promedio cobrar",pe||pc],["H","Control escolar · Calificaciones anteriores","historial importar kardex",ee],
+   ["S","Control escolar · Solicitudes de alumnos","solicitud tramite portal",ee],["T","Control escolar · Títulos en resguardo","certificado resguardo acta entrega",pe]
+  ].forEach(function(x){F(x[1],x[2],x[3],function(){ir("esc");etab(x[0])})});
+  F("Cierre de ciclo","cerrar cuatrimestre periodo promover alumnos bloquear calificaciones",ee,function(){ir("esc");etab("G");hbClic("ccAbre")});
+  return L;
+}
+function hbToks(q){return hbNrm(q).replace(/[^a-z0-9ñ]+/g," ").split(" ").filter(Boolean)}
+function hbHay(x){return " "+hbNrm(x).replace(/[^a-z0-9ñ]+/g," ")}
+function hbCoincide(h,toks){h=hbHay(h);return toks.every(function(w){return h.indexOf(" "+w)>-1})}
+var HBL=[];
+function hbRender(){
+  var q=($("hBus").value||"").trim(),box=$("hBusR"),toks=hbToks(q);
+  if(!toks.length){box.hidden=true;box.innerHTML="";HBL=[];return}
+  var fn=hbFunciones().map(function(f,i){var tit=hbNrm(f.t);
+    if(!hbCoincide(f.t+" "+f.d+" "+f.k,toks))return null;
+    return {f:f,i:i,sc:tit.indexOf(hbNrm(q))>-1?0:(hbCoincide(f.t,toks)?1:2)}}).filter(Boolean).sort(function(a,b){return a.sc-b.sc||a.i-b.i}).map(function(x){return x.f});
+  var vp=permiso("pagos")!=="none",ve=permiso("escolar")!=="none",al=[];
+  if(vp||ve){
+    var qn=hbNrm(q);
+    al=(typeof S!=="undefined"?S:[]).filter(function(s){return hbCoincide(s.nombre+" "+s.mat+" "+planDe(s),toks)})
+      .sort(function(a,b){var ma=hbNrm(a.mat)===qn?0:(hbNrm(a.nombre).indexOf(qn)===0?1:2),mb=hbNrm(b.mat)===qn?0:(hbNrm(b.nombre).indexOf(qn)===0?1:2);return ma-mb||String(a.nombre).localeCompare(String(b.nombre))});
+  }
+  var h="",MX=8;HBL=fn.slice(0,MX);
+  if(fn.length){h+='<div class="hb-g">Funciones y opciones</div>'+HBL.map(function(f,i){return '<button class="hb-i" data-hf="'+i+'"><span><b>'+esc(f.t)+'</b>'+(f.d?'<small>'+esc(f.d.length>110?f.d.slice(0,107)+"…":f.d)+'</small>':'')+'</span><span class="hint">'+esc(f.tipo)+'</span></button>'}).join("");
+    if(fn.length>MX)h+='<div class="hb-no" style="padding:6px 14px">y '+(fn.length-MX)+' más: escribe algo más específico.</div>'}
+  if(al.length){h+='<div class="hb-g">Alumnos ('+al.length+')</div>'+al.slice(0,MX).map(function(s){var bj=typeof esBaja==="function"&&esBaja(s.id);
+    return '<div class="hb-al"><span><b>'+esc(s.nombre)+'</b>'+(bj?' <span class="tag sin">Baja</span>':'')+'<small class="hint" style="display:block">'+esc(s.mat)+' · '+esc(planDe(s))+'</small></span><span class="hb-b">'+(vp?'<button data-ha="'+attr(s.id)+'" data-hm="pagos">Pagos y cuenta</button>':'')+(ve?'<button data-ha="'+attr(s.id)+'" data-hm="esc">Ficha escolar</button>':'')+'</span></div>'}).join("");
+    if(al.length>MX)h+='<div class="hb-no" style="padding:6px 14px">y '+(al.length-MX)+' alumnos más: escribe más del nombre o la matrícula completa.</div>'}
+  if(!h)h='<div class="hb-no">Sin resultados para «'+esc(q)+'». Prueba con otra palabra, el nombre del alumno o su matrícula.</div>';
+  box.innerHTML=h;box.hidden=false;
+}
+function hbLimpia(){$("hBus").value="";hbRender()}
+$("hBus").oninput=hbRender;
+$("hBus").onkeydown=function(e){
+  if(e.key==="Escape"){hbLimpia();return}
+  if(e.key==="Enter"){var b=$("hBusR").querySelector("button");if(b){e.preventDefault();b.click()}return}
+  if(e.key==="ArrowDown"){var b2=$("hBusR").querySelector("button");if(b2){e.preventDefault();b2.focus()}}
+};
+$("hBusR").onkeydown=function(e){
+  if(e.key!=="ArrowDown"&&e.key!=="ArrowUp")return;
+  var bs=Array.prototype.slice.call($("hBusR").querySelectorAll("button")),i=bs.indexOf(document.activeElement);if(i<0)return;e.preventDefault();
+  var n=i+(e.key==="ArrowDown"?1:-1);if(n<0)$("hBus").focus();else if(bs[n])bs[n].focus();
+};
+$("hBusR").onclick=function(e){
+  var b=e.target.closest&&e.target.closest("button");if(!b)return;
+  if(b.dataset.hf!==undefined){var f=HBL[+b.dataset.hf];if(f){hbLimpia();f.go()}return}
+  if(b.dataset.ha){var id=b.dataset.ha,m=b.dataset.hm;hbLimpia();
+    if(m==="pagos"){ir("pagos");vista("al");openSt(id)}else{ir("esc");etab("A");openPf(id)}}
+};
+document.addEventListener("keydown",function(e){
+  if(e.key!=="/"||e.ctrlKey||e.metaKey||e.altKey||MOD!=="home")return;
+  var a=document.activeElement,tg=a&&a.tagName;if(tg==="INPUT"||tg==="TEXTAREA"||tg==="SELECT"||(a&&a.isContentEditable))return;
+  if(document.querySelector("dialog[open]"))return;
+  var w=$("hBus");if(w&&!$("vHome").hidden){e.preventDefault();w.focus()}
+});
 /* ===== Control escolar: alumnos, calificaciones, calendario escolar y docentes ===== */
 var DOC={},MAT={},CAL={},FOT={},ETAB="A",EDM=null,EDD=null,ALID=null,ALFOTO=null,kDirty=false;
 var DIAS=["Lun","Mar","Mié","Jue","Vie","Sáb"],MINAP=8;
@@ -4893,128 +5067,143 @@ function renderCred(){
   if(!$("crVig").value)$("crVig").value=finPeriodo();
   var L=credLista(),sf=L.filter(function(s){return !FOT[s.id]}).length;
   $("crInfo").textContent=L.length?L.length+(L.length===1?" credencial":" credenciales")+(sf?" · "+sf+(sf===1?" persona sin fotografía (saldrá con el recuadro vacío)":" personas sin fotografía (saldrán con el recuadro vacío)"):" · todas con fotografía"):"No hay personas con esa selección.";
+  var esD=sc==="docente"||sc==="docentes";$("crCobL").hidden=esD;$("crCobT").textContent="Cargar "+mx.format(credCosto())+" a la cuenta de cada alumno (primera credencial; si ya tiene una, se marca como reposición)";
   $("crPdf").disabled=!L.length;
   $("crPrev").innerHTML=L.length?credHTML(L[0]):"";
 }
+/* ===== Credencial vertical (CR80, 54 x 85.6 mm) · diseño A: verde olivo y dorado, solo código QR, para imprimir en PVC ===== */
+var CR_OL=[64,80,48],CR_TE=[47,93,98],CR_GO=[201,162,39],CR_INK=[33,40,28],CR_GR=[105,110,100],FOTR={};
+function credCosto(){return EXTRA&&EXTRA.cred!=null?Math.max(+EXTRA.cred||0,0):80}
+function credCargos(s){return ((s&&s.credCargos)||[]).map(function(x){return {id:"cr"+x.id,c:"Credencial de estudiante ("+(x.motivo||"primera")+")",m:x.monto}})}
+function credNivel(s){var p=String(planDe(s)).toLowerCase();return /doctor/.test(p)?"DOCTORADO":/maestr/.test(p)?"MAESTRÍA":/especialidad/.test(p)?"ESPECIALIDAD":"LICENCIATURA"}
+/* Separa nombre(s) y apellidos: los dos últimos términos son apellidos (con partículas como "de la") */
+function credNomPartes(n){
+  var w=String(n||"").trim().split(/\s+/).filter(Boolean);
+  if(w.length<2)return [w.join(" "),""];
+  var part=/^(de|del|la|las|los|y|san|santa|da|das|do|van|von|mc|mac)$/i,k=w.length>=3?2:1,i=w.length-k;
+  while(i>1&&part.test(w[i-1]))i--;
+  return [w.slice(0,i).join(" "),w.slice(i).join(" ")];
+}
+function credCiclo(){return perAct().replace("–","–").toUpperCase()}
 function credHTML(s,vigIn,solo){
-  var g=s.esDoc?null:grupoReciente(s.id),f=FOT[s.id]&&FOT[s.id].d,vig=vigIn||$("crVig").value,OL="#48522e",GO="#b9994a",INK="#21281c",GR="#696e64",CR="#f4f2e9";
-  var base='width:342px;height:216px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;color:'+INK+';position:relative;font-family:Figtree,system-ui,sans-serif;flex:none';
-  var logoBox=function(l){return '<div style="position:absolute;left:'+l+'px;top:12px;width:52px;height:48px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center"><img src="'+LOGO_C+'" style="width:47px;height:42px;object-fit:contain" alt=""></div>'};
-  var foto=f?'<img src="'+f+'" style="width:100%;height:100%;object-fit:cover;object-position:center 30%" alt="">':'<svg viewBox="0 0 92 92" width="100%" height="100%"><rect width="92" height="92" fill="#edf0eb"/><circle cx="46" cy="38" r="17" fill="#bdc4b8"/><ellipse cx="46" cy="92" rx="31" ry="26" fill="#bdc4b8"/></svg>';
+  var f=FOT[s.id]&&FOT[s.id].d,vig=vigIn||$("crVig").value,C=s.esDoc?"#2f5d62":"#405030",GO="#c9a227",INK="#21281c",GR="#696e64",pn=credNomPartes(s.nombre);
+  var base='width:270px;height:428px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;color:'+INK+';position:relative;font-family:Figtree,system-ui,sans-serif;flex:none;text-align:center';
+  var foto=f?'<img src="'+f+'" style="width:100%;height:100%;object-fit:cover;object-position:center 30%" alt="">':'<svg viewBox="0 0 100 132" width="100%" height="100%"><rect width="100" height="132" fill="#edf0eb"/><circle cx="50" cy="52" r="22" fill="#bdc4b8"/><ellipse cx="50" cy="132" rx="40" ry="34" fill="#bdc4b8"/></svg>';
+  var nf=function(t,px,w){return Math.min(px,Math.max(9,px*w/Math.max(String(t).length*px*.5,1)))};
   var frente='<div style="'+base+'">'+
-    '<div style="position:absolute;left:0;top:0;bottom:0;width:68px;background:'+OL+'"></div><div style="position:absolute;left:68px;top:0;bottom:0;width:2.4px;background:'+GO+'"></div>'+logoBox(8)+
-    '<div style="position:absolute;left:0;width:68px;top:78px;bottom:6px;display:flex;align-items:center;justify-content:center"><span style="writing-mode:vertical-rl;transform:rotate(180deg);color:#fff;font-weight:700;font-size:7.5px;letter-spacing:1.1px;white-space:nowrap">'+esc(uni().toUpperCase())+'</span></div>'+
-    '<div style="position:absolute;left:94px;top:44px;width:92px;height:92px;border-radius:50%;overflow:hidden;border:3px solid '+GO+';box-sizing:border-box">'+foto+'</div>'+
-    '<div style="position:absolute;left:200px;top:24px;width:132px">'+
-      '<div style="font-size:7px;letter-spacing:1px;color:'+GO+'">CREDENCIAL DE '+(s.esDoc?"DOCENTE":"ESTUDIANTE")+'</div>'+
-      '<div style="font-weight:800;font-size:'+(String(s.nombre).length>40?'9.5':String(s.nombre).length>26?'11.5':'14')+'px;line-height:1.15;margin-top:7px">'+esc(String(s.nombre).toUpperCase())+'</div>'+
-      '<div style="display:inline-block;width:92px;text-align:center;background:'+OL+';color:#fff;font-weight:700;font-size:12px;letter-spacing:.5px;border-radius:5px;padding:4px 0;margin-top:6px">'+esc(s.mat)+'</div>'+
-      '<div style="font-size:6px;letter-spacing:.6px;color:'+GR+';margin-top:7px">'+(s.esDoc?"ESPECIALIDAD":"PLAN DE ESTUDIOS")+'</div><div style="font-weight:700;font-size:10px;line-height:1.15">'+esc(s.esDoc?s.esp:planDe(s))+'</div>'+
-      '<div style="font-size:6px;letter-spacing:.6px;color:'+GR+';margin-top:5px">'+(s.esDoc?'CORREO':g?'GRUPO':'INGRESO')+'</div><div style="font-size:9px">'+(s.esDoc?esc(s.mail||"—"):(g?esc(String(g.num))+' · ':'')+'sept. '+esc(String(s.ingreso||"")))+'</div></div>'+
-    '<div style="position:absolute;left:70.4px;right:0;top:188.8px;height:1.6px;background:'+GO+'"></div>'+
-    '<div style="position:absolute;left:70.4px;right:0;top:191px;bottom:0;background:'+CR+';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:8.5px;letter-spacing:1px;color:'+OL+'">VIGENCIA&nbsp;&nbsp;'+esc(vig?fd(vig):"—")+'</div></div>';
+    '<img src="'+LOGO_C+'" style="position:absolute;left:112px;top:16px;width:46px;height:41px;object-fit:contain" alt="">'+
+    '<div style="position:absolute;left:0;right:0;top:64px;font-weight:700;font-size:9.5px;letter-spacing:2.2px;color:'+C+'">'+esc(uni().toUpperCase())+'</div>'+
+    '<div style="position:absolute;left:105px;top:82px;width:60px;height:2px;background:'+GO+'"></div>'+
+    '<div style="position:absolute;left:85px;top:96px;width:100px;height:132px;border:3px solid '+GO+';box-sizing:border-box;overflow:hidden">'+foto+'</div>'+
+    '<div style="position:absolute;left:10px;right:10px;top:238px;font-size:'+nf(pn[0],15,250)+'px;line-height:1.1">'+esc(pn[0])+'</div>'+
+    '<div style="position:absolute;left:10px;right:10px;top:259px;font-weight:800;font-size:'+nf(pn[1],17,250)+'px;line-height:1.1">'+esc(pn[1].toUpperCase())+'</div>'+
+    '<div style="position:absolute;left:0;right:0;top:300px;height:42px;background:'+C+';color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center"><b style="font-size:11px;letter-spacing:2.4px">'+(s.esDoc?"DOCENTE":credNivel(s))+'</b><span style="font-size:8.5px;margin-top:2px;padding:0 10px;line-height:1.1;opacity:.92">'+esc(s.esDoc?(s.esp||""):planDe(s))+'</span></div>'+
+    '<div style="position:absolute;left:18px;top:351px;width:66px;height:66px;background:#fff">'+qrSVG(qrCred(s,vig),"66px")+'</div>'+
+    '<div style="position:absolute;left:98px;top:358px;text-align:left"><div style="font-weight:800;font-size:'+(String(s.mat).length>10?'14':'18')+'px;letter-spacing:.5px">'+esc(s.mat)+'</div>'+
+    '<div style="font-size:8px;letter-spacing:.8px;color:'+GR+';margin-top:6px">'+(s.esDoc?"PERSONAL DOCENTE":"CICLO "+esc(credCiclo()))+'</div>'+
+    '<div style="font-size:8px;letter-spacing:.8px;font-weight:700;color:'+C+';margin-top:4px">VIGENCIA '+esc(vig?fd(vig):"—")+'</div></div></div>';
+  var emer=(s.tut||s.tutTel)?'<div style="position:absolute;left:20px;right:20px;top:118px;font-size:8px;line-height:1.3"><b style="font-size:7px;letter-spacing:.8px;color:'+C+'">EN CASO DE EMERGENCIA</b><br>'+esc([s.tut,s.tutTel].filter(Boolean).join(" · "))+'</div>':'';
   var atras='<div style="'+base+'">'+
-    '<div style="position:absolute;left:274.4px;top:0;bottom:0;right:0;background:'+OL+'"></div><div style="position:absolute;left:274.4px;top:0;bottom:0;width:2.4px;background:'+GO+'"></div>'+logoBox(282.4).replace("left:282.4px","left:282px")+
-    '<div style="position:absolute;left:20px;top:24px;width:112px;height:112px;background:#fff;border:1px solid #d7d7cd;box-sizing:border-box;display:flex;align-items:center;justify-content:center">'+qrSVG(qrCred(s,vig),"104px")+'</div>'+
-    '<div style="position:absolute;left:20px;width:112px;top:141px;text-align:center;font-size:6.5px;color:'+GR+'">'+(s.esDoc?"Datos de identificación":"Escanee para verificar")+'</div>'+
-    '<div style="position:absolute;left:152px;top:30px;width:116px;font-size:9px;line-height:1.25">'+
-      (s.tut||s.tutTel?'<div style="font-size:6.5px;font-weight:700;letter-spacing:.4px;color:'+OL+'">EN CASO DE EMERGENCIA</div><div style="margin-bottom:7px">'+esc([s.tut,s.tutTel].filter(Boolean).join(" · "))+'</div>':'')+
-      (s.tel?'<div style="font-size:6.5px;font-weight:700;letter-spacing:.4px;color:'+OL+'">TELÉFONO'+(s.esDoc?"":" DEL ALUMNO")+'</div><div style="margin-bottom:7px">'+esc(s.tel)+'</div>':'')+'</div>'+
-    '<div style="position:absolute;left:152px;top:127px;width:112px;font-size:6.5px;line-height:1.3;color:'+GR+'">Esta credencial es personal e intransferible. Si la encuentra, favor de entregarla en Control escolar.</div>'+
-    '<div style="position:absolute;left:152px;width:104px;top:172px;border-top:1px solid '+GR+';padding-top:3px;text-align:center;font-size:6.5px;color:'+GR+'">Firma del '+(s.esDoc?"docente":"alumno")+'</div>'+
-    '<div style="position:absolute;left:20px;bottom:9px;font-size:5.5px;color:'+GR+'">'+esc(DIR1+". "+DIR2+".")+'</div></div>';
+    '<div style="position:absolute;left:0;right:0;top:0;height:44px;background:'+C+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;letter-spacing:2.6px">CREDENCIAL OFICIAL</div>'+
+    '<div style="position:absolute;left:0;right:0;top:44px;height:2px;background:'+GO+'"></div>'+
+    '<div style="position:absolute;left:20px;right:20px;top:62px;font-size:8.5px;line-height:1.35;color:'+GR+'">Esta credencial es personal e intransferible. Si la encuentra, favor de entregarla en Control escolar.</div>'+emer+
+    '<div style="position:absolute;left:62px;top:158px;width:146px;height:146px;border:3px solid '+GO+';box-sizing:border-box;background:#fff;display:flex;align-items:center;justify-content:center">'+qrSVG(qrCred(s,vig),"132px")+'</div>'+
+    '<div style="position:absolute;left:40px;right:40px;top:312px;font-size:7.5px;font-weight:700;letter-spacing:.8px;color:'+C+'">ESCANEA PARA VERIFICAR QUE ES AUTÉNTICA</div>'+
+    '<div style="position:absolute;left:22px;width:104px;top:366px;border-top:1px solid '+GR+';padding-top:3px;font-size:7.5px;color:'+GR+'">'+(s.esDoc?"Firma del docente":"Firma del titular")+'</div>'+
+    '<div style="position:absolute;left:144px;width:104px;top:366px;border-top:1px solid '+GR+';padding-top:3px;font-size:7.5px;color:'+GR+'">Control escolar</div>'+
+    '<div style="position:absolute;left:18px;right:18px;top:392px;font-size:7px;line-height:1.3;color:'+GR+'">'+esc(DIR1+" · "+DIR2)+'</div>'+
+    '<div style="position:absolute;left:0;right:0;bottom:0;height:8px;background:'+C+'"></div></div>';
   return (solo?'':'<p class="hint" style="margin:0 0 6px">Vista previa ('+esc(s.nombre)+')</p>')+'<div style="display:flex;gap:12px;flex-wrap:wrap">'+frente+atras+'</div>';
 }
 ["crAlc","crAl","crGr","crPl","crDc","crSoloFoto"].forEach(function(i){$(i).onchange=renderCred});
-$("crQ").oninput=renderCred;$("crVig").onchange=renderCred;
+$("crQ").oninput=renderCred;$("crVig").onchange=renderCred;$("crCob").onchange=renderCred;
 /* ---- PDF ---- */
-/* ===== Credencial: diseño horizontal con franja lateral (verde olivo y dorado del logotipo) ===== */
-var CR_OL=[72,82,46],CR_GO=[185,153,74],CR_INK=[33,40,28],CR_GR=[105,110,100],FOTC={};
-function fotoCirc(durl){
+function fotoRect(durl){
   return new Promise(function(res){
     var im=new Image();
-    im.onload=function(){try{var c=document.createElement("canvas");c.width=c.height=360;var x=c.getContext("2d");x.beginPath();x.arc(180,180,180,0,Math.PI*2);x.clip();var r=Math.max(360/im.width,360/im.height),w=im.width*r,h=im.height*r;x.drawImage(im,(360-w)/2,(360-h)*0.3,w,h);res(c.toDataURL("image/png"))}catch(e){res(null)}};
+    im.onload=function(){try{var c=document.createElement("canvas");c.width=300;c.height=396;var x=c.getContext("2d");var r=Math.max(300/im.width,396/im.height),w=im.width*r,h=im.height*r;x.fillStyle="#fff";x.fillRect(0,0,300,396);x.drawImage(im,(300-w)/2,(396-h)*0.3,w,h);res(c.toDataURL("image/jpeg",0.92))}catch(e){res(null)}};
     im.onerror=function(){res(null)};im.src=durl;
   });
 }
-async function fotosCirc(L){
+async function fotosRect(L){
   for(var i=0;i<L.length;i++){
     var f=FOT[L[i].id]&&FOT[L[i].id].d;if(!f)continue;
-    var k=L[i].id+"|"+f.length;if(FOTC[k]!==undefined)continue;
-    FOTC[k]=await fotoCirc(f);
+    var k=L[i].id+"|"+f.length;if(FOTR[k]!==undefined)continue;
+    FOTR[k]=await fotoRect(f);
   }
 }
-function credFotoCirc(s){var f=FOT[s.id]&&FOT[s.id].d;return f?FOTC[s.id+"|"+f.length]||null:null}
-function credFrente(d,x0,y0,s,vig){
-  var W=85.6,H=54,g=s.esDoc?null:grupoReciente(s.id),OL=CR_OL,GO=CR_GO,INK=CR_INK,GR=CR_GR;
-  d.setFillColor(255,255,255);d.rect(x0,y0,W,H,"F");
-  d.setFillColor(OL[0],OL[1],OL[2]);d.rect(x0,y0,17,H,"F");
-  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.6);d.line(x0+17,y0,x0+17,y0+H);
-  d.setFillColor(255,255,255);d.roundedRect(x0+2,y0+3,13,12,1.4,1.4,"F");
-  try{d.addImage(LOGO_C,"PNG",x0+2.6,y0+3.6,11.8,10.5)}catch(e){}
-  /* nombre de la universidad en vertical, letra por letra */
-  var T=uni().toUpperCase(),fs=5.8,sp=0.28,tot;
-  d.setFont("helvetica","bold");d.setFontSize(fs);d.setTextColor(255,255,255);
-  function medir(){var t=0;T.split("").forEach(function(c){t+=d.getTextWidth(c)+sp});return t-sp}
-  tot=medir();if(tot>31){fs=fs*31/tot;d.setFontSize(fs);tot=medir()}
-  var yy=y0+35.5+tot/2;T.split("").forEach(function(c){d.text(c,x0+10.8,yy,{angle:90});yy-=d.getTextWidth(c)+sp});
-  /* fotografía circular */
-  var cx=x0+35,cy=y0+22.5,rr=11.5,fc=credFotoCirc(s);
-  if(fc){try{d.addImage(fc,"PNG",cx-rr,cy-rr,rr*2,rr*2)}catch(e){fc=null}}
-  if(!fc){d.setFillColor(237,240,235);d.circle(cx,cy,rr,"F");d.setFillColor(189,196,184);d.circle(cx,cy-2.5,4.1,"F");d.ellipse(cx,cy+6.4,6.3,3.9,"F")}
-  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.7);d.circle(cx,cy,rr,"S");
-  /* datos */
-  var x=x0+50,tw=W-50-3.5;
-  d.setFont("helvetica","normal");d.setFontSize(4.4);d.setTextColor(GO[0],GO[1],GO[2]);d.text(s.esDoc?"CREDENCIAL DE DOCENTE":"CREDENCIAL DE ESTUDIANTE",x,y0+8);
-  var NM=String(s.nombre).toUpperCase(),cfg=[[9.2,2,4.2],[7.4,2,3.4],[6.2,3,2.9]],nl,ci;
-  d.setFont("helvetica","bold");
-  for(ci=0;ci<cfg.length;ci++){d.setFontSize(cfg[ci][0]);nl=d.splitTextToSize(NM,tw);if(nl.length<=cfg[ci][1])break}
-  if(ci>=cfg.length)ci=cfg.length-1;
-  d.setTextColor(INK[0],INK[1],INK[2]);nl.slice(0,cfg[ci][1]).forEach(function(l,i){d.text(l,x,y0+14.4+i*cfg[ci][2])});
-  d.setFillColor(OL[0],OL[1],OL[2]);d.roundedRect(x,y0+21.8,23,6.4,1.2,1.2,"F");
-  d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.setFontSize(String(s.mat).length>10?6.5:8);d.text(String(s.mat),x+11.5,y0+26.2,{align:"center"});
-  d.setFont("helvetica","normal");d.setFontSize(4.2);d.setTextColor(GR[0],GR[1],GR[2]);d.text(s.esDoc?"ESPECIALIDAD":"PLAN DE ESTUDIOS",x,y0+32.4);
-  var pl=s.esDoc?s.esp:planDe(s),pf=6.6;d.setFont("helvetica","bold");d.setFontSize(pf);if(d.getTextWidth(pl)>tw){pf=5.4;d.setFontSize(pf)}
-  d.setTextColor(INK[0],INK[1],INK[2]);d.text(d.splitTextToSize(pl,tw)[0],x,y0+35.6);
-  d.setFont("helvetica","normal");d.setFontSize(4.2);d.setTextColor(GR[0],GR[1],GR[2]);d.text(s.esDoc?"CORREO":g?"GRUPO":"INGRESO",x,y0+39.8);
-  d.setFontSize(5.8);d.setTextColor(INK[0],INK[1],INK[2]);d.text(s.esDoc?(s.mail||"—"):(g?g.num+" · ":"")+"sept. "+(s.ingreso||""),x,y0+43);
-  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.4);d.line(x0+17,y0+47.2,x0+W,y0+47.2);
-  d.setFillColor(244,242,233);d.rect(x0+17,y0+47.8,W-17,6.2,"F");
-  d.setFont("helvetica","bold");d.setFontSize(5.6);d.setTextColor(OL[0],OL[1],OL[2]);d.text("VIGENCIA  "+(vig?fd(vig):"—"),x0+17+(W-17)/2,y0+51.6,{align:"center"});
+function credFotoRect(s){var f=FOT[s.id]&&FOT[s.id].d;return f?FOTR[s.id+"|"+f.length]||null:null}
+/* Texto con espaciado entre letras, centrado en cx */
+function credEsp(d,t,cx,y,sp){
+  var cs=String(t).split(""),tot=0,x;cs.forEach(function(c){tot+=d.getTextWidth(c)+sp});tot-=sp;x=cx-tot/2;
+  cs.forEach(function(c){d.text(c,x,y);x+=d.getTextWidth(c)+sp});
+}
+/* Ajusta el tamaño de letra para que el texto quepa en un ancho; devuelve el tamaño usado */
+function credAjusta(d,t,pt,min,w){d.setFontSize(pt);while(pt>min&&d.getTextWidth(t)>w){pt-=0.2;d.setFontSize(pt)}return pt}
+/* (x0,y0) es la esquina de la tarjeta; b es el sangrado en mm: los fondos se extienden b mm hacia afuera */
+function credFrente(d,x0,y0,s,vig,b){
+  b=b||0;var W=54,H=85.6,C=s.esDoc?CR_TE:CR_OL,GO=CR_GO,INK=CR_INK,GR=CR_GR,cx=x0+W/2,pn=credNomPartes(s.nombre);
+  d.setFillColor(255,255,255);d.rect(x0-b,y0-b,W+2*b,H+2*b,"F");
+  try{d.addImage(LOGO_C,"PNG",cx-4.6,y0+3.2,9.2,8.2)}catch(e){}
+  d.setFont("helvetica","bold");d.setFontSize(5);d.setTextColor(C[0],C[1],C[2]);credEsp(d,uni().toUpperCase(),cx,y0+13.8,0.42);
+  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.4);d.line(cx-6,y0+16.4,cx+6,y0+16.4);
+  /* fotografía 20 x 26.4 mm con borde dorado */
+  var fx=cx-10,fy=y0+19.2,fr=credFotoRect(s);
+  d.setFillColor(237,240,235);d.rect(fx,fy,20,26.4,"F");
+  if(fr){try{d.addImage(fr,"JPEG",fx,fy,20,26.4)}catch(e){fr=null}}
+  if(!fr){d.setFillColor(189,196,184);d.circle(cx,fy+10.4,4.4,"F");d.ellipse(cx,fy+26.4,8,6.8,"F");d.setFillColor(255,255,255);d.rect(fx,fy+26.4,20,8,"F");d.rect(fx-8,fy,8,36,"F");d.rect(fx+20,fy,8,36,"F")}
+  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.6);d.rect(fx+0.3,fy+0.3,19.4,25.8,"S");
+  /* nombre(s) y apellidos */
+  d.setTextColor(INK[0],INK[1],INK[2]);d.setFont("helvetica","normal");credAjusta(d,pn[0],8.4,4.6,46);d.text(pn[0],cx,y0+51.2,{align:"center"});
+  if(pn[1]){var ap=pn[1].toUpperCase();d.setFont("helvetica","bold");credAjusta(d,ap,9.6,4.6,46);d.text(ap,cx,y0+55.8,{align:"center"})}
+  /* banda: nivel y programa */
+  d.setFillColor(C[0],C[1],C[2]);d.rect(x0-b,y0+60,W+2*b,8.4,"F");
+  d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.setFontSize(5.8);credEsp(d,s.esDoc?"DOCENTE":credNivel(s),cx,y0+63.6,0.5);
+  var pl=String(s.esDoc?(s.esp||""):planDe(s));d.setFont("helvetica","normal");credAjusta(d,pl,4.4,3.2,50);d.text(pl,cx,y0+66.6,{align:"center"});
+  /* QR y datos */
+  try{qrPDF(d,qrCred(s,vig),x0+3.2,y0+70.2,13.4)}catch(e){}
+  d.setTextColor(INK[0],INK[1],INK[2]);d.setFont("helvetica","bold");credAjusta(d,String(s.mat),9.8,6,31);d.text(String(s.mat),x0+19.6,y0+75.6);
+  d.setFont("helvetica","normal");d.setFontSize(3.9);d.setTextColor(GR[0],GR[1],GR[2]);d.text(s.esDoc?"PERSONAL DOCENTE":"CICLO "+credCiclo(),x0+19.6,y0+79.4);
+  d.setFont("helvetica","bold");d.setTextColor(C[0],C[1],C[2]);d.text("VIGENCIA "+(vig?fd(vig):"—"),x0+19.6,y0+82.4);
   d.setTextColor(0,0,0);
 }
-function credReverso(d,x0,y0,s,vig){
-  var W=85.6,H=54,OL=CR_OL,GO=CR_GO,INK=CR_INK,GR=CR_GR;
-  d.setFillColor(255,255,255);d.rect(x0,y0,W,H,"F");
-  d.setFillColor(OL[0],OL[1],OL[2]);d.rect(x0+68.6,y0,17,H,"F");
-  d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.6);d.line(x0+68.6,y0,x0+68.6,y0+H);
-  d.setFillColor(255,255,255);d.roundedRect(x0+70.6,y0+3,13,12,1.4,1.4,"F");
-  try{d.addImage(LOGO_C,"PNG",x0+71.2,y0+3.6,11.8,10.5)}catch(e){}
-  d.setFillColor(255,255,255);d.setDrawColor(215,215,205);d.setLineWidth(0.15);d.rect(x0+5,y0+6,28,28,"FD");
-  try{qrPDF(d,qrCred(s,vig),x0+5,y0+6,28)}catch(e){}
-  d.setFont("helvetica","normal");d.setFontSize(4.6);d.setTextColor(GR[0],GR[1],GR[2]);d.text(s.esDoc?"Datos de identificación":"Escanee para verificar",x0+19,y0+37,{align:"center"});
-  var x=x0+38,y=y0+9,tw=29;
-  function bloque(lab,val){d.setFont("helvetica","bold");d.setFontSize(4.8);d.setTextColor(OL[0],OL[1],OL[2]);d.text(lab,x,y);y+=3.4;d.setFont("helvetica","normal");d.setFontSize(5.8);d.setTextColor(INK[0],INK[1],INK[2]);d.splitTextToSize(String(val),tw).slice(0,2).forEach(function(l){d.text(l,x,y);y+=2.8});y+=2.2}
-  if(s.tut||s.tutTel)bloque("EN CASO DE EMERGENCIA",[s.tut,s.tutTel].filter(Boolean).join(" · "));
-  if(s.tel)bloque(s.esDoc?"TELÉFONO":"TELÉFONO DEL ALUMNO",s.tel);
-  d.setFont("helvetica","normal");d.setFontSize(4.4);d.setTextColor(GR[0],GR[1],GR[2]);
-  d.splitTextToSize("Esta credencial es personal e intransferible. Si la encuentra, favor de entregarla en Control escolar.",tw).forEach(function(l,i){d.text(l,x,y0+31.8+i*2.2)});
-  d.setDrawColor(GR[0],GR[1],GR[2]);d.setLineWidth(0.2);d.line(x,y0+43,x0+64,y0+43);d.setFontSize(4.4);d.text(s.esDoc?"Firma del docente":"Firma del alumno",x+13,y0+45.8,{align:"center"});
-  d.setFontSize(3.7);d.text(DIR1+". "+DIR2+".",x0+5,y0+50.4);
+function credReverso(d,x0,y0,s,vig,b){
+  b=b||0;var W=54,H=85.6,C=s.esDoc?CR_TE:CR_OL,GO=CR_GO,INK=CR_INK,GR=CR_GR,cx=x0+W/2;
+  d.setFillColor(255,255,255);d.rect(x0-b,y0-b,W+2*b,H+2*b,"F");
+  d.setFillColor(C[0],C[1],C[2]);d.rect(x0-b,y0-b,W+2*b,8.8+b,"F");
+  d.setFillColor(GO[0],GO[1],GO[2]);d.rect(x0-b,y0+8.8,W+2*b,0.5,"F");
+  d.setFont("helvetica","bold");d.setFontSize(5.2);d.setTextColor(255,255,255);credEsp(d,"CREDENCIAL OFICIAL",cx,y0+5.4,0.5);
+  d.setFont("helvetica","normal");d.setFontSize(4.3);d.setTextColor(GR[0],GR[1],GR[2]);
+  var y=y0+13.6;d.splitTextToSize("Esta credencial es personal e intransferible. Si la encuentra, favor de entregarla en Control escolar.",46).forEach(function(l){d.text(l,cx,y,{align:"center"});y+=2.1});
+  if(s.tut||s.tutTel){
+    y+=1.2;d.setFont("helvetica","bold");d.setFontSize(3.6);d.setTextColor(C[0],C[1],C[2]);d.text("EN CASO DE EMERGENCIA",cx,y,{align:"center"});y+=2.3;
+    d.setFont("helvetica","normal");d.setFontSize(4.4);d.setTextColor(INK[0],INK[1],INK[2]);d.splitTextToSize([s.tut,s.tutTel].filter(Boolean).join(" · "),46).slice(0,2).forEach(function(l){d.text(l,cx,y,{align:"center"});y+=2.1});
+  }
+  /* QR grande en marco dorado */
+  var qy=y0+31.6,qs=29;
+  d.setFillColor(255,255,255);d.setDrawColor(GO[0],GO[1],GO[2]);d.setLineWidth(0.6);d.rect(cx-qs/2,qy,qs,qs,"FD");
+  try{qrPDF(d,qrCred(s,vig),cx-qs/2+1.2,qy+1.2,qs-2.4)}catch(e){}
+  d.setFont("helvetica","bold");d.setFontSize(3.5);d.setTextColor(C[0],C[1],C[2]);credEsp(d,"ESCANEA PARA VERIFICAR",cx,y0+63.6,0.25);credEsp(d,"QUE ES AUTÉNTICA",cx,y0+66.2,0.25);
+  /* firmas */
+  d.setDrawColor(GR[0],GR[1],GR[2]);d.setLineWidth(0.2);d.line(x0+4.4,y0+74,x0+25,y0+74);d.line(x0+29,y0+74,x0+49.6,y0+74);
+  d.setFont("helvetica","normal");d.setFontSize(3.7);d.setTextColor(GR[0],GR[1],GR[2]);d.text(s.esDoc?"Firma del docente":"Firma del titular",x0+14.7,y0+76.4,{align:"center"});d.text("Control escolar",x0+39.3,y0+76.4,{align:"center"});
+  d.setFontSize(3.2);var yy=y0+80.2;d.splitTextToSize(DIR1+" · "+DIR2,48).slice(0,2).forEach(function(l){d.text(l,cx,yy,{align:"center"});yy+=1.7});
+  d.setFillColor(C[0],C[1],C[2]);d.rect(x0-b,y0+H-1.6,W+2*b,1.6+b,"F");
   d.setTextColor(0,0,0);
 }
+/* Modos: "tarjeta" = una por página en CR80 exacto (54 x 85.6 mm); "sangrado" = con 3 mm de sangrado (60 x 91.6 mm), para imprimir en PVC y recortar; "hoja" = carta, 9 por hoja, para pruebas en papel */
 async function credencialesPDF(L,vig,modo,nom){
   var J=pdfLib();if(!J||!L.length)return;
-  await fotosCirc(L);
-  var W=85.6,H=54;
-  if(modo==="tarjeta"){
-    var d=new J.jsPDF({unit:"mm",format:[W,H],orientation:"landscape"});
-    L.forEach(function(s,i){if(i>0)d.addPage([W,H],"landscape");credFrente(d,0,0,s,vig);d.addPage([W,H],"landscape");credReverso(d,0,0,s,vig)});
-    saveFile(nom||("credenciales-"+today()+".pdf"),d.output("arraybuffer"));return;
+  await fotosRect(L);
+  var W=54,H=85.6;
+  if(modo==="tarjeta"||modo==="sangrado"){
+    var b=modo==="sangrado"?3:0,PW=W+2*b,PH=H+2*b,d=new J.jsPDF({unit:"mm",format:[PW,PH],orientation:"portrait"});
+    L.forEach(function(s,i){if(i>0)d.addPage([PW,PH],"portrait");credFrente(d,b,b,s,vig,b);d.addPage([PW,PH],"portrait");credReverso(d,b,b,s,vig,b)});
+    saveFile(nom||("credenciales-pvc-"+today()+".pdf"),d.output("arraybuffer"));return;
   }
-  /* Hoja carta: 2 columnas x 4 filas. Los reversos van en espejo para imprimir por ambos lados. */
-  var d2=new J.jsPDF({unit:"mm",format:"letter"}),mx0=(215.9-(2*W+6))/2,my0=(279.4-(4*H+3*5))/2,porHoja=8;
-  function pos(i,espejo){var c=i%2,r=Math.floor(i/2);if(espejo)c=1-c;return [mx0+c*(W+6),my0+r*(H+5)]}
+  /* Hoja carta: 3 columnas x 3 filas. Los reversos van en espejo para imprimir por ambos lados. */
+  var d2=new J.jsPDF({unit:"mm",format:"letter"}),gx=6,gy=5,mx0=(215.9-(3*W+2*gx))/2,my0=(279.4-(3*H+2*gy))/2,porHoja=9;
+  function pos(i,espejo){var c=i%3,r=Math.floor(i/3);if(espejo)c=2-c;return [mx0+c*(W+gx),my0+r*(H+gy)]}
   for(var h0=0;h0<L.length;h0+=porHoja){
     var lote=L.slice(h0,h0+porHoja);
     if(h0>0)d2.addPage();
@@ -5024,12 +5213,32 @@ async function credencialesPDF(L,vig,modo,nom){
   }
   saveFile("credenciales-"+today()+".pdf",d2.output("arraybuffer"));
 }
-$("crPdf").onclick=function(){
+/* Cargo de la credencial en la cuenta del alumno: primera credencial o reposición */
+async function credCobrar(L){
+  var costo=credCosto(),n=0,r=0;if(!(costo>0))return {n:0,r:0};
+  for(var i=0;i<L.length;i++){
+    var s=L[i];if(s.esDoc||!ST[s.id])continue;
+    var it=(ST[s.id].credCargos||[]).slice(),rep=it.length>0;
+    it.push({id:uid(),fecha:today(),monto:costo,motivo:rep?"reposición":"primera",byn:APP?APP.name:""});
+    await DBH.doc("students/"+s.id).update({credCargos:it});
+    ST[s.id]=Object.assign({},ST[s.id],{credCargos:it});
+    if(rep)r++;else n++;
+  }
+  rebuild();return {n:n,r:r};
+}
+$("crPdf").onclick=async function(){
   if(ROL!=="admin")return;
-  var L=credLista();if(!L.length){$("crMsg").textContent="No hay alumnos con esa selección.";return}
+  var L=credLista();if(!L.length){$("crMsg").textContent="No hay personas con esa selección.";return}
   if(!$("crVig").value){$("crMsg").textContent="Elige la fecha de vigencia.";return}
-  credencialesPDF(L,$("crVig").value,$("crModo").value);
-  $("crMsg").textContent="Se generaron "+L.length+(L.length===1?" credencial":" credenciales")+(($("crModo").value==="tarjeta")?" (una por página, tamaño tarjeta: frente y reverso)":" en hojas carta (frentes y reversos)")+".";
+  var esD=L.some(function(s){return s.esDoc}),cobra=!esD&&$("crCob").checked&&credCosto()>0,modo=$("crModo").value,b=this;
+  if(cobra&&!confirm("Se cargarán "+mx.format(credCosto())+" a la cuenta de "+L.length+(L.length===1?" alumno":" alumnos")+" (primera credencial o reposición). ¿Continuar?"))return;
+  b.disabled=true;
+  try{
+    var c=cobra?await credCobrar(L):null;
+    await credencialesPDF(L,$("crVig").value,modo);
+    $("crMsg").textContent="Se generaron "+L.length+(L.length===1?" credencial":" credenciales")+" ("+(modo==="tarjeta"?"una por página, 54 × 85.6 mm: frente y reverso":modo==="sangrado"?"una por página con 3 mm de sangrado, 60 × 91.6 mm: frente y reverso":"en hojas carta, 9 por hoja: frentes y reversos")+")."+(c?" Cargo de "+mx.format(credCosto())+" registrado: "+c.n+(c.n===1?" primera credencial":" primeras credenciales")+(c.r?" y "+c.r+(c.r===1?" reposición":" reposiciones"):"")+".":"");
+  }catch(e){dberr(e)}
+  b.disabled=false;
 };
 /* ===== Descargar listas de los grupos (PDF y Excel) ===== */
 function gruposFiltrados(){
@@ -5222,7 +5431,7 @@ $("sAutOk").onclick=async function(){
 $("sAutCan").onclick=function(){PAUTH=null;$("sAut").hidden=true;$("sAutPw").value="";msgP("")};
 $("sAutPw").onkeydown=function(e){if(e.key==="Enter")$("sAutOk").onclick()};
 /* ===== Nómina docente: pago mensual por asignatura y horas ===== */
-var NOM={},NOMC={base:120,esp:150,planes:{},docentes:{}},NMD=null,NMEDIT={};
+var NOM={},NOMC={base:120,esp:150,planes:{},docentes:{}},NMD=null,NMEDIT={},CHK={},APC={};
 var MESN=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 function tarifaRegla(plan){return /enfermer|maestr|doctor/.test(nz(plan))?NOMC.esp:NOMC.base}
 function tarifaPlan(plan){var o=(NOMC.planes||{})[plan];return o>0?o:tarifaRegla(plan)}
@@ -5246,16 +5455,16 @@ function clasesDe(did){
   return out;
 }
 function filasNom(did,y,m){
-  var mes=mesKey(y,m),ov=((NOM[mes]||{}).filas)||{},per=perMes(y,m),sab=sabadosMes(y,m);
+  var mes=mesKey(y,m),ov=((NOM[mes]||{}).filas)||{},per=perMes(y,m),sab=sabadosMes(y,m),ad=apDocDet(did,y,m);
   return clasesDe(did).filter(function(c){return c.per===per}).map(function(c){
     var key=did+"|"+c.plan+"|"+nz(c.nom)+"|"+c.per,o=ov[key]||{};
-    var ses=o.ses!=null?o.ses:sab,hs=o.hrs!=null?o.hrs:horasSes(c.m),tb=tarifaDe(did,c.plan),tf=o.tar>0?o.tar:tb,horas=r2(ses*hs);
-    return {key:key,nom:c.nom,plan:c.plan,cuat:c.cuat,sinHorario:!c.m,ses:ses,hrs:hs,horas:horas,tarifa:tf,tarBase:tb,origen:o.tar>0&&o.tar!==tb?"ajustada en esta asignatura":origenTarifa(did,c.plan),importe:r2(horas*tf)};
+    var ses=o.ses!=null?o.ses:sab,hs=o.hrs!=null?o.hrs:horasSes(c.m),tb=tarifaDe(did,c.plan),tf=o.tar>0?o.tar:tb,horas=r2(ses*hs),hD=Math.min(r2((ad.porClase[key]||0)/60),horas);
+    return {key:key,nom:c.nom,plan:c.plan,cuat:c.cuat,sinHorario:!c.m,ses:ses,hrs:hs,horas:horas,hDesc:hD,tarifa:tf,tarBase:tb,origen:o.tar>0&&o.tar!==tb?"ajustada en esta asignatura":origenTarifa(did,c.plan),importe:r2((horas-hD)*tf)};
   }).sort(function(a,b){return String(a.plan).localeCompare(String(b.plan))||String(a.nom).localeCompare(String(b.nom))});
 }
 function resumenNom(did,y,m){
   var pago=(((NOM[mesKey(y,m)]||{}).pagos)||{})[did]||null,f=pago?pago.filas:filasNom(did,y,m);
-  return {filas:f,horas:r2(f.reduce(function(a,x){return a+x.horas},0)),total:r2(f.reduce(function(a,x){return a+x.importe},0)),pago:pago};
+  return {filas:f,horas:r2(f.reduce(function(a,x){return a+x.horas},0)),hDesc:r2(f.reduce(function(a,x){return a+(x.hDesc||0)},0)),total:r2(f.reduce(function(a,x){return a+x.importe},0)),pago:pago};
 }
 function nomSel(){return {y:+$("nmY").value,m:+$("nmM").value}}
 function renderNom(){
@@ -5282,9 +5491,9 @@ function renderNmD(){
   var s=nomSel(),r=resumenNom(NMD,s.y,s.m),ed=ROL==="admin"&&!r.pago;
   $("nmT").textContent="Nómina de "+DOC[NMD].nombre;
   $("nmS").textContent=MESN[s.m-1]+" "+s.y+" · "+perMes(s.y,s.m)+(r.pago?" · Pagado el "+fd(r.pago.fecha)+" · Folio "+r.pago.folio:"");
-  $("nmFilas").innerHTML='<div class="wrap"><table style="min-width:640px"><thead><tr><th>Asignatura</th><th class="n">Tarifa por hora ($)</th><th class="n">Sesiones</th><th class="n">Horas por sesión</th><th class="n">Horas</th><th class="n">Importe</th></tr></thead><tbody>'+r.filas.map(function(f){
-    return '<tr><td>'+esc(f.nom)+'<br><span class="hint">'+esc(f.plan)+(f.sinHorario?' · sin horario en el calendario':'')+'</span></td><td class="n" data-t="'+attr(f.key)+'">'+(ed?'<input type="number" min="0" step="1" data-k="'+attr(f.key)+'" data-f="tar" value="'+f.tarifa+'" style="width:80px"><br><span class="hint" data-o="'+attr(f.key)+'">'+esc(f.origen||"general")+'</span>':mx.format(f.tarifa)+(f.origen?'<br><span class="hint">'+esc(f.origen)+'</span>':''))+'</td><td class="n">'+(ed?'<input type="number" min="0" step="1" data-k="'+attr(f.key)+'" data-f="ses" value="'+f.ses+'" style="width:70px">':f.ses)+'</td><td class="n">'+(ed?'<input type="number" min="0" step="0.25" data-k="'+attr(f.key)+'" data-f="hrs" value="'+f.hrs+'" style="width:80px">':f.hrs)+'</td><td class="n" data-h="'+attr(f.key)+'">'+f.horas+'</td><td class="n" data-i="'+attr(f.key)+'"><b>'+mx.format(f.importe)+'</b></td></tr>'}).join("")+'</tbody></table></div>';
-  $("nmTot").innerHTML='Horas: <b>'+r.horas+'</b> · Total a pagar: <b>'+mx.format(r.total)+'</b>';
+  $("nmFilas").innerHTML='<div class="wrap"><table style="min-width:640px"><thead><tr><th>Asignatura</th><th class="n">Tarifa por hora ($)</th><th class="n">Sesiones</th><th class="n">Horas por sesión</th><th class="n">Horas</th><th class="n">Desc. por asistencia (h)</th><th class="n">Importe</th></tr></thead><tbody>'+r.filas.map(function(f){
+    return '<tr><td>'+esc(f.nom)+'<br><span class="hint">'+esc(f.plan)+(f.sinHorario?' · sin horario en el calendario':'')+'</span></td><td class="n" data-t="'+attr(f.key)+'">'+(ed?'<input type="number" min="0" step="1" data-k="'+attr(f.key)+'" data-f="tar" value="'+f.tarifa+'" style="width:80px"><br><span class="hint" data-o="'+attr(f.key)+'">'+esc(f.origen||"general")+'</span>':mx.format(f.tarifa)+(f.origen?'<br><span class="hint">'+esc(f.origen)+'</span>':''))+'</td><td class="n">'+(ed?'<input type="number" min="0" step="1" data-k="'+attr(f.key)+'" data-f="ses" value="'+f.ses+'" style="width:70px">':f.ses)+'</td><td class="n">'+(ed?'<input type="number" min="0" step="0.25" data-k="'+attr(f.key)+'" data-f="hrs" value="'+f.hrs+'" style="width:80px">':f.hrs)+'</td><td class="n" data-h="'+attr(f.key)+'">'+f.horas+'</td><td class="n" data-d="'+attr(f.key)+'">'+(f.hDesc?"− "+f.hDesc:"0")+'</td><td class="n" data-i="'+attr(f.key)+'"><b>'+mx.format(f.importe)+'</b></td></tr>'}).join("")+'</tbody></table></div>';
+  $("nmTot").innerHTML='Horas: <b>'+r.horas+'</b>'+(r.hDesc?' · Descontadas por asistencia: <b>'+r.hDesc+' h</b>':'')+' · Total a pagar: <b>'+mx.format(r.total)+'</b>';
   $("nmEd").hidden=!ed;$("nmPagoW").hidden=!!r.pago||ROL!=="admin";$("nmAnular").hidden=!r.pago||ROL!=="admin";
   $("nmPdf").textContent=r.pago?"Descargar recibo de nómina (PDF)":"Descargar desglose (PDF)";
   $("nmPFec").value=$("nmPFec").value||today();
@@ -5293,11 +5502,11 @@ $("nmFilas").oninput=function(e){
   var d=e.target.dataset;if(!d.k)return;
   var v=parseFloat(e.target.value);(NMEDIT[d.k]=NMEDIT[d.k]||{})[d.f]=isNaN(v)?0:v;
   var s=nomSel(),f=filasNomEdit(NMD,s.y,s.m),fila=f.find(function(x){return x.key===d.k}),tr=e.target.closest&&e.target.closest("tr");
-  if(fila&&tr){var h=tr.querySelector("[data-h]"),i=tr.querySelector("[data-i]"),o=tr.querySelector("[data-o]");if(h)h.textContent=fila.horas;if(i)i.innerHTML="<b>"+mx.format(fila.importe)+"</b>";if(o)o.textContent=fila.origen||"general"}
+  if(fila&&tr){var h=tr.querySelector("[data-h]"),i=tr.querySelector("[data-i]"),o=tr.querySelector("[data-o]"),dd=tr.querySelector("[data-d]");if(dd)dd.textContent=fila.hDesc?"− "+fila.hDesc:"0";if(h)h.textContent=fila.horas;if(i)i.innerHTML="<b>"+mx.format(fila.importe)+"</b>";if(o)o.textContent=fila.origen||"general"}
   var th=r2(f.reduce(function(a,x){return a+x.horas},0)),tt=r2(f.reduce(function(a,x){return a+x.importe},0));
   $("nmTot").innerHTML='Horas: <b>'+th+'</b> · Total a pagar: <b>'+mx.format(tt)+'</b>';
 };
-function filasNomEdit(did,y,m){return filasNom(did,y,m).map(function(f){var e=NMEDIT[f.key];if(!e)return f;var ses=e.ses!=null?e.ses:f.ses,hs=e.hrs!=null?e.hrs:f.hrs,tf=e.tar!=null?(e.tar>0?e.tar:f.tarBase):f.tarifa,horas=r2(ses*hs);return Object.assign({},f,{ses:ses,hrs:hs,horas:horas,tarifa:tf,origen:tf!==f.tarBase?"ajustada en esta asignatura":origenTarifa(did,f.plan),importe:r2(horas*tf)})})}
+function filasNomEdit(did,y,m){return filasNom(did,y,m).map(function(f){var e=NMEDIT[f.key];if(!e)return f;var ses=e.ses!=null?e.ses:f.ses,hs=e.hrs!=null?e.hrs:f.hrs,tf=e.tar!=null?(e.tar>0?e.tar:f.tarBase):f.tarifa,horas=r2(ses*hs),hD=Math.min(f.hDesc||0,horas);return Object.assign({},f,{ses:ses,hrs:hs,horas:horas,hDesc:hD,tarifa:tf,origen:tf!==f.tarBase?"ajustada en esta asignatura":origenTarifa(did,f.plan),importe:r2((horas-hD)*tf)})})}
 async function guardaNomDoc(extra){
   var s=nomSel(),mes=mesKey(s.y,s.m),old=NOM[mes]||{filas:{},pagos:{}},filas=Object.assign({},old.filas);
   filasNomEdit(NMD,s.y,s.m).forEach(function(f){filas[f.key]=f.tarifa!==f.tarBase?{ses:f.ses,hrs:f.hrs,tar:f.tarifa}:{ses:f.ses,hrs:f.hrs}});
@@ -5341,10 +5550,10 @@ function dibujaReciboNom(d,did,ys,ms,nueva){
   [["Docente",DOC[did].nombre],["Mes",MESN[ms-1]+" "+ys+" ("+perMes(ys,ms)+")"]].concat(r.pago?[["Folio",r.pago.folio],["Fecha de pago",fd(r.pago.fecha)],["Forma de pago",r.pago.metodo+(r.pago.ref?" · Ref. "+r.pago.ref:"")]]:[["Estado","Pendiente de pago"]]).forEach(function(x){
     d.setFont("helvetica","bold");d.setTextColor(0,0,0);d.text(x[0]+":",15,y);d.setFont("helvetica","normal");d.text(String(x[1]),50,y);y+=5.5;
   });
-  y=tbl(d,y+4,[{h:"Asignatura",x:15,w:62},{h:"Plan",x:80,w:34},{h:"Tarifa/h",x:128,r:1},{h:"Sesiones",x:144,r:1},{h:"Horas",x:160,r:1},{h:"Importe",x:195,r:1}],f.map(function(x){return [x.nom,x.plan,mx.format(x.tarifa),String(x.ses),String(x.horas),mx.format(x.importe)]}));
+  y=tbl(d,y+4,[{h:"Asignatura",x:15,w:62},{h:"Plan",x:80,w:34},{h:"Tarifa/h",x:118,r:1},{h:"Sesiones",x:134,r:1},{h:"Horas",x:150,r:1},{h:"Desc. asist.",x:170,r:1},{h:"Importe",x:195,r:1}],f.map(function(x){return [x.nom,x.plan,mx.format(x.tarifa),String(x.ses),String(x.horas),x.hDesc?"-"+x.hDesc+" h":"0",mx.format(x.importe)]}));
   var yq0=y+4;
   if(r.pago){try{qrPDF(d,qrRecibo(r.pago.folio,r.pago.monto,r.pago.fecha),15,yq0,26);d.setFont("helvetica","normal");d.setFontSize(5.5);d.setTextColor(90,90,90);d.text("Verifique este recibo",28,yq0+29,{align:"center"});d.setTextColor(0,0,0)}catch(e){}}
-  y=totales(d,yq0,[["Horas totales",String(th)],["Total a pagar",mx.format(tot)]]);if(r.pago)y=Math.max(y,yq0+30);
+  var thd=r2(f.reduce(function(a,x){return a+(x.hDesc||0)},0));y=totales(d,yq0,[["Horas programadas",String(th)]].concat(thd?[["Horas descontadas por asistencia","- "+thd]]:[]).concat([["Total a pagar",mx.format(tot)]]));if(r.pago)y=Math.max(y,yq0+30);
   d.setFont("helvetica","normal");d.setFontSize(8);d.setTextColor(90,90,90);
   d.text("Tarifa por hora aplicada a cada asignatura, según su plan o el convenio con el docente. Las clases se imparten los sábados.",15,y+6);
   if(r.pago){y+=26;if(y>262){d.addPage();y=40}d.setDrawColor(90,90,90);d.setLineWidth(0.3);d.line(20,y,90,y);d.line(120,y,190,y);d.setFontSize(8.5);d.text("Recibí (firma del docente)",55,y+4,{align:"center"});d.text(r.pago.byn?"Pagó: "+r.pago.byn:"Administración",155,y+4,{align:"center"})}
@@ -5358,14 +5567,14 @@ function reciboNominaPDF(did){
 /* ---- Nómina del mes en Excel ---- */
 $("nmXls").onclick=function(){
   var X=window.XLSX;if(!X){$("nmMsg").textContent="No se pudo cargar el generador de Excel. Revisa tu conexión a internet.";return}
-  var s=nomSel(),aoa=[["Docente","Asignatura","Plan de estudios","Cuatrimestre","Tarifa por hora","Sesiones","Horas por sesión","Horas","Importe","Estado","Folio de pago","Fecha de pago"]],tot=0,hh=0;
+  var s=nomSel(),aoa=[["Docente","Asignatura","Plan de estudios","Cuatrimestre","Tarifa por hora","Sesiones","Horas por sesión","Horas","Horas descontadas por asistencia","Importe","Estado","Folio de pago","Fecha de pago"]],tot=0,hh=0;
   Object.keys(DOC).sort(function(a,b){return String(DOC[a].nombre).localeCompare(String(DOC[b].nombre))}).forEach(function(id){
     var r=resumenNom(id,s.y,s.m);
-    r.filas.forEach(function(f){aoa.push([DOC[id].nombre,f.nom,f.plan,f.cuat,f.tarifa,f.ses,f.hrs,f.horas,f.importe,r.pago?"Pagado":"Pendiente",r.pago?r.pago.folio:"",r.pago?fechaX(r.pago.fecha):""]);tot+=f.importe;hh+=f.horas});
+    r.filas.forEach(function(f){aoa.push([DOC[id].nombre,f.nom,f.plan,f.cuat,f.tarifa,f.ses,f.hrs,f.horas,f.hDesc||0,f.importe,r.pago?"Pagado":"Pendiente",r.pago?r.pago.folio:"",r.pago?fechaX(r.pago.fecha):""]);tot+=f.importe;hh+=f.horas});
   });
   if(aoa.length===1){$("nmMsg").textContent="No hay clases en este mes.";return}
-  aoa.push(["Total","","","","","","",r2(hh),r2(tot),"","",""]);
-  var wb=X.utils.book_new();X.utils.book_append_sheet(wb,hojaX(X,aoa,[28,34,26,13,14,10,15,10,14,12,13,14],[4,8],[11]),MESN[s.m-1]+" "+s.y);
+  aoa.push(["Total","","","","","","",r2(hh),"",r2(tot),"","",""]);
+  var wb=X.utils.book_new();X.utils.book_append_sheet(wb,hojaX(X,aoa,[28,34,26,13,14,10,15,10,16,14,12,13,14],[4,9],[12]),MESN[s.m-1]+" "+s.y);
   saveFile("nomina-docente-"+mesKey(s.y,s.m)+".xlsx",new Blob([X.write(wb,{bookType:"xlsx",type:"array",cellDates:true})],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
   $("nmMsg").textContent="Nómina de "+MESN[s.m-1]+" "+s.y+" descargada en Excel.";
 };
@@ -5574,15 +5783,15 @@ function verCred(sid,vig,code){
   if(ROL==="docente")h=rcBanner("bad","No tienes permiso para verificar credenciales.");
   else if(!s)h=rcBanner("bad","No se encontró al alumno de esta credencial.")+'<p class="hint" style="margin-top:8px">La credencial puede ser falsa o el alumno ya no está registrado.</p>';
   else{
-    var malo=code&&code!==chkTxt("CR|"+s.id+"|"+vig),vf=/^\d{8}$/.test(vig)?vig.slice(0,4)+"-"+vig.slice(4,6)+"-"+vig.slice(6):"",venc=vf&&vf<today(),egr=esEgr(s.id),g=grupoReciente(s.id),f=FOT[s.id]&&FOT[s.id].d;
-    h=(malo?rcBanner("bad","Los datos del código QR no coinciden con el registro. La credencial puede estar alterada."):egr?rcBanner("warn","El alumno aparece como egresado: la credencial ya no corresponde a un alumno activo."):venc?rcBanner("warn","La credencial está vencida (venció el "+fd(vf)+")."):rcBanner("ok","Credencial auténtica: el alumno está registrado y activo."))+
-      '<div style="display:flex;gap:12px;align-items:flex-start;margin-top:10px">'+(f?'<img src="'+f+'" alt="" style="width:90px;height:112px;object-fit:cover;border-radius:8px;border:1px solid var(--line)">':'')+'<div style="flex:1;min-width:0">'+rcTabla([["Alumno",s.nombre],["Matrícula",s.mat],["Plan de estudios",planDe(s)],["Grupo",g?g.num:""],["Ingreso",s.ingreso?"septiembre de "+s.ingreso:""],["Vigencia de la credencial",vf?fd(vf):""],["Estado",egr?"Egresado":"Alumno activo"]])+'</div></div>'+
+    var malo=code&&code!==chkTxt("CR|"+s.id+"|"+vig),vf=/^\d{8}$/.test(vig)?vig.slice(0,4)+"-"+vig.slice(4,6)+"-"+vig.slice(6):"",venc=vf&&vf<today(),egr=esEgr(s.id),baj=esBaja(s.id),g=grupoReciente(s.id),f=FOT[s.id]&&FOT[s.id].d;
+    h=(malo?rcBanner("bad","Los datos del código QR no coinciden con el registro. La credencial puede estar alterada."):baj?rcBanner("bad","Credencial NO válida: el alumno fue dado de baja."):egr?rcBanner("warn","El alumno aparece como egresado: la credencial ya no corresponde a un alumno activo."):venc?rcBanner("warn","La credencial está vencida (venció el "+fd(vf)+")."):rcBanner("ok","Credencial auténtica: el alumno está registrado y activo."))+
+      '<div style="display:flex;gap:12px;align-items:flex-start;margin-top:10px">'+(f?'<img src="'+f+'" alt="" style="width:90px;height:112px;object-fit:cover;border-radius:8px;border:1px solid var(--line)">':'')+'<div style="flex:1;min-width:0">'+rcTabla([["Alumno",s.nombre],["Matrícula",s.mat],["Plan de estudios",planDe(s)],["Grupo",g?g.num:""],["Ingreso",s.ingreso?"septiembre de "+s.ingreso:""],["Vigencia de la credencial",vf?fd(vf):""],["Estado",baj?"Baja":egr?"Egresado":"Alumno activo"]])+'</div></div>'+
       '<p class="hint">Compara la fotografía con la persona que presenta la credencial.</p>';
   }
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
 /* ===== Respaldo completo (datos y archivos) ===== */
-var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas","bajas"];
+var BKCOL=["students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas","bajas","checadas","asistpers"];
 var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioR","meta/folioRC","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT","meta/folioCH"];
 var BKLAST=null;
 function leeCol(n){
@@ -5680,9 +5889,9 @@ function naFilas(y,m,p){
     return pertenece&&(e.activo!==false||pg[key]);
   }).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))}).map(function(e){
     var key=e.id+"|"+p,pago=pg[key]||null,a=aj[key]||{};
-    if(pago)return {key:key,e:e,pago:pago,sueldo:pago.sueldo,bonos:pago.bonos,desc:pago.desc,nota:pago.nota||"",neto:pago.neto};
-    var sueldo=empSueldo(e,p),bonos=Number(a.bonos)||0,desc=Number(a.desc)||0;
-    return {key:key,e:e,pago:null,sueldo:sueldo,bonos:bonos,desc:desc,nota:a.nota||"",neto:r2(sueldo+bonos-desc)};
+    if(pago)return {key:key,e:e,pago:pago,sueldo:pago.sueldo,bonos:pago.bonos,desc:r2((pago.desc||0)-(pago.descAsis||0)),descAsis:pago.descAsis||0,as:null,nota:pago.nota||"",neto:pago.neto};
+    var sueldo=empSueldo(e,p),bonos=Number(a.bonos)||0,desc=Number(a.desc)||0,as=apAdm(e,y,m,p),da=as.desc||0;
+    return {key:key,e:e,pago:null,sueldo:sueldo,bonos:bonos,desc:desc,descAsis:da,as:as,nota:a.nota||"",neto:r2(sueldo+bonos-desc-da)};
   });
 }
 function renderNa(){
@@ -5696,7 +5905,7 @@ function renderNa(){
   $("naRes").textContent=F.length?F.length+(F.length===1?" empleado":" empleados")+" · "+(F.length-pend.length)+" pagados · "+pend.length+" pendientes · Total de la nómina: "+mx.format(tot)+" · "+naLabel(mesKey(s.y,s.m),s.p):"No hay empleados con pago "+(s.p==="M"?"mensual":"quincenal")+". Agrégalos en la pestaña Empleados.";
   $("naTb").innerHTML=F.length?F.map(function(f){
     var ed=!f.pago&&ROL==="admin";
-    return '<tr data-k="'+attr(f.key)+'"><td>'+esc(f.e.nombre)+'<br><span class="hint">'+esc(f.e.puesto||"")+'</span></td><td class="n">'+mx.format(f.sueldo)+'</td><td class="n">'+(ed?'<input type="number" min="0" step="0.01" data-f="bonos" value="'+(f.bonos||"")+'" style="width:92px">':mx.format(f.bonos))+'</td><td class="n">'+(ed?'<input type="number" min="0" step="0.01" data-f="desc" value="'+(f.desc||"")+'" style="width:92px">':mx.format(f.desc))+'</td><td>'+(ed?'<input data-f="nota" value="'+attr(f.nota)+'" placeholder="Motivo (opcional)" style="min-width:150px">':esc(f.nota))+'</td><td class="n" data-n><b>'+mx.format(f.neto)+'</b></td><td>'+(f.pago?'<span class="tag pagado">Pagado '+esc(fd(f.pago.fecha))+'</span><br><span class="hint">'+esc(f.pago.folio)+'</span>':'<span class="tag parcial">Pendiente</span>')+'</td><td>'+(f.pago?'<button data-rc="'+attr(f.key)+'">Recibo (PDF)</button>'+(ROL==="admin"?' <button class="d" data-an="'+attr(f.key)+'">'+(NACONF===f.key?"Confirmar anulación":"Anular pago")+'</button>':''):(ROL==="admin"?'<button class="p" data-pg="'+attr(f.key)+'">Pagar</button>':''))+'</td></tr>'}).join(""):'<tr><td colspan="8" class="empty">Sin empleados en este periodo.</td></tr>';
+    return '<tr data-k="'+attr(f.key)+'"><td>'+esc(f.e.nombre)+'<br><span class="hint">'+esc(f.e.puesto||"")+'</span></td><td class="n">'+mx.format(f.sueldo)+'</td><td class="n">'+(ed?'<input type="number" min="0" step="0.01" data-f="bonos" value="'+(f.bonos||"")+'" style="width:92px">':mx.format(f.bonos))+'</td><td class="n">'+(ed?'<input type="number" min="0" step="0.01" data-f="desc" value="'+(f.desc||"")+'" style="width:92px">':mx.format(f.desc))+'</td><td class="n">'+mx.format(f.descAsis||0)+(f.as&&f.as.evaluado?'<br><span class="hint">'+esc(f.as.faltas+" falta(s) · "+f.as.retardos+" retardo(s)")+'</span>':f.as?'<br><span class="hint">'+esc(f.as.motivo)+'</span>':'')+'</td><td>'+(ed?'<input data-f="nota" value="'+attr(f.nota)+'" placeholder="Motivo (opcional)" style="min-width:150px">':esc(f.nota))+'</td><td class="n" data-n><b>'+mx.format(f.neto)+'</b></td><td>'+(f.pago?'<span class="tag pagado">Pagado '+esc(fd(f.pago.fecha))+'</span><br><span class="hint">'+esc(f.pago.folio)+'</span>':'<span class="tag parcial">Pendiente</span>')+'</td><td>'+(f.pago?'<button data-rc="'+attr(f.key)+'">Recibo (PDF)</button>'+(ROL==="admin"?' <button class="d" data-an="'+attr(f.key)+'">'+(NACONF===f.key?"Confirmar anulación":"Anular pago")+'</button>':''):(ROL==="admin"?'<button class="p" data-pg="'+attr(f.key)+'">Pagar</button>':''))+'</td></tr>'}).join(""):'<tr><td colspan="9" class="empty">Sin empleados en este periodo.</td></tr>';
   $("naPagarT").disabled=!pend.length||ROL!=="admin";
 }
 $("naM").onchange=$("naY").onchange=$("naPer").onchange=renderNa;
@@ -5705,7 +5914,7 @@ $("naT2").onclick=function(){$("naT2").className="p";$("naT1").className="";rend
 function naFilaVivo(tr){
   var s=naSel(),F=naFilas(s.y,s.m,s.p),f=F.find(function(x){return x.key===tr.dataset.k});if(!f||f.pago)return null;
   var b=parseFloat(tr.querySelector('[data-f="bonos"]').value)||0,d=parseFloat(tr.querySelector('[data-f="desc"]').value)||0,n=tr.querySelector('[data-f="nota"]').value.trim();
-  return {f:f,bonos:b,desc:d,nota:n,neto:r2(f.sueldo+b-d)};
+  return {f:f,bonos:b,desc:d,nota:n,neto:r2(f.sueldo+b-d-(f.descAsis||0))};
 }
 $("naTb").oninput=function(e){
   var tr=e.target.closest&&e.target.closest("tr[data-k]");if(!tr||!e.target.dataset.f)return;
@@ -5752,7 +5961,7 @@ $("naPOk").onclick=async function(){
     for(var i=0;i<NAPAGAR.length;i++){
       var f=NAPAGAR[i];if(pg[f.key])continue;
       var num=await folios(1,"meta/folioNA");
-      pg[f.key]={folio:"NA-"+String(num).padStart(6,"0"),fecha:$("naPFec").value||today(),metodo:$("naPMet").value,ref:$("naPRef").value.trim(),p:s.p,mes:mes,empId:f.e.id,emp:f.e.nombre,puesto:f.e.puesto||"",sueldo:f.sueldo,bonos:f.bonos,desc:f.desc,nota:f.nota,neto:f.neto,byn:APP?APP.name:""};
+      pg[f.key]={folio:"NA-"+String(num).padStart(6,"0"),fecha:$("naPFec").value||today(),metodo:$("naPMet").value,ref:$("naPRef").value.trim(),p:s.p,mes:mes,empId:f.e.id,emp:f.e.nombre,puesto:f.e.puesto||"",sueldo:f.sueldo,bonos:f.bonos,desc:r2((f.desc||0)+(f.descAsis||0)),descAsis:f.descAsis||0,nota:(f.nota||"")+(f.descAsis>0?(f.nota?" · ":"")+apNotaAdm(f.as):""),neto:f.neto,byn:APP?APP.name:""};
       aj[f.key]={bonos:f.bonos,desc:f.desc,nota:f.nota};n++;
     }
     var nd=Object.assign({},old,{mes:mes,aj:aj,pagos:pg});await DBH.doc("nomina_admin/"+mes).set(nd);NAD[mes]=nd;
@@ -5808,7 +6017,7 @@ function dibujaReciboNa(d,key,mes,nueva){
   [["Folio",p.folio],["Empleado",p.emp],["Puesto",p.puesto],["Periodo",naLabel(mes,p.p)],["Fecha de pago",fd(p.fecha)],["Forma de pago",p.metodo+(p.ref?" · Ref. "+p.ref:"")]].forEach(function(x){
     if(!x[1])return;d.setFont("helvetica","bold");d.setTextColor(0,0,0);d.text(x[0]+":",15,y);d.setFont("helvetica","normal");d.text(String(x[1]),50,y);y+=5.5;
   });
-  var filas=[["Sueldo del periodo",mx.format(p.sueldo)],["Bonos y otras percepciones",mx.format(p.bonos||0)],["Descuentos",p.desc?"- "+mx.format(p.desc):mx.format(0)]];
+  var dMan=r2((p.desc||0)-(p.descAsis||0)),filas=[["Sueldo del periodo",mx.format(p.sueldo)],["Bonos y otras percepciones",mx.format(p.bonos||0)],["Descuentos",dMan?"- "+mx.format(dMan):mx.format(0)]].concat(p.descAsis>0?[["Descuento por asistencia (faltas y retardos)","- "+mx.format(p.descAsis)]]:[]);
   y=tbl(d,y+4,[{h:"Concepto",x:15,w:110},{h:"Importe",x:195,r:1}],filas);
   var yq0=y+4;
   try{qrPDF(d,qrRecibo(p.folio,p.neto,p.fecha),15,yq0,26);d.setFont("helvetica","normal");d.setFontSize(5.5);d.setTextColor(90,90,90);d.text("Verifique este recibo",28,yq0+29,{align:"center"});d.setTextColor(0,0,0)}catch(e){}
@@ -5847,12 +6056,362 @@ $("naRecibos").onclick=function(){
 $("naXls").onclick=function(){
   var X=window.XLSX;if(!X){$("naMsg").textContent="No se pudo cargar el generador de Excel. Revisa tu conexión a internet.";return}
   var s=naSel(),F=naFilas(s.y,s.m,s.p);if(!F.length){$("naMsg").textContent="No hay empleados en este periodo.";return}
-  var aoa=[["Empleado","Puesto","Área","Sueldo del periodo","Bonos","Descuentos","Neto","Estado","Folio","Fecha de pago","Forma de pago"]].concat(F.map(function(f){return [f.e.nombre,f.e.puesto||"",f.e.area||"",f.sueldo,f.bonos||0,f.desc||0,f.neto,f.pago?"Pagado":"Pendiente",f.pago?f.pago.folio:"",f.pago?fechaX(f.pago.fecha):"",f.pago?f.pago.metodo:""]}));
-  aoa.push(["Total","","",r2(F.reduce(function(a,f){return a+f.sueldo},0)),r2(F.reduce(function(a,f){return a+(f.bonos||0)},0)),r2(F.reduce(function(a,f){return a+(f.desc||0)},0)),r2(F.reduce(function(a,f){return a+f.neto},0)),"","","",""]);
-  var wb=X.utils.book_new();X.utils.book_append_sheet(wb,hojaX(X,aoa,[28,22,18,16,12,12,14,11,13,14,15],[3,4,5,6],[9]),"Nómina administrativa");
+  var aoa=[["Empleado","Puesto","Área","Sueldo del periodo","Bonos","Descuentos","Descuento por asistencia","Neto","Estado","Folio","Fecha de pago","Forma de pago"]].concat(F.map(function(f){return [f.e.nombre,f.e.puesto||"",f.e.area||"",f.sueldo,f.bonos||0,f.desc||0,f.descAsis||0,f.neto,f.pago?"Pagado":"Pendiente",f.pago?f.pago.folio:"",f.pago?fechaX(f.pago.fecha):"",f.pago?f.pago.metodo:""]}));
+  aoa.push(["Total","","",r2(F.reduce(function(a,f){return a+f.sueldo},0)),r2(F.reduce(function(a,f){return a+(f.bonos||0)},0)),r2(F.reduce(function(a,f){return a+(f.desc||0)},0)),r2(F.reduce(function(a,f){return a+(f.descAsis||0)},0)),r2(F.reduce(function(a,f){return a+f.neto},0)),"","","",""]);
+  var wb=X.utils.book_new();X.utils.book_append_sheet(wb,hojaX(X,aoa,[28,22,18,16,12,12,16,14,11,13,14,15],[3,4,5,6,7],[10]),"Nómina administrativa");
   saveFile("nomina-administrativa-"+mesKey(s.y,s.m)+"-"+s.p+".xlsx",new Blob([X.write(wb,{bookType:"xlsx",type:"array",cellDates:true})],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
   $("naMsg").style.color="var(--ok)";$("naMsg").textContent="Nómina descargada en Excel.";
 };
+/* ===== Asistencia del personal: reloj checador, retardos, faltas y descuentos en la nómina ===== */
+/* checadas/<AAAA-MM> = {mes, regs:{idReloj:{fecha:["HH:MM",...]}}, man:{llave:{fecha:[...]}}, just:{"llave|fecha":{tipo,nota,por}}, imp:[{desde,hasta,archivo,n,fecha,por}]}
+   asistpers/cfg = {tol, retFalta, inh:{fecha:motivo}, map:{llave:idReloj}, hor:{llave:{dias,ent,sal}}, horDef:{dias,ent,sal}}   (llave = "emp:<id>" o "doc:<id>") */
+var APDIAS=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],APTAB=1,APDET=null,APIMP=null,APEDIT=null,APCFGV=null;
+function apNid(v){return String(v==null?"":v).trim().replace(/\.0+$/,"").replace(/^0+(?=\d)/,"")}
+function apCfg(){var c=APC||{},d=c.horDef||{};return {tol:c.tol!=null&&c.tol!==""?Math.max(+c.tol||0,0):10,retFalta:c.retFalta>0?Math.floor(+c.retFalta):3,inh:c.inh||{},map:c.map||{},hor:c.hor||{},horDef:{dias:d.dias||[],ent:d.ent||"",sal:d.sal||""}}}
+function apHorDe(llave){var c=apCfg(),h=c.hor[llave]||{},d=c.horDef;return {dias:h.dias||d.dias,ent:h.ent||d.ent,sal:h.sal||d.sal}}
+function apMesDe(f){return String(f).slice(0,7)}
+function apDocMes(mes){return CHK[mes]||{regs:{},man:{},just:{},dman:{},imp:[]}}
+function apMarcas(llave,f){
+  var c=apCfg(),d=apDocMes(apMesDe(f)),id=c.map[llave],a=[],o=[];
+  if(id&&d.regs&&d.regs[id]&&d.regs[id][f])a=a.concat(d.regs[id][f]);
+  if(d.man&&d.man[llave]&&d.man[llave][f])a=a.concat(d.man[llave][f]);
+  a=a.filter(function(x,i,r){return r.indexOf(x)===i}).sort();
+  a.forEach(function(x){if(!o.length||aMin(x)-aMin(o[o.length-1])>=2)o.push(x)});
+  return o;
+}
+function apJust(llave,f){var d=apDocMes(apMesDe(f));return (d.just&&d.just[llave+"|"+f])||null}
+/* Días marcados a mano por administración: checadas/<mes>.dman = {llave:{fecha:"A"|"R"|"F"|"D"}}  (A se presentó, R se presentó con retardo, F no se presentó, D descanso) */
+function apDman(llave,f){return (((apDocMes(apMesDe(f)).dman||{})[llave])||{})[f]||""}
+var APMARCAS={A:"Se presentó",R:"Se presentó con retardo",F:"No se presentó",D:"Descanso (no le toca)"};
+function apCubierto(f){var d=apDocMes(apMesDe(f));return (d.imp||[]).some(function(x){return x.desde<=f&&f<=x.hasta})}
+function apDow(y,m,d){return new Date(Date.UTC(y,m-1,d)).getUTCDay()}
+/* Administrativos: falta = un día de sueldo (sueldo mensual / 30); N retardos = 1 falta. Solo se evalúan los días ya cargados desde el reloj. */
+function apAdm(e,y,m,p){
+  var llave="emp:"+e.id,c=apCfg(),h=apHorDe(llave),res={evaluado:false,faltas:0,retardos:0,dias:[],desc:0,eq:0,motivo:"",manual:0};
+  var ult=new Date(Date.UTC(y,m,0)).getUTCDate(),d1=p==="Q2"?16:1,d2=p==="Q1"?15:ult,hoy=today(),tieneId=!!c.map[llave],tieneHor=h.dias.length>0&&!!h.ent,hayMan=false,d;
+  for(d=d1;d<=d2;d++){if(apDman(llave,mesKey(y,m)+"-"+pad2(d))){hayMan=true;break}}
+  if(!tieneId&&!hayMan){res.motivo="Sin ID de reloj ni días marcados";return res}
+  if(tieneId&&!tieneHor&&!hayMan){res.motivo="Sin horario";return res}
+  for(d=d1;d<=d2;d++){
+    var f=mesKey(y,m)+"-"+pad2(d),dow=apDow(y,m,d),mk=apDman(llave,f);
+    if(f>hoy||mk==="D")continue;
+    var prog=tieneId&&tieneHor&&apCubierto(f)&&h.dias.indexOf(dow)>-1;
+    if(!mk&&!prog)continue;
+    var it={f:f,dow:dow,marcas:apMarcas(llave,f),estado:"ok",nota:"",man:mk},j=apJust(llave,f);
+    if(mk)res.manual++;
+    if(c.inh[f]){it.estado="inh";it.nota=c.inh[f]}
+    else if(j){it.estado="just";it.nota=j.tipo+(j.nota?" · "+j.nota:"")}
+    else if(mk==="F"){it.estado="falta";it.nota="No se presentó (marcado a mano)";res.faltas++}
+    else if(mk==="R"){it.estado="retardo";it.min=0;it.nota="Retardo (marcado a mano)";res.retardos++}
+    else if(mk==="A"){it.nota="Se presentó (marcado a mano)"}
+    else if(!it.marcas.length){it.estado="falta";res.faltas++}
+    else{
+      var lt=aMin(it.marcas[0])-aMin(h.ent);
+      if(lt>c.tol){it.estado="retardo";it.min=lt;res.retardos++}
+      if(h.sal&&it.marcas.length>1&&aMin(h.sal)-aMin(it.marcas[it.marcas.length-1])>c.tol)it.nota="Salida anticipada";
+      else if(it.marcas.length<2)it.nota="Sin checada de salida";
+    }
+    res.dias.push(it);
+  }
+  res.evaluado=true;res.eq=res.faltas+Math.floor(res.retardos/c.retFalta);res.desc=r2(res.eq*(Number(e.salario)||0)/30);
+  return res;
+}
+function apNotaAdm(a){
+  if(!a||!a.evaluado||!(a.desc>0))return "";
+  var t=[];if(a.faltas)t.push(a.faltas+(a.faltas===1?" falta":" faltas"));if(a.retardos)t.push(a.retardos+(a.retardos===1?" retardo":" retardos"));
+  return "Asistencia: "+t.join(" y ")+" (descuento de "+a.eq+(a.eq===1?" día":" días")+")";
+}
+/* Docentes: las clases son los sábados. Se descuentan los minutos de retardo (más allá de la tolerancia) y de salida anticipada; sin checada ni justificación se descuenta la clase completa. */
+function apDocDet(did,y,m){
+  var llave="doc:"+did,c=apCfg(),res={evaluado:false,dias:[],porClase:{},faltas:0,incidencias:0,min:0,motivo:""};
+  if(!c.map[llave]){res.motivo="Sin ID de reloj";return res}
+  var per=perMes(y,m),hoy=today(),cl=clasesDe(did).filter(function(x){return x.per===per&&x.m&&x.m.ini&&x.m.fin&&aMin(x.m.fin)>aMin(x.m.ini)});
+  if(!cl.length){res.motivo="Sin horario en el calendario";return res}
+  var ult=new Date(Date.UTC(y,m,0)).getUTCDate();
+  function llaveCl(x){return did+"|"+x.plan+"|"+nz(x.nom)+"|"+x.per}
+  function resta(x,mn){var k=llaveCl(x);res.porClase[k]=(res.porClase[k]||0)+mn;res.min+=mn}
+  for(var d=1;d<=ult;d++){
+    if(apDow(y,m,d)!==6)continue;
+    var f=mesKey(y,m)+"-"+pad2(d);if(f>hoy||!apCubierto(f))continue;
+    var it={f:f,dow:6,marcas:apMarcas(llave,f),estado:"ok",nota:"",min:0},j=apJust(llave,f);
+    if(c.inh[f]){it.estado="inh";it.nota=c.inh[f]}
+    else if(j){it.estado="just";it.nota=j.tipo+(j.nota?" · "+j.nota:"")}
+    else if(!it.marcas.length){it.estado="falta";res.faltas++;cl.forEach(function(x){var dur=aMin(x.m.fin)-aMin(x.m.ini);resta(x,dur);it.min+=dur})}
+    else if(it.marcas.length<2){it.estado="incompleta";it.nota="Una sola checada: revisa o captura la otra"}
+    else{
+      var F=aMin(it.marcas[0]),Lm=aMin(it.marcas[it.marcas.length-1]);
+      cl.forEach(function(x){
+        var S=aMin(x.m.ini),E=aMin(x.m.fin),dur=E-S,late=F-S>c.tol?Math.min(Math.max(F-S,0),dur):0,early=E-Lm>c.tol?Math.min(Math.max(E-Lm,0),dur):0,mn=Math.min(dur,late+early);
+        if(mn>0){resta(x,mn);it.min+=mn}
+      });
+      if(it.min>0){it.estado="desc";res.incidencias++;it.nota=it.min+" min por retardo o salida anticipada"}
+    }
+    res.dias.push(it);
+  }
+  res.evaluado=true;return res;
+}
+function apEstadoTxt(it){if(it.estado==="ok"&&it.man==="A")return "Se presentó";return {ok:"Puntual",inh:"Día inhábil",just:"Justificado",falta:"Falta",retardo:it.min?"Retardo ("+it.min+" min)":"Retardo",desc:"Con descuento",incompleta:"Incompleta"}[it.estado]||it.estado}
+/* ---- Pantalla ---- */
+function abreAP(g){
+  if(!$("apY").options.length){var hy=new Date().getFullYear();$("apY").innerHTML=[hy-2,hy-1,hy,hy+1].map(function(y){return '<option>'+y+'</option>'}).join("");$("apY").value=String(hy);$("apM").innerHTML=MESN.map(function(n,i){return '<option value="'+(i+1)+'">'+n+'</option>'}).join("");$("apM").value=String(new Date().getMonth()+1);$("apQ").innerHTML=NAPERS.map(function(x){return '<option value="'+x[0]+'">'+x[1]+'</option>'}).join("")}
+  var ga=permiso("nomina_adm")!=="none",gd=permiso("nomina_doc")!=="none";
+  $("apG").innerHTML=(ga?'<option value="adm">Administrativos</option>':'')+(gd?'<option value="doc">Docentes</option>':'');
+  if(g&&$("apG").querySelector('[value="'+g+'"]'))$("apG").value=g;
+  APTAB=1;APDET=null;APEDIT=null;$("apMsg").textContent="";renderAP();if(!$("dAP").open)$("dAP").showModal();
+}
+function renderAP(){
+  ["apP1","apP2","apP3"].forEach(function(id,i){$(id).hidden=APTAB!==i+1});
+  ["apT1","apT2","apT3"].forEach(function(id,i){$(id).className=APTAB===i+1?"p":""});
+  var ed=ROL==="admin";document.querySelectorAll("#dAP .ap-ed").forEach(function(x){x.hidden=!ed});
+  if(APTAB===1)apRenderRes();else if(APTAB===2)apRenderImp();else apRenderCfg();
+}
+function apSel(){return {y:+$("apY").value,m:+$("apM").value,g:$("apG").value||"adm",p:$("apQ").value||"M"}}
+function apCoberturaTxt(y,m){
+  var d=apDocMes(mesKey(y,m)),L=(d.imp||[]);
+  var man=Object.keys(d.dman||{}).length?" Los días marcados a mano también cuentan.":"";
+  return L.length?"Registros cargados del reloj: "+L.map(function(x){return fd(x.desde)+" al "+fd(x.hasta)}).join(", ")+". Solo se evalúan los días dentro de esos rangos."+man:(man?"No hay archivo del reloj cargado para este mes: solo cuentan los días marcados a mano.":"Aún no se ha cargado ningún archivo del reloj para este mes: no se descuenta nada.");
+}
+function apRenderRes(){
+  var s=apSel();$("apQL").hidden=s.g!=="adm";
+  $("apCob").textContent=apCoberturaTxt(s.y,s.m);
+  if(APDET){apRenderDet();return}
+  $("apResW").hidden=false;$("apDetW").hidden=true;
+  if(s.g==="adm"){
+    var F=naFilas(s.y,s.m,s.p);
+    $("apTh").innerHTML='<tr><th>Empleado</th><th>ID reloj</th><th class="n">Días evaluados</th><th class="n">Faltas</th><th class="n">Retardos</th><th class="n">Equivale a (días)</th><th class="n">Descuento</th><th></th></tr>';
+    $("apTb").innerHTML=F.length?F.map(function(f){var a=apAdm(f.e,s.y,s.m,s.p),id=apCfg().map["emp:"+f.e.id];
+      return '<tr><td>'+esc(f.e.nombre)+'<br><span class="hint">'+esc(f.e.puesto||"")+'</span></td><td>'+esc(id||"—")+'</td>'+(a.evaluado?'<td class="n">'+a.dias.length+'</td><td class="n">'+a.faltas+'</td><td class="n">'+a.retardos+'</td><td class="n">'+a.eq+'</td><td class="n"><b>'+mx.format(a.desc)+'</b></td>':'<td colspan="5" class="hint">'+esc(a.motivo)+'</td>')+'<td><button data-apd="'+attr(f.e.id)+'">Detalle</button></td></tr>'}).join(""):vacio(8,"No hay empleados con ese periodo de pago.");
+  }else{
+    var ids=Object.keys(DOC).filter(function(id){return clasesDe(id).some(function(c){return c.per===perMes(s.y,s.m)})}).sort(function(a,b){return String(DOC[a].nombre).localeCompare(String(DOC[b].nombre))});
+    $("apTh").innerHTML='<tr><th>Docente</th><th>ID reloj</th><th class="n">Sábados evaluados</th><th class="n">Faltas</th><th class="n">Con retardo o salida anticipada</th><th class="n">Horas descontadas</th><th class="n">Descuento</th><th></th></tr>';
+    $("apTb").innerHTML=ids.length?ids.map(function(id){var a=apDocDet(id,s.y,s.m),id2=apCfg().map["doc:"+id],rows=filasNom(id,s.y,s.m),dh=r2(rows.reduce(function(t,x){return t+(x.hDesc||0)},0)),dm=r2(rows.reduce(function(t,x){return t+(x.hDesc||0)*x.tarifa},0));
+      return '<tr><td>'+esc(DOC[id].nombre)+'</td><td>'+esc(id2||"—")+'</td>'+(a.evaluado?'<td class="n">'+a.dias.length+'</td><td class="n">'+a.faltas+'</td><td class="n">'+a.incidencias+'</td><td class="n">'+dh+'</td><td class="n"><b>'+mx.format(dm)+'</b></td>':'<td colspan="5" class="hint">'+esc(a.motivo)+'</td>')+'<td><button data-apd="'+attr(id)+'">Detalle</button></td></tr>'}).join(""):vacio(8,"No hay docentes con clases en este mes.");
+  }
+}
+function apRenderDet(){
+  var s=apSel(),esA=s.g==="adm",id=APDET,llave=(esA?"emp:":"doc:")+id,a,nom;
+  if(esA){var e=EMP[id];nom=e?e.nombre:"";a=apAdm(Object.assign({id:id},e||{}),s.y,s.m,s.p)}else{nom=DOC[id]?DOC[id].nombre:"";a=apDocDet(id,s.y,s.m)}
+  $("apResW").hidden=true;$("apDetW").hidden=false;
+  $("apDetT").textContent=nom+" · "+MESN[s.m-1]+" "+s.y+(esA?" · "+naLabel(mesKey(s.y,s.m),s.p):"");
+  var ed=ROL==="admin";
+  $("apDetTb").innerHTML=a.evaluado&&a.dias.length?a.dias.map(function(it){
+    var cls=it.estado==="falta"?"parcial":it.estado==="ok"||it.estado==="inh"||it.estado==="just"?"pagado":"sin";
+    return '<tr><td>'+esc(fd(it.f))+'</td><td>'+APDIAS[it.dow]+'</td><td>'+(it.marcas.length?esc(it.marcas.join(" · ")):'<span class="hint">sin checadas</span>')+'</td><td><span class="tag '+cls+'">'+esc(apEstadoTxt(it))+'</span>'+(it.nota?'<br><span class="hint">'+esc(it.nota)+'</span>':'')+'</td><td>'+(ed?'<button data-apf="'+attr(it.f)+'">Justificar o capturar</button>':'')+'</td></tr>'}).join(""):vacio(5,esc(a.motivo||"No hay días evaluados: carga el archivo del reloj de ese rango."));
+  $("apAdmBox").hidden=!esA;if(esA)apRenderMarcas(id,s);
+  $("apForm").hidden=!APEDIT||!ed;
+  if(APEDIT){
+    var j=apJust(llave,APEDIT),man=((apDocMes(apMesDe(APEDIT)).man||{})[llave]||{})[APEDIT]||[];
+    $("apFF").textContent=fd(APEDIT)+" · "+APDIAS[new Date(APEDIT+"T12:00:00").getDay()]+" · Checadas del reloj: "+(apMarcas(llave,APEDIT).join(", ")||"ninguna");
+    $("apFQ").hidden=!j;$("apFX").hidden=!man.length;
+    if(j){$("apFT").value=j.tipo;$("apFN").value=j.nota||""}
+  }
+}
+function apPerDias(s){var ult=new Date(Date.UTC(s.y,s.m,0)).getUTCDate(),d1=s.p==="Q2"?16:1,d2=s.p==="Q1"?15:ult,o=[];for(var d=d1;d<=d2;d++)o.push({f:mesKey(s.y,s.m)+"-"+pad2(d),dow:apDow(s.y,s.m,d)});return o}
+function apRenderMarcas(id,s){
+  var ll="emp:"+id,h=apHorDe(ll),ed=ROL==="admin",hoy=today();
+  $("apWD").innerHTML=[1,2,3,4,5,6,0].map(function(d){return '<label style="flex-direction:row;align-items:center;gap:3px;font-size:13px"><input type="checkbox" style="width:auto" data-wd="'+d+'"'+(h.dias.indexOf(d)>-1?" checked":"")+(ed?"":" disabled")+'>'+APDIAS[d]+'</label>'}).join("");
+  $("apMTb").innerHTML=apPerDias(s).map(function(x){
+    var mk=apDman(ll,x.f),op='<option value="">— sin marcar —</option>'+["A","R","F","D"].map(function(k){return '<option value="'+k+'"'+(mk===k?" selected":"")+'>'+APMARCAS[k]+'</option>'}).join("");
+    return '<tr style="cursor:default"><td>'+esc(fd(x.f))+'</td><td>'+APDIAS[x.dow]+'</td><td>'+(h.dias.indexOf(x.dow)>-1?'Sí':'<span class="hint">No</span>')+'</td><td><select data-mf="'+attr(x.f)+'" aria-label="Marca del '+attr(fd(x.f))+'"'+(ed&&x.f<=hoy?"":" disabled")+'>'+op+'</select></td></tr>'}).join("");
+}
+/* ---- Pestañas, selectores y botones ---- */
+$("apT1").onclick=function(){APTAB=1;renderAP()};$("apT2").onclick=function(){APTAB=2;renderAP()};$("apT3").onclick=function(){APTAB=3;APCFGV=null;renderAP()};
+$("apM").onchange=$("apY").onchange=$("apG").onchange=$("apQ").onchange=function(){APDET=null;APEDIT=null;renderAP()};
+$("apCls").onclick=function(){$("dAP").close()};
+$("apBack").onclick=function(){APDET=null;APEDIT=null;renderAP()};
+$("apTb").onclick=function(e){var d=e.target.dataset;if(d&&d.apd){APDET=d.apd;APEDIT=null;renderAP()}};
+$("apDetTb").onclick=function(e){var d=e.target.dataset;if(d&&d.apf){APEDIT=d.apf;$("apFT").value="Permiso";$("apFN").value="";$("apFH").value="";renderAP()}};
+$("apMTb").onchange=async function(e){
+  var f=e.target.dataset&&e.target.dataset.mf;if(!f||ROL!=="admin"||!APDET)return;var ll=apLlaveActual(),v=e.target.value;
+  try{await apGuardaMes(apMesDe(f),function(d){d.dman=d.dman||{};var o=d.dman[ll]=d.dman[ll]||{};if(v)o[f]=v;else delete o[f];if(!Object.keys(o).length)delete d.dman[ll]});$("apMsg").textContent="";renderAP();refrescaNominasAP()}catch(er){dberr(er)}
+};
+$("apWDok").onclick=async function(){
+  if(ROL!=="admin"||!APDET)return;var ll=apLlaveActual(),ds=[];
+  Array.prototype.forEach.call($("apWD").querySelectorAll("[data-wd]"),function(x){if(x.checked)ds.push(+x.dataset.wd)});
+  var c=JSON.parse(JSON.stringify(apCfg()));c.hor[ll]=Object.assign({},c.hor[ll]||{},{dias:ds});
+  try{await DBH.doc("asistpers/cfg").set(c);APC=c;$("apMsg").style.color="var(--ok)";$("apMsg").textContent="Días guardados.";renderAP();refrescaNominasAP()}catch(er){dberr(er)}
+};
+$("apMAll").onclick=async function(){
+  if(ROL!=="admin"||!APDET)return;var s=apSel(),ll=apLlaveActual(),h=apHorDe(ll),hoy=today(),inh=apCfg().inh;
+  if(!h.dias.length){$("apMsg").style.color="var(--bad)";$("apMsg").textContent="Primero marca los días de la semana en que se presenta y guárdalos.";return}
+  var fs=apPerDias(s).filter(function(x){return x.f<=hoy&&h.dias.indexOf(x.dow)>-1&&!apDman(ll,x.f)&&!inh[x.f]}).map(function(x){return x.f});
+  if(!fs.length){$("apMsg").style.color="var(--bad)";$("apMsg").textContent="No hay días de los que le tocaban sin marca.";return}
+  try{await apGuardaMes(mesKey(s.y,s.m),function(d){d.dman=d.dman||{};var o=d.dman[ll]=d.dman[ll]||{};fs.forEach(function(f){o[f]="A"})});$("apMsg").style.color="var(--ok)";$("apMsg").textContent="Se marcó «Se presentó» en "+fs.length+(fs.length===1?" día":" días")+". Cambia los que faltó.";renderAP();refrescaNominasAP()}catch(er){dberr(er)}
+};
+async function apGuardaMes(mes,fn){
+  var d=JSON.parse(JSON.stringify(CHK[mes]||{mes:mes}));d.mes=mes;["regs","man","just","dman"].forEach(function(k){d[k]=d[k]||{}});d.imp=d.imp||[];
+  fn(d);await DBH.doc("checadas/"+mes).set(d);CHK[mes]=d;
+}
+function apLlaveActual(){var s=apSel();return (s.g==="adm"?"emp:":"doc:")+APDET}
+$("apFJ").onclick=async function(){
+  if(ROL!=="admin"||!APEDIT)return;var ll=apLlaveActual(),f=APEDIT;
+  try{await apGuardaMes(apMesDe(f),function(d){d.just[ll+"|"+f]={tipo:$("apFT").value,nota:$("apFN").value.trim().slice(0,200),por:APP?APP.name:"",fecha:today()}});APEDIT=null;renderAP();refrescaNominasAP()}catch(e){dberr(e)}
+};
+$("apFQ").onclick=async function(){
+  if(ROL!=="admin"||!APEDIT)return;var ll=apLlaveActual(),f=APEDIT;
+  try{await apGuardaMes(apMesDe(f),function(d){delete d.just[ll+"|"+f]});APEDIT=null;renderAP();refrescaNominasAP()}catch(e){dberr(e)}
+};
+$("apFM").onclick=async function(){
+  if(ROL!=="admin"||!APEDIT)return;var h=$("apFH").value;if(!/^\d{1,2}:\d{2}$/.test(h)){$("apMsg").style.color="var(--bad)";$("apMsg").textContent="Escribe la hora de la checada (por ejemplo 09:05).";return}
+  var ll=apLlaveActual(),f=APEDIT,hh=pad2(+h.split(":")[0])+":"+h.split(":")[1];
+  try{await apGuardaMes(apMesDe(f),function(d){d.man[ll]=d.man[ll]||{};d.man[ll][f]=(d.man[ll][f]||[]).concat([hh]);var c=d.imp.some(function(x){return x.desde<=f&&f<=x.hasta});if(!c)d.imp.push({desde:f,hasta:f,archivo:"Captura manual",n:1,fecha:today(),por:APP?APP.name:""})});$("apFH").value="";$("apMsg").textContent="";renderAP();refrescaNominasAP()}catch(e){dberr(e)}
+};
+$("apFX").onclick=async function(){
+  if(ROL!=="admin"||!APEDIT)return;var ll=apLlaveActual(),f=APEDIT;
+  try{await apGuardaMes(apMesDe(f),function(d){if(d.man[ll])delete d.man[ll][f]});renderAP();refrescaNominasAP()}catch(e){dberr(e)}
+};
+function refrescaNominasAP(){if(MOD==="na")renderNa();if(MOD==="nom")renderNom()}
+/* ---- Carga del archivo del reloj (CSV o Excel, Hikvision, Dahua u otros) ---- */
+function apCsv(t){
+  t=String(t).replace(/^﻿/,"");var l0=t.split(/\r?\n/)[0]||"",tabs=(l0.match(/\t/g)||[]).length,pc=(l0.match(/;/g)||[]).length,co=(l0.match(/,/g)||[]).length,sep=tabs>0&&tabs>=pc&&tabs>=co?"\t":pc>co?";":",";
+  var rows=[],row=[],cur="",q=false,i,c;
+  for(i=0;i<t.length;i++){c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+    else if(c==='"')q=true;
+    else if(c===sep){row.push(cur);cur=""}
+    else if(c==="\n"||c==="\r"){if(c==="\r"&&t[i+1]==="\n")i++;row.push(cur);cur="";if(row.some(function(x){return String(x).trim()!==""}))rows.push(row);row=[]}
+    else cur+=c;
+  }
+  row.push(cur);if(row.some(function(x){return String(x).trim()!==""}))rows.push(row);
+  return rows;
+}
+function apAmPm(s,h){var m=/([ap])\.?\s?m\.?/i.exec(s||"");if(!m)return h;h=+h;if(m[1].toLowerCase()==="p"&&h<12)h+=12;if(m[1].toLowerCase()==="a"&&h===12)h=0;return h}
+/* Devuelve {f:"AAAA-MM-DD"?, h:"HH:MM"?} o null */
+function apParse(v,fmt){
+  if(v==null||v==="")return null;
+  if(typeof v==="number"){
+    if(v>20000){var dt=new Date(Math.round((v-25569)*86400000));return {f:dt.toISOString().slice(0,10),h:pad2(dt.getUTCHours())+":"+pad2(dt.getUTCMinutes())}}
+    if(v>=0&&v<1){var mn=Math.round(v*1440)%1440;return {h:pad2(Math.floor(mn/60))+":"+pad2(mn%60)}}
+    return null;
+  }
+  var s=String(v).trim(),m,f,h,mi,tail;
+  m=/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})(?:[ T,]+(\d{1,2}):(\d{2})(?::\d{2}(?:\.\d+)?)?\s*(.*))?$/.exec(s);
+  if(m){if(+m[2]>12||+m[3]>31)return null;f=m[1]+"-"+pad2(m[2])+"-"+pad2(m[3]);if(m[4]!=null)return {f:f,h:pad2(apAmPm(m[6],m[4]))+":"+m[5]};return {f:f}}
+  m=/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})(?:[ T,]+(\d{1,2}):(\d{2})(?::\d{2}(?:\.\d+)?)?\s*(.*))?$/.exec(s);
+  if(m){var a=+m[1],b=+m[2],dd=fmt==="mdy"?b:a,mm=fmt==="mdy"?a:b;if(mm>12&&dd<=12){var t2=dd;dd=mm;mm=t2}if(mm>12||dd>31||mm<1||dd<1)return null;f=m[3]+"-"+pad2(mm)+"-"+pad2(dd);if(m[4]!=null)return {f:f,h:pad2(apAmPm(m[6],m[4]))+":"+m[5]};return {f:f}}
+  m=/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(.*)$/.exec(s);
+  if(m)return {h:pad2(apAmPm(m[3],m[1]))+":"+m[2]};
+  return null;
+}
+function apNorm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")}
+function apDetecta(rows){
+  var hi=0,i,j;
+  for(i=0;i<Math.min(rows.length,10);i++){var tx=rows[i].filter(function(x){return typeof x==="string"&&x.trim()&&isNaN(+x)&&!apParse(x,"dmy")}).length;if(tx>=2){hi=i;break}}
+  var hdr=rows[hi].map(function(x){return String(x==null?"":x).trim()}),data=rows.slice(hi+1),n=hdr.length,muestra=data.slice(0,40),sc=[];
+  for(j=0;j<n;j++){var dt=0,d=0,t=0,tot=0;muestra.forEach(function(r){var p=apParse(r[j],"dmy");if(r[j]!==""&&r[j]!=null)tot++;if(p){if(p.f&&p.h)dt++;else if(p.f)d++;else if(p.h)t++}});sc.push({dt:dt,d:d,t:t,tot:Math.max(tot,1)})}
+  var best=function(k){var b=-1,v=0;sc.forEach(function(x,j){var r=x[k]/x.tot;if(r>0.6&&x[k]>v){v=x[k];b=j}});return b};
+  var cFH=best("dt"),cF=cFH<0?best("d"):-1,cH=cFH<0?best("t"):-1;
+  var nh=hdr.map(apNorm),idx=function(re,ex){for(var j=0;j<nh.length;j++)if(re.test(nh[j])&&j!==cFH&&j!==cF&&j!==cH&&!(ex&&ex.test(nh[j])))return j;return -1};
+  var cN=idx(/nombre|name/),cI=idx(/(person|employee|empleado|usuario|user).*(id|no\b|num)|(no\.?|num\w*).{0,6}(de )?(empleado|persona|usuario)|^id$|\bid\b|^no\.?$|numero|codigo|clave/,/nombre|name/);
+  if(cI<0){for(j=0;j<n;j++){if(j===cFH||j===cF||j===cH||j===cN)continue;var ok=muestra.filter(function(r){return /^[A-Za-z0-9\-_.]{1,20}$/.test(String(r[j]==null?"":r[j]).trim())}).length;if(ok>muestra.length*0.8){cI=j;break}}}
+  return {hdr:hdr,data:data,cI:cI,cN:cN,cFH:cFH,cF:cF,cH:cH};
+}
+function apOpt(hdr,sel,vacio){return (vacio?'<option value="-1">'+vacio+'</option>':'')+hdr.map(function(h,j){return '<option value="'+j+'"'+(j===sel?" selected":"")+'>'+esc((j+1)+". "+(h||"(sin título)"))+'</option>'}).join("")}
+function apRenderImp(){
+  $("apImpMap").hidden=!APIMP;if(!APIMP){$("apImpInfo").textContent="Elige el archivo que exportas del reloj (CSV o Excel). Se reconocen solas las columnas de ID, fecha y hora; si no, puedes indicarlas.";return}
+  var A=APIMP;
+  $("apCI").innerHTML=apOpt(A.hdr,A.cI,"(elige)");$("apCN").innerHTML=apOpt(A.hdr,A.cN,"(sin nombre)");$("apCFH").innerHTML=apOpt(A.hdr,A.cFH,"(fecha y hora separadas)");$("apCF").innerHTML=apOpt(A.hdr,A.cF,"(no aplica)");$("apCH").innerHTML=apOpt(A.hdr,A.cH,"(no aplica)");
+  apImpCalcula();
+}
+function apImpCalcula(){
+  var A=APIMP,fmt=$("apFmt").value;A.cI=+$("apCI").value;A.cN=+$("apCN").value;A.cFH=+$("apCFH").value;A.cF=+$("apCF").value;A.cH=+$("apCH").value;
+  var recs=[],mal=0,ids={},noms={},mn="9999",mx2="0000";
+  A.data.forEach(function(r){
+    var id=A.cI>=0?apNid(r[A.cI]):"";if(!id)return;
+    var f=null,h=null,p;
+    if(A.cFH>=0){p=apParse(r[A.cFH],fmt);if(p){f=p.f;h=p.h}}
+    else{if(A.cF>=0){p=apParse(r[A.cF],fmt);if(p){f=p.f;if(p.h)h=p.h}}if(A.cH>=0){p=apParse(r[A.cH],fmt);if(p&&p.h)h=p.h}}
+    if(!f||!h){mal++;return}
+    recs.push({id:id,f:f,h:h});ids[id]=(ids[id]||0)+1;if(A.cN>=0&&r[A.cN])noms[id]=String(r[A.cN]).trim();
+    if(f<mn)mn=f;if(f>mx2)mx2=f;
+  });
+  A.recs=recs;A.desde=mn;A.hasta=mx2;A.mal=mal;
+  var c=apCfg(),asig={};Object.keys(c.map).forEach(function(k){asig[c.map[k]]=1});
+  var ks=Object.keys(ids),sin=ks.filter(function(k){return !asig[k]});
+  $("apImpInfo").innerHTML="<b>"+esc(A.nombre)+"</b> · "+recs.length+" checadas de "+ks.length+" personas"+(recs.length?" · del "+esc(fd(mn))+" al "+esc(fd(mx2))+" (solo se evaluarán los días dentro de ese rango)":"")+(mal?" · "+mal+" filas sin fecha u hora válidas (se omiten)":"")+".";
+  $("apImpPrev").innerHTML=(sin.length?'<p class="hint">IDs del reloj que aún no están asignados a una persona (se guardan igual; asígnalos en Configuración y se aplican solos): '+sin.slice(0,12).map(function(k){return esc(k+(noms[k]?" ("+noms[k]+")":""))}).join(", ")+(sin.length>12?" y "+(sin.length-12)+" más":"")+'.</p>':'')+(recs.length?'<div class="wrap"><table style="min-width:360px"><thead><tr><th>ID</th><th>Fecha</th><th>Hora</th></tr></thead><tbody>'+recs.slice(0,5).map(function(x){return '<tr><td>'+esc(x.id)+'</td><td>'+esc(fd(x.f))+'</td><td>'+esc(x.h)+'</td></tr>'}).join("")+'</tbody></table></div><p class="hint">Así se interpretan las primeras filas. Si la fecha sale al revés (mes y día), cambia el formato de fecha.</p>':'<p class="hint" style="color:var(--bad)">No se pudo leer ninguna checada con esas columnas: revisa la selección.</p>');
+  $("apImpGo").disabled=!recs.length||ROL!=="admin";
+}
+["apCI","apCN","apCFH","apCF","apCH","apFmt"].forEach(function(i){$(i).onchange=function(){if(APIMP)apImpCalcula()}});
+$("apFile").onchange=async function(){
+  var f=this.files&&this.files[0];if(!f)return;APIMP=null;$("apMsg").textContent="";
+  try{
+    var rows;
+    if(/\.(xlsx|xls)$/i.test(f.name)){
+      var X=window.XLSX;if(!X){$("apMsg").style.color="var(--bad)";$("apMsg").textContent="No se pudo cargar el lector de Excel. Revisa tu conexión o guarda el archivo como CSV.";return}
+      var wb=X.read(await f.arrayBuffer(),{type:"array"}),ws=wb.Sheets[wb.SheetNames[0]];rows=X.utils.sheet_to_json(ws,{header:1,raw:true,defval:""});
+    }else rows=apCsv(await f.text());
+    rows=rows.filter(function(r){return r.some(function(x){return String(x==null?"":x).trim()!==""})});
+    if(rows.length<2){$("apMsg").style.color="var(--bad)";$("apMsg").textContent="El archivo está vacío o no tiene filas de datos.";return}
+    APIMP=Object.assign({nombre:f.name},apDetecta(rows));renderAP();
+  }catch(e){$("apMsg").style.color="var(--bad)";$("apMsg").textContent="No se pudo leer el archivo: "+((e&&e.message)||"error")}
+};
+$("apImpGo").onclick=async function(){
+  var A=APIMP;if(ROL!=="admin"||!A||!A.recs||!A.recs.length)return;var b=this;b.disabled=true;
+  try{
+    var por={};A.recs.forEach(function(r){var mes=apMesDe(r.f);((por[mes]=por[mes]||{})[r.id]=por[mes][r.id]||{});(por[mes][r.id][r.f]=por[mes][r.id][r.f]||[]).push(r.h)});
+    var meses=Object.keys(por),nTot=0;
+    for(var i=0;i<meses.length;i++){
+      var mes=meses[i],n=0;
+      await apGuardaMes(mes,function(d){
+        Object.keys(por[mes]).forEach(function(id){d.regs[id]=d.regs[id]||{};Object.keys(por[mes][id]).forEach(function(f){var ex=d.regs[id][f]||[],nu=por[mes][id][f].filter(function(h){return ex.indexOf(h)<0});d.regs[id][f]=ex.concat(nu).filter(function(x,k,r){return r.indexOf(x)===k}).sort();n+=nu.length})});
+        d.imp.push({desde:A.desde,hasta:A.hasta,archivo:A.nombre,n:A.recs.length,fecha:today(),por:APP?APP.name:""});
+      });
+      nTot+=n;
+    }
+    $("apMsg").style.color="var(--ok)";$("apMsg").textContent="Listo: "+A.recs.length+" checadas leídas ("+nTot+" nuevas) del "+fd(A.desde)+" al "+fd(A.hasta)+". Ya se reflejan en la nómina.";
+    APIMP=null;$("apFile").value="";APTAB=1;
+    var sm=A.desde.slice(0,7).split("-");$("apY").value=sm[0];$("apM").value=String(+sm[1]);APDET=null;renderAP();refrescaNominasAP();
+  }catch(e){dberr(e)}
+  b.disabled=false;
+};
+/* ---- Configuración: IDs del reloj, horarios, tolerancia y días inhábiles ---- */
+function apCfRender(){
+  var c=APCFGV,ed=ROL==="admin",ga=permiso("nomina_adm")!=="none",gd=permiso("nomina_doc")!=="none";
+  $("apTol").value=c.tol;$("apRet").value=c.retFalta;$("apHEnt").value=c.horDef.ent;$("apHSal").value=c.horDef.sal;
+  var dias=function(sel,at){return [1,2,3,4,5,6,0].map(function(d){return '<label style="flex-direction:row;align-items:center;gap:3px;font-size:12px"><input type="checkbox" style="width:auto" '+at+' data-d="'+d+'"'+(sel.indexOf(d)>-1?" checked":"")+(ed?"":" disabled")+'>'+APDIAS[d]+'</label>'}).join("")};
+  $("apHDias").innerHTML=dias(c.horDef.dias,'data-gen="1"');
+  $("apInhL").innerHTML=Object.keys(c.inh).sort().map(function(f){return '<span class="tag sin" style="margin:2px">'+esc(fd(f)+" · "+c.inh[f])+(ed?' <button data-inh="'+attr(f)+'" style="padding:0 6px">×</button>':'')+'</span>'}).join(" ")||'<span class="hint">Sin días inhábiles registrados.</span>';
+  var filas=[];
+  if(ga)Object.keys(EMP).map(function(k){return Object.assign({id:k},EMP[k])}).filter(function(e){return e.activo!==false}).sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))}).forEach(function(e){
+    var ll="emp:"+e.id,h=c.hor[ll]||{},ef={dias:h.dias||c.horDef.dias};
+    filas.push('<tr data-ll="'+attr(ll)+'"'+(h.dias?' data-ownd="1"':'')+'><td>'+esc(e.nombre)+'<br><span class="hint">Administrativo · '+esc(e.puesto||"")+'</span></td><td><input data-k="id" value="'+attr(c.map[ll]||"")+'" style="width:84px"'+(ed?"":" disabled")+'></td><td><input type="time" data-k="ent" value="'+attr(h.ent||"")+'"'+(ed?"":" disabled")+'><br><input type="time" data-k="sal" value="'+attr(h.sal||"")+'"'+(ed?"":" disabled")+'></td><td><div style="display:flex;flex-wrap:wrap;gap:2px 8px;max-width:230px">'+dias(ef.dias,'data-own="1"')+'</div><span class="hint">Entrada, salida y días: vacío = horario general.</span></td></tr>')});
+  if(gd)Object.keys(DOC).sort(function(a,b){return String(DOC[a].nombre).localeCompare(String(DOC[b].nombre))}).forEach(function(id){
+    var ll="doc:"+id;filas.push('<tr data-ll="'+attr(ll)+'"><td>'+esc(DOC[id].nombre)+'<br><span class="hint">Docente</span></td><td><input data-k="id" value="'+attr(c.map[ll]||"")+'" style="width:84px"'+(ed?"":" disabled")+'></td><td colspan="2" class="hint">Su horario sale de las clases del calendario escolar (sábados).</td></tr>')});
+  $("apCfTb").innerHTML=filas.join("")||vacio(4,"No hay personal registrado.");
+}
+function apCfLee(){
+  var c={tol:Math.max(parseFloat($("apTol").value)||0,0),retFalta:Math.max(Math.floor(parseFloat($("apRet").value)||3),1),inh:Object.assign({},APCFGV.inh),map:Object.assign({},APCFGV.map),hor:{},horDef:{dias:[],ent:$("apHEnt").value,sal:$("apHSal").value}};
+  Array.prototype.forEach.call($("apHDias").querySelectorAll("[data-d]"),function(x){if(x.checked)c.horDef.dias.push(+x.dataset.d)});
+  Array.prototype.forEach.call($("apCfTb").querySelectorAll("tr[data-ll]"),function(tr){
+    var ll=tr.dataset.ll,id=apNid(tr.querySelector('[data-k="id"]').value);
+    if(id)c.map[ll]=id;else delete c.map[ll];
+    if(ll.indexOf("emp:")===0){
+      var ent=tr.querySelector('[data-k="ent"]').value,sal=tr.querySelector('[data-k="sal"]').value,ds=[];
+      Array.prototype.forEach.call(tr.querySelectorAll("[data-d]"),function(x){if(x.checked)ds.push(+x.dataset.d)});
+      var igual=ds.slice().sort().join()===c.horDef.dias.slice().sort().join(),h={};
+      if(ent)h.ent=ent;if(sal)h.sal=sal;if(tr.dataset.ownd==="1"&&!igual)h.dias=ds;
+      if(Object.keys(h).length)c.hor[ll]=h;
+    }
+  });
+  return c;
+}
+function apRenderCfg(){if(!APCFGV){var c=apCfg();APCFGV=JSON.parse(JSON.stringify(c))}apCfRender()}
+$("apCfTb").onchange=function(e){if(e.target.dataset&&e.target.dataset.d!==undefined){var tr=e.target.closest("tr");if(tr)tr.dataset.ownd="1"}};
+$("apHDias").onchange=function(){if(ROL==="admin"&&APCFGV){APCFGV=apCfLee();apCfRender()}};
+$("apInhAdd").onclick=function(){
+  if(ROL!=="admin")return;var f=$("apInhF").value,n=$("apInhN").value.trim();if(!f){$("apMsg").style.color="var(--bad)";$("apMsg").textContent="Elige la fecha del día inhábil.";return}
+  var c=apCfLee();c.inh[f]=n||"Inhábil";APCFGV=c;$("apInhF").value="";$("apInhN").value="";$("apMsg").textContent="";apCfRender();
+};
+$("apInhL").onclick=function(e){var f=e.target.dataset&&e.target.dataset.inh;if(!f||ROL!=="admin")return;var c=apCfLee();delete c.inh[f];APCFGV=c;apCfRender()};
+$("apCfOk").onclick=async function(){
+  if(ROL!=="admin"||!APCFGV)return;var c=apCfLee(),ids={},rep=null;
+  Object.keys(c.map).forEach(function(k){if(ids[c.map[k]]&&!rep)rep=c.map[k];ids[c.map[k]]=1});
+  if(rep){$("apMsg").style.color="var(--bad)";$("apMsg").textContent="El ID de reloj "+rep+" está asignado a dos personas. Cada persona necesita un ID distinto.";return}
+  try{await DBH.doc("asistpers/cfg").set(c);APC=c;APCFGV=null;$("apMsg").style.color="var(--ok)";$("apMsg").textContent="Configuración guardada.";renderAP();refrescaNominasAP()}catch(e){dberr(e)}
+};
+$("naAsis").onclick=function(){abreAP("adm")};
+$("nmAsis").onclick=function(){abreAP("doc")};
 /* ---- Estado de cuenta final (Finanzas) ---- */
 function catIng(c){
   c=String(c||"");
@@ -9604,7 +10163,7 @@ $("usL").onclick=async function(e){
     else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN}).catch(function(){});
     rebuild();
   },onErr);
-  [["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["bajas",function(d){BAJ=d;if(MOD==="esc"&&ETAB==="B"&&!$("dBj").open)renderBj();var n=bjPend();if($("bjN")){$("bjN").hidden=!n;$("bjN").textContent=n}}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+  [["checadas",function(d){CHK=d;if($("dAP").open)renderAP();refrescaNominasAP()}],["asistpers",function(d){APC=d.cfg||{};if($("dAP").open&&APTAB!==3)renderAP();refrescaNominasAP()}],["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["bajas",function(d){BAJ=d;if(MOD==="esc"&&ETAB==="B"&&!$("dBj").open)renderBj();var n=bjPend();if($("bjN")){$("bjN").hidden=!n;$("bjN").textContent=n}}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
     DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(typeof ntProgramar==="function")ntProgramar();if(c[0]==="calif"||c[0]==="constancias")render();if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
   DBH.collection("gastos").onSnapshot(function(s){G={};s.docs.forEach(function(d){G[d.id]=d.data()});if(!$("vGa").hidden)renderCaja()},onErr);

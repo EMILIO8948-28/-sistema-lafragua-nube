@@ -163,8 +163,8 @@ const MODULOS = {
   acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
   a286:         { L: ['acuerdo286', 'resguardos286'], E: ['acuerdo286', 'meta', 'resguardos286'], archivos: true },
   titulaciones: { L: ['titulaciones'], E: ['titulaciones', 'meta'], archivos: true },
-  nomina_doc:   { L: ['nomina', 'docentes', 'materias'], E: ['nomina', 'meta'], nomina: true, nominaE: true },
-  nomina_adm:   { L: ['empleados', 'nomina_admin'], E: ['empleados', 'nomina_admin', 'meta'] },
+  nomina_doc:   { L: ['nomina', 'docentes', 'materias', 'checadas', 'asistpers'], E: ['nomina', 'meta', 'checadas', 'asistpers'], nomina: true, nominaE: true },
+  nomina_adm:   { L: ['empleados', 'nomina_admin', 'checadas', 'asistpers'], E: ['empleados', 'nomina_admin', 'meta', 'checadas', 'asistpers'] },
   docente:      { L: ['students', 'grupos', 'materias', 'docentes', 'calif', 'criterios', 'catalogo', 'contenidos', 'ciclos', 'justificantes'], E: ['calif', 'criterios'] },
   expedientes:  { L: ['docentes_docs'], E: ['docentes_docs'], archivos: true, privados: true },
   atencion:     { L: ['atencion', 'students', 'grupos', 'egresados'], E: ['atencion'] },
@@ -688,6 +688,8 @@ function verificaDoc(t, id, code, vig, fecha) {
     if (code !== chkTxt('CR|' + id + '|' + vig)) return no;
     const a = nombreAl(id); if (!a) return no;
     const eg = q.uno.get('egresados', id), egresado = !!(eg && !JSON.parse(eg.data).revertido), v = vig.slice(0, 4) + '-' + vig.slice(4, 6) + '-' + vig.slice(6, 8);
+    /* Una credencial deja de ser válida cuando el alumno causa baja (si se reincorpora, vuelve a serlo) */
+    if (BJ.esBaja(a)) return { ok: true, tipo: 'credencial', titulo: 'Credencial de estudiante', baja: true, vigente: false, egresado: false };
     return { ok: true, tipo: 'credencial', titulo: 'Credencial de estudiante', nombre: a.nombre, matricula: enmascara(a.mat), plan: a.programa || a.carrera || '', vigencia: v, vigente: !egresado && v >= hoyISO(), egresado };
   }
   return no;
@@ -1278,6 +1280,7 @@ function cargosAlumnoSrv(st, planes, EXTRA, cal, con, hoy) {
   }
   if (EXTRA && EXTRA.costo > 0) (cal.items || []).filter(x => x.cal != null && x.cal < EXTRA.min && (!x.hist || x.exCobro)).forEach(x => L.push({ id: 'x' + x.mid, c: 'Examen extraordinario: ' + x.mat + ' (' + x.per + ')', m: EXTRA.costo }));
   (con.items || []).forEach(x => L.push({ id: 'k' + x.id, c: 'Constancia de estudios (' + x.num + ')', m: x.monto }));
+  (st.credCargos || []).forEach(x => L.push({ id: 'cr' + x.id, c: 'Credencial de estudiante (' + (x.motivo || 'primera') + ')', m: x.monto }));
   const b = st.beca;
   if (b && b.monto > 0) L = L.map(x => /^Colegiatura/.test(x.c) ? Object.assign({}, x, { m: Math.max(Math.round((x.m - b.monto) * 100) / 100, 0) }) : x);
   return L;

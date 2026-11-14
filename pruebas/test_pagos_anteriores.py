@@ -156,6 +156,44 @@ with sync_playwright() as pw:
     ok('analiza_mes_en_varios_formatos',pg.evaluate("[hcMesTxt('2026-10'),hcMesTxt('10/2026'),hcMesTxt('octubre 2026'),hcMesTxt('Oct-2026'),hcMesTxt(''),hcMesTxt('xx'),hcMesTxt('13/2026')]")==['2026-10','2026-10','2026-10','2026-10','',None,None])
     ok('analiza_fechas',pg.evaluate("[hcFecha('05/09/2025'),hcFecha('2025-9-5'),hcFecha('31/02/2025'),hcFecha('hola'),hcFecha('')]")==['2025-09-05','2025-09-05',None,None,''])
     pg.click('#hcCls')
+    # ---------- Beca y monto que paga el alumno ----------
+    put('students/s4',{'mat':'20250004','nombre':'Dora Beca Ruiz','carrera':'Derecho','programa':'Derecho','ingreso':2025,'nuevo':False})
+    pg.reload();W(pg,"typeof APP!=='undefined'&&APP!==null&&ROL==='admin'&&S.some(function(s){return s.id==='s4'})")
+    pg.evaluate("abreHc('s4',1)");pg.wait_for_selector('#dHc[open]');W(pg,"!document.getElementById('hcBox').hidden")
+    ok('sin_beca_muestra_colegiatura_completa',pg.input_value('#hcBeca')=='' and pg.input_value('#hcPaga')=='1300' and 'sin beca' in pg.inner_text('#hcBecaTx') and pg.is_hidden('#hcBecaDel'))
+    pg.fill('#hcPaga','1000');ok('monto_que_paga_calcula_la_beca',pg.input_value('#hcBeca')=='300')
+    pg.fill('#hcBeca','200');ok('beca_calcula_el_monto_que_paga',pg.input_value('#hcPaga')=='1100')
+    pg.fill('#hcBeca','1300');pg.click('#hcBecaGo');ok('rechaza_beca_igual_o_mayor_a_la_colegiatura','no puede ser igual' in pg.inner_text('#hcMsg') and not pg.evaluate("S.find(function(s){return s.id==='s4'}).beca"))
+    pg.fill('#hcBeca','');pg.click('#hcBecaGo');ok('exige_monto_para_la_beca','Escribe el descuento' in pg.inner_text('#hcMsg'))
+    pg.fill('#hcPaga','1000');pg.fill('#hcBecaMot','Excelencia académica');pg.click('#hcBecaGo');W(pg,"S.find(function(s){return s.id==='s4'}).beca")
+    ok('guarda_la_beca_en_el_alumno',pg.evaluate("S.find(function(s){return s.id==='s4'}).beca")=={'monto':300,'mot':'Excelencia académica'} and get('students/s4')['beca']['monto']==300)
+    ok('mensaje_y_texto_con_lo_que_paga','paga $1,000.00' in pg.inner_text('#hcMsg') and 'con beca paga $1,000.00' in pg.inner_text('#hcBecaTx') and pg.is_visible('#hcBecaDel'))
+    ok('saldo_de_colegiatura_ya_con_beca',pg.input_value('#hcPaga')=='1000' and '$1,000.00' in pg.inner_text('#hcTb tr[data-id="c1"]'))
+    pg.click('#hcTb tr[data-id="c1"] [data-hc]');ok('monto_por_defecto_es_lo_que_paga_con_beca',pg.input_value('#hcTb tr[data-id="c1"] [data-hm]')=='1000')
+    pg.click('#hcTb tr[data-id="c2"] [data-hc]');pg.fill('#hcTb tr[data-id="c2"] [data-hm]','1000');pg.dispatch_event('#hcTb tr[data-id="c2"] [data-hm]','input')
+    pg.click('#hcGo');W(pg,"document.getElementById('hcMsg').textContent.indexOf('Listo')===0")
+    L4=get('ledger/s4')['pagos'];ok('pagos_con_beca_quedan_completos',len(L4)==2 and all(g['monto']==1000 for g in L4) and pg.locator('#hcTb tr[data-id="c1"] .tag.pagado').count()==1 and pg.locator('#hcTb tr[data-id="c2"] .tag.pagado').count()==1)
+    ok('monto_mayor_al_saldo_con_beca_se_rechaza',len(pg.evaluate("hcPlanea([{n:1,sid:'s4',cid:'c3',fecha:'2025-11-10',monto:1300,metodo:'Efectivo'}],{dia:10,metodo:'Efectivo'}).errores"))==1)
+    pg.click('#hcBecaDel');W(pg,"!S.find(function(s){return s.id==='s4'}).beca")
+    ok('quitar_beca_regresa_a_la_colegiatura_completa',pg.is_hidden('#hcBecaDel') and pg.input_value('#hcPaga')=='1300' and not get('students/s4').get('beca'))
+    # por archivo: beca a alumnos existentes y nuevos
+    CSV2=("matricula,concepto,pagado_hasta,fecha_pago,monto_pagado,metodo,referencia,nombre,programa,ciclo_ingreso,nuevo_ingreso,beca_monto,beca_motivo,paga_colegiatura\n"
+    "20250002,Colegiatura noviembre 2025,,2025-11-10,1100,Efectivo,,,,,,200,Deportiva,\n"
+    "20250010,Colegiatura septiembre 2025,,2025-09-10,1000,Efectivo,,Eva Nueva Soto,Derecho,2025,si,,,1000\n"
+    "20250010,Colegiatura octubre 2025,,2025-10-10,,Efectivo,,,,,,,,\n"
+    "20250001,Colegiatura diciembre 2025,,2025-12-05,500,Efectivo,,,,,,,,1500\n")
+    open('/tmp/hist3.csv','w',encoding='utf-8').write(CSV2)
+    pg.click('#hcT2');pg.set_input_files('#hcFile','/tmp/hist3.csv');W(pg,"document.getElementById('hcPrev').innerHTML.length>50")
+    pv=pg.inner_text('#hcPrev')
+    ok('vista_previa_muestra_beca','Beca $200.00' in pv and 'Deportiva' in pv and 'Beca $300.00' in pv)
+    ok('rechaza_paga_mayor_a_la_colegiatura','es mayor a la colegiatura del plan' in pv)
+    pg.click('#hcGo2');W(pg,"document.getElementById('hcMsg').textContent.indexOf('Listo')===0",30)
+    ok('beca_a_alumno_existente_por_archivo',get('students/s2')['beca']=={'monto':200,'mot':'Deportiva'})
+    pe=pg.evaluate("(function(){var s=S.find(function(x){return x.mat==='20250002'});var a=applyAll(s);var i=a.L.findIndex(function(c){return c.id==='c3'});return a.rem[i]})()")
+    ok('el_pago_con_beca_cubre_el_cargo',pe==0)
+    nv=pg.evaluate("S.filter(function(s){return s.mat==='20250010'}).map(function(s){return {b:s.beca,p:s.pagos.map(function(g){return g.monto})}})")
+    ok('alumno_nuevo_con_paga_colegiatura_obtiene_beca',len(nv)==1 and nv[0]['b']['monto']==300 and nv[0]['p']==[1000,1000])
+    pg.click('#hcCls')
     # ---------- Integración con el resto: corte de caja y estado de cuenta ----------
     ok('pagos_historicos_entran_al_ledger_con_su_fecha',min(g['fecha'] for g in get('ledger/s1')['pagos'])=='2025-08-25')
     # ---------- Buscador ----------

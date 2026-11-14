@@ -168,7 +168,8 @@ const MODULOS = {
   docente:      { L: ['students', 'grupos', 'materias', 'docentes', 'calif', 'criterios', 'catalogo', 'contenidos', 'ciclos', 'justificantes'], E: ['calif', 'criterios'] },
   expedientes:  { L: ['docentes_docs'], E: ['docentes_docs'], archivos: true, privados: true },
   atencion:     { L: ['atencion', 'students', 'grupos', 'egresados'], E: ['atencion'] },
-  prospectos:   { L: ['prospectos', 'campanas', 'students'], E: ['prospectos', 'campanas'], plans: true }
+  prospectos:   { L: ['prospectos', 'campanas', 'students'], E: ['prospectos', 'campanas'], plans: true },
+  calendario:   { L: ['agenda'], E: ['agenda'] }   /* Calendario de eventos: lo LEE todo el que tenga sesión (alumnos, docentes y personal); este permiso solo da el derecho a cargar y editar eventos */
 };
 const VER_ALUMNOS_COMPLETOS = ['pagos', 'corte', 'estado', 'ver', 'inscripcion', 'escolar', 'constancias', 'acuerdos'];
 const PLANTILLAS = {
@@ -211,7 +212,7 @@ function filtraAlumno(s, col, id, data, ctx) {
     case 'grupos': return (data.alumnos || []).includes(sid) ? Object.assign({}, data, { alumnos: [sid] }) : null;
     case 'materias': return ctx.grupos.some(g => materiaDeGrupo(data, g.d)) ? data : null;
     case 'docentes': return ctx.docIds.has(id) ? { nombre: data.nombre, esp: data.esp || '' } : null;
-    case 'catalogo': return data;
+    case 'catalogo': case 'agenda': return data;
     case 'config': return (id === 'plans' || id === 'app') ? data : null;
     default: return null;
   }
@@ -220,14 +221,33 @@ function eventoAlumno(s, c, id) {
   if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos'].includes(c)) return id === s.alumno;
   if (c === 'fiscal') return id === s.alumno;
   if (c === 'solicitudes' || c === 'justificantes' || c === 'avisos' || c === 'facturas') { const r = q.uno.get(c, id || ''); if (!r) return false; try { return JSON.parse(r.data).sid === s.alumno; } catch (e) { return false; } }
-  if (['grupos', 'materias', 'docentes', 'catalogo'].includes(c)) return true;
+  if (['grupos', 'materias', 'docentes', 'catalogo', 'agenda'].includes(c)) return true;
   if (c === 'config') return id === 'plans' || id === 'app';
   return false;
 }
 function esPlaneacionPropia(s, id) { if (!s.doc) return false; if (!id) return true; const r = q.uno.get('materias', id); if (!r) return false; try { return JSON.parse(r.data).docId === s.doc; } catch (e) { return false; } }
+/* Calendario de eventos: forma y tamaño de cada evento (lo escribe el personal autorizado, lo leen todos) */
+/* Ajustes del calendario (agenda/_ajustes): días de pago de colegiatura que se muestran cada mes */
+function validaAjustes(e) {
+  const dia = v => Number.isInteger(v) && v >= 1 && v <= 31;
+  if (typeof e.pagoOn !== 'boolean') return 'Indica si se muestran los días de pago.';
+  if (!dia(e.pagoIni) || !dia(e.pagoFin)) return 'Los días de pago deben ser números del 1 al 31.';
+  if (e.pagoIni > e.pagoFin) return 'El primer día de pago no puede ser posterior al último.';
+  return '';
+}
+function validaEvento(e) {
+  const f = /^\d{4}-\d{2}-\d{2}$/, h = /^\d{1,2}:\d{2}$/;
+  if (typeof e.titulo !== 'string' || !e.titulo.trim() || e.titulo.length > 120) return 'El evento necesita un título (máximo 120 caracteres).';
+  if (typeof e.fecha !== 'string' || !f.test(e.fecha)) return 'La fecha del evento no es válida.';
+  if (e.fin !== undefined && e.fin !== null && e.fin !== '' && (typeof e.fin !== 'string' || !f.test(e.fin) || e.fin < e.fecha)) return 'La fecha final no es válida (debe ser igual o posterior al inicio).';
+  for (const k of ['hora', 'horaFin']) if (e[k] !== undefined && e[k] !== null && e[k] !== '' && (typeof e[k] !== 'string' || !h.test(e[k]))) return 'La hora no es válida.';
+  for (const [k, n] of [['lugar', 120], ['desc', 800], ['cat', 20], ['por', 80]]) if (e[k] !== undefined && e[k] !== null && (typeof e[k] !== 'string' || e[k].length > n)) return 'Un texto del evento es demasiado largo.';
+  return '';
+}
 function puedeLeer(s, col, id) {
   if (col === 'config' && id === 'users') return false;
   if (col === '_borrados') return s.rol === 'admin' || id === s.u;
+  if (col === 'agenda') return true;   /* el calendario de eventos es de todos */
   if (s.rol === 'alumno') return eventoAlumno(s, col, id);
   if (s.rol === 'admin') return true;
   const P = s.perm || {};
@@ -309,7 +329,7 @@ const perCerrado = per => { const c = cicloDe(per); return !!(c && c.cerrado); }
 const mitadPer = per => { const m = /^(Sep–Dic|Ene–Abr|May–Ago) (\d{4})$/.exec(String(per || '')); return m ? m[2] + (m[1] === 'Sep–Dic' ? '-10-31' : m[1] === 'Ene–Abr' ? '-02-29' : '-06-30') : ''; };
 const bloqueDe = m => { if (!m) return 0; if (m.bl === 1 || m.bl === 2) return m.bl; const x = mitadPer(m.per); return m.ev && x ? (m.ev <= x ? 1 : 2) : 0; };
 const matCerrada = (mid, cache) => { const r = q.uno.get('materias', mid); let m = null; try { m = r ? JSON.parse(r.data) : null; } catch (e) {} if (!m) return false; if (perCerrado(m.per)) return true; const b = bloqueDe(m), c = cicloDe(m.per); return !!(b && c && c.bloques && c.bloques[b] && c.bloques[b].cerrado); };
-const EXENTAS_PUT = new Set(['meta', 'calif', 'criterios', 'contenidos', 'cortes', 'config', 'fotos', 'planeaciones']);
+const EXENTAS_PUT = new Set(['meta', 'calif', 'criterios', 'contenidos', 'cortes', 'config', 'fotos', 'planeaciones', 'agenda']);
 const VENTANA_BORRADO = 10 * 60000, RACHA_BORRADO = 15000;
 function alumnoDe(col, id) { if (['students', 'ledger', 'calif', 'constancias', 'fotos', 'egresados'].includes(col)) { const r = q.uno.get('students', id); if (r) { try { return JSON.parse(r.data).nombre || ''; } catch (e) {} } } return ''; }
 function resumenReg(o, col) {
@@ -363,7 +383,7 @@ function envioBorrado(u) { difunde('_borrados', u); difunde('_borrados', '*'); }
 function protegeBorrado(s, req, res, o) {
   if (s.rol === 'admin') return false;
   let esBorrado = false;
-  if (o.accion === 'DELETE') esBorrado = o.col !== 'meta';
+  if (o.accion === 'DELETE') esBorrado = o.col !== 'meta' && o.col !== 'agenda';
   else if (o.accion === 'PUT') { if (!EXENTAS_PUT.has(o.col) && o.viejo) { const out = []; quitados(o.viejo, o.nuevo, '', out, 0); esBorrado = out.length > 0; } }
   else if (o.accion === 'ARCHIVO') esBorrado = true;
   if (!esBorrado) return false;
@@ -793,6 +813,7 @@ async function api(req, res, partes) {
       let cuerpo; try { cuerpo = JSON.parse((await leeCuerpo(req, 6 * 1024 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
       if (cuerpo === null || typeof cuerpo !== 'object' || Array.isArray(cuerpo)) return responde(res, 400, { error: 'Se esperaba un objeto' });
       let nuevo = cuerpo; if (m === 'PATCH') { const r = q.uno.get(a, b); nuevo = Object.assign(r ? JSON.parse(r.data) : {}, cuerpo); }
+      if (a === 'agenda') { const er = b === '_ajustes' ? validaAjustes(nuevo) : validaEvento(nuevo); if (er) return responde(res, 400, { error: er }); }
       if (s.rol !== 'admin') { const r1 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'PUT', col: a, id: b, viejo: r1 ? JSON.parse(r1.data) : null, nuevo })) return; }
       /* Planeaciones: quien las sube no puede aprobarlas; si cambia sus archivos, vuelven a revisión */
       if (a === 'planeaciones' && s.rol !== 'admin' && (s.perm || {}).escolar !== 'editar') {
@@ -1001,6 +1022,28 @@ async function api(req, res, partes) {
       const c = await leeJSON(req, 2000); if (!NOMBRE_OK.test(String(c.sid || ''))) return responde(res, 400, { error: 'Alumno no válido.' });
       const st = c.tipo === 'plan' ? MOV.cambiaPlan(String(c.sid), c.plan, c.grupo ? String(c.grupo) : '', c.motivo, s) : (c.tipo === 'grupo' ? MOV.cambiaGrupo(String(c.sid), c.grupo, c.motivo, s) : null);
       if (!st) return responde(res, 400, { error: 'Acción no válida.' }); return responde(res, 200, { ok: true });
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
+  /* Evaluación docente: el alumno evalúa de forma anónima; Control escolar lee los resultados */
+  if (tipo === 'evaldoc') {
+    try {
+      if (rol === 'alumno') {
+        if (!s.alumno) return responde(res, 403, { error: 'No permitido.' });
+        if (m === 'GET' && a === 'mias') return responde(res, 200, EVD.mias(s.alumno));
+        if (m === 'POST' && !a) {
+          if (limite('evd|' + s.u, 40, 3600000)) return responde(res, 429, { error: 'Demasiados intentos. Inténtalo más tarde.' });
+          falla('evd|' + s.u, 3600000);
+          return responde(res, 200, EVD.envia(s, await leeJSON(req, 8000)));
+        }
+        return responde(res, 403, { error: 'No permitido.' });
+      }
+      if (m === 'POST') return responde(res, 403, { error: 'Solo los alumnos evalúan a sus docentes.' });
+      const ed = rol === 'admin' || nivel(s, 'escolar') === 'editar', ver = ed || nivel(s, 'escolar') !== 'none';
+      if (!ver) return responde(res, 403, { error: 'No tienes permiso.' });
+      if (m === 'GET' && a === 'resultados') return responde(res, 200, { cfg: EVD.cfg(), respuestas: EVD.resultados() });
+      if (m === 'GET' && a === 'config') return responde(res, 200, EVD.cfg());
+      if (m === 'PUT' && a === 'config') { if (!ed) return responde(res, 403, { error: 'Solo Control escolar con permiso de edición.' }); const c = EVD.guardaCfg(await leeJSON(req, 500)); audita(s.u, req, 'Cambió la configuración de la evaluación docente'); return responde(res, 200, Object.assign({ ok: true }, c)); }
+      return responde(res, 404, { error: 'No encontrado' });
     } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
   }
   /* Bajas y regularización: Control escolar decide */
@@ -1375,6 +1418,8 @@ const BJ = require('./bajas.js').crea({ q, leeDoc, difunde, audita, hoyMx: () =>
 setTimeout(() => { try { BJ.revisa(); } catch (e) { console.error('Bajas:', e.message); } }, Number(ENV.LF_BAJAS_ARRANQUE_MS) || 8000).unref();
 setInterval(() => { try { BJ.revisa(); } catch (e) { console.error('Bajas:', e.message); } }, Number(ENV.LF_BAJAS_TICK_MS) || 3600000).unref();
 const MOV = require('./movimientos.js').crea({ q, leeDoc, difunde, audita, hoyMx: () => hoyMx(), planesYExtra, perCerrado, hook: (c, i) => cobHook(c, i) });
+/* ---------- Evaluación docente (anónima) ---------- */
+const EVD = require('./evaldoc.js').crea({ q, leeDoc, hoyMx: () => hoyMx(), gruposDeAlumno, materiaDeGrupo, datos: DATOS });
 /* ---------- Avisos fuera de la plataforma (correo y WhatsApp) ---------- */
 const AV = require('./avisos.js').crea({ db, q, leeDoc, cifra, descifra, smtpEnvia: RESPA.smtpEnvia, hoyMx: () => hoyMx(), horaMx: () => RESPA.fechaMx(new Date()).hora, audita, cfgCorreoRespaldos: () => cfgResp().correo, ENV });
 /* ---------- Pagos en línea y facturas ---------- */

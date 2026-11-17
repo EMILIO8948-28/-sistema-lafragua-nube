@@ -257,6 +257,24 @@ Botón **Finanzas > Alumnos > «Recargos y pronto pago»** (solo Administrador; 
 Apoyo para el formato 911: matrícula vigente (sin bajas ni egresados) por nuevo ingreso / reingreso, plan, cuatrimestre y edad, todo por sexo (`students.sexo`, `students.edad`; los vacíos salen como «sin dato»), egresados del ciclo (1 sep – 31 ago) y bajas vigentes. Exporta CSV e imprime. **No sustituye el formato oficial**: sirve para tener los números.
 - Pruebas de las tres pestañas: `pruebas/test_practicas_egresados_911.py` (75).
 
+## App instalable (PWA)
+`publico/manifest.webmanifest`, `sw.js`, `pwa.js` y los iconos (`icon-192/512`, `icon-maskable-512`, `apple-touch-icon`). `construir_nube.py` inyecta el manifest, los meta de color y `<script src="/pwa.js">` al construir `index.html`. El service worker solo guarda en caché el cascarón estático (nunca `/api/*`), por lo que los datos siempre vienen del servidor. El servidor sirve `.webmanifest` con su MIME y `Service-Worker-Allowed: /` para `/sw.js`. Prueba: `test_pwa.py`.
+
+## Proveedores, cuentas por pagar y gastos fijos (módulo Corte/gastos, colección `proveedores`)
+- Catálogo de proveedores (`#dPrv`, botón `#bPv`) y fijos mensuales (`pfMes`). El gasto del mes puede llevar `gProv`, estar **pendiente** (`pend`) con vencimiento (`gVen`) y marcarse como pagado.
+- `gastosTodos()` devuelve solo los gastos **pagados**: las cuentas por pagar no restan del corte hasta pagarse. Permisos: `corte` (L/E) y `estado` (L). Validación en servidor: `validaProveedor`, `validaGastos`. Ids propios con prefijo `prv*` para no chocar con `pv*`/`dPv` existentes. Prueba: `test_proveedores.py`.
+
+## Buzón de quejas y sugerencias (pestaña **U**, colección `quejas`)
+- El alumno envía desde su portal (con nombre o **anónimo** con folio `BZ-XXXXXXXX`; el anónimo no guarda `sid`) mediante `POST /api/buzon` (límites de frecuencia y de tamaño). Control escolar (escolar=editar) atiende: estado, respuestas, filtros. Un anónimo se consulta por folio.
+- `puedeLeer`: `quejas` solo para `escolar` = editar (Caja con `escolar:'ver'` NO la lee). La pestaña U se oculta si no se edita. Prueba: `test_buzon.py`.
+
+## Biblioteca e inventario (pestañas **W** y **Z**, permiso `biblioteca`)
+- Colecciones: `libros` (`{titulo,autor,editorial,anio,isbn,categoria,ubicacion,ejemplares,nota,activo,disp}` y `libros/_config {dias,max,multa}`), `prestamos` (un doc por persona: id del alumno, `d-<idDocente>` u `o-<slug>`; `{nombre,tipo,items:[{id,libro,fecha,vence,devuelto,renovaciones,nota}]}`) e `inventario` (`{codigo,nombre,categoria,ubicacion,responsable,cantidad,estado,fechaAdq,costo,serie,nota,bajaFecha,bajaMotivo}`).
+- Permiso nuevo `biblioteca` (módulo «Biblioteca e inventario», plantilla mínima Caja): da acceso a las pestañas W y Z de Control escolar aunque la persona no tenga `escolar`. `accesoVista`, `rolDeVista`, `aplicaModulos` y `etab` lo contemplan igual que `constancias`.
+- Reglas del préstamo (cliente): ejemplares disponibles, máximo de libros a la vez por persona (`max`), no repetir el mismo libro, **no prestar a quien tenga vencidos**, renovación máxima 2 veces (`dias` por renovación), la multa por día de retraso (`multa`) es solo **estimada** al devolver (se cobra en caja, no se carga a la cuenta). `disp` se guarda en el libro porque el alumno no puede leer los préstamos ajenos.
+- Alumno: lee el catálogo **sin isbn ni notas** y solo su propio doc de `prestamos`; no escribe nada. Inventario: solo con `biblioteca`. Validación en servidor: `validaLibro`, `validaPrestamos`, `validaInventario`. Código de bien autogenerado `INV-0001`; la baja exige motivo y saca el bien del valor total. Prueba: `test_biblioteca_inventario.py`.
+- El resultado de búsqueda del portal vive en `BBQ` para sobrevivir a los repintados de `renderPor`.
+
 ## Fecha de hoy en el navegador
 `today()` ahora usa la fecha **local** del navegador (antes usaba UTC y en México, después de las 6 p. m., daba el día siguiente).
 

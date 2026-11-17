@@ -43,5 +43,7 @@ rep('<dialog id="dRc"','''<dialog id="dPw" style="width:min(440px,96vw)">
 rep('<button id="bkZip">Descargar archivos adjuntos (ZIP)</button>','<button id="bkZip">Descargar archivos adjuntos (ZIP)</button><button class="p" id="bkSrv">Respaldo completo del servidor (ZIP)</button>')
 # 4) ajustes del navegador y de usuarios en el servidor
 rep('</body>','<script src="/nube.js"></script>\n</body>')
+rep('<title>Panel · Universidad Lafragua</title>','<title>Panel · Universidad Lafragua</title>\n<link rel="manifest" href="/manifest.webmanifest">\n<meta name="theme-color" content="#0f6b63">\n<meta name="mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-title" content="Lafragua">\n<link rel="icon" href="/icon-192.png">\n<link rel="apple-touch-icon" href="/apple-touch-icon.png">')
+rep('<script src="/nube.js"></script>','<script src="/nube.js"></script>\n<script src="/pwa.js"></script>')
 open(destino,'w',encoding='utf-8').write(h)
 print('listo:',destino,len(h),'caracteres')

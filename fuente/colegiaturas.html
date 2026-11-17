@@ -215,7 +215,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
 </div>
 <div id="vEsc" hidden>
-  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="B" class="need-admin">Bajas <span id="bjN" class="tag sin" hidden></span></button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button><button data-et="T">Títulos en resguardo</button><button data-et="V">Evaluación docente</button><button data-et="O">Servicio social y prácticas</button><button data-et="Y">Seguimiento de egresados</button><button data-et="X">Estadística 911</button></div>
+  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="B" class="need-admin">Bajas <span id="bjN" class="tag sin" hidden></span></button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button><button data-et="T">Títulos en resguardo</button><button data-et="V">Evaluación docente</button><button data-et="O">Servicio social y prácticas</button><button data-et="Y">Seguimiento de egresados</button><button data-et="X">Estadística 911</button><button data-et="U" id="tUbz">Buzón</button><button data-et="W">Biblioteca</button><button data-et="Z">Inventario</button></div>
 <div id="eV" hidden>
   <p class="hint">Resultados de la evaluación que los alumnos hacen a sus docentes después de la evaluación de cada asignatura. Es <b>anónima</b>: aquí nunca aparece quién respondió.</p>
   <div class="bar"><select id="evPer" aria-label="Periodo"></select><select id="evDoc" aria-label="Docente"></select><input id="evBus" class="grow" type="search" placeholder="Buscar docente o asignatura" aria-label="Buscar"><button id="evRef">Actualizar</button><button id="evCsv">Exportar CSV</button></div>
@@ -246,6 +246,41 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <p class="hint">Apoyo para llenar la <b>Estadística 911</b>: concentra la matrícula por plan, sexo, edad y cuatrimestre, además de egresados y bajas del ciclo. Los datos salen de lo capturado en la plataforma (sexo y edad de cada alumno); revisa los que aparecen «sin dato».</p>
   <div class="bar"><label style="flex-direction:row;gap:8px;align-items:center">Ciclo escolar <select id="e9Ciclo"></select></label><button id="e9Csv">Exportar CSV</button><button id="e9Imp">Imprimir</button></div>
   <div id="e9Cuerpo"></div>
+</div>
+<div id="eU" hidden>
+  <p class="hint">Mensajes que los alumnos envían desde su portal: quejas, sugerencias y felicitaciones. Si el alumno eligió el envío <b>anónimo</b>, aquí no aparece su nombre: solo él puede consultar la respuesta con su folio. Lo que escribió el alumno no se puede modificar.</p>
+  <div class="bar"><input id="bzBus" class="grow" type="search" placeholder="Buscar por folio, asunto o alumno" aria-label="Buscar"><select id="bzEst" aria-label="Estado"><option value="">Todos los estados</option><option value="abiertos">Pendientes (nuevo y en revisión)</option><option value="nuevo">Nuevo</option><option value="en revisión">En revisión</option><option value="resuelto">Resuelto</option><option value="cerrado">Cerrado</option></select><select id="bzTip" aria-label="Tipo"><option value="">Todos los tipos</option><option>Queja</option><option>Sugerencia</option><option>Felicitación</option><option>Otro</option></select><button id="bzCsv">Exportar CSV</button></div>
+  <div id="bzRes" class="hint"></div>
+  <div class="wrap"><table style="min-width:820px"><thead><tr><th>Folio</th><th>Fecha</th><th>Tipo</th><th>Área</th><th>Asunto</th><th>De</th><th>Estado</th><th></th></tr></thead><tbody id="bzTbl"></tbody></table></div>
+</div>
+<div id="eW" hidden>
+  <div class="bar" style="margin:0 0 8px"><button id="bbT1" class="p">Préstamos</button><button id="bbT2">Catálogo</button><button id="bbT3">Ajustes</button></div>
+  <div id="bbP1">
+    <p class="hint" id="bbR1"></p>
+    <div class="bar"><input id="bbBus1" class="grow" type="search" placeholder="Buscar por persona o libro" aria-label="Buscar"><select id="bbFil1" aria-label="Filtro"><option value="">Préstamos activos</option><option value="venc">Solo vencidos</option><option value="hist">Historial (devueltos)</option></select><button class="p" id="bbNuevoP">Nuevo préstamo</button></div>
+    <div class="wrap"><table style="min-width:820px"><thead><tr><th>Persona</th><th>Libro</th><th>Préstamo</th><th>Vence</th><th>Estado</th><th></th></tr></thead><tbody id="bbTb1"></tbody></table></div>
+  </div>
+  <div id="bbP2" hidden>
+    <div class="bar"><input id="bbBus2" class="grow" type="search" placeholder="Buscar por título, autor, ISBN o ubicación" aria-label="Buscar libro"><button class="p" id="bbNuevoL">Agregar libro</button><button id="bbCsv">Exportar CSV</button></div>
+    <p class="hint" id="bbR2"></p>
+    <div class="wrap"><table style="min-width:820px"><thead><tr><th>Título</th><th>Autor</th><th>Categoría</th><th>Ubicación</th><th class="n">Ejemplares</th><th class="n">Disponibles</th><th></th></tr></thead><tbody id="bbTb2"></tbody></table></div>
+  </div>
+  <div id="bbP3" hidden>
+    <div class="row">
+      <label>Días de préstamo<input id="bbDias" type="number" min="1" max="90"></label>
+      <label>Libros a la vez por persona<input id="bbMax" type="number" min="1" max="20"></label>
+      <label>Multa por día de retraso ($)<input id="bbMulta" type="number" min="0" step="0.5"></label>
+    </div>
+    <p class="hint">La multa es solo una referencia: al devolver un libro con retraso se muestra el importe estimado para cobrarlo en caja; no se carga automáticamente a la cuenta del alumno.</p>
+    <div class="bar" style="margin:6px 0"><button class="p" id="bbGuardaCfg">Guardar ajustes</button></div>
+  </div>
+  <p class="hint" id="bbMsg" role="status" style="min-height:1.4em"></p>
+</div>
+<div id="eZ" hidden>
+  <p class="hint">Bienes de la escuela: mobiliario, equipo de cómputo, material y todo lo que quieras tener controlado, con su ubicación, responsable y estado.</p>
+  <div class="bar"><input id="ivBus" class="grow" type="search" placeholder="Buscar por nombre, código, serie o responsable" aria-label="Buscar bien"><select id="ivCat" aria-label="Categoría"></select><select id="ivEst" aria-label="Estado"><option value="">Todos los estados</option><option>Bueno</option><option>Regular</option><option>Malo</option><option>Baja</option></select><button class="p" id="ivNuevo">Agregar bien</button><button id="ivCsv">Exportar CSV</button></div>
+  <p class="hint" id="ivRes"></p>
+  <div class="wrap"><table style="min-width:880px"><thead><tr><th>Código</th><th>Bien</th><th>Categoría</th><th>Ubicación</th><th>Responsable</th><th class="n">Cant.</th><th>Estado</th><th></th></tr></thead><tbody id="ivTb"></tbody></table></div>
 </div>
 <div id="eB" hidden>
     <div id="bjSinNube" class="mod" style="cursor:default" hidden><b>Bajas y regularización</b><span>Esta función necesita la versión en la nube de la plataforma.</span></div>
@@ -916,6 +951,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <label class="hint" style="display:flex;gap:6px;align-items:center">Fecha del corte <input type="date" id="cFec"></label>
     <button id="cPrev">‹ Día anterior</button><button id="cNext">Día siguiente ›</button><button id="cHoy">Hoy</button>
     <button class="p need-admin" id="cPdf">Corte del día (PDF)</button>
+    <button id="bPv">Proveedores y cuentas por pagar</button>
   </div>
   <section class="sum need-admin" id="cSum"></section>
   <h2 class="need-admin">Resumen por método de pago</h2>
@@ -944,7 +980,11 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <label>Categoría<select id="gCat"></select></label>
     <label>Método de pago<select id="gMet"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option></select></label>
     <label class="full">Proveedor o nota (opcional)<input id="gNota"></label>
+    <label>Proveedor del catálogo<select id="gProv"></select></label>
+    <label style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="gPend"> Aún no se paga (cuenta por pagar)</label>
+    <label>Vence el<input type="date" id="gVen"></label>
   </div>
+  <p class="hint" id="gMsg" role="status" style="min-height:1.2em"></p>
   <div class="bar"><button class="p" id="gAdd">Registrar gasto</button></div>
   <h2 class="need-admin" style="margin-top:16px">Historial por día</h2>
   <p class="hint need-admin">Haz clic en un día para ver su corte. Se calcula con todos los pagos y gastos registrados.</p>
@@ -1105,6 +1145,128 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="wrap"><table><thead><tr><th>Fecha</th><th>Medio</th><th>Situación</th><th>Empresa o estudios</th><th>Notas</th><th></th></tr></thead><tbody id="sgTb"></tbody></table></div>
   <p class="hint" id="sgMsg" role="status" style="min-height:1.4em;margin:8px 0 0"></p>
   <div class="bar" style="justify-content:flex-end;margin:0"><button id="sgCls">Cerrar</button></div>
+</dialog>
+
+<dialog id="dPrv" style="width:min(980px,98vw)">
+  <h2>Proveedores y cuentas por pagar</h2>
+  <div class="bar" style="margin:0 0 10px"><button id="prvT1" class="p">Por pagar</button><button id="prvT2">Proveedores</button><button id="prvT3">Gastos fijos del mes</button></div>
+  <div id="prvP1"><p class="hint" id="prvR1"></p><div class="wrap"><table style="min-width:760px"><thead><tr><th>Vence</th><th>Concepto</th><th>Proveedor</th><th class="n">Monto</th><th>Pagar con</th><th></th></tr></thead><tbody id="prvTb1"></tbody></table></div></div>
+  <div id="prvP2" hidden>
+    <div class="bar" style="margin:4px 0"><input id="prvBus" class="grow" type="search" placeholder="Buscar proveedor" aria-label="Buscar proveedor"><label class="hint" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="prvIna"> Mostrar inactivos</label><button id="prvCsv">Exportar movimientos (CSV)</button></div>
+    <div class="wrap"><table style="min-width:760px"><thead><tr><th>Proveedor</th><th>RFC</th><th>Contacto</th><th class="n">Pagado este año</th><th class="n">Por pagar</th><th></th></tr></thead><tbody id="prvTb2"></tbody></table></div>
+    <h2 style="margin-top:12px" id="prvFt">Nuevo proveedor</h2>
+    <div class="row">
+      <label class="full">Nombre o razón social<input id="prvNom" maxlength="160"></label>
+      <label>RFC<input id="prvRfc" maxlength="13" style="text-transform:uppercase"></label>
+      <label>Teléfono<input id="prvTel" maxlength="30"></label>
+      <label>Correo<input id="prvCor" type="email" maxlength="120"></label>
+      <label>Persona de contacto<input id="prvCon" maxlength="120"></label>
+      <label>Categoría habitual<select id="prvCat"></select></label>
+      <label class="full">Notas<input id="prvNota" maxlength="500"></label>
+      <label style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="prvAct" checked> Proveedor activo</label>
+    </div>
+    <div class="bar" style="margin:6px 0"><button class="p" id="prvGuarda">Guardar proveedor</button><button id="prvNuevo">Nuevo</button></div>
+  </div>
+  <div id="prvP3" hidden>
+    <p class="hint">Gastos que se repiten cada mes (renta, luz, internet). «Registrar los del mes» los deja como cuentas por pagar con su fecha de vencimiento; no se duplican si ya existen.</p>
+    <div class="wrap"><table style="min-width:700px"><thead><tr><th>Concepto</th><th>Proveedor</th><th>Categoría</th><th class="n">Monto</th><th class="n">Día</th><th></th></tr></thead><tbody id="prvTb3"></tbody></table></div>
+    <div class="row">
+      <label class="full">Concepto<input id="pfCon" maxlength="300" placeholder="Ej. Renta del edificio"></label>
+      <label>Monto ($)<input id="pfMon" type="number" min="0" step="0.01"></label>
+      <label>Día del mes en que vence<input id="pfDia" type="number" min="1" max="28" value="5"></label>
+      <label>Categoría<select id="pfCat"></select></label>
+      <label>Proveedor<select id="pfProv"></select></label>
+    </div>
+    <div class="bar" style="margin:6px 0"><button id="pfAdd">Agregar gasto fijo</button><button class="p" id="pfMes">Registrar los del mes</button></div>
+  </div>
+  <p class="hint" id="prvMsg" role="status" style="min-height:1.4em;margin:8px 0 0"></p>
+  <div class="bar" style="justify-content:flex-end;margin:0"><button id="prvCls">Cerrar</button></div>
+</dialog>
+
+<dialog id="dBzS" style="width:min(760px,98vw)">
+  <h2 id="bzsT">Mensaje</h2>
+  <p class="hint" id="bzsMeta"></p>
+  <div id="bzsTexto" style="white-space:pre-wrap;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg);margin:6px 0"></div>
+  <h2 style="margin-top:12px">Respuestas al alumno</h2>
+  <div id="bzsResp" class="hint"></div>
+  <div class="row"><label class="full">Nueva respuesta (la verá el alumno)<textarea id="bzsNueva" rows="3" maxlength="2000"></textarea></label>
+  <label>Estado<select id="bzsEst"><option value="nuevo">Nuevo</option><option value="en revisión">En revisión</option><option value="resuelto">Resuelto</option><option value="cerrado">Cerrado</option></select></label>
+  <label class="full">Nota interna (solo el personal la ve)<textarea id="bzsInt" rows="2" maxlength="2000"></textarea></label></div>
+  <div id="bzsNotas" class="hint"></div>
+  <p class="hint" id="bzsMsg" role="status" style="min-height:1.4em;margin:6px 0 0"></p>
+  <div class="bar" style="margin:0"><button class="p" id="bzsGuarda">Guardar</button><span class="grow"></span><button id="bzsCls">Cerrar</button></div>
+</dialog>
+<dialog id="dBz" style="width:min(640px,98vw)">
+  <h2>Buzón de quejas y sugerencias</h2>
+  <div id="bzForm">
+    <div class="row">
+      <label>Tipo de mensaje<select id="bzTipo"><option>Queja</option><option>Sugerencia</option><option>Felicitación</option><option>Otro</option></select></label>
+      <label>Dirigido a<select id="bzArea"><option>Control escolar</option><option>Caja y pagos</option><option>Docentes</option><option>Instalaciones</option><option>Servicios y sistemas</option><option>Dirección</option><option>Otro</option></select></label>
+      <label class="full">Asunto<input id="bzAsu" maxlength="120"></label>
+      <label class="full">Tu mensaje <span class="hint" id="bzCnt">0 / 2000</span><textarea id="bzTxt" rows="6" maxlength="2000"></textarea></label>
+      <label class="full" style="flex-direction:row;gap:8px;align-items:flex-start"><input type="checkbox" id="bzAnon" style="margin-top:4px"><span>Enviar de forma <b>anónima</b>. Nadie verá tu nombre. Te daremos un <b>folio</b>: guárdalo, es la única forma de consultar la respuesta.</span></label>
+    </div>
+    <p class="hint" id="bzMsg" role="status" style="min-height:1.4em;margin:6px 0 0"></p>
+    <div class="bar" style="margin:0"><button class="p" id="bzEnv">Enviar mensaje</button><span class="grow"></span><button id="bzCls">Cancelar</button></div>
+  </div>
+  <div id="bzOk" hidden>
+    <p style="font-size:16px"><b>Mensaje enviado.</b> Tu folio es:</p>
+    <p id="bzFol" style="font-size:26px;font-weight:700;letter-spacing:2px;margin:6px 0"></p>
+    <p class="hint" id="bzFolN"></p>
+    <div class="bar" style="margin:0"><button class="p" id="bzFin">Listo</button></div>
+  </div>
+</dialog>
+
+<dialog id="dBl" style="width:min(640px,98vw)">
+  <h2 id="blT">Libro</h2>
+  <div class="row">
+    <label class="full">Título<input id="blTit" maxlength="200"></label>
+    <label>Autor<input id="blAut" maxlength="160"></label>
+    <label>Editorial<input id="blEdi" maxlength="120"></label>
+    <label>Año<input id="blAnio" type="number" min="0" max="2100"></label>
+    <label>ISBN<input id="blIsbn" maxlength="20"></label>
+    <label>Categoría o materia<input id="blCat" maxlength="80"></label>
+    <label>Ubicación (estante)<input id="blUbi" maxlength="80"></label>
+    <label>Ejemplares<input id="blEj" type="number" min="1" max="1000" value="1"></label>
+    <label class="full">Notas<input id="blNota" maxlength="500"></label>
+    <label style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="blAct" checked> Disponible para préstamo</label>
+  </div>
+  <p class="hint" id="blMsg" role="status" style="min-height:1.4em"></p>
+  <div class="bar" style="margin:0"><button class="p" id="blGuarda">Guardar libro</button><span class="grow"></span><button id="blCls">Cerrar</button></div>
+</dialog>
+<dialog id="dBp" style="width:min(640px,98vw)">
+  <h2>Nuevo préstamo</h2>
+  <div class="row">
+    <label>Persona<select id="bpTipo"><option value="alumno">Alumno</option><option value="docente">Docente</option><option value="otro">Otra persona</option></select></label>
+    <label class="full" id="bpBusL">Buscar<input id="bpBus" placeholder="Nombre o matrícula" autocomplete="off"></label>
+    <label class="full" id="bpPerL">Selecciona<select id="bpPer"></select></label>
+    <label class="full" id="bpNomL" hidden>Nombre completo<input id="bpNom" maxlength="160"></label>
+    <label class="full">Libro<select id="bpLib"></select></label>
+    <label>Fecha del préstamo<input id="bpFec" type="date"></label>
+    <label>Debe devolverlo el<input id="bpVen" type="date"></label>
+  </div>
+  <p class="hint" id="bpMsg" role="status" style="min-height:1.4em"></p>
+  <div class="bar" style="margin:0"><button class="p" id="bpGuarda">Registrar préstamo</button><span class="grow"></span><button id="bpCls">Cerrar</button></div>
+</dialog>
+<dialog id="dIf" style="width:min(680px,98vw)">
+  <h2 id="ifT">Bien</h2>
+  <div class="row">
+    <label class="full">Nombre del bien<input id="ifNom" maxlength="200"></label>
+    <label>Código (si lo dejas vacío se asigna)<input id="ifCod" maxlength="40"></label>
+    <label>Categoría<input id="ifCat" maxlength="80" list="ifCats"></label>
+    <label>Ubicación<input id="ifUbi" maxlength="100"></label>
+    <label>Responsable<input id="ifRsp" maxlength="120"></label>
+    <label>Cantidad<input id="ifCan" type="number" min="1" max="100000" value="1"></label>
+    <label>Estado<select id="ifEst"><option>Bueno</option><option>Regular</option><option>Malo</option><option>Baja</option></select></label>
+    <label>Fecha de adquisición<input id="ifFec" type="date"></label>
+    <label>Costo unitario ($)<input id="ifCos" type="number" min="0" step="0.01"></label>
+    <label>Número de serie<input id="ifSer" maxlength="60"></label>
+    <label class="full">Notas<input id="ifNot" maxlength="500"></label>
+    <label class="full" id="ifBajaL" hidden>Motivo de la baja<input id="ifBajaMot" maxlength="300"></label>
+  </div>
+  <datalist id="ifCats"></datalist>
+  <p class="hint" id="ifMsg" role="status" style="min-height:1.4em"></p>
+  <div class="bar" style="margin:0"><button class="p" id="ifGuarda">Guardar</button><span class="grow"></span><button id="ifCls">Cerrar</button></div>
 </dialog>
 
 <dialog id="dEvd" style="width:min(820px,98vw)">
@@ -2975,6 +3137,346 @@ $("hcGo2").onclick=async function(){
 };
 $("sHist").onclick=function(){if(cur){var id=cur.id;$("dSt").close();abreHc(id,1)}};
 $("bHist").onclick=function(){abreHc(null,1)};
+/* ===== Biblioteca e inventario ===== */
+var LIB={},PRE={},INV={},BBT=1,BLE=null,IFE=null,BBD={dias:7,max:3,multa:5};
+function bbCfg(){var c=LIB._config;return c&&c.dias?c:BBD}
+function bbEdita(){return ROL==="admin"||permiso("biblioteca")==="editar"}
+function bbMsg(t,ok){$("bbMsg").style.color=ok?"var(--ok)":"var(--bad)";$("bbMsg").textContent=t||""}
+function bbLibros(){return Object.keys(LIB).filter(function(k){return k.charAt(0)!=="_"}).map(function(k){return Object.assign({id:k},LIB[k])}).sort(function(a,b){return nz(a.titulo).localeCompare(nz(b.titulo))})}
+function bbPrestamos(){var o=[];Object.keys(PRE).forEach(function(k){((PRE[k]&&PRE[k].items)||[]).forEach(function(x){o.push(Object.assign({k:k,quien:PRE[k].nombre,tipo:PRE[k].tipo},x))})});return o}
+function bbActivos(){return bbPrestamos().filter(function(x){return !x.devuelto})}
+function bbDisp(l){return Math.max(0,(l.ejemplares||0)-bbActivos().filter(function(x){return x.libro===l.id}).length)}
+function bbTit(id){return LIB[id]?LIB[id].titulo:"(libro eliminado)"}
+function sumaDias(f,n){var d=new Date(f+"T12:00:00");d.setDate(d.getDate()+n);return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
+function difDias(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/86400000)}
+function renderBb(){
+  for(var i=1;i<=3;i++){$("bbP"+i).hidden=BBT!==i;$("bbT"+i).className=BBT===i?"p":""}
+  var c=bbCfg(),e=bbEdita(),hoy=today();
+  if(BBT===1){
+    var q=nz($("bbBus1").value),f=$("bbFil1").value,A=bbActivos(),V=A.filter(function(x){return x.vence<hoy});
+    var L=(f==="hist"?bbPrestamos().filter(function(x){return x.devuelto}):(f==="venc"?V:A)).filter(function(x){return !q||nz(x.quien+" "+bbTit(x.libro)).indexOf(q)>-1}).sort(function(a,b){return f==="hist"?String(b.devuelto).localeCompare(String(a.devuelto)):String(a.vence).localeCompare(String(b.vence))});
+    $("bbR1").textContent=A.length+" préstamos activos · "+V.length+" vencidos"+(V.length?" ("+mx.format(V.reduce(function(t,x){return t+difDias(x.vence,hoy)*c.multa},0))+" de multa estimada)":"")+" · "+bbLibros().length+" títulos en el catálogo.";
+    $("bbNuevoP").disabled=!e;
+    $("bbTb1").innerHTML=L.length?L.slice(0,400).map(function(x){var v=!x.devuelto&&x.vence<hoy,est=x.devuelto?'Devuelto el '+fd(x.devuelto):(v?'<span class="tag sin">Vencido '+difDias(x.vence,hoy)+' d</span>':'<span class="tag">En préstamo</span>');return '<tr><td>'+esc(x.quien)+' <span class="hint">'+esc(x.tipo)+'</span></td><td style="white-space:normal;min-width:160px">'+esc(bbTit(x.libro))+'</td><td>'+fd(x.fecha)+'</td><td>'+fd(x.vence)+(x.renovaciones?' <span class="hint">(renovado '+x.renovaciones+')</span>':'')+'</td><td>'+est+'</td><td>'+((e&&!x.devuelto)?'<button class="p" data-bbd="'+attr(x.id)+'" data-bbk="'+attr(x.k)+'">Devolver</button> '+(x.renovaciones>=2?'':'<button data-bbr="'+attr(x.id)+'" data-bbk="'+attr(x.k)+'">Renovar</button>'):'')+'</td></tr>'}).join(""):'<tr><td colspan="6" class="hint">'+(f==="hist"?"Aún no hay préstamos devueltos.":"No hay préstamos con ese filtro.")+'</td></tr>';
+  }else if(BBT===2){
+    var q2=nz($("bbBus2").value),B=bbLibros().filter(function(l){return !q2||nz(l.titulo+" "+(l.autor||"")+" "+(l.isbn||"")+" "+(l.ubicacion||"")+" "+(l.categoria||"")).indexOf(q2)>-1});
+    $("bbNuevoL").disabled=!e;
+    $("bbR2").textContent=bbLibros().length+" títulos · "+bbLibros().reduce(function(t,l){return t+(l.ejemplares||0)},0)+" ejemplares.";
+    $("bbTb2").innerHTML=B.length?B.slice(0,400).map(function(l){var d=bbDisp(l);return '<tr><td style="white-space:normal;min-width:180px">'+esc(l.titulo)+(l.activo===false?' <span class="tag sin">No prestable</span>':'')+'</td><td>'+esc(l.autor||"")+'</td><td>'+esc(l.categoria||"")+'</td><td>'+esc(l.ubicacion||"")+'</td><td class="n">'+l.ejemplares+'</td><td class="n">'+d+'</td><td>'+(e?'<button data-bbe="'+attr(l.id)+'">Editar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="7" class="hint">'+(bbLibros().length?"Ningún libro coincide.":"Aún no hay libros. Agrega el primero.")+'</td></tr>';
+  }else{
+    $("bbDias").value=c.dias;$("bbMax").value=c.max;$("bbMulta").value=c.multa;["bbDias","bbMax","bbMulta","bbGuardaCfg"].forEach(function(i){$(i).disabled=!e});
+  }
+}
+async function bbSyncDisp(id){if(!LIB[id])return;var d=Object.assign({},LIB[id],{disp:bbDisp(Object.assign({id:id},LIB[id]))});try{await DBH.doc("libros/"+id).set(d);LIB[id]=d}catch(e){}}
+async function bbGuardaPre(k,doc){await DBH.doc("prestamos/"+k).set(doc);PRE[k]=doc}
+$("bbBus1").oninput=$("bbFil1").onchange=$("bbBus2").oninput=renderBb;
+[1,2,3].forEach(function(i){$("bbT"+i).onclick=function(){BBT=i;bbMsg("");renderBb()}});
+$("bbTb1").onclick=async function(e){
+  var b=e.target.closest("[data-bbd],[data-bbr]");if(!b||!bbEdita())return;var k=b.dataset.bbk,id=b.dataset.bbd||b.dataset.bbr,doc=JSON.parse(JSON.stringify(PRE[k])),x=doc.items.find(function(y){return y.id===id}),hoy=today(),c=bbCfg();
+  if(!x)return;
+  try{
+    if(b.dataset.bbd){
+      x.devuelto=hoy;await bbGuardaPre(k,doc);await bbSyncDisp(x.libro);
+      var r=Math.max(0,difDias(x.vence,hoy));bbMsg(r?"Devuelto con "+r+" día(s) de retraso. Multa estimada: "+mx.format(r*c.multa)+" (cóbrala en caja).":"Devuelto a tiempo.",!r);
+    }else{
+      x.renovaciones=(x.renovaciones||0)+1;x.vence=sumaDias(hoy>x.vence?hoy:x.vence,c.dias);await bbGuardaPre(k,doc);bbMsg("Renovado hasta el "+fd(x.vence)+".",true);
+    }
+    renderBb();
+  }catch(er){bbMsg("No se pudo guardar: "+((er&&er.message)||"error"))}
+};
+$("bbTb2").onclick=function(e){var b=e.target.closest("[data-bbe]");if(b)abreBl(b.dataset.bbe)};
+$("bbNuevoL").onclick=function(){abreBl(null)};
+function abreBl(id){
+  BLE=id;var l=id&&LIB[id]?LIB[id]:{};$("blT").textContent=id?"Editar libro":"Nuevo libro";$("blMsg").textContent="";
+  $("blTit").value=l.titulo||"";$("blAut").value=l.autor||"";$("blEdi").value=l.editorial||"";$("blAnio").value=l.anio||"";$("blIsbn").value=l.isbn||"";$("blCat").value=l.categoria||"";$("blUbi").value=l.ubicacion||"";$("blEj").value=l.ejemplares||1;$("blNota").value=l.nota||"";$("blAct").checked=l.activo!==false;
+  $("dBl").showModal();
+}
+$("blCls").onclick=function(){$("dBl").close();renderBb()};
+$("blGuarda").onclick=async function(){
+  var t=$("blTit").value.trim(),ej=parseInt($("blEj").value,10),an=$("blAnio").value.trim(),m=$("blMsg");m.style.color="var(--bad)";
+  if(!t){m.textContent="Escribe el título.";return}if(!(ej>=1&&ej<=1000)){m.textContent="Los ejemplares van de 1 a 1000.";return}
+  var prest=BLE?bbActivos().filter(function(x){return x.libro===BLE}).length:0;if(ej<prest){m.textContent="Hay "+prest+" ejemplares prestados; no puedes bajar a "+ej+".";return}
+  if(an!==""&&!(+an>=0&&+an<=2100&&/^\d+$/.test(an))){m.textContent="Año no válido.";return}
+  var d={titulo:t,autor:$("blAut").value.trim(),editorial:$("blEdi").value.trim(),anio:an===""?"":+an,isbn:$("blIsbn").value.trim(),categoria:$("blCat").value.trim(),ubicacion:$("blUbi").value.trim(),ejemplares:ej,nota:$("blNota").value.trim(),activo:$("blAct").checked},id=BLE||uid()+uid();
+  d.disp=Math.max(0,ej-prest);
+  try{await DBH.doc("libros/"+id).set(d);LIB[id]=d;m.style.color="var(--ok)";m.textContent="Libro guardado.";BLE=id;renderBb()}catch(e){m.textContent="No se pudo guardar: "+((e&&e.message)||"error")}
+};
+function bpLlena(){
+  var t=$("bpTipo").value,q=nz($("bpBus").value),o="";
+  $("bpBusL").hidden=t==="otro";$("bpPerL").hidden=t==="otro";$("bpNomL").hidden=t!=="otro";
+  if(t==="alumno")o=S.filter(function(s){return !esBaja(s.id)&&(!q||nz(s.nombre+" "+s.mat).indexOf(q)>-1)}).slice(0,60).map(function(s){return '<option value="'+attr(s.id)+'">'+esc(s.nombre+" · "+s.mat)+'</option>'}).join("");
+  else if(t==="docente")o=Object.keys(DOC||{}).map(function(k){return {id:k,n:DOC[k].nombre||""}}).filter(function(d){return !q||nz(d.n).indexOf(q)>-1}).sort(function(a,b){return nz(a.n).localeCompare(nz(b.n))}).slice(0,60).map(function(d){return '<option value="'+attr(d.id)+'">'+esc(d.n)+'</option>'}).join("");
+  $("bpPer").innerHTML=o||'<option value="">Sin resultados</option>';
+}
+$("bbNuevoP").onclick=function(){
+  if(!bbEdita())return;var c=bbCfg(),hoy=today();$("bpTipo").value="alumno";$("bpBus").value="";$("bpNom").value="";$("bpMsg").textContent="";
+  var L=bbLibros().filter(function(l){return l.activo!==false&&bbDisp(l)>0});
+  $("bpLib").innerHTML=L.length?L.map(function(l){return '<option value="'+attr(l.id)+'">'+esc(l.titulo+(l.autor?" — "+l.autor:"")+" ("+bbDisp(l)+" disp.)")+'</option>'}).join(""):'<option value="">No hay libros disponibles</option>';
+  $("bpFec").value=hoy;$("bpVen").value=sumaDias(hoy,c.dias);bpLlena();$("dBp").showModal();
+};
+$("bpTipo").onchange=function(){$("bpBus").value="";bpLlena()};$("bpBus").oninput=bpLlena;
+$("bpFec").onchange=function(){if($("bpFec").value)$("bpVen").value=sumaDias($("bpFec").value,bbCfg().dias)};
+$("bpCls").onclick=function(){$("dBp").close();renderBb()};
+$("bpGuarda").onclick=async function(){
+  var m=$("bpMsg"),t=$("bpTipo").value,lib=$("bpLib").value,f=$("bpFec").value,v=$("bpVen").value,c=bbCfg(),k,nom;m.style.color="var(--bad)";
+  if(!lib){m.textContent="Elige un libro disponible.";return}if(!f||!v){m.textContent="Indica las fechas.";return}if(v<f){m.textContent="El vencimiento no puede ser antes del préstamo.";return}
+  if(t==="alumno"){k=$("bpPer").value;var s=S.find(function(x){return x.id===k});if(!s){m.textContent="Elige al alumno.";return}nom=s.nombre}
+  else if(t==="docente"){var id=$("bpPer").value;if(!id||!DOC[id]){m.textContent="Elige al docente.";return}k="d-"+id;nom=DOC[id].nombre}
+  else{nom=$("bpNom").value.trim();if(nom.length<3){m.textContent="Escribe el nombre completo de la persona.";return}k="o-"+nz(nom).replace(/[^a-z0-9]+/g,"-").slice(0,40)}
+  var L=LIB[lib];if(!L||L.activo===false||bbDisp(Object.assign({id:lib},L))<1){m.textContent="Ese libro ya no tiene ejemplares disponibles.";return}
+  var doc=JSON.parse(JSON.stringify(PRE[k]||{nombre:nom,tipo:t,items:[]}));doc.nombre=nom;doc.tipo=t;
+  var act=doc.items.filter(function(x){return !x.devuelto});
+  if(act.length>=c.max){m.textContent=nom+" ya tiene "+act.length+" libros prestados (el máximo es "+c.max+").";return}
+  if(act.some(function(x){return x.libro===lib})){m.textContent="Esa persona ya tiene ese libro prestado.";return}
+  if(act.some(function(x){return x.vence<today()})){m.textContent=nom+" tiene préstamos vencidos. Debe devolverlos antes de llevarse otro.";return}
+  doc.items.push({id:uid()+uid(),libro:lib,fecha:f,vence:v,devuelto:"",renovaciones:0});
+  try{await bbGuardaPre(k,doc);await bbSyncDisp(lib);m.style.color="var(--ok)";m.textContent="Préstamo registrado. Debe devolverlo el "+fd(v)+".";renderBb();var L2=bbLibros().filter(function(l){return l.activo!==false&&bbDisp(l)>0});$("bpLib").innerHTML=L2.length?L2.map(function(l){return '<option value="'+attr(l.id)+'">'+esc(l.titulo+(l.autor?" — "+l.autor:"")+" ("+bbDisp(l)+" disp.)")+'</option>'}).join(""):'<option value="">No hay libros disponibles</option>'}catch(e){m.textContent="No se pudo guardar: "+((e&&e.message)||"error")}
+};
+$("bbGuardaCfg").onclick=async function(){
+  var d=parseInt($("bbDias").value,10),mx_=parseInt($("bbMax").value,10),mu=parseFloat($("bbMulta").value);
+  if(!(d>=1&&d<=90)||!(mx_>=1&&mx_<=20)||!(mu>=0&&mu<=10000)){bbMsg("Revisa los valores: días de 1 a 90, libros de 1 a 20 y multa mayor o igual a cero.");return}
+  var c={dias:d,max:mx_,multa:mu};try{await DBH.doc("libros/_config").set(c);LIB._config=c;bbMsg("Ajustes guardados.",true)}catch(e){bbMsg("No se pudo guardar: "+((e&&e.message)||"error"))}
+};
+$("bbCsv").onclick=function(){
+  var o=[["Título","Autor","Editorial","Año","ISBN","Categoría","Ubicación","Ejemplares","Disponibles","Prestable"].map(csvq).join(",")];
+  bbLibros().forEach(function(l){o.push([l.titulo,l.autor,l.editorial,l.anio,l.isbn,l.categoria,l.ubicacion,l.ejemplares,bbDisp(l),l.activo===false?"No":"Sí"].map(csvq).join(","))});
+  saveFile("catalogo-de-biblioteca.csv","﻿"+o.join("\n"));
+};
+/* Portal del alumno: sus préstamos y búsqueda en el catálogo */
+var BBQ="";
+function bbPorRes(){
+  var q=nz(BBQ);if(!q||q.length<2)return "";
+  var L=bbLibros().filter(function(l){return l.activo!==false&&nz(l.titulo+" "+(l.autor||"")+" "+(l.categoria||"")).indexOf(q)>-1}).slice(0,15);
+  return L.length?'<div class="wrap"><table style="min-width:420px"><thead><tr><th>Título</th><th>Autor</th><th>Ubicación</th><th class="n">Disponibles</th></tr></thead><tbody>'+L.map(function(l){return '<tr><td style="white-space:normal">'+esc(l.titulo)+'</td><td>'+esc(l.autor||"")+'</td><td>'+esc(l.ubicacion||"")+'</td><td class="n">'+(l.disp==null?"—":l.disp)+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">No encontramos libros con ese texto.</p>';
+}
+function bbPorHTML(s){
+  var P=(PRE[s.id]&&PRE[s.id].items)||[],hoy=today();
+  if(!P.length&&!bbLibros().length)return "";
+  return '<h2 style="margin-top:16px">Biblioteca</h2>'+(P.filter(function(x){return !x.devuelto}).length?'<div class="wrap"><table style="min-width:420px"><thead><tr><th>Libro prestado</th><th>Debes devolverlo</th></tr></thead><tbody>'+P.filter(function(x){return !x.devuelto}).map(function(x){return '<tr><td>'+esc(bbTit(x.libro))+'</td><td>'+fd(x.vence)+(x.vence<hoy?' <span class="tag sin">Vencido</span>':'')+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">No tienes libros prestados.</p>')+
+   '<div class="bar" style="margin:8px 0 0"><input id="bbPorBus" class="grow" type="search" placeholder="Buscar un libro en el catálogo" aria-label="Buscar libro" value="'+attr(BBQ)+'"></div><div id="bbPorRes">'+bbPorRes()+'</div>';
+}
+document.addEventListener("input",function(e){
+  if(e.target.id!=="bbPorBus")return;BBQ=e.target.value;$("bbPorRes").innerHTML=bbPorRes();
+});
+/* ----- Inventario ----- */
+function ivLista(){return Object.keys(INV).map(function(k){return Object.assign({id:k},INV[k])}).sort(function(a,b){return String(a.codigo||"").localeCompare(String(b.codigo||""),"es",{numeric:true})})}
+function ivMsg(t,ok){$("ifMsg").style.color=ok?"var(--ok)":"var(--bad)";$("ifMsg").textContent=t||""}
+function renderIv(){
+  var T=ivLista(),cats=[],e=bbEdita();T.forEach(function(x){if(x.categoria&&cats.indexOf(x.categoria)<0)cats.push(x.categoria)});cats.sort();
+  var cv=$("ivCat").value;$("ivCat").innerHTML='<option value="">Todas las categorías</option>'+cats.map(function(c){return '<option>'+esc(c)+'</option>'}).join("");$("ivCat").value=cats.indexOf(cv)>-1?cv:"";
+  $("ifCats").innerHTML=cats.map(function(c){return '<option value="'+attr(c)+'">'}).join("");
+  var q=nz($("ivBus").value),c=$("ivCat").value,es=$("ivEst").value;
+  var L=T.filter(function(x){return (!c||x.categoria===c)&&(!es||x.estado===es)&&(!q||nz((x.codigo||"")+" "+x.nombre+" "+(x.serie||"")+" "+(x.responsable||"")+" "+(x.ubicacion||"")).indexOf(q)>-1)});
+  var act=T.filter(function(x){return x.estado!=="Baja"});
+  $("ivRes").textContent=act.reduce(function(t,x){return t+x.cantidad},0)+" bienes en "+act.length+" registros · valor estimado "+mx.format(act.reduce(function(t,x){return t+(x.costo||0)*x.cantidad},0))+" · "+act.filter(function(x){return x.estado==="Malo"}).length+" en mal estado · "+(T.length-act.length)+" dados de baja.";
+  $("ivNuevo").disabled=!e;
+  $("ivTb").innerHTML=L.length?L.slice(0,500).map(function(x){return '<tr><td>'+esc(x.codigo||"")+'</td><td style="white-space:normal;min-width:160px">'+esc(x.nombre)+(x.serie?'<div class="hint">Serie '+esc(x.serie)+'</div>':'')+'</td><td>'+esc(x.categoria||"")+'</td><td>'+esc(x.ubicacion||"")+'</td><td>'+esc(x.responsable||"")+'</td><td class="n">'+x.cantidad+'</td><td><span class="tag '+(x.estado==="Bueno"?"pagado":x.estado==="Baja"?"sin":"")+'">'+esc(x.estado)+'</span></td><td>'+(e?'<button data-ife="'+attr(x.id)+'">Editar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="8" class="hint">'+(T.length?"Ningún bien coincide.":"Aún no hay bienes registrados.")+'</td></tr>';
+}
+$("ivBus").oninput=$("ivCat").onchange=$("ivEst").onchange=renderIv;
+$("ivTb").onclick=function(e){var b=e.target.closest("[data-ife]");if(b)abreIf(b.dataset.ife)};
+$("ivNuevo").onclick=function(){abreIf(null)};
+function ivCodSig(){var n=0;ivLista().forEach(function(x){var m=/^INV-(\d+)$/.exec(x.codigo||"");if(m)n=Math.max(n,+m[1])});return "INV-"+("000"+(n+1)).slice(-4)}
+function abreIf(id){
+  IFE=id;var x=id&&INV[id]?INV[id]:{};$("ifT").textContent=id?"Editar bien":"Nuevo bien";ivMsg("");
+  $("ifNom").value=x.nombre||"";$("ifCod").value=x.codigo||"";$("ifCat").value=x.categoria||"";$("ifUbi").value=x.ubicacion||"";$("ifRsp").value=x.responsable||"";$("ifCan").value=x.cantidad||1;$("ifEst").value=x.estado||"Bueno";$("ifFec").value=x.fechaAdq||"";$("ifCos").value=x.costo==null||x.costo===""?"":x.costo;$("ifSer").value=x.serie||"";$("ifNot").value=x.nota||"";$("ifBajaMot").value=x.bajaMotivo||"";$("ifBajaL").hidden=$("ifEst").value!=="Baja";
+  $("dIf").showModal();
+}
+$("ifEst").onchange=function(){$("ifBajaL").hidden=$("ifEst").value!=="Baja"};
+$("ifCls").onclick=function(){$("dIf").close();renderIv()};
+$("ifGuarda").onclick=async function(){
+  var n=$("ifNom").value.trim(),can=parseInt($("ifCan").value,10),cos=$("ifCos").value.trim(),cod=$("ifCod").value.trim()||(IFE&&INV[IFE]?INV[IFE].codigo:"")||ivCodSig(),es=$("ifEst").value;
+  if(!n){ivMsg("Escribe el nombre del bien.");return}if(!(can>=1&&can<=100000)){ivMsg("La cantidad debe ser de 1 en adelante.");return}
+  if(cos!==""&&!(parseFloat(cos)>=0)){ivMsg("Revisa el costo.");return}
+  if(ivLista().some(function(x){return x.id!==IFE&&nz(x.codigo||"")===nz(cod)})){ivMsg("Ya existe un bien con el código "+cod+".");return}
+  if(es==="Baja"&&!$("ifBajaMot").value.trim()){ivMsg("Indica el motivo de la baja.");return}
+  var ant=IFE&&INV[IFE]?INV[IFE]:{};
+  var d={codigo:cod,nombre:n,categoria:$("ifCat").value.trim(),ubicacion:$("ifUbi").value.trim(),responsable:$("ifRsp").value.trim(),cantidad:can,estado:es,fechaAdq:$("ifFec").value,costo:cos===""?"":Math.round(parseFloat(cos)*100)/100,serie:$("ifSer").value.trim(),nota:$("ifNot").value.trim()};
+  if(es==="Baja"){d.bajaFecha=ant.bajaFecha||today();d.bajaMotivo=$("ifBajaMot").value.trim()}
+  var id=IFE||uid()+uid();
+  try{await DBH.doc("inventario/"+id).set(d);INV[id]=d;IFE=id;ivMsg("Guardado con el código "+cod+".",true);renderIv()}catch(e){ivMsg("No se pudo guardar: "+((e&&e.message)||"error"))}
+};
+$("ivCsv").onclick=function(){
+  var o=[["Código","Bien","Categoría","Ubicación","Responsable","Cantidad","Estado","Fecha de adquisición","Costo unitario","Serie","Baja","Motivo de baja","Notas"].map(csvq).join(",")];
+  ivLista().forEach(function(x){o.push([x.codigo,x.nombre,x.categoria,x.ubicacion,x.responsable,x.cantidad,x.estado,x.fechaAdq,x.costo,x.serie,x.bajaFecha,x.bajaMotivo,x.nota].map(csvq).join(","))});
+  saveFile("inventario-de-bienes.csv","﻿"+o.join("\n"));
+};
+
+/* ===== Buzón de quejas y sugerencias ===== */
+var BZQ={},BZMIS=null,BZSEL=null,BZEST={"nuevo":"Nuevo","en revisión":"En revisión","resuelto":"Resuelto","cerrado":"Cerrado"};
+function bzLista(){return Object.keys(BZQ).map(function(k){return BZQ[k]}).filter(function(d){return d&&d.folio}).sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))||String(b.folio).localeCompare(String(a.folio))})}
+function bzBadge(){var n=bzLista().filter(function(d){return d.estado==="nuevo"}).length;$("tUbz").textContent="Buzón"+(n?" ("+n+")":"")}
+function bzEdita(){return ROL==="admin"||permiso("escolar")==="editar"}
+function bzTag(e){return '<span class="tag '+(e==="resuelto"||e==="cerrado"?"pagado":e==="nuevo"?"sin":"")+'">'+esc(BZEST[e]||e)+'</span>'}
+function renderBz(){
+  var q=nz($("bzBus").value),e=$("bzEst").value,t=$("bzTip").value,T=bzLista();
+  var L=T.filter(function(d){
+    if(t&&d.tipo!==t)return false;if(e==="abiertos"?(d.estado!=="nuevo"&&d.estado!=="en revisión"):(e&&d.estado!==e))return false;
+    return !q||nz(d.folio+" "+d.asunto+" "+(d.nombre||"")+" "+(d.mat||"")).indexOf(q)>-1;
+  });
+  $("bzRes").textContent=T.length+" mensajes · "+T.filter(function(d){return d.estado==="nuevo"}).length+" nuevos · "+T.filter(function(d){return d.estado==="en revisión"}).length+" en revisión · "+T.filter(function(d){return d.anonimo}).length+" anónimos.";
+  $("bzTbl").innerHTML=L.length?L.slice(0,400).map(function(d){return '<tr><td>'+esc(d.folio)+'</td><td>'+fd(d.fecha)+'</td><td>'+esc(d.tipo)+'</td><td>'+esc(d.area)+'</td><td style="white-space:normal;min-width:180px">'+esc(d.asunto)+'</td><td>'+(d.anonimo?'<span class="hint">Anónimo</span>':esc(d.nombre||""))+'</td><td>'+bzTag(d.estado)+'</td><td><button data-bz="'+attr(d.folio)+'">'+(bzEdita()?"Atender":"Ver")+'</button></td></tr>'}).join(""):'<tr><td colspan="8" class="hint">'+(T.length?"No hay mensajes con ese filtro.":"Aún no hay mensajes.")+'</td></tr>';
+}
+function bzsMsg(t,ok){$("bzsMsg").style.color=ok?"var(--ok)":"var(--bad)";$("bzsMsg").textContent=t||""}
+function bzPinta(){
+  var d=BZQ[BZSEL];if(!d)return;
+  $("bzsT").textContent=d.folio+" · "+d.tipo+" · "+d.area;
+  $("bzsMeta").textContent=fd(d.fecha)+" · "+(d.anonimo?"Enviado de forma anónima":("De "+(d.nombre||"")+" ("+(d.mat||"")+")"))+" · "+d.asunto;
+  $("bzsTexto").textContent=d.texto;
+  $("bzsResp").innerHTML=(d.respuestas||[]).length?d.respuestas.map(function(r){return '<p style="margin:4px 0"><b>'+fd(r.f)+' · '+esc(r.por||"")+':</b> '+esc(r.texto)+'</p>'}).join(""):'Aún no hay respuestas.';
+  $("bzsNotas").innerHTML=(d.interna||[]).length?'<b>Notas internas:</b>'+d.interna.map(function(r){return '<p style="margin:4px 0">'+fd(r.f)+' · '+esc(r.por||"")+': '+esc(r.texto)+'</p>'}).join(""):"";
+  $("bzsEst").value=d.estado;$("bzsNueva").value="";$("bzsInt").value="";
+  var e=bzEdita();["bzsNueva","bzsEst","bzsInt","bzsGuarda"].forEach(function(i){$(i).disabled=!e});
+}
+function abreBzS(f){BZSEL=f;bzsMsg("");bzPinta();if(!$("dBzS").open)$("dBzS").showModal()}
+$("bzTbl").onclick=function(e){var b=e.target.closest("[data-bz]");if(b)abreBzS(b.dataset.bz)};
+$("bzBus").oninput=$("bzEst").onchange=$("bzTip").onchange=renderBz;
+$("bzsCls").onclick=function(){$("dBzS").close();renderBz()};
+$("bzsGuarda").onclick=async function(){
+  var d=JSON.parse(JSON.stringify(BZQ[BZSEL])),r=$("bzsNueva").value.trim(),n=$("bzsInt").value.trim(),hoy=today(),por=APP?APP.name:"Control escolar";
+  if(r){d.respuestas=(d.respuestas||[]).concat([{f:hoy,por:por,texto:r,publica:true}]);if(d.estado==="nuevo"&&$("bzsEst").value==="nuevo")$("bzsEst").value="en revisión"}
+  if(n)d.interna=(d.interna||[]).concat([{f:hoy,por:por,texto:n}]);
+  if($("bzsEst").value===d.estado&&!r&&!n){bzsMsg("No hay cambios que guardar.");return}
+  d.estado=$("bzsEst").value;
+  try{await DBH.doc("quejas/"+BZSEL).set(d);BZQ[BZSEL]=d;bzPinta();bzBadge();bzsMsg("Guardado.",true)}catch(e){bzsMsg("No se pudo guardar: "+((e&&e.message)||"error"))}
+};
+$("bzCsv").onclick=function(){
+  var o=[["Folio","Fecha","Tipo","Área","Asunto","De","Matrícula","Estado","Respuestas"].map(csvq).join(",")];
+  bzLista().forEach(function(d){o.push([d.folio,d.fecha,d.tipo,d.area,d.asunto,d.anonimo?"Anónimo":d.nombre,d.anonimo?"":d.mat,BZEST[d.estado],(d.respuestas||[]).length].map(csvq).join(","))});
+  saveFile("buzon-de-quejas-y-sugerencias.csv","﻿"+o.join("\n"));
+};
+/* Portal del alumno */
+function bzPorHTML(s){return '<h2 style="margin-top:16px">Buzón de quejas y sugerencias</h2><div id="bzBox"><p class="hint">Cargando…</p></div>';}
+var BZT=0;
+function bzPaint(){
+  if(!$("bzBox")||BZMIS===null)return;
+  $("bzBox").innerHTML='<p class="hint" style="margin:4px 0 8px">¿Tienes una queja, sugerencia o felicitación? Escríbela aquí; puedes enviarla de forma anónima.</p><div class="bar" style="margin:0 0 8px"><button class="p" id="bzNuevo">Escribir un mensaje</button><input id="bzFolIn" placeholder="Folio (ej. BZ-AB12CD34)" maxlength="11" style="max-width:210px" aria-label="Folio"><button id="bzFolGo">Consultar folio</button></div><div id="bzFolRes"></div>'+(BZMIS.length?'<div class="wrap"><table style="min-width:520px"><thead><tr><th>Folio</th><th>Fecha</th><th>Asunto</th><th>Estado</th></tr></thead><tbody>'+BZMIS.map(function(d){return '<tr><td>'+esc(d.folio)+'</td><td>'+fd(d.fecha)+'</td><td style="white-space:normal">'+esc(d.asunto)+bzRespHTML(d)+'</td><td>'+bzTag(d.estado)+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Aún no has enviado mensajes con tu nombre.</p>');
+}
+async function bzCarga(){
+  if(!$("bzBox"))return;
+  var r=await cbApi("GET","/api/buzon/mias");BZT=Date.now();
+  BZMIS=r.ok?(r.j.mensajes||[]):(BZMIS||[]);bzPaint();
+}
+function bzRespHTML(d){return (d.respuestas||[]).map(function(r){return '<div class="hint" style="margin-top:4px"><b>Respuesta del '+fd(r.f)+':</b> '+esc(r.texto)+'</div>'}).join("")}
+document.addEventListener("click",async function(e){
+  if(e.target.id==="bzNuevo"){$("bzTipo").selectedIndex=0;$("bzArea").selectedIndex=0;$("bzAsu").value="";$("bzTxt").value="";$("bzAnon").checked=false;$("bzCnt").textContent="0 / 2000";$("bzMsg").textContent="";$("bzForm").hidden=false;$("bzOk").hidden=true;$("dBz").showModal()}
+  else if(e.target.id==="bzFolGo"){
+    var f=($("bzFolIn").value||"").trim().toUpperCase();if(!f)return;
+    var r=await cbApi("GET","/api/buzon/folio/"+encodeURIComponent(f)),d=r.ok&&r.j.mensaje;
+    $("bzFolRes").innerHTML=d?'<div class="wrap" style="padding:8px;margin-bottom:8px"><b>'+esc(d.folio)+'</b> · '+esc(d.tipo)+' · '+fd(d.fecha)+' · '+bzTag(d.estado)+'<div>'+esc(d.asunto)+'</div>'+(bzRespHTML(d)||'<div class="hint">Aún no hay respuesta.</div>')+'</div>':'<p class="hint" style="color:var(--bad)">'+esc((r.j&&r.j.error)||"No encontramos ese folio.")+'</p>';
+  }
+});
+$("bzTxt").oninput=function(){$("bzCnt").textContent=$("bzTxt").value.length+" / 2000"};
+$("bzCls").onclick=function(){$("dBz").close()};
+$("bzFin").onclick=function(){$("dBz").close();bzCarga()};
+var _rpBz=renderPor;renderPor=function(){_rpBz();if($("bzBox")){bzPaint();if(BZMIS===null||Date.now()-BZT>60000)bzCarga()}};
+$("bzEnv").onclick=async function(){
+  var b=this,asu=$("bzAsu").value.trim(),tx=$("bzTxt").value.trim();
+  if(asu.length<3){$("bzMsg").style.color="var(--bad)";$("bzMsg").textContent="Escribe un asunto (mínimo 3 caracteres).";return}
+  if(tx.length<10){$("bzMsg").style.color="var(--bad)";$("bzMsg").textContent="Cuéntanos un poco más: el mensaje necesita al menos 10 caracteres.";return}
+  b.disabled=true;
+  var r=await cbApi("POST","/api/buzon",{tipo:$("bzTipo").value,area:$("bzArea").value,asunto:asu,texto:tx,anonimo:$("bzAnon").checked});
+  b.disabled=false;
+  if(!r.ok){$("bzMsg").style.color="var(--bad)";$("bzMsg").textContent=(r.j&&r.j.error)||"No se pudo enviar. Inténtalo de nuevo.";return}
+  $("bzForm").hidden=true;$("bzOk").hidden=false;$("bzFol").textContent=r.j.folio;
+  $("bzFolN").textContent=r.j.anonimo?"Tu mensaje es anónimo: guarda este folio. Sin él no podrás consultar la respuesta.":"También podrás ver la respuesta en esta misma sección con tu nombre.";
+};
+
+/* ===== Proveedores, cuentas por pagar y gastos fijos ===== */
+var PVD={},PVT=1,PVE=null;
+function pvLista(){return Object.keys(PVD).filter(function(k){return k.charAt(0)!=="_"}).map(function(k){return Object.assign({id:k},PVD[k])}).sort(function(a,b){return nz(a.nombre).localeCompare(nz(b.nombre))})}
+function pvNom(id){return id&&PVD[id]?PVD[id].nombre:""}
+function pvLlena(){
+  var o='<option value="">Sin proveedor del catálogo</option>'+pvLista().filter(function(p){return p.activo!==false}).map(function(p){return '<option value="'+attr(p.id)+'">'+esc(p.nombre)+'</option>'}).join("");
+  var v=$("gProv").value;$("gProv").innerHTML=o;$("gProv").value=v;var w=$("pfProv").value;$("pfProv").innerHTML=o;$("pfProv").value=w;
+}
+function pvPend(){
+  var o=[];Object.keys(G).forEach(function(k){((G[k]&&G[k].items)||[]).forEach(function(x){if(x.pend)o.push(Object.assign({mes:k},x))})});
+  return o.sort(function(a,b){return String(a.vence||a.fecha).localeCompare(String(b.vence||b.fecha))});
+}
+function pvBadge(){var n=pvPend().length;$("bPv").textContent="Proveedores y cuentas por pagar"+(n?" ("+n+")":"")}
+function pvMsg(t,ok){$("prvMsg").style.color=ok?"var(--ok)":"var(--bad)";$("prvMsg").textContent=t||""}
+function pvPuede(){return ROL!=="consulta"&&permiso("corte")==="editar"||ROL==="admin"}
+function pvRender(){
+  for(var i=1;i<=3;i++){$("prvP"+i).hidden=PVT!==i;$("prvT"+i).className=PVT===i?"p":""}
+  if(PVT===1){
+    var L=pvPend(),hoy=today(),venc=L.filter(function(x){return (x.vence||x.fecha)<hoy}),tot=sm(L,"monto");
+    $("prvR1").textContent=L.length?L.length+" cuentas por pagar por "+mx.format(tot)+(venc.length?" · "+venc.length+" vencidas por "+mx.format(sm(venc,"monto")):""):"No hay cuentas por pagar.";
+    $("prvTb1").innerHTML=L.length?L.map(function(x){var v=(x.vence||x.fecha)<hoy;return '<tr><td>'+fd(x.vence||x.fecha)+(v?' <span class="tag sin">Vencida</span>':'')+'</td><td style="white-space:normal;min-width:180px">'+esc(x.concepto)+'<div class="hint">'+esc(x.cat||"")+'</div></td><td>'+esc(pvNom(x.prov)||x.nota||"")+'</td><td class="n">'+mx.format(x.monto)+'</td><td><select data-pm="'+attr(x.id)+'"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option></select></td><td>'+(pvPuede()?'<button class="p" data-pp="'+attr(x.id)+'" data-pk="'+attr(x.mes)+'">Marcar pagada</button> ':'')+(ROL==="admin"?'<button class="d" data-pq="'+attr(x.id)+'" data-pk="'+attr(x.mes)+'">Quitar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="6" class="hint">Cuando registres un gasto como «Aún no se paga» aparecerá aquí.</td></tr>';
+  }else if(PVT===2){
+    var q=nz($("prvBus").value),an=today().slice(0,4),todo=gastosTodos(),pend=pvPend();
+    var P=pvLista().filter(function(p){return ($("prvIna").checked||p.activo!==false)&&(!q||nz(p.nombre+" "+(p.rfc||"")).indexOf(q)>-1)});
+    $("prvTb2").innerHTML=P.length?P.map(function(p){var pg=sm(todo.filter(function(x){return x.prov===p.id&&String(x.fecha).slice(0,4)===an}),"monto"),pe=sm(pend.filter(function(x){return x.prov===p.id}),"monto");return '<tr><td>'+esc(p.nombre)+(p.activo===false?' <span class="tag sin">Inactivo</span>':'')+'<div class="hint">'+esc(p.cat||"")+'</div></td><td>'+esc(p.rfc||"")+'</td><td>'+esc([p.contacto,p.tel,p.correo].filter(Boolean).join(" · "))+'</td><td class="n">'+mx.format(pg)+'</td><td class="n">'+mx.format(pe)+'</td><td>'+(pvPuede()?'<button data-pe="'+attr(p.id)+'">Editar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="6" class="hint">Aún no hay proveedores. Agrega el primero abajo.</td></tr>';
+    var e=PVE&&PVD[PVE]?PVD[PVE]:null;$("prvFt").textContent=e?"Editar proveedor":"Nuevo proveedor";
+    ["prvNom","prvRfc","prvTel","prvCor","prvCon","prvNota","prvCat","prvAct","prvGuarda","prvNuevo"].forEach(function(i){$(i).disabled=!pvPuede()});
+  }else{
+    var pl=(PVD._plantillas&&PVD._plantillas.items)||[];
+    $("prvTb3").innerHTML=pl.length?pl.map(function(x){return '<tr><td>'+esc(x.concepto)+'</td><td>'+esc(pvNom(x.prov))+'</td><td>'+esc(x.cat||"")+'</td><td class="n">'+mx.format(x.monto)+'</td><td class="n">'+x.dia+'</td><td>'+(pvPuede()?'<button class="d" data-pfq="'+attr(x.id)+'">Quitar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="6" class="hint">Aún no hay gastos fijos.</td></tr>';
+    ["pfCon","pfMon","pfDia","pfCat","pfProv","pfAdd","pfMes"].forEach(function(i){$(i).disabled=!pvPuede()});
+  }
+}
+function pvForm(id){
+  PVE=id||null;var e=PVE&&PVD[PVE]?PVD[PVE]:{};
+  $("prvNom").value=e.nombre||"";$("prvRfc").value=e.rfc||"";$("prvTel").value=e.tel||"";$("prvCor").value=e.correo||"";$("prvCon").value=e.contacto||"";$("prvNota").value=e.nota||"";$("prvCat").value=e.cat||CATS[CATS.length-1];$("prvAct").checked=e.activo!==false;
+}
+function abrePv(t){PVT=t||1;pvMsg("");$("prvCat").innerHTML=$("pfCat").innerHTML=CATS.map(function(c){return "<option>"+esc(c)+"</option>"}).join("");pvLlena();pvForm(null);pvRender();if(!$("dPrv").open)$("dPrv").showModal()}
+$("bPv").onclick=function(){abrePv(1)};$("prvCls").onclick=function(){$("dPrv").close()};
+[1,2,3].forEach(function(i){$("prvT"+i).onclick=function(){PVT=i;pvMsg("");pvRender()}});
+$("prvBus").oninput=$("prvIna").onchange=pvRender;
+$("prvNuevo").onclick=function(){pvForm(null);pvRender()};
+$("prvTb2").onclick=function(e){var b=e.target.closest("[data-pe]");if(b){pvForm(b.dataset.pe);pvRender();$("prvNom").focus()}};
+$("prvGuarda").onclick=async function(){
+  var n=$("prvNom").value.trim(),rfc=$("prvRfc").value.trim().toUpperCase();
+  if(!n){pvMsg("Escribe el nombre del proveedor.");return}
+  if(rfc&&!/^[A-ZÑ&0-9]{12,13}$/.test(rfc)){pvMsg("El RFC debe tener 12 o 13 caracteres.");return}
+  if(!PVE&&pvLista().some(function(p){return nz(p.nombre)===nz(n)})){pvMsg("Ya existe un proveedor con ese nombre.");return}
+  var id=PVE||uid()+uid(),d={nombre:n,rfc:rfc,tel:$("prvTel").value.trim(),correo:$("prvCor").value.trim(),contacto:$("prvCon").value.trim(),cat:$("prvCat").value,nota:$("prvNota").value.trim(),activo:$("prvAct").checked};
+  try{await DBH.doc("proveedores/"+id).set(d);PVD[id]=d;pvForm(null);pvLlena();pvRender();pvMsg("Proveedor guardado.",true)}catch(e){pvMsg("No se pudo guardar: "+((e&&e.message)||"error"))}
+};
+async function pvQuitaGasto(mes,id,fn){
+  var ref=DBH.doc("gastos/"+mes),d=await ref.get(),it=((d.exists&&d.data().items)||[]);var x=it.find(function(y){return y.id===id});if(!x)return null;
+  it=it.filter(function(y){return y.id!==id});await ref.set({items:it});G[mes]={items:it};return x;
+}
+$("prvTb1").onclick=async function(e){
+  var b=e.target.closest("[data-pp],[data-pq]");if(!b)return;var id=b.dataset.pp||b.dataset.pq,mes=b.dataset.pk;
+  try{
+    if(b.dataset.pq){if(!confirm("¿Quitar esta cuenta por pagar?"))return;await pvQuitaGasto(mes,id);pvMsg("Cuenta quitada.",true)}
+    else{
+      var met=document.querySelector('[data-pm="'+id+'"]').value,x=await pvQuitaGasto(mes,id);if(!x){pvMsg("No se encontró la cuenta.");return}
+      var f=today(),k=f.slice(0,7),p=Object.assign({},x,{pend:false,fecha:f,metodo:met,fechaFactura:x.fecha,pagadoPor:MY});delete p.pend;
+      var ref=DBH.doc("gastos/"+k),d=await ref.get(),it=((d.exists&&d.data().items)||[]).concat([p]);await ref.set({items:it});G[k]={items:it};pvMsg("Pagada con "+met.toLowerCase()+": ya cuenta como gasto de hoy en el corte.",true)
+    }
+    pvBadge();pvRender();if(!$("vGa").hidden)renderCaja();
+  }catch(er){pvMsg("No se pudo guardar: "+((er&&er.message)||"error"))}
+};
+async function pfGuarda(items,msg){try{var d={items:items};await DBH.doc("proveedores/_plantillas").set(d);PVD._plantillas=d;pvRender();pvMsg(msg,true)}catch(e){pvMsg("No se pudo guardar: "+((e&&e.message)||"error"))}}
+$("pfAdd").onclick=function(){
+  var c=$("pfCon").value.trim(),m=parseFloat($("pfMon").value),d=parseInt($("pfDia").value,10);
+  if(!c){pvMsg("Escribe el concepto.");return}if(!(m>0)){pvMsg("El monto debe ser mayor a cero.");return}if(!(d>=1&&d<=28)){pvMsg("El día va de 1 a 28.");return}
+  var x={id:uid()+uid(),concepto:c,monto:m,dia:d,cat:$("pfCat").value};if($("pfProv").value)x.prov=$("pfProv").value;
+  pfGuarda((((PVD._plantillas&&PVD._plantillas.items)||[]).concat([x])),"Gasto fijo agregado.");$("pfCon").value="";$("pfMon").value="";
+};
+$("prvTb3").onclick=function(e){var b=e.target.closest("[data-pfq]");if(!b)return;pfGuarda(((PVD._plantillas&&PVD._plantillas.items)||[]).filter(function(x){return x.id!==b.dataset.pfq}),"Gasto fijo quitado.")};
+$("pfMes").onclick=async function(){
+  var pl=(PVD._plantillas&&PVD._plantillas.items)||[],mes=today().slice(0,7),n=0;
+  if(!pl.length){pvMsg("Primero agrega gastos fijos.");return}
+  try{
+    var ref=DBH.doc("gastos/"+mes),d=await ref.get(),it=((d.exists&&d.data().items)||[]).slice();
+    pl.forEach(function(x){
+      if(it.some(function(y){return y.pl===x.id&&String(y.fecha).slice(0,7)===mes||y.pl===x.id&&String(y.fechaFactura||"").slice(0,7)===mes}))return;
+      var f=mes+"-"+("0"+x.dia).slice(-2),g={id:uid(),fecha:f,concepto:x.concepto,cat:x.cat,monto:x.monto,metodo:"Transferencia",nota:"",pend:true,vence:f,pl:x.id,by:MY,byn:APP?APP.name:""};
+      if(x.prov)g.prov=x.prov;it.push(g);n++;
+    });
+    if(n){await ref.set({items:it});G[mes]={items:it}}
+    pvBadge();pvRender();pvMsg(n?n+" gastos fijos registrados como cuentas por pagar.":"Los gastos fijos de este mes ya estaban registrados.",true);
+  }catch(e){pvMsg("No se pudo guardar: "+((e&&e.message)||"error"))}
+};
+$("prvCsv").onclick=function(){
+  var o=[["Proveedor","RFC","Fecha","Vence","Concepto","Categoría","Monto","Estado","Método"].map(csvq).join(",")];
+  var todo=gastosTodos().map(function(x){return Object.assign({estado:"Pagado"},x)}).concat(pvPend().map(function(x){return Object.assign({estado:"Por pagar"},x)}));
+  todo.filter(function(x){return x.prov}).sort(function(a,b){return nz(pvNom(a.prov)).localeCompare(nz(pvNom(b.prov)))||String(a.fecha).localeCompare(String(b.fecha))}).forEach(function(x){var p=PVD[x.prov]||{};o.push([p.nombre,p.rfc,x.fecha,x.vence||"",x.concepto,x.cat,x.monto,x.estado,x.metodo].map(csvq).join(","))});
+  saveFile("movimientos-por-proveedor.csv","﻿"+o.join("\n"));
+};
+
 /* ===== Servicio social y prácticas profesionales ===== */
 var PRC={},SEG={},PRS=null,PRT="ss",PRW=null,PRDEF={ss:480,pp:240},PRNOM={ss:"Servicio social",pp:"Prácticas profesionales"};
 function prEdita(){return ROL==="admin"||permiso("escolar")==="editar"}
@@ -3378,7 +3880,8 @@ function gastosTodos(){
       o.push({id:"na|"+mes+"|"+k,fecha:p.fecha,concepto:"Nómina administrativa · "+p.emp+" · "+naLabel(mes,p.p),cat:"Nómina administrativa",monto:p.neto,metodo:p.metodo,nota:p.folio,nomina:true,ot:"Nómina administrativa"});
     });
   });
-  return o;
+  /* Las cuentas por pagar (aún sin pagar) no cuentan como gasto hasta que se pagan */
+  return o.filter(function(x){return !x.pend});
 }
 function pagosDia(f){
   var o=[];
@@ -3410,7 +3913,7 @@ function renderCaja(){
   $("cRes").innerHTML='Efectivo esperado = fondo inicial '+mx.format(D.fon)+' + ingresos en efectivo '+mx.format(D.efi)+' − gastos en efectivo '+mx.format(D.efg)+' = <b>'+mx.format(D.esp)+'</b>.'+(D.dif===null?"":' Diferencia contra lo contado: <b '+(D.dif<0?neg:"")+'>'+mx.format(D.dif)+'</b> ('+(D.dif===0?"cuadra":D.dif>0?"sobrante":"faltante")+').')+'';
   $("cTag").innerHTML=CT[f]?'<span class="tag pagado">Cierre guardado</span>':'';
   $("cIng").innerHTML=D.P.length?D.P.map(function(p){return '<tr><td>'+esc(p.folio)+'</td><td>'+esc(p.alumno)+'</td><td style="white-space:normal;min-width:200px">'+esc(p.concepto)+'</td><td>'+esc(p.metodo)+'</td><td class="n">'+mx.format(p.monto)+'</td></tr>'}).join(""):'<tr><td colspan="5" class="empty">Sin ingresos registrados.</td></tr>';
-  $("cGas").innerHTML=D.E.length?D.E.map(function(x){return '<tr><td style="white-space:normal;min-width:180px">'+esc(x.concepto)+(x.nota?' <span class="hint">'+esc(x.nota)+'</span>':'')+'</td><td>'+esc(x.cat||"")+'</td><td>'+esc(x.metodo||"")+'</td><td class="n">'+mx.format(x.monto)+'</td><td>'+(x.nomina?'<span class="hint">'+esc(x.ot||"Nómina docente")+'</span>':'<button class="d need-admin" data-gd="'+esc(x.id)+'" data-gm="'+esc(String(x.fecha).slice(0,7))+'">Quitar</button>')+'</td></tr>'}).join(""):'<tr><td colspan="5" class="empty">Sin gastos registrados.</td></tr>';
+  $("cGas").innerHTML=D.E.length?D.E.map(function(x){return '<tr><td style="white-space:normal;min-width:180px">'+esc(x.concepto)+((x.nota||x.prov)?' <span class="hint">'+esc([pvNom(x.prov),x.nota].filter(Boolean).join(" · "))+'</span>':'')+'</td><td>'+esc(x.cat||"")+'</td><td>'+esc(x.metodo||"")+'</td><td class="n">'+mx.format(x.monto)+'</td><td>'+(x.nomina?'<span class="hint">'+esc(x.ot||"Nómina docente")+'</span>':'<button class="d need-admin" data-gd="'+esc(x.id)+'" data-gm="'+esc(String(x.fecha).slice(0,7))+'">Quitar</button>')+'</td></tr>'}).join(""):'<tr><td colspan="5" class="empty">Sin gastos registrados.</td></tr>';
   var H={};
   S.forEach(function(s){s.pagos.forEach(function(g){if(esConf(g))(H[fechaCobro(g)]=H[fechaCobro(g)]||{i:0,g:0}).i+=g.monto})});
   gastosTodos().forEach(function(x){(H[x.fecha]=H[x.fecha]||{i:0,g:0}).g+=x.monto});
@@ -3476,9 +3979,13 @@ $("gAdd").onclick=async function(){
   if(!(m>0)){alert("Escribe un monto mayor a cero.");return}
   var f=$("gFec").value||today(),k=f.slice(0,7),b=this;b.disabled=true;
   try{
-    var ref=DBH.doc("gastos/"+k),d=await ref.get(),it=((d.exists&&d.data().items)||[]).concat([{id:uid(),fecha:f,concepto:c,cat:$("gCat").value,monto:m,metodo:$("gMet").value,nota:$("gNota").value.trim(),by:MY,byn:APP?APP.name:""}]);
+    var nuevo={id:uid(),fecha:f,concepto:c,cat:$("gCat").value,monto:m,metodo:$("gMet").value,nota:$("gNota").value.trim(),by:MY,byn:APP?APP.name:""};
+    if($("gProv").value)nuevo.prov=$("gProv").value;
+    if($("gPend").checked){nuevo.pend=true;nuevo.vence=$("gVen").value||f}
+    var ref=DBH.doc("gastos/"+k),d=await ref.get(),it=((d.exists&&d.data().items)||[]).concat([nuevo]);
     await ref.set({items:it});G[k]={items:it};
-    $("gCon").value="";$("gMon").value="";$("gNota").value="";renderCaja();
+    $("gCon").value="";$("gMon").value="";$("gNota").value="";$("gPend").checked=false;$("gVen").value="";
+    $("gMsg").textContent=nuevo.pend?"Registrada como cuenta por pagar: no cuenta como gasto del corte hasta que la marques como pagada.":"";renderCaja();pvBadge();
   }catch(e){dberr(e)}
   b.disabled=false;
 };
@@ -3578,6 +4085,7 @@ function hbFunciones(){
   if(!(APP&&APP.rol==="alumno")){F("Calendario de eventos","agenda fechas actividades eventos examenes vacaciones juntas dias inhabiles festivos",true,function(){abreCal()});F("Nuevo evento del calendario","agregar cargar evento fecha actividad agenda",calPuede(),function(){abreCal(true)})}
   F("Costos y planes","precios colegiatura inscripcion credencial costo tarifa plan",pp&&adm,function(){ir("pagos");vista("al");hbClic("bPl")});
   F("Cobranza y avisos","adeudos recordatorios cobrar mora bloqueo",pp&&adm,function(){ir("pagos");vista("al");hbClic("bCob")});
+  F("Proveedores y cuentas por pagar","proveedor factura renta luz por pagar gastos fijos pagos a proveedores",permiso("corte")!=="none",function(){ir("pagos");vista("ga");hbClic("bPv")});
   F("Recargos y pronto pago","recargo mora descuento pronto pago penalizacion",pp&&adm,function(){ir("pagos");vista("al");hbClic("bRcg")});
   F("Estado de cuenta general (PDF)","reporte general alumnos",pp,function(){ir("pagos");vista("al");hbClic("bGen")});
   F("Nuevo alumno","alta agregar registrar alumno",pp&&adm,function(){ir("pagos");vista("al");hbClic("bNew")});
@@ -3591,6 +4099,9 @@ function hbFunciones(){
    ["S","Control escolar · Solicitudes de alumnos","solicitud tramite portal",ee],["T","Control escolar · Títulos en resguardo","certificado resguardo acta entrega",pe],["V","Control escolar · Evaluación docente","evaluar docentes maestros profesores encuesta resultados desempeño calificacion alumnos opinion",pe]
   ].forEach(function(x){F(x[1],x[2],x[3],function(){ir("esc");etab(x[0])})});
   F("Servicio social y prácticas profesionales","servicio social practicas profesionales horas liberacion",pe,function(){ir("esc");etab("O")});
+  F("Buzón de quejas y sugerencias","buzon queja sugerencia felicitacion mensaje alumnos atencion",pe,function(){ir("esc");etab("U")});
+  F("Biblioteca: préstamos y catálogo","biblioteca libro prestamo devolucion catalogo lectura",permiso("biblioteca")!=="none",function(){ir("esc");etab("W")});
+  F("Inventario de bienes","inventario bienes mobiliario equipo activos computadoras mantenimiento",permiso("biblioteca")!=="none",function(){ir("esc");etab("Z")});
   F("Seguimiento de egresados","egresados empleo seguimiento contacto bolsa de trabajo",pe,function(){ir("esc");etab("Y")});
   F("Estadística 911","911 estadistica sep matricula formato reporte",pe,function(){ir("esc");etab("X")});
   F("Cierre de ciclo","cerrar cuatrimestre periodo promover alumnos bloquear calificaciones",ee,function(){ir("esc");etab("G");hbClic("ccAbre")});
@@ -3669,19 +4180,20 @@ function fotoRedim(file){
   });
 }
 function etab(t){
-  var pe=permiso("escolar")!=="none",pc=permiso("constancias")!=="none";
-  if(!pe&&pc)t="N";
-  if(pe&&(t==="R"||t==="H"||t==="S"||t==="B")&&permiso("escolar")!=="editar")t="A";
-  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S","T","B","V","O","Y","X"].forEach(function(k){$("e"+k).hidden=k!==t});if(t==="B")bjCarga();if(t==="V")EVR=null;
-  var rt=t==="N"?mayorRol(efectivoRol("escolar"),efectivoRol("constancias")):efectivoRol("escolar");if(MOD==="esc"&&rt&&rt!==ROL)setRol(rt);
+  var pe=permiso("escolar")!=="none",pc=permiso("constancias")!=="none",pb=permiso("biblioteca")!=="none";
+  if(!pe){var okT=[];if(pc)okT.push("N");if(pb)okT.push("W","Z");if(okT.indexOf(t)<0)t=okT[0]||"A"}
+  if((t==="W"||t==="Z")&&!pb)t="A";
+  if(pe&&(t==="R"||t==="H"||t==="S"||t==="B"||t==="U")&&permiso("escolar")!=="editar")t="A";
+  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S","T","B","V","O","Y","X","U","W","Z"].forEach(function(k){$("e"+k).hidden=k!==t});if(t==="B")bjCarga();if(t==="V")EVR=null;
+  var rt=t==="N"?mayorRol(efectivoRol("escolar"),efectivoRol("constancias")):((t==="W"||t==="Z")?efectivoRol("biblioteca"):efectivoRol("escolar"));if(MOD==="esc"&&rt&&rt!==ROL)setRol(rt);
   Array.prototype.forEach.call($("eTabs").querySelectorAll("button"),function(b){
     var k=b.dataset.et;b.className=k===t?"p":"";
-    b.hidden=k==="N"?!(pe||pc):((k==="R"||k==="H"||k==="S"||k==="B")?permiso("escolar")!=="editar":!pe);
+    b.hidden=(k==="W"||k==="Z")?!pb:k==="N"?!(pe||pc):((k==="R"||k==="H"||k==="S"||k==="B"||k==="U")?permiso("escolar")!=="editar":!pe);
   });
   renderEsc();
 }
 $("eTabs").onclick=function(e){var t=e.target.dataset.et;if(t)etab(t)};
-function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="B")renderBj();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="T")renderRes();else if(ETAB==="V")renderEv();else if(ETAB==="O")renderPrac();else if(ETAB==="Y")renderSeg();else if(ETAB==="X")renderE911();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
+function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="B")renderBj();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="T")renderRes();else if(ETAB==="V")renderEv();else if(ETAB==="O")renderPrac();else if(ETAB==="Y")renderSeg();else if(ETAB==="X")renderE911();else if(ETAB==="U")renderBz();else if(ETAB==="W")renderBb();else if(ETAB==="Z")renderIv();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
 /* ---- Alumnos ---- */
 function renderAl(){
   setOpts($("ap"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
@@ -4792,7 +5304,7 @@ async function borraAlumno(sid){
   for(var k in GRP){var g=GRP[k];if((g.alumnos||[]).indexOf(sid)>-1){var nd=Object.assign({},g,{alumnos:g.alumnos.filter(function(x){return x!==sid})});await DBH.doc("grupos/"+k).set(nd);GRP[k]=nd}}
   var ac=acDe(sid);for(var i=0;i<ac.length;i++){await DBH.doc("acuerdos/"+ac[i].id).delete();delete ACU[ac[i].id]}
   var ju=Object.keys(JUS).filter(function(k){return JUS[k].sid===sid});for(var q=0;q<ju.length;q++){var jd=JUS[ju[q]];await DBH.doc("justificantes/"+jd.id).delete();if(jd.doc)pdfs.push(jd.doc.id);delete JUS[jd.id]}
-  var cols=[["ledger",LG],["fotos",FOT],["calif",CAL],["constancias",CONS],["recargos",REC],["practicas",PRC],["seguim",SEG],["egresados",EGR]];
+  var cols=[["ledger",LG],["fotos",FOT],["calif",CAL],["constancias",CONS],["recargos",REC],["practicas",PRC],["seguim",SEG],["quejas",BZQ],["prestamos",PRE],["egresados",EGR]];
   for(var j=0;j<cols.length;j++){await DBH.doc(cols[j][0]+"/"+sid).delete();delete cols[j][1][sid]}
   await DBH.doc("students/"+sid).delete();delete ST[sid];
   if(pdfs.length){try{if(await assetsLib())pdfs.forEach(function(id){ASSETS.delete(id).catch(function(){})})}catch(e){}}
@@ -6601,7 +7113,7 @@ function verCred(sid,vig,code){
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
 /* ===== Respaldo completo (datos y archivos) ===== */
-var BKCOL=["agenda","students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","recargos","practicas","seguim","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas","bajas","checadas","asistpers"];
+var BKCOL=["agenda","students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","proveedores","cortes","constancias","recargos","practicas","seguim","quejas","libros","prestamos","inventario","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas","bajas","checadas","asistpers"];
 var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioR","meta/folioRC","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT","meta/folioCH"];
 var BKLAST=null;
 function leeCol(n){
@@ -7524,6 +8036,7 @@ var MODDEF=[
   ["inscripcion","Inscripción de alumnos","Alta de alumnos, grupo, pago de inscripción y ficha","admin","mIns",NIV3],
   ["escolar","Control escolar","Alumnos, plan de estudios, grupos, calendario, calificaciones, docentes, egresados, justificantes y credenciales","admin","mEsc",NIV3],
   ["constancias","Constancias de estudios","Generar y cobrar constancias (una pestaña de Control escolar)","caja",null,NIV3],
+  ["biblioteca","Biblioteca e inventario","Préstamos de libros, catálogo e inventario de bienes (pestañas de Control escolar)","caja",null,NIV3],
   ["acuerdos","Acuerdos de pago","Prórrogas y parcialidades","caja","mAcu",NIV3],
   ["a286","Acuerdo 286","Bachillerato por Acuerdo 286: inscripción, documentos, evaluación y pagos","admin","mA2",NIV3],
   ["titulaciones","Titulaciones por experiencia laboral","Procesos de titulación, documentos y abonos","admin","mTit",NIV3],
@@ -7568,14 +8081,14 @@ function accesoVista(m){
   if(m==="usr"||m==="bk"||m==="sp")return esAdminReal()&&BASEROL==="admin";
   if(m==="av")return (esAdminReal()&&BASEROL==="admin")||permiso("escolar")==="editar";
   if(m==="pagos")return permiso("pagos")!=="none"||permiso("corte")!=="none"||permiso("estado")!=="none";
-  if(m==="esc")return permiso("escolar")!=="none"||permiso("constancias")!=="none";
+  if(m==="esc")return permiso("escolar")!=="none"||permiso("constancias")!=="none"||permiso("biblioteca")!=="none";
   if(m==="doc")return permiso("docente")!=="none"&&!!(APP&&APP.doc);
   return !!MODV[m]&&permiso(MODV[m])!=="none";
 }
 function rolDeVista(m){
   if(m==="usr"||m==="por"||m==="not"||m==="bk"||m==="av"||m==="sp")return BASEROL;
   if(m==="pagos")return efectivoRol(permiso("pagos")!=="none"?"pagos":(permiso("corte")!=="none"?"corte":"estado"));
-  if(m==="esc")return mayorRol(efectivoRol("escolar"),efectivoRol("constancias"));
+  if(m==="esc")return mayorRol(mayorRol(efectivoRol("escolar"),efectivoRol("constancias")),efectivoRol("biblioteca"));
   return efectivoRol(MODV[m]);
 }
 function mayorRol(a,b){if(!a)return b;if(!b)return a;return RANGO[a]>=RANGO[b]?a:b}
@@ -7583,7 +8096,7 @@ function aplicaModulos(){
   MODDEF.forEach(function(m){
     var t=m[4];if(!t||!$(t))return;
     var vis=permiso(m[0])!=="none";
-    if(m[0]==="escolar")vis=permiso("escolar")!=="none"||permiso("constancias")!=="none";
+    if(m[0]==="escolar")vis=permiso("escolar")!=="none"||permiso("constancias")!=="none"||permiso("biblioteca")!=="none";
     if(m[0]==="pagos")vis=finAcceso();
     if(m[0]==="ver"||m[0]==="nomina_doc"||m[0]==="nomina_adm")vis=false;   /* viven dentro de Finanzas */
     if(m[0]==="docente")vis=vis&&!!(APP&&APP.doc);
@@ -7849,7 +8362,7 @@ function renderPor(){
   var pagos=(s.pagos||[]).slice().sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))||String(b.folio).localeCompare(String(a.folio))}),A=alloc(s);
   var h='<p class="sub">Hola, <b>'+esc(s.nombre)+'</b>. Aquí puedes consultar tu información académica y el registro de tus pagos.</p>'+
    notifPor()+calPorHTML()+'<h2 style="margin-top:16px">Mis datos</h2><div class="row">'+datos.filter(function(x){return x[1]}).map(function(x){return '<label>'+esc(x[0])+'<b style="color:var(--ink);font-weight:600">'+esc(x[1])+'</b></label>'}).join("")+'</div>'+
-   pracPorHTML(s)+'<h2 style="margin-top:16px">Mis materias y docentes'+(g?' · cuatrimestre '+esc(g.cuat)+'':'')+'</h2>'+
+   pracPorHTML(s)+bbPorHTML(s)+bzPorHTML(s)+'<h2 style="margin-top:16px">Mis materias y docentes'+(g?' · cuatrimestre '+esc(g.cuat)+'':'')+'</h2>'+
    (mats.length?evdAviso(mats)+'<div class="wrap"><table style="min-width:760px"><thead><tr><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Aula</th><th>Evaluación</th><th>Evaluar al docente</th></tr></thead><tbody>'+mats.map(function(m){var d=DOC[m.docId];return '<tr><td>'+esc((matParaPlan(m,g.plan)||m).nom)+(fusDe(m).length?'<br><span class="hint">Clase compartida con otra licenciatura</span>':'')+'</td><td>'+(d?esc(d.nombre)+(d.esp?'<br><span class="hint">'+esc(d.esp)+'</span>':''):'<span class="hint">Por asignar</span>')+'</td><td>'+esc(hor(m))+'</td><td>'+esc(m.aula||"")+'</td><td>'+(m.ev?esc(fd(m.ev)):'—')+'</td><td>'+evdCelda(m)+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Todavía no hay materias registradas para tu grupo.</p>')+
    '<h2 style="margin-top:16px">Mis calificaciones</h2>'+
    (ps.length?'<div class="bar"><select id="poPer" aria-label="Periodo" style="width:auto">'+ps.map(function(p){return '<option value="'+attr(p)+'"'+(p===per?' selected':'')+'>'+esc(etiquetaPer(s.id,p))+'</option>'}).join("")+'</select><button id="poBol">Boleta (PDF)</button></div><div id="poCal"></div>':'<p class="hint">Aún no tienes calificaciones capturadas.</p>')+
@@ -11258,9 +11771,10 @@ $("usL").onclick=async function(e){
     else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN}).catch(function(){});
     rebuild();
   },onErr);
-  [["agenda",function(d){AGN=d;if($("dCal").open)calRender();calHomeS();if(APP&&APP.rol==="alumno"&&typeof renderPor==="function"&&MOD==="por")renderPor()}],["checadas",function(d){CHK=d;if($("dAP").open)renderAP();refrescaNominasAP()}],["asistpers",function(d){APC=d.cfg||{};if($("dAP").open&&APTAB!==3)renderAP();refrescaNominasAP()}],["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["bajas",function(d){BAJ=d;if(MOD==="esc"&&ETAB==="B"&&!$("dBj").open)renderBj();var n=bjPend();if($("bjN")){$("bjN").hidden=!n;$("bjN").textContent=n}}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["recargos",function(d){REC=d}],["practicas",function(d){PRC=d;if(MOD==="esc"&&ETAB==="O"&&!$("dPr").open)renderPrac();if(MOD==="por")renderPor()}],["seguim",function(d){SEG=d;if(MOD==="esc"&&ETAB==="Y"&&!$("dSg").open)renderSeg()}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({id:k},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+  [["agenda",function(d){AGN=d;if($("dCal").open)calRender();calHomeS();if(APP&&APP.rol==="alumno"&&typeof renderPor==="function"&&MOD==="por")renderPor()}],["checadas",function(d){CHK=d;if($("dAP").open)renderAP();refrescaNominasAP()}],["asistpers",function(d){APC=d.cfg||{};if($("dAP").open&&APTAB!==3)renderAP();refrescaNominasAP()}],["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["bajas",function(d){BAJ=d;if(MOD==="esc"&&ETAB==="B"&&!$("dBj").open)renderBj();var n=bjPend();if($("bjN")){$("bjN").hidden=!n;$("bjN").textContent=n}}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["recargos",function(d){REC=d}],["practicas",function(d){PRC=d;if(MOD==="esc"&&ETAB==="O"&&!$("dPr").open)renderPrac();if(MOD==="por")renderPor()}],["libros",function(d){LIB=d;if(MOD==="esc"&&ETAB==="W"&&!$("dBl").open&&!$("dBp").open)renderBb();if(MOD==="por")renderPor()}],["prestamos",function(d){PRE=d;if(MOD==="esc"&&ETAB==="W"&&!$("dBl").open&&!$("dBp").open)renderBb();if(MOD==="por")renderPor()}],["inventario",function(d){INV=d;if(MOD==="esc"&&ETAB==="Z"&&!$("dIf").open)renderIv()}],["quejas",function(d){BZQ=d;bzBadge();if(MOD==="esc"&&ETAB==="U"&&!$("dBzS").open)renderBz()}],["seguim",function(d){SEG=d;if(MOD==="esc"&&ETAB==="Y"&&!$("dSg").open)renderSeg()}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({id:k},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
     DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(typeof ntProgramar==="function")ntProgramar();if(c[0]==="calif"||c[0]==="constancias"||c[0]==="recargos"){if(c[0]==="recargos")rebuild();render();if($("dRcg").open)rcgRender()}if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
+  DBH.collection("proveedores").onSnapshot(function(s){PVD={};s.docs.forEach(function(d){PVD[d.id]=d.data()});pvLlena();pvBadge();if($("dPrv").open)pvRender()},onErr);
   DBH.collection("gastos").onSnapshot(function(s){G={};s.docs.forEach(function(d){G[d.id]=d.data()});if(!$("vGa").hidden)renderCaja()},onErr);
   DBH.collection("cortes").onSnapshot(function(s){CT={};s.docs.forEach(function(d){CT[d.id]=d.data()});if(!$("vGa").hidden){if(!cDirty)cargaCierre();renderCaja()}},onErr);
   DBH.doc("config/users").onSnapshot(function(d){

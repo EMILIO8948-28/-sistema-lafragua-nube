@@ -54,6 +54,10 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_evaluacion_docente.py` · evaluación docente por los alumnos: disponibilidad desde la evaluación de la asignatura, validaciones, anonimato, una sola vez, formulario, resultados de Control escolar, ajustes, buscador y permisos (80).
 - `test_recargos.py` · recargos por mora y descuento por pronto pago: ajustes, aplicación por lote, cancelación, mismo cálculo en pantalla y servidor, validación, permisos y portal del alumno (62).
 - `test_practicas_egresados_911.py` · servicio social y prácticas (horas, liberación, solo lectura, portal del alumno), seguimiento de egresados y estadística 911 con exportación (75).
+- `test_pwa.py` · app instalable: manifest, iconos, service worker, caché solo del cascarón y datos siempre desde el servidor (22).
+- `test_proveedores.py` · proveedores, cuentas por pagar y gastos fijos: validación, permisos, pendientes que no restan del corte, pago y vencidos (60).
+- `test_buzon.py` · buzón de quejas y sugerencias: envío con nombre o anónimo con folio, atención de Control escolar, permisos y anonimato (73).
+- `test_biblioteca_inventario.py` · biblioteca (catálogo, préstamos, límites, renovación, devolución, vencidos y multa estimada), inventario de bienes, permisos y portal del alumno (88).
 - `test_docente_choques_llave.py` · resultados de la evaluación para el docente (mínimo de 3 respuestas, anonimato), choques de horario y llave `evdoc.key` en el respaldo y su restauración (27).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

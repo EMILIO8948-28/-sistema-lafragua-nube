@@ -89,7 +89,7 @@ const hoy = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); r
 const dormir = ms => new Promise(r => setTimeout(r, ms));
 const NOMBRE_OK = /^[A-Za-z0-9_.@+:~-]{1,200}$/, ID_ARCH = /^[0-9a-f]{32}$/, USUARIO_OK = /^[a-z0-9._-]{3,40}$/;
 const ROLES = ['admin', 'caja', 'consulta', 'docente', 'personalizado'];   // 'alumno' solo se crea con /api/usuarios/alumnos
-const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.webmanifest': 'application/manifest+json; charset=utf-8', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
 const clientes = new Set();
 function ipDe(req) { if (CONFIAR_PROXY && req.headers['x-forwarded-for']) return String(req.headers['x-forwarded-for']).split(',')[0].trim(); return req.socket.remoteAddress || ''; }
 function audita(u, req, accion, detalle) { try { q.audit.run(Date.now(), u || null, req ? ipDe(req) : null, accion, detalle ? String(detalle).slice(0, 400) : null); } catch (e) {} }
@@ -154,11 +154,12 @@ const listaUsuarios = () => q.usrs.all().map(x => publicoUsuario(x));
    L = colecciones que lee; E = colecciones que además escribe cuando el nivel es "editar". */
 const MODULOS = {
   pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'recargos', 'cobranza', 'avisos', 'acuerdo286', 'fiscal', 'facturas'], E: ['ledger', 'meta', 'constancias', 'recargos'], plans: true },
-  corte:        { L: ['gastos', 'cortes', 'ledger', 'students'], E: ['gastos', 'cortes'], plans: true },
-  estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'recargos', 'egresados'], E: [], plans: true, nomina: true },
+  corte:        { L: ['gastos', 'proveedores', 'cortes', 'ledger', 'students'], E: ['gastos', 'proveedores', 'cortes'], plans: true },
+  estado:       { L: ['students', 'ledger', 'gastos', 'proveedores', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'recargos', 'egresados'], E: [], plans: true, nomina: true },
   ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
   inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias', 'recargos'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
-  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'recargos', 'practicas', 'seguim', 'justificantes', 'ledger', 'resguardos', 'ciclos', 'bajas'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'practicas', 'seguim', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
+  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'recargos', 'practicas', 'seguim', 'quejas', 'justificantes', 'ledger', 'resguardos', 'ciclos', 'bajas'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'practicas', 'seguim', 'quejas', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
+  biblioteca:   { L: ['libros', 'prestamos', 'inventario', 'students', 'docentes'], E: ['libros', 'prestamos', 'inventario'] },
   constancias:  { L: ['constancias', 'recargos', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
   acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias', 'recargos'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
   a286:         { L: ['acuerdo286', 'resguardos286'], E: ['acuerdo286', 'meta', 'resguardos286'], archivos: true },
@@ -205,7 +206,8 @@ function filtraAlumno(s, col, id, data, ctx) {
   switch (col) {
     case 'students': { if (id !== sid) return null; const o = {}; CAMPOS_ALUMNO.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'ledger': { if (id !== sid) return null; return { pagos: (data.pagos || []).map(g => { const o = Object.assign({}, g); delete o.by; delete o.confPor; return o; }) }; }
-    case 'calif': case 'constancias': case 'egresados': case 'fotos': case 'recargos': case 'practicas': return id === sid ? data : null;
+    case 'calif': case 'constancias': case 'egresados': case 'fotos': case 'recargos': case 'practicas': case 'prestamos': return id === sid ? data : null;
+    case 'libros': return String(id).charAt(0) === '_' ? null : { titulo: data.titulo, autor: data.autor, editorial: data.editorial, anio: data.anio, categoria: data.categoria, ubicacion: data.ubicacion, ejemplares: data.ejemplares, disp: data.disp, activo: data.activo };
     case 'solicitudes': case 'avisos': case 'facturas': return data.sid === sid ? data : null;
     case 'fiscal': return id === sid ? data : null;
     case 'justificantes': { if (data.sid !== sid || data.estado !== 'Aprobado') return null; const o = {}; ['id', 'num', 'sid', 'nombre', 'mat', 'plan', 'sexo', 'grupo', 'fecha', 'desde', 'hasta', 'motivo', 'estado', 'solicitud'].forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
@@ -218,10 +220,10 @@ function filtraAlumno(s, col, id, data, ctx) {
   }
 }
 function eventoAlumno(s, c, id) {
-  if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'recargos', 'practicas'].includes(c)) return id === s.alumno;
+  if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'recargos', 'practicas', 'prestamos'].includes(c)) return id === s.alumno;
   if (c === 'fiscal') return id === s.alumno;
   if (c === 'solicitudes' || c === 'justificantes' || c === 'avisos' || c === 'facturas') { const r = q.uno.get(c, id || ''); if (!r) return false; try { return JSON.parse(r.data).sid === s.alumno; } catch (e) { return false; } }
-  if (['grupos', 'materias', 'docentes', 'catalogo', 'agenda'].includes(c)) return true;
+  if (['grupos', 'materias', 'docentes', 'catalogo', 'agenda', 'libros'].includes(c)) return true;
   if (c === 'config') return id === 'plans' || id === 'app';
   return false;
 }
@@ -236,6 +238,79 @@ function validaAjustes(e) {
   return '';
 }
 /* Servicio social y prácticas profesionales: un documento por alumno con sus programas y las horas registradas */
+/* Proveedores (catálogo, más las plantillas de gastos fijos) y los campos de cuentas por pagar de los gastos */
+function validaProveedor(id, d) {
+  if (!d || typeof d !== 'object') return 'Datos no válidos.';
+  const t = (v, n) => v == null || (typeof v === 'string' && v.length <= n);
+  if (id === '_plantillas') {
+    if (!Array.isArray(d.items) || d.items.length > 100) return 'Lista no válida.';
+    for (const x of d.items) if (!x || typeof x.id !== 'string' || !/^[\w-]{1,40}$/.test(x.id) || typeof x.concepto !== 'string' || !x.concepto || x.concepto.length > 300 || typeof x.monto !== 'number' || !(x.monto > 0) || x.monto > 100000000 || !Number.isInteger(x.dia) || x.dia < 1 || x.dia > 28 || !t(x.cat, 80) || !t(x.prov, 40)) return 'Un gasto fijo no es válido.';
+    return '';
+  }
+  if (typeof d.nombre !== 'string' || !d.nombre.trim() || d.nombre.length > 160) return 'El proveedor necesita un nombre.';
+  if (d.rfc && !/^[A-ZÑ&0-9]{12,13}$/i.test(d.rfc)) return 'RFC no válido.';
+  if (!t(d.tel, 30) || !t(d.correo, 120) || !t(d.contacto, 120) || !t(d.cat, 80) || !t(d.nota, 500) || (d.activo != null && typeof d.activo !== 'boolean')) return 'Datos no válidos.';
+  return '';
+}
+function validaGastos(d) {
+  if (!d || typeof d !== 'object') return 'Datos no válidos.';
+  if (d.items == null) return '';
+  if (!Array.isArray(d.items)) return 'Datos no válidos.';
+  for (const x of d.items) {
+    if (!x || typeof x !== 'object') return 'Gasto no válido.';
+    if (x.pend != null && typeof x.pend !== 'boolean') return 'Estado de pago no válido.';
+    if (x.vence != null && x.vence !== '' && !/^\d{4}-\d{2}-\d{2}$/.test(x.vence)) return 'Fecha de vencimiento no válida.';
+    if (x.prov != null && (typeof x.prov !== 'string' || x.prov.length > 40)) return 'Proveedor no válido.';
+  }
+  return '';
+}
+const BZ_TIPOS = ['Queja', 'Sugerencia', 'Felicitación', 'Otro'], BZ_AREAS = ['Control escolar', 'Caja y pagos', 'Docentes', 'Instalaciones', 'Servicios y sistemas', 'Dirección', 'Otro'], BZ_ESTADOS = ['nuevo', 'en revisión', 'resuelto', 'cerrado'], BZ_ABC = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+/* Buzón: Control escolar solo puede responder, cambiar el estado y anotar; lo que escribió el alumno no se toca */
+function validaQueja(id, d) {
+  const ex = leeDoc('quejas', id);
+  if (!ex) return 'Los mensajes los crean los alumnos desde su portal.';
+  if (!d || typeof d !== 'object') return 'Datos no válidos.';
+  for (const k of ['folio', 'fecha', 'tipo', 'area', 'asunto', 'texto', 'anonimo', 'sid', 'nombre', 'mat']) if (JSON.stringify(d[k]) !== JSON.stringify(ex[k])) return 'No se puede cambiar lo que escribió el alumno.';
+  if (!BZ_ESTADOS.includes(d.estado)) return 'Estado no válido.';
+  const t = (v, n) => typeof v === 'string' && v.length <= n;
+  for (const [campo, pub] of [['respuestas', true], ['interna', false]]) {
+    if (!Array.isArray(d[campo]) || d[campo].length > 100) return 'Lista no válida.';
+    for (const r of d[campo]) if (!r || !/^\d{4}-\d{2}-\d{2}$/.test(r.f || '') || !t(r.por, 120) || typeof r.texto !== 'string' || !r.texto.trim() || r.texto.length > 2000 || (pub && r.publica != null && typeof r.publica !== 'boolean')) return 'Una respuesta o nota no es válida.';
+  }
+  return '';
+}
+/* Biblioteca (libros, préstamos por persona, ajustes) e inventario de bienes */
+function validaLibro(id, d) {
+  if (!d || typeof d !== 'object') return 'Datos no válidos.';
+  const t = (v, n) => v == null || (typeof v === 'string' && v.length <= n), ent = (v, a, b) => Number.isInteger(v) && v >= a && v <= b;
+  if (id === '_config') return (ent(d.dias, 1, 90) && ent(d.max, 1, 20) && typeof d.multa === 'number' && d.multa >= 0 && d.multa <= 10000) ? '' : 'Ajustes no válidos.';
+  if (typeof d.titulo !== 'string' || !d.titulo.trim() || d.titulo.length > 200) return 'El libro necesita un título.';
+  if (!ent(d.ejemplares, 1, 1000)) return 'Los ejemplares deben ser de 1 a 1000.';
+  if (d.anio != null && d.anio !== '' && !ent(d.anio, 0, 2100)) return 'Año no válido.';
+  if (d.disp != null && !ent(d.disp, 0, 1000)) return 'Disponibles no válido.';
+  if (!t(d.autor, 160) || !t(d.editorial, 120) || !t(d.isbn, 20) || !t(d.categoria, 80) || !t(d.ubicacion, 80) || !t(d.nota, 500) || (d.activo != null && typeof d.activo !== 'boolean')) return 'Datos no válidos.';
+  return '';
+}
+function validaPrestamos(d) {
+  if (!d || typeof d !== 'object' || !Array.isArray(d.items) || d.items.length > 300) return 'Lista no válida.';
+  const f = v => /^\d{4}-\d{2}-\d{2}$/.test(v || '');
+  if (typeof d.nombre !== 'string' || d.nombre.length > 160 || !['alumno', 'docente', 'otro'].includes(d.tipo)) return 'Datos de la persona no válidos.';
+  for (const x of d.items) {
+    if (!x || typeof x.id !== 'string' || !/^[\w-]{1,40}$/.test(x.id) || typeof x.libro !== 'string' || !/^[\w-]{1,60}$/.test(x.libro) || !f(x.fecha) || !f(x.vence) || (x.devuelto && !f(x.devuelto)) || !Number.isInteger(x.renovaciones || 0) || (x.renovaciones || 0) < 0 || (x.renovaciones || 0) > 5 || (x.nota != null && (typeof x.nota !== 'string' || x.nota.length > 300))) return 'Un préstamo no es válido.';
+    if (x.vence < x.fecha) return 'El vencimiento no puede ser anterior al préstamo.';
+  }
+  return '';
+}
+function validaInventario(d) {
+  if (!d || typeof d !== 'object') return 'Datos no válidos.';
+  const t = (v, n) => v == null || (typeof v === 'string' && v.length <= n), f = v => v == null || v === '' || /^\d{4}-\d{2}-\d{2}$/.test(v);
+  if (typeof d.nombre !== 'string' || !d.nombre.trim() || d.nombre.length > 200) return 'El bien necesita un nombre.';
+  if (!Number.isInteger(d.cantidad) || d.cantidad < 1 || d.cantidad > 100000) return 'La cantidad debe ser de 1 en adelante.';
+  if (!['Bueno', 'Regular', 'Malo', 'Baja'].includes(d.estado)) return 'Estado no válido.';
+  if (d.costo != null && d.costo !== '' && (typeof d.costo !== 'number' || d.costo < 0 || d.costo > 1e9)) return 'Costo no válido.';
+  if (!f(d.fechaAdq) || !f(d.bajaFecha) || !t(d.codigo, 40) || !t(d.categoria, 80) || !t(d.ubicacion, 100) || !t(d.responsable, 120) || !t(d.serie, 60) || !t(d.nota, 500) || !t(d.bajaMotivo, 300)) return 'Datos no válidos.';
+  return '';
+}
 function validaPracticas(d) {
   if (!d || typeof d !== 'object' || !Array.isArray(d.items) || d.items.length > 20) return 'Lista no válida.';
   const f = v => v === '' || v == null || /^\d{4}-\d{2}-\d{2}$/.test(v), t = (v, n) => v == null || (typeof v === 'string' && v.length <= n);
@@ -299,6 +374,8 @@ function puedeLeer(s, col, id) {
   /* Asistencia: Control escolar la ve; cada docente solo la de sus propias asignaturas */
   if (col === 'asistencia') return (!!P.escolar && P.escolar !== 'none') || (!!(P.docente && P.docente !== 'none') && esPlaneacionPropia(s, id));
   if (col === 'solicitudes') return P.escolar === 'editar';
+  /* El buzón lo atiende solo Control escolar con edición (puede haber quejas sobre otras áreas) */
+  if (col === 'quejas') return P.escolar === 'editar';
   /* Los contratos llevan datos fiscales y honorarios: solo Control escolar (editar) y la nómina docente los leen */
   if (col === 'contratos') return P.escolar === 'editar' || (!!P.nomina_doc && P.nomina_doc !== 'none');
   /* Las fichas de inscripción firmadas llevan firmas: las lee Inscripción (cualquier nivel) y Control escolar con edición; las escribe Inscripción con edición */
@@ -364,7 +441,7 @@ function validaModulos(m) {
 /* ---------- Borrados protegidos ----------
    Nadie que no sea Administrador borra nada sin autorización: o la contraseña del encargado, o su aprobación.
    Es un borrado: eliminar un documento o un archivo, o quitar elementos de un documento (un pago, un gasto, un documento cargado…). */
-const NOMBRES_COL = { atencion: 'Registro de atención personalizada', prospectos: 'Prospecto', campanas: 'Campaña', students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura', contratos: 'Contrato de docente', fichasins: 'Ficha de inscripción firmada' };
+const NOMBRES_COL = { libros: 'Libro de la biblioteca', prestamos: 'Préstamos de biblioteca', inventario: 'Bien del inventario', quejas: 'Mensaje del buzón', proveedores: 'Proveedor o gasto fijo', atencion: 'Registro de atención personalizada', prospectos: 'Prospecto', campanas: 'Campaña', students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura', contratos: 'Contrato de docente', fichasins: 'Ficha de inscripción firmada' };
 const visibleAtencion = (s, d) => s.rol === 'admin' || !d.privado || d.creador === s.u;
 const idPer = per => String(per || '').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
 const cicloDe = per => { if (!per) return null; const r = q.uno.get('ciclos', idPer(per)); try { return r ? JSON.parse(r.data) : null; } catch (e) { return null; } };
@@ -839,7 +916,7 @@ async function api(req, res, partes) {
   }
   if (tipo === 'col' && m === 'GET' && NOMBRE_OK.test(a || '')) {
     if (s.rol === 'alumno') {
-      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'recargos', 'practicas', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes', 'avisos', 'facturas', 'fiscal'].includes(a)) return responde(res, 200, { docs: [] });
+      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'recargos', 'practicas', 'prestamos', 'libros', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes', 'avisos', 'facturas', 'fiscal'].includes(a)) return responde(res, 200, { docs: [] });
       const ctx = contextoAlumno(s), docs = [];
       q.lista.all(a).forEach(r => { const d = filtraAlumno(s, a, r.id, JSON.parse(r.data), ctx); if (d) docs.push({ id: r.id, data: d }); });
       return responde(res, 200, { docs });
@@ -858,6 +935,9 @@ async function api(req, res, partes) {
       let cuerpo; try { cuerpo = JSON.parse((await leeCuerpo(req, 6 * 1024 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
       if (cuerpo === null || typeof cuerpo !== 'object' || Array.isArray(cuerpo)) return responde(res, 400, { error: 'Se esperaba un objeto' });
       let nuevo = cuerpo; if (m === 'PATCH') { const r = q.uno.get(a, b); nuevo = Object.assign(r ? JSON.parse(r.data) : {}, cuerpo); }
+      if (a === 'libros' || a === 'prestamos' || a === 'inventario') { const er = a === 'libros' ? validaLibro(b, nuevo) : a === 'prestamos' ? validaPrestamos(nuevo) : validaInventario(nuevo); if (er) return responde(res, 400, { error: er }); }
+      if (a === 'quejas') { const er = validaQueja(b, nuevo); if (er) return responde(res, er.startsWith('Los mensajes') ? 403 : 400, { error: er }); }
+      if (a === 'proveedores' || a === 'gastos') { const er = a === 'proveedores' ? validaProveedor(b, nuevo) : validaGastos(nuevo); if (er) return responde(res, 400, { error: er }); }
       if (a === 'practicas' || a === 'seguim') { const er = a === 'practicas' ? validaPracticas(nuevo) : validaSeguim(nuevo); if (er) return responde(res, 400, { error: er }); }
       if (a === 'recargos') { if (b === '_config' && s.rol !== 'admin') return responde(res, 403, { error: 'Solo el administrador cambia los ajustes de recargos.' }); const er = validaRecargos(b, nuevo); if (er) return responde(res, 400, { error: er }); }
       if (a === 'agenda') { const er = b === '_ajustes' ? validaAjustes(nuevo) : validaEvento(nuevo); if (er) return responde(res, 400, { error: er }); }
@@ -1094,6 +1174,40 @@ async function api(req, res, partes) {
       return responde(res, 404, { error: 'No encontrado' });
     } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
   }
+  /* Buzón de quejas y sugerencias: el alumno escribe (con su nombre o de forma anónima con folio); Control escolar atiende */
+  if (tipo === 'buzon') {
+    try {
+      if (rol !== 'alumno' || !s.alumno) return responde(res, 403, { error: 'El buzón es para alumnos. El personal atiende los mensajes desde Control escolar.' });
+      const vista = d => ({ folio: d.folio, fecha: d.fecha, tipo: d.tipo, area: d.area, asunto: d.asunto, texto: d.texto, anonimo: !!d.anonimo, estado: d.estado, respuestas: (d.respuestas || []).filter(r => r.publica !== false).map(r => ({ f: r.f, por: r.por, texto: r.texto })) });
+      if (m === 'GET' && a === 'mias') {
+        const o = q.lista.all('quejas').map(r => { try { return JSON.parse(r.data); } catch (e) { return null; } }).filter(d => d && !d.anonimo && d.sid === s.alumno).sort((x, y) => String(y.fecha).localeCompare(String(x.fecha)) || String(y.folio).localeCompare(String(x.folio)));
+        return responde(res, 200, { mensajes: o.map(vista) });
+      }
+      if (m === 'GET' && a === 'folio') {
+        if (limite('bzf|' + s.u, 30, 3600000)) return responde(res, 429, { error: 'Demasiadas consultas. Inténtalo más tarde.' });
+        falla('bzf|' + s.u, 3600000);
+        const f = String(b || '').toUpperCase().trim(), d = /^BZ-[A-Z0-9]{8}$/.test(f) ? leeDoc('quejas', f) : null;
+        if (!d || !(d.anonimo || d.sid === s.alumno)) return responde(res, 404, { error: 'No encontramos ese folio.' });
+        return responde(res, 200, { mensaje: vista(d) });
+      }
+      if (m === 'POST' && !a) {
+        if (limite('bz|' + s.u, 10, 3600000)) return responde(res, 429, { error: 'Enviaste muchos mensajes. Inténtalo más tarde.' });
+        const c = await leeJSON(req, 6000), t = v => String(v == null ? '' : v).trim();
+        if (!BZ_TIPOS.includes(c.tipo)) return responde(res, 400, { error: 'Elige el tipo de mensaje.' });
+        if (!BZ_AREAS.includes(c.area)) return responde(res, 400, { error: 'Elige el área a la que va dirigido.' });
+        if (t(c.asunto).length < 3 || t(c.asunto).length > 120) return responde(res, 400, { error: 'El asunto debe tener entre 3 y 120 caracteres.' });
+        if (t(c.texto).length < 10 || t(c.texto).length > 2000) return responde(res, 400, { error: 'El mensaje debe tener entre 10 y 2000 caracteres.' });
+        falla('bz|' + s.u, 3600000);
+        let folio; do { const b8 = crypto.randomBytes(8); folio = 'BZ-' + Array.from(b8, x => BZ_ABC[x % BZ_ABC.length]).join(''); } while (leeDoc('quejas', folio));
+        const anon = c.anonimo === true, d = { folio, fecha: hoyMx(), tipo: c.tipo, area: c.area, asunto: t(c.asunto), texto: t(c.texto), anonimo: anon, estado: 'nuevo', respuestas: [], interna: [] };
+        if (!anon) { d.sid = s.alumno; const al = leeDoc('students', s.alumno) || {}; d.nombre = al.nombre || ''; d.mat = al.mat || ''; }
+        q.pon.run('quejas', folio, JSON.stringify(d), Date.now());
+        if (!anon) audita(s.u, req, 'Envió un mensaje al buzón (' + folio + ')');
+        return responde(res, 200, { ok: true, folio, anonimo: anon });
+      }
+      return responde(res, 404, { error: 'No encontrado' });
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
   /* Bajas y regularización: Control escolar decide */
   if (tipo === 'bajas') {
     const ed = rol === 'admin' || nivel(s, 'escolar') === 'editar', ver = ed || nivel(s, 'escolar') !== 'none';
@@ -1281,7 +1395,7 @@ const servidor = http.createServer(async (req, res) => {
     const rel = ruta === '/' ? '/index.html' : (ruta === '/configurar' ? '/configurar.html' : (ruta === '/verificar' ? '/verificar.html' : ruta));
     const f = path.normalize(path.join(PUB, rel));
     if (!f.startsWith(PUB + path.sep) || !fs.existsSync(f) || !fs.statSync(f).isFile()) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('No encontrado'); }
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(f).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
+    res.writeHead(200, Object.assign({ 'Content-Type': MIME[path.extname(f).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-cache' }, rel === '/sw.js' ? { 'Service-Worker-Allowed': '/' } : {}));
     fs.createReadStream(f).pipe(res);
   } catch (e) {
     console.error('Error:', e.message);

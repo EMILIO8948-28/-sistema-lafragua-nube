@@ -230,9 +230,35 @@ Formato «EVALUACIÓN DOCENTE LAFRAGUA»: 5 secciones × 4 aspectos (escala 1 = 
 - **Quién y cuándo**: el alumno, desde su portal («Mis materias y docentes» → botón «Evaluar docente»), por cada asignatura de sus grupos que tenga docente y fecha de evaluación (`materias.ev`) ya llegada (hoy ≥ `ev`). Estados que devuelve `GET /api/evaldoc/mias`: `pendiente`, `hecha`, `futura`, `cerrada` (venció el plazo), `sin_docente`. El cliente (`EVDM`) solo muestra las del grupo más reciente.
 - **Anonimato**: `POST /api/evaldoc` guarda la respuesta en la colección `evdoc` SIN alumno, usuario ni hora (fecha de modificación al inicio del día; sin auditoría del usuario). El id es `HMAC-SHA256(evdoc.key, alumno|asignatura)` (32 hex) → solo así se evita contestar dos veces (409). La clave `evdoc.key` se crea sola en `DATA_DIR` (modo 600): **no se borra ni se cambia**; si se pierde, nadie puede ligar respuestas a alumnos pero un alumno podría volver a evaluar.
 - **Resultados**: pestaña **Control escolar > Evaluación docente** (`#eV`, ids `ev*`, funciones `evCarga/evFilas/renderEv/evDetalle`), la ve cualquiera con `escolar` ≥ ver (`GET /api/evaldoc/resultados`); promedios por sección, participación (respuestas / alumnos activos del grupo), detalle por aspecto, distribución de la valoración general, comentarios sin nombres y exportar CSV. Ajustes (solo `escolar` = editar): «Los alumnos pueden evaluar» (`abierta`) y «Días para evaluar después de la evaluación» (`dias`, 0 = sin límite) en `sistema/evdoc`.
-- Alumnos y personal sin permiso no leen `evdoc` por la API genérica (no está en `MODULOS`); solo el Administrador. Los docentes no ven sus resultados (decisión pendiente).
+- Alumnos y personal sin permiso no leen `evdoc` por la API genérica (no está en `MODULOS`); solo el Administrador.
+- **El docente ve sus propios resultados** (`GET /api/evaldoc/docente`, bloque `#dmEv` en «Mis asignaturas», `evdDocCarga/evdDocRender`): solo sus asignaturas y solo si ya contestaron **al menos 3 alumnos** (`MIN = 3`, protege el anonimato); promedios por aspecto y comentarios sin identidad. Cualquier otro rol recibe 403/404.
+- **La llave `evdoc.key` va en los respaldos** (`creaPaquete`) y `restaurar.js` la restaura; sin ella, tras restaurar un alumno podría evaluar otra vez al mismo docente. Prueba: `test_docente_choques_llave.py`.
 - El listener de `materias` ahora fuerza `id` = clave del documento. `evaldoc.js` también va en el `Dockerfile` (`COPY`).
 - Pruebas: `pruebas/test_evaluacion_docente.py` (80).
+
+## Choques de horario (`choques()`, `#mChoq` en Control escolar > Calendario escolar)
+`choques(solo)` compara las asignaturas del mismo periodo con hora de inicio y fin válidas y avisa cuando se traslapan **el mismo docente, la misma aula (sin importar mayúsculas ni espacios) o el mismo grupo** (plan + cuatrimestre, incluidas las fusiones; si ambas asignaturas están en bloques distintos no chocan). Horas pegadas (11:00 fin / 11:00 inicio) no chocan. El aviso se pinta arriba del calendario; es solo informativo, no impide guardar.
+
+## Recargos por mora y descuento por pronto pago (`#dRcg`, colección `recargos`)
+Botón **Finanzas > Alumnos > «Recargos y pronto pago»** (solo Administrador; también en el buscador). Cuatro pestañas: **Recargos** (colegiaturas vencidas sin recargo, de todos los alumnos activos), **Pronto pago** (colegiatura del mes en curso sin ningún pago y hasta el día límite de pronto pago), **Aplicados** (lista con «Cancelar») y **Ajustes** (`recargos/_config`: `diaLimite`, `rec{tipo:'pct'|'fijo',valor}`, `pp{pct,dia}`; por defecto día 10, 5 %, pronto pago 10 % hasta el día 5; solo el Administrador lo cambia).
+- Es una acción **manual por lote**, no automática ni retroactiva: el administrador marca filas y aplica. Se guarda en `recargos/<sid>` = `{items:[{id,tipo:'rec'|'desc',cid,c,m,f}]}`.
+- Un recargo (`tipo:'rec'`) es un **cargo nuevo** con id `g<id>` al final de la cuenta (los pagos FIFO lo cubren al último); un descuento (`'desc'`) **reduce el cargo** `cid`. Se aplica una sola vez por colegiatura (no se vuelve a ofrecer). Cancelar quita el ítem y la cuenta vuelve a su monto.
+- Cálculo duplicado a propósito: cliente `cargos()` → `cargosRec(L, sid)` y servidor `cargosAlumnoSrv(..., rec)`; `adeudoDe` y el mirror de cobranza leen `recargos/<sid>`; `cobHook` reevalúa al cambiar. Los recargos **no cuentan** como «colegiatura vencida» para avisos ni bloqueo de cobranza (no llevan `k`).
+- Permisos: `pagos` y `acuerdos` escriben (`E`), los demás módulos lo leen; el alumno lee solo lo suyo. `validaRecargos` en el PUT genérico (montos > 0, tipos, ids); `_config` solo Administrador.
+- Pruebas: `pruebas/test_recargos.py` (62).
+
+## Servicio social y prácticas profesionales (pestaña **O** de Control escolar, colección `practicas`)
+`practicas/<sid>` = `{items:[{id:'ss'|'pp',tipo,inst,resp,proyecto,inicio,fin,horasReq,estado:'en curso'|'liberado'|'cancelado',liberacion,obs,registros:[{id,f,h,act}]}]}`. Por defecto 480 h de servicio social y 240 h de prácticas (`PRDEF`, editable por alumno). Máximo 24 h por registro. **Liberar** exige completar las horas requeridas (también lo valida el servidor `validaPracticas`) y bloquea los cambios; el Administrador puede reabrir. Edita quien tiene `escolar` = editar; con «ver» solo consulta. El alumno ve su avance en el portal (solo lectura; `pracPorHTML`). Exporta CSV.
+
+## Seguimiento de egresados (pestaña **Y**, colección `seguim`)
+`seguim/<sid>` = `{contactos:[{id,f,medio,situacion,empresa,puesto,estudios,ingreso,nota}]}`. Medios y situaciones están fijos y validados en el servidor (`validaSeguim`). Resumen: contactados, cuántos trabajan y cuántos en su área. Solo personal con `escolar`; el alumno no la lee. Exporta CSV.
+
+## Estadística 911 (pestaña **X**, `e9Calcula(ciclo)`)
+Apoyo para el formato 911: matrícula vigente (sin bajas ni egresados) por nuevo ingreso / reingreso, plan, cuatrimestre y edad, todo por sexo (`students.sexo`, `students.edad`; los vacíos salen como «sin dato»), egresados del ciclo (1 sep – 31 ago) y bajas vigentes. Exporta CSV e imprime. **No sustituye el formato oficial**: sirve para tener los números.
+- Pruebas de las tres pestañas: `pruebas/test_practicas_egresados_911.py` (75).
+
+## Fecha de hoy en el navegador
+`today()` ahora usa la fecha **local** del navegador (antes usaba UTC y en México, después de las 6 p. m., daba el día siguiente).
 
 ## Datos (colecciones de la base actual)
 `students/{id}` alumno (mat, nombre, programa/carrera, nuevo, ingreso=año del ciclo, beca{monto,mot}, sexo, edad, tel, mail, dom, proc, tut, tutTel, docs[], dpdf{clave:{id,name,size}}, via, asNom, asTel).

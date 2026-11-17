@@ -215,7 +215,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
 </div>
 <div id="vEsc" hidden>
-  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="B" class="need-admin">Bajas <span id="bjN" class="tag sin" hidden></span></button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button><button data-et="T">Títulos en resguardo</button><button data-et="V">Evaluación docente</button></div>
+  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="B" class="need-admin">Bajas <span id="bjN" class="tag sin" hidden></span></button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button><button data-et="T">Títulos en resguardo</button><button data-et="V">Evaluación docente</button><button data-et="O">Servicio social y prácticas</button><button data-et="Y">Seguimiento de egresados</button><button data-et="X">Estadística 911</button></div>
 <div id="eV" hidden>
   <p class="hint">Resultados de la evaluación que los alumnos hacen a sus docentes después de la evaluación de cada asignatura. Es <b>anónima</b>: aquí nunca aparece quién respondió.</p>
   <div class="bar"><select id="evPer" aria-label="Periodo"></select><select id="evDoc" aria-label="Docente"></select><input id="evBus" class="grow" type="search" placeholder="Buscar docente o asignatura" aria-label="Buscar"><button id="evRef">Actualizar</button><button id="evCsv">Exportar CSV</button></div>
@@ -229,6 +229,23 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <p class="hint" id="evSum" style="margin:0 0 8px"></p>
   <div class="wrap"><table style="min-width:820px"><thead><tr><th>Docente</th><th>Asignatura</th><th class="n">Respuestas</th><th class="n">General</th><th class="n" title="Planeación y organización académica">I</th><th class="n" title="Dominio y desarrollo de los contenidos">II</th><th class="n" title="Estrategias de enseñanza y aprendizaje">III</th><th class="n" title="Evaluación y retroalimentación">IV</th><th class="n" title="Responsabilidad y actitud docente">V</th><th></th></tr></thead><tbody id="evTb"></tbody></table></div>
   <p class="hint" style="margin:6px 0 0">Secciones: I Planeación y organización · II Dominio de los contenidos · III Estrategias de enseñanza · IV Evaluación y retroalimentación · V Responsabilidad y actitud docente. Promedios de 1 a 5.</p>
+</div>
+<div id="eO" hidden>
+  <p class="hint">Control de las horas de <b>servicio social</b> y <b>prácticas profesionales</b> de cada alumno: institución, responsable, horas registradas y liberación. El alumno ve su avance en su portal, sin poder modificarlo.</p>
+  <div class="bar"><input id="prBus" class="grow" type="search" placeholder="Buscar por nombre o matrícula" aria-label="Buscar"><select id="prPlan" aria-label="Plan de estudios"></select><select id="prFil" aria-label="Filtro"><option value="">Todos</option><option value="curso">Con algún programa en curso</option><option value="lib">Con todo liberado</option><option value="sin">Sin registro</option></select><button id="prCsv">Exportar CSV</button></div>
+  <div id="prRes" class="hint"></div>
+  <div class="wrap"><table style="min-width:820px"><thead><tr><th>Matrícula</th><th>Alumno</th><th>Plan de estudios</th><th>Servicio social</th><th>Prácticas profesionales</th><th></th></tr></thead><tbody id="prTbl"></tbody></table></div>
+</div>
+<div id="eY" hidden>
+  <p class="hint">Registro de los contactos con los egresados: a qué se dedican, dónde trabajan o estudian. Sirve para saber cuántos están empleados en su área y para los informes de calidad educativa.</p>
+  <div class="bar"><input id="sgBus" class="grow" type="search" placeholder="Buscar egresado" aria-label="Buscar"><select id="sgPlan" aria-label="Plan de estudios"></select><select id="sgFil" aria-label="Filtro"><option value="">Todos</option><option value="sin">Sin contactar</option><option value="con">Contactados</option></select><button id="sgCsv">Exportar CSV</button></div>
+  <div id="sgRes" class="hint"></div>
+  <div class="wrap"><table style="min-width:820px"><thead><tr><th>Matrícula</th><th>Egresado</th><th>Plan de estudios</th><th>Egreso</th><th>Último contacto</th><th>Situación</th><th>Empresa o estudios</th><th></th></tr></thead><tbody id="sgTbl"></tbody></table></div>
+</div>
+<div id="eX" hidden>
+  <p class="hint">Apoyo para llenar la <b>Estadística 911</b>: concentra la matrícula por plan, sexo, edad y cuatrimestre, además de egresados y bajas del ciclo. Los datos salen de lo capturado en la plataforma (sexo y edad de cada alumno); revisa los que aparecen «sin dato».</p>
+  <div class="bar"><label style="flex-direction:row;gap:8px;align-items:center">Ciclo escolar <select id="e9Ciclo"></select></label><button id="e9Csv">Exportar CSV</button><button id="e9Imp">Imprimir</button></div>
+  <div id="e9Cuerpo"></div>
 </div>
 <div id="eB" hidden>
     <div id="bjSinNube" class="mod" style="cursor:default" hidden><b>Bajas y regularización</b><span>Esta función necesita la versión en la nube de la plataforma.</span></div>
@@ -443,6 +460,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
       </div>
       <div class="bar"><button class="p" id="mAdd">Agregar al calendario</button></div>
     </div>
+    <div id="mChoq"></div>
     <h2 style="margin-top:12px">Calendario escolar</h2>
     <div class="bar"><select id="mFPer" aria-label="Periodo"></select><select id="mFPlan" aria-label="Plan de estudios"></select></div>
     <div class="wrap"><table style="min-width:760px"><thead><tr><th>Periodo</th><th>Plan</th><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Evaluación</th><th>Aula</th><th></th></tr></thead><tbody id="mTb"></tbody></table></div>
@@ -756,6 +774,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="mod" style="cursor:default;border-color:var(--accent);margin-bottom:12px"><b>📌 La asistencia vale un 20 % sobre el valor de la calificación</b><span>Tenlo presente al planear y al evaluar a tus grupos.</span></div>
   <p class="hint" id="dmSub"></p>
   <div id="dmL"></div>
+  <div id="dmEv"></div>
 </div>
 <div id="vAcu" hidden>
   <p class="hint">Prórrogas y pagos en parcialidades acordados con los alumnos. Cada parcialidad se cobra desde aquí y queda registrada en Finanzas.</p>
@@ -862,6 +881,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <button id="bUs" class="need-admin">Usuarios</button>
   <button id="bImp" class="need-admin">Importar CSV</button>
   <button id="bHist" class="need-admin">Cargar pagos anteriores</button>
+  <button id="bRcg" class="need-admin">Recargos y pronto pago</button>
   <button id="bExp" class="need-admin">Exportar CSV</button>
   <button id="bMig" class="need-admin p" hidden>Subir datos de este navegador</button>
   <button id="bGen">Estado de cuenta general (PDF)</button>
@@ -1025,6 +1045,66 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
   <p class="hint" id="hcMsg" role="status" style="min-height:1.4em;margin:8px 0 0"></p>
   <div class="bar" style="justify-content:flex-end;margin:0"><button id="hcCls">Cerrar</button></div>
+</dialog>
+
+<dialog id="dRcg" style="width:min(1000px,98vw)">
+  <h2>Recargos por mora y descuento por pronto pago</h2>
+  <p class="sub" style="margin-bottom:8px">Aplica un recargo a las colegiaturas vencidas o un descuento a quien paga a tiempo. Se registran como cargos o ajustes en la cuenta del alumno, se ven en su estado de cuenta y se pueden cancelar.</p>
+  <div class="bar" style="margin:0 0 10px"><button id="rcgT1" class="p">Recargos</button><button id="rcgT2">Pronto pago</button><button id="rcgT3">Aplicados</button><button id="rcgT4">Ajustes</button></div>
+  <div id="rcgP1"><p class="hint" id="rcgH1"></p><div class="bar" style="margin:4px 0"><input id="rcgB1" type="search" class="grow" placeholder="Filtrar por nombre o matrícula"><button class="p" id="rcgGo1">Aplicar a los marcados</button></div><div class="wrap"><table><thead><tr><th><input type="checkbox" id="rcgA1" aria-label="Marcar todos"></th><th>Alumno</th><th>Concepto</th><th>Venció</th><th class="n">Saldo</th><th class="n">Recargo</th></tr></thead><tbody id="rcgTb1"></tbody></table></div></div>
+  <div id="rcgP2" hidden><p class="hint" id="rcgH2"></p><div class="bar" style="margin:4px 0"><input id="rcgB2" type="search" class="grow" placeholder="Filtrar por nombre o matrícula"><button class="p" id="rcgGo2">Aplicar a los marcados</button></div><div class="wrap"><table><thead><tr><th><input type="checkbox" id="rcgA2" aria-label="Marcar todos"></th><th>Alumno</th><th>Concepto</th><th>Límite</th><th class="n">Cargo</th><th class="n">Descuento</th></tr></thead><tbody id="rcgTb2"></tbody></table></div></div>
+  <div id="rcgP3" hidden><div class="bar" style="margin:4px 0"><input id="rcgB3" type="search" class="grow" placeholder="Filtrar por nombre o matrícula"></div><div class="wrap"><table><thead><tr><th>Alumno</th><th>Tipo</th><th>Concepto</th><th>Fecha</th><th class="n">Monto</th><th></th></tr></thead><tbody id="rcgTb3"></tbody></table></div></div>
+  <div id="rcgP4" hidden>
+    <div class="row">
+      <label>Día límite de pago de cada mes<input id="rcgDia" type="number" min="1" max="28"></label>
+      <label>Recargo por mora<select id="rcgTipo"><option value="pct">Porcentaje de la colegiatura</option><option value="fijo">Monto fijo (pesos)</option></select></label>
+      <label>Valor del recargo<input id="rcgVal" type="number" min="0" step="0.01"></label>
+      <label>Descuento por pronto pago (%)<input id="rcgPp" type="number" min="0" max="100" step="0.01"></label>
+      <label>Pronto pago: hasta el día<input id="rcgPpD" type="number" min="1" max="28"></label>
+    </div>
+    <div class="bar" style="margin:8px 0 0"><button class="p" id="rcgGuarda">Guardar ajustes</button></div>
+    <p class="hint">El recargo se aplica una sola vez por colegiatura vencida y no se vuelve a calcular. El descuento solo se ofrece a colegiaturas del mes en curso que aún no tienen pagos.</p>
+  </div>
+  <p class="hint" id="rcgMsg" role="status" style="min-height:1.4em;margin:8px 0 0"></p>
+  <div class="bar" style="justify-content:flex-end;margin:0"><button id="rcgCls">Cerrar</button></div>
+</dialog>
+
+<dialog id="dPr" style="width:min(900px,98vw)">
+  <h2 id="prNom">Servicio social y prácticas</h2>
+  <div class="bar" style="margin:0 0 10px"><button id="prT1" class="p">Servicio social</button><button id="prT2">Prácticas profesionales</button></div>
+  <div id="prAvance" style="margin:0 0 8px"></div>
+  <div class="row">
+    <label>Institución o empresa<input id="prInst" maxlength="160"></label>
+    <label>Responsable o jefe directo<input id="prResp" maxlength="120"></label>
+    <label>Proyecto o programa<input id="prProy" maxlength="200"></label>
+    <label>Horas requeridas<input id="prReq" type="number" min="0" max="5000"></label>
+    <label>Inicio<input id="prIni" type="date"></label>
+    <label>Fin<input id="prFin" type="date"></label>
+    <label class="full">Observaciones<textarea id="prObs" rows="2" maxlength="800"></textarea></label>
+  </div>
+  <h2 style="margin-top:12px">Horas registradas</h2>
+  <div class="row"><label>Fecha<input id="prFecha" type="date"></label><label>Horas<input id="prHoras" type="number" min="0.5" max="24" step="0.5"></label><label class="full">Actividad realizada<input id="prAct" maxlength="300"></label></div>
+  <div class="bar" style="margin:6px 0"><button id="prAdd">Agregar horas</button></div>
+  <div class="wrap"><table><thead><tr><th>Fecha</th><th class="n">Horas</th><th>Actividad</th><th></th></tr></thead><tbody id="prTb"></tbody></table></div>
+  <p class="hint" id="prMsg" role="status" style="min-height:1.4em;margin:8px 0 0"></p>
+  <div class="bar" style="margin:0"><button class="p" id="prGuarda">Guardar datos</button><button id="prLib">Liberar</button><button id="prRe" class="d" hidden>Reabrir</button><span class="grow"></span><button id="prCls">Cerrar</button></div>
+</dialog>
+<dialog id="dSg" style="width:min(860px,98vw)">
+  <h2 id="sgNom">Seguimiento</h2>
+  <div class="row">
+    <label>Fecha<input id="sgF" type="date"></label>
+    <label>Medio<select id="sgMed"><option>Teléfono</option><option>Correo</option><option>WhatsApp</option><option>Presencial</option><option>Encuesta</option></select></label>
+    <label>Situación<select id="sgSit"><option>Trabaja en su área</option><option>Trabaja en otra área</option><option>Estudia posgrado</option><option>Trabaja y estudia</option><option>Busca empleo</option><option>Sin dato</option></select></label>
+    <label>Empresa o institución<input id="sgEmp" maxlength="160"></label>
+    <label>Puesto<input id="sgPue" maxlength="120"></label>
+    <label>Estudios que cursa<input id="sgEst" maxlength="160"></label>
+    <label>Ingreso mensual (opcional)<input id="sgIng" type="number" min="0"></label>
+    <label class="full">Notas<textarea id="sgNota" rows="2" maxlength="800"></textarea></label>
+  </div>
+  <div class="bar" style="margin:6px 0"><button class="p" id="sgAdd">Registrar contacto</button></div>
+  <div class="wrap"><table><thead><tr><th>Fecha</th><th>Medio</th><th>Situación</th><th>Empresa o estudios</th><th>Notas</th><th></th></tr></thead><tbody id="sgTb"></tbody></table></div>
+  <p class="hint" id="sgMsg" role="status" style="min-height:1.4em;margin:8px 0 0"></p>
+  <div class="bar" style="justify-content:flex-end;margin:0"><button id="sgCls">Cerrar</button></div>
 </dialog>
 
 <dialog id="dEvd" style="width:min(820px,98vw)">
@@ -2048,7 +2128,7 @@ var KEY="colegiaturas-v1",S=[],cur=null;
 var $=function(i){return document.getElementById(i)};
 var mx=new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"});
 function uid(){return Math.random().toString(36).slice(2,9)}
-function today(){return new Date().toISOString().slice(0,10)}
+function today(){var d=new Date(),z=function(n){return (n<10?"0":"")+n};return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate())}
 function esc(s){var d=document.createElement("div");d.textContent=s==null?"":s;return d.innerHTML}
 function load(){try{var r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
 }
@@ -2170,10 +2250,19 @@ function planOf(s){return PL.find(function(p){return p.k===s.programa})||null}
 var MES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 function cargos(s){
   var L=cargos0(s).concat(extraCargos(s)).concat(constCargos(s)).concat(credCargos(s)),b=s.beca;
-  if(!b||!(b.monto>0))return L;
-  return L.map(function(x){
+  if(b&&b.monto>0)L=L.map(function(x){
     return /^Colegiatura/.test(x.c)?{id:x.id,c:x.c,k:x.k,m:Math.max(Math.round((x.m-b.monto)*100)/100,0)}:x;
   });
+  return cargosRec(L,s.id);
+}
+/* Recargos por mora (cargos nuevos al final) y descuentos por pronto pago (reducen el cargo); se guardan en recargos/<alumno> */
+var REC={},RECD={diaLimite:10,rec:{tipo:"pct",valor:5},pp:{pct:10,dia:5}};
+function recCfg(){var c=REC._config;return c&&c.rec&&c.pp?c:RECD}
+function cargosRec(L,sid){
+  var ri=(REC[sid]&&REC[sid].items)||[];if(!ri.length)return L;
+  L=L.map(function(x){var d=ri.filter(function(i){return i.tipo==="desc"&&i.cid===x.id}).reduce(function(t,i){return t+(Number(i.m)||0)},0);return d?{id:x.id,c:x.c,k:x.k,m:Math.max(Math.round((x.m-d)*100)/100,0)}:x});
+  ri.filter(function(i){return i.tipo==="rec"}).forEach(function(i){L.push({id:"g"+i.id,c:i.c,m:Number(i.m)||0})});
+  return L;
 }
 var EXTRA={costo:300,min:8},CONSC={costo:50},CONS={};
 function constCargos(s){var it=(CONS&&CONS[s.id]&&CONS[s.id].items)||[];return it.map(function(x){return {id:"k"+x.id,c:"Constancia de estudios ("+x.num+")",m:x.monto}})}
@@ -2886,6 +2975,250 @@ $("hcGo2").onclick=async function(){
 };
 $("sHist").onclick=function(){if(cur){var id=cur.id;$("dSt").close();abreHc(id,1)}};
 $("bHist").onclick=function(){abreHc(null,1)};
+/* ===== Servicio social y prácticas profesionales ===== */
+var PRC={},SEG={},PRS=null,PRT="ss",PRW=null,PRDEF={ss:480,pp:240},PRNOM={ss:"Servicio social",pp:"Prácticas profesionales"};
+function prEdita(){return ROL==="admin"||permiso("escolar")==="editar"}
+function prItem(doc,t){return ((doc&&doc.items)||[]).find(function(i){return i.id===t})||null}
+function prHoras(it){return it?Math.round(it.registros.reduce(function(a,r){return a+r.h},0)*100)/100:0}
+function prBarra(it,t){
+  if(!it)return '<span class="hint">Sin registro</span>';
+  var h=prHoras(it),req=it.horasReq||0,pc=req>0?Math.min(100,Math.round(h/req*100)):100;
+  return '<div style="min-width:130px"><b>'+h+'</b> de '+req+' h · '+(it.estado==="liberado"?'<span class="tag pagado">Liberado</span>':it.estado==="cancelado"?'<span class="tag sin">Cancelado</span>':'<span class="tag">En curso</span>')+'<div style="height:6px;background:var(--line,#ddd);border-radius:3px;margin-top:3px"><div style="height:6px;width:'+pc+'%;background:var(--ok,#1f8a5b);border-radius:3px"></div></div></div>';
+}
+function prAlumnos(){return S.filter(function(s){return !esBaja(s.id)})}
+function renderPrac(){
+  setOpts($("prPlan"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
+  var q=nz($("prBus").value),pl=$("prPlan").value,f=$("prFil").value;
+  var L=prAlumnos().filter(function(s){
+    if(pl&&planDe(s)!==pl)return false;if(q&&nz(s.nombre+" "+s.mat).indexOf(q)<0)return false;
+    var d=PRC[s.id],a=prItem(d,"ss"),b=prItem(d,"pp");
+    if(f==="curso")return [a,b].some(function(x){return x&&x.estado==="en curso"});
+    if(f==="lib")return !!(a||b)&&[a,b].every(function(x){return !x||x.estado==="liberado"});
+    if(f==="sin")return !a&&!b;return true;
+  });
+  var todos=prAlumnos(),lib=function(t){return todos.filter(function(s){var x=prItem(PRC[s.id],t);return x&&x.estado==="liberado"}).length},cur=function(t){return todos.filter(function(s){var x=prItem(PRC[s.id],t);return x&&x.estado==="en curso"}).length};
+  $("prRes").textContent="Servicio social: "+lib("ss")+" liberados, "+cur("ss")+" en curso · Prácticas profesionales: "+lib("pp")+" liberadas, "+cur("pp")+" en curso · "+todos.length+" alumnos.";
+  $("prTbl").innerHTML=L.length?L.slice(0,400).map(function(s){var d=PRC[s.id];return '<tr><td>'+esc(s.mat)+'</td><td>'+esc(s.nombre)+'</td><td>'+esc(planDe(s))+'</td><td>'+prBarra(prItem(d,"ss"))+'</td><td>'+prBarra(prItem(d,"pp"))+'</td><td><button data-pr="'+attr(s.id)+'">'+(prEdita()?"Abrir":"Ver")+'</button></td></tr>'}).join(""):'<tr><td colspan="6" class="hint">No hay alumnos con ese filtro.</td></tr>';
+}
+function prNuevo(t){return {id:t,tipo:t,inst:"",resp:"",proyecto:"",inicio:"",fin:"",horasReq:PRDEF[t],estado:"en curso",liberacion:"",obs:"",registros:[]}}
+function prMsg(t,ok){$("prMsg").style.color=ok?"var(--ok)":"var(--bad)";$("prMsg").textContent=t||""}
+function abrePr(sid){
+  var s=S.find(function(x){return x.id===sid});if(!s)return;
+  PRS=sid;PRT="ss";PRW=JSON.parse(JSON.stringify(PRC[sid]||{items:[]}));if(!PRW.items)PRW.items=[];
+  $("prNom").textContent=s.nombre+" · "+s.mat;prMsg("");prPinta();if(!$("dPr").open)$("dPr").showModal();
+}
+function prPinta(){
+  var t=PRT,it=prItem(PRW,t)||prNuevo(t),e=prEdita(),h=prHoras(it);
+  $("prT1").className=t==="ss"?"p":"";$("prT2").className=t==="pp"?"p":"";
+  $("prInst").value=it.inst||"";$("prResp").value=it.resp||"";$("prProy").value=it.proyecto||"";$("prReq").value=it.horasReq;$("prIni").value=it.inicio||"";$("prFin").value=it.fin||"";$("prObs").value=it.obs||"";
+  $("prFecha").value=today();$("prHoras").value="";$("prAct").value="";
+  ["prInst","prResp","prProy","prReq","prIni","prFin","prObs","prFecha","prHoras","prAct"].forEach(function(i){$(i).disabled=!e||it.estado==="liberado"});
+  $("prAvance").innerHTML=prBarra(prItem(PRW,t)?it:null)+(it.estado==="liberado"?' <span class="hint">Liberado el '+fd(it.liberacion)+'</span>':'');
+  $("prTb").innerHTML=it.registros.length?it.registros.slice().sort(function(a,b){return String(b.f).localeCompare(String(a.f))}).map(function(r){return '<tr><td>'+fd(r.f)+'</td><td class="n">'+r.h+'</td><td>'+esc(r.act||"")+'</td><td>'+(e&&it.estado!=="liberado"?'<button class="d" data-prq="'+attr(r.id)+'">Quitar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="4" class="hint">Aún no hay horas registradas.</td></tr>';
+  $("prAdd").hidden=!e||it.estado==="liberado";$("prGuarda").hidden=!e||it.estado==="liberado";$("prLib").hidden=!e||it.estado==="liberado";$("prRe").hidden=!(e&&it.estado==="liberado"&&ROL==="admin");
+  $("prLib").disabled=h+1e-9<(it.horasReq||0)||!(it.horasReq>=0);
+}
+function prLeeForm(){
+  var t=PRT,it=prItem(PRW,t);if(!it){it=prNuevo(t);PRW.items.push(it)}
+  it.inst=$("prInst").value.trim();it.resp=$("prResp").value.trim();it.proyecto=$("prProy").value.trim();it.inicio=$("prIni").value;it.fin=$("prFin").value;it.obs=$("prObs").value.trim();
+  var r=Number($("prReq").value);it.horasReq=isFinite(r)&&$("prReq").value!==""&&r>=0&&r<=5000?r:it.horasReq;return it;
+}
+async function prGuarda(msg){
+  try{await DBH.doc("practicas/"+PRS).set(PRW);PRC[PRS]=JSON.parse(JSON.stringify(PRW));prPinta();prMsg(msg||"Guardado.",true);renderPrac()}
+  catch(e){prMsg("No se pudo guardar: "+((e&&e.message)||"error"))}
+}
+$("prTbl").onclick=function(e){var b=e.target.closest("[data-pr]");if(b)abrePr(b.dataset.pr)};
+$("prBus").oninput=$("prPlan").onchange=$("prFil").onchange=renderPrac;
+$("prT1").onclick=function(){if(prEdita())prLeeForm();PRT="ss";prMsg("");prPinta()};$("prT2").onclick=function(){if(prEdita())prLeeForm();PRT="pp";prMsg("");prPinta()};
+$("prCls").onclick=function(){$("dPr").close()};
+$("prGuarda").onclick=function(){var it=prLeeForm();if(!(it.horasReq>=0)){prMsg("Revisa las horas requeridas.");return}prGuarda()};
+$("prAdd").onclick=function(){
+  var it=prLeeForm(),f=$("prFecha").value,h=Number($("prHoras").value);
+  if(!f){prMsg("Indica la fecha.");return}if(!(h>0&&h<=24)){prMsg("Las horas deben ser mayores a 0 y de máximo 24 por día.");return}
+  it.registros.push({id:uid()+uid(),f:f,h:h,act:$("prAct").value.trim()});prGuarda("Horas registradas.");
+};
+$("prTb").onclick=function(e){var b=e.target.closest("[data-prq]");if(!b)return;var it=prItem(PRW,PRT);it.registros=it.registros.filter(function(r){return r.id!==b.dataset.prq});prGuarda("Registro quitado.")};
+$("prLib").onclick=function(){
+  var it=prLeeForm(),h=prHoras(it);
+  if(h+1e-9<it.horasReq){prMsg("Faltan "+Math.round((it.horasReq-h)*100)/100+" horas para liberar.");return}
+  if(!confirm("¿Liberar "+PRNOM[PRT].toLowerCase()+" de este alumno? Ya no se podrán cambiar sus horas."))return;
+  it.estado="liberado";it.liberacion=today();prGuarda("Liberado.");
+};
+$("prRe").onclick=function(){var it=prItem(PRW,PRT);if(!it)return;it.estado="en curso";it.liberacion="";prGuarda("Reabierto.")};
+$("prCsv").onclick=function(){
+  var o=[["Matrícula","Alumno","Plan","Programa","Estado","Horas","Horas requeridas","Institución","Responsable","Inicio","Fin","Liberación"].map(csvq).join(",")];
+  prAlumnos().forEach(function(s){["ss","pp"].forEach(function(t){var it=prItem(PRC[s.id],t);if(it)o.push([s.mat,s.nombre,planDe(s),PRNOM[t],it.estado,prHoras(it),it.horasReq,it.inst,it.resp,it.inicio,it.fin,it.liberacion].map(csvq).join(","))})});
+  saveFile("servicio-social-y-practicas.csv","﻿"+o.join("\n"));
+};
+/* Vista del alumno (solo lectura) */
+function pracPorHTML(s){
+  var d=PRC[s.id];if(!d||!(d.items||[]).length)return "";
+  return '<h2 style="margin-top:16px">Servicio social y prácticas profesionales</h2><div class="wrap"><table style="min-width:520px"><thead><tr><th>Programa</th><th>Institución</th><th>Avance</th></tr></thead><tbody>'+["ss","pp"].map(function(t){var it=prItem(d,t);return it?'<tr><td>'+PRNOM[t]+'</td><td>'+esc(it.inst||"—")+'</td><td>'+prBarra(it)+'</td></tr>':''}).join("")+'</tbody></table></div>';
+}
+
+/* ===== Seguimiento de egresados ===== */
+var SGS=null;
+function sgUlt(sid){var c=(SEG[sid]&&SEG[sid].contactos)||[];return c.slice().sort(function(a,b){return String(b.f).localeCompare(String(a.f))})[0]||null}
+function sgEgresados(){return Object.keys(EGR).map(function(k){return EGR[k]}).filter(function(r){return !r.revertido})}
+function renderSeg(){
+  setOpts($("sgPlan"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
+  var q=nz($("sgBus").value),pl=$("sgPlan").value,f=$("sgFil").value,T=sgEgresados();
+  var L=T.filter(function(r){if(pl&&r.plan!==pl)return false;if(q&&nz(r.nombre+" "+r.mat).indexOf(q)<0)return false;var u=sgUlt(r.sid);return f==="sin"?!u:f==="con"?!!u:true}).sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))});
+  var con=T.filter(function(r){return sgUlt(r.sid)}),emp=con.filter(function(r){return /^Trabaja/.test(sgUlt(r.sid).situacion)}),area=con.filter(function(r){var x=sgUlt(r.sid).situacion;return x==="Trabaja en su área"||x==="Trabaja y estudia"});
+  $("sgRes").textContent=T.length+" egresados · "+con.length+" contactados"+(T.length?" ("+Math.round(con.length/T.length*100)+" %)":"")+" · "+emp.length+" trabajan"+(con.length?" ("+Math.round(emp.length/con.length*100)+" % de los contactados)":"")+" · "+area.length+" en su área o trabajan y estudian.";
+  $("sgTbl").innerHTML=L.length?L.slice(0,400).map(function(r){var u=sgUlt(r.sid);return '<tr><td>'+esc(r.mat)+'</td><td>'+esc(r.nombre)+'</td><td>'+esc(r.plan)+'</td><td>'+fd(r.fecha)+'</td><td>'+(u?fd(u.f):'<span class="hint">Sin contacto</span>')+'</td><td>'+(u?esc(u.situacion):"")+'</td><td>'+(u?esc(u.empresa||u.estudios||""):"")+'</td><td><button data-sg="'+attr(r.sid)+'">'+(prEdita()?"Contacto":"Ver")+'</button></td></tr>'}).join(""):'<tr><td colspan="8" class="hint">'+(T.length?"No hay egresados con ese filtro.":"Aún no hay egresados.")+'</td></tr>';
+}
+function sgMsg(t,ok){$("sgMsg").style.color=ok?"var(--ok)":"var(--bad)";$("sgMsg").textContent=t||""}
+function abreSg(sid){
+  var r=EGR[sid];if(!r)return;SGS=sid;$("sgNom").textContent=r.nombre+" · "+r.mat;sgMsg("");
+  var e=prEdita();["sgF","sgMed","sgSit","sgEmp","sgPue","sgEst","sgIng","sgNota","sgAdd"].forEach(function(i){$(i).disabled=!e});
+  $("sgF").value=today();$("sgEmp").value=$("sgPue").value=$("sgEst").value=$("sgIng").value=$("sgNota").value="";sgPinta();if(!$("dSg").open)$("dSg").showModal();
+}
+function sgPinta(){
+  var c=((SEG[SGS]&&SEG[SGS].contactos)||[]).slice().sort(function(a,b){return String(b.f).localeCompare(String(a.f))});
+  $("sgTb").innerHTML=c.length?c.map(function(x){return '<tr><td>'+fd(x.f)+'</td><td>'+esc(x.medio)+'</td><td>'+esc(x.situacion)+(x.puesto?' · '+esc(x.puesto):'')+'</td><td>'+esc(x.empresa||x.estudios||"")+'</td><td>'+esc(x.nota||"")+'</td><td>'+(prEdita()?'<button class="d" data-sgq="'+attr(x.id)+'">Quitar</button>':'')+'</td></tr>'}).join(""):'<tr><td colspan="6" class="hint">Aún no hay contactos registrados.</td></tr>';
+}
+async function sgGuarda(arr,msg){
+  try{var d={contactos:arr};await DBH.doc("seguim/"+SGS).set(d);SEG[SGS]=d;sgPinta();sgMsg(msg,true);renderSeg()}catch(e){sgMsg("No se pudo guardar: "+((e&&e.message)||"error"))}
+}
+$("sgTbl").onclick=function(e){var b=e.target.closest("[data-sg]");if(b)abreSg(b.dataset.sg)};
+$("sgBus").oninput=$("sgPlan").onchange=$("sgFil").onchange=renderSeg;
+$("sgCls").onclick=function(){$("dSg").close()};
+$("sgAdd").onclick=function(){
+  var f=$("sgF").value,ing=$("sgIng").value;if(!f){sgMsg("Indica la fecha del contacto.");return}
+  var x={id:uid()+uid(),f:f,medio:$("sgMed").value,situacion:$("sgSit").value,empresa:$("sgEmp").value.trim(),puesto:$("sgPue").value.trim(),estudios:$("sgEst").value.trim(),nota:$("sgNota").value.trim()};
+  if(ing!==""){var n=Number(ing);if(!(n>=0&&n<=10000000)){sgMsg("Revisa el ingreso mensual.");return}x.ingreso=n}
+  sgGuarda((((SEG[SGS]&&SEG[SGS].contactos)||[]).concat([x])),"Contacto registrado.");
+};
+$("sgTb").onclick=function(e){var b=e.target.closest("[data-sgq]");if(!b)return;sgGuarda(((SEG[SGS]&&SEG[SGS].contactos)||[]).filter(function(x){return x.id!==b.dataset.sgq}),"Contacto quitado.")};
+$("sgCsv").onclick=function(){
+  var o=[["Matrícula","Egresado","Plan","Fecha de egreso","Fecha de contacto","Medio","Situación","Empresa","Puesto","Estudios","Ingreso mensual","Notas"].map(csvq).join(",")];
+  sgEgresados().forEach(function(r){var c=(SEG[r.sid]&&SEG[r.sid].contactos)||[];if(!c.length)o.push([r.mat,r.nombre,r.plan,r.fecha,"","","Sin contacto","","","","",""].map(csvq).join(","));c.forEach(function(x){o.push([r.mat,r.nombre,r.plan,r.fecha,x.f,x.medio,x.situacion,x.empresa,x.puesto,x.estudios,x.ingreso==null?"":x.ingreso,x.nota].map(csvq).join(","))})});
+  saveFile("seguimiento-de-egresados.csv","﻿"+o.join("\n"));
+};
+
+/* ===== Estadística 911 ===== */
+var E9RANGOS=[["Menos de 18",0,17],["18",18,18],["19",19,19],["20",20,20],["21",21,21],["22",22,22],["23",23,23],["24",24,24],["25 a 29",25,29],["30 a 34",30,34],["35 a 39",35,39],["40 o más",40,200]];
+function e9Sx(s){return s.sexo==="Masculino"?"H":s.sexo==="Femenino"?"M":"?"}
+function e9Cuenta(L){var o={H:0,M:0,"?":0,t:L.length};L.forEach(function(s){o[e9Sx(s)]++});return o}
+function e9Calcula(ciclo){
+  var act=S.filter(function(s){return !esBaja(s.id)&&!esEgr(s.id)}),ini=ciclo+"-09-01",fin=(ciclo+1)+"-08-31";
+  var nuevo=function(s){return s.nuevo!==false&&s.ingreso===ciclo};
+  var R={ciclo:ciclo,mat:e9Cuenta(act),nuevo:e9Cuenta(act.filter(nuevo)),reing:e9Cuenta(act.filter(function(s){return !nuevo(s)}))};
+  var planes={};act.forEach(function(s){var k=planDe(s)||"Sin plan";(planes[k]=planes[k]||[]).push(s)});
+  R.planes=Object.keys(planes).sort().map(function(k){return {k:k,tot:e9Cuenta(planes[k]),nue:e9Cuenta(planes[k].filter(nuevo)),rei:e9Cuenta(planes[k].filter(function(s){return !nuevo(s)}))}});
+  var cu={};act.forEach(function(s){var g=grupoReciente(s.id),k=g&&g.cuat?String(g.cuat):"Sin grupo";(cu[k]=cu[k]||[]).push(s)});
+  R.cuats=Object.keys(cu).sort(function(a,b){return (parseInt(a,10)||99)-(parseInt(b,10)||99)}).map(function(k){return {k:k,c:e9Cuenta(cu[k])}});
+  R.edades=E9RANGOS.map(function(r){return {k:r[0],c:e9Cuenta(act.filter(function(s){return s.edad!=null&&s.edad>=r[1]&&s.edad<=r[2]}))}});
+  R.edades.push({k:"Sin dato de edad",c:e9Cuenta(act.filter(function(s){return s.edad==null}))});
+  var eg=sgEgresados().filter(function(r){return r.fecha>=ini&&r.fecha<=fin}).map(function(r){return S.find(function(s){return s.id===r.sid})||{sexo:""}});
+  R.egr=e9Cuenta(eg);var ep={};sgEgresados().filter(function(r){return r.fecha>=ini&&r.fecha<=fin}).forEach(function(r){var s=S.find(function(x){return x.id===r.sid})||{sexo:""};(ep[r.plan||"Sin plan"]=ep[r.plan||"Sin plan"]||[]).push(s)});
+  R.egrPlan=Object.keys(ep).sort().map(function(k){return {k:k,c:e9Cuenta(ep[k])}});
+  R.bajas=e9Cuenta(S.filter(function(s){return esBaja(s.id)}));
+  R.docs=Object.keys(DOC||{}).length;
+  return R;
+}
+function e9Fila(n,c){return '<tr><td>'+esc(n)+'</td><td class="n">'+c.H+'</td><td class="n">'+c.M+'</td><td class="n">'+c["?"]+'</td><td class="n"><b>'+c.t+'</b></td></tr>'}
+function e9Tabla(tit,col,filas){return '<h2 style="margin-top:14px">'+tit+'</h2><div class="wrap"><table style="min-width:520px"><thead><tr><th>'+col+'</th><th class="n">Hombres</th><th class="n">Mujeres</th><th class="n">Sin dato</th><th class="n">Total</th></tr></thead><tbody>'+filas+'</tbody></table></div>'}
+var E9R=null;
+function renderE911(){
+  var y=cicloAct(),op='';for(var i=y+1;i>=y-5;i--)op+='<option value="'+i+'">'+i+'–'+(i+1)+'</option>';
+  var v=$("e9Ciclo").value;if(!$("e9Ciclo").options.length){$("e9Ciclo").innerHTML=op;$("e9Ciclo").value=String(y)}else if(v)$("e9Ciclo").value=v;
+  var R=E9R=e9Calcula(parseInt($("e9Ciclo").value,10));
+  var sd=R.mat["?"]+R.edades[R.edades.length-1].c.t;
+  $("e9Cuerpo").innerHTML='<p class="hint">Ciclo '+R.ciclo+'–'+(R.ciclo+1)+' · Matrícula vigente: <b>'+R.mat.t+'</b> alumnos ('+R.mat.H+' hombres, '+R.mat.M+' mujeres)'+(R.mat["?"]?' · <b>'+R.mat["?"]+' sin sexo capturado</b>':'')+(R.edades[R.edades.length-1].c.t?' · <b>'+R.edades[R.edades.length-1].c.t+' sin edad</b>':'')+'. Docentes registrados: '+R.docs+'.</p>'+
+   e9Tabla("Matrícula total","Concepto",e9Fila("Nuevo ingreso",R.nuevo)+e9Fila("Reingreso",R.reing)+e9Fila("Total",R.mat))+
+   e9Tabla("Matrícula por plan de estudios","Plan",R.planes.map(function(p){return e9Fila(p.k+" · total",p.tot)+e9Fila("   nuevo ingreso",p.nue)+e9Fila("   reingreso",p.rei)}).join(""))+
+   e9Tabla("Matrícula por cuatrimestre","Cuatrimestre",R.cuats.map(function(c){return e9Fila(c.k,c.c)}).join(""))+
+   e9Tabla("Matrícula por edad","Edad",R.edades.map(function(c){return e9Fila(c.k,c.c)}).join(""))+
+   e9Tabla("Egresados del ciclo","Plan",(R.egrPlan.map(function(c){return e9Fila(c.k,c.c)}).join("")||'')+e9Fila("Total de egresados",R.egr))+
+   e9Tabla("Bajas vigentes","Concepto",e9Fila("Alumnos dados de baja",R.bajas));
+}
+$("e9Ciclo").onchange=renderE911;$("e9Imp").onclick=function(){window.print()};
+$("e9Csv").onclick=function(){
+  var R=E9R||e9Calcula(cicloAct()),o=[["Apartado","Concepto","Hombres","Mujeres","Sin dato","Total"].map(csvq).join(",")],add=function(a,n,c){o.push([a,n,c.H,c.M,c["?"],c.t].map(csvq).join(","))};
+  add("Matrícula","Nuevo ingreso",R.nuevo);add("Matrícula","Reingreso",R.reing);add("Matrícula","Total",R.mat);
+  R.planes.forEach(function(p){add("Por plan",p.k+" total",p.tot);add("Por plan",p.k+" nuevo ingreso",p.nue);add("Por plan",p.k+" reingreso",p.rei)});
+  R.cuats.forEach(function(c){add("Por cuatrimestre",c.k,c.c)});R.edades.forEach(function(c){add("Por edad",c.k,c.c)});
+  R.egrPlan.forEach(function(c){add("Egresados",c.k,c.c)});add("Egresados","Total",R.egr);add("Bajas","Alumnos dados de baja",R.bajas);
+  saveFile("estadistica-911-"+R.ciclo+"-"+(R.ciclo+1)+".csv","﻿"+o.join("\n"));
+};
+
+/* ===== Recargos por mora y descuento por pronto pago ===== */
+var RCTAB=1;
+function rcgMsg(t,ok){$("rcgMsg").style.color=ok?"var(--ok)":"var(--bad)";$("rcgMsg").textContent=t||""}
+function rcgLim(k,s,dia){var ing=s.ingreso||cicloAct(),t=8+k-1,y=ing+Math.floor(t/12),m=(t%12)+1;return y+"-"+("0"+m).slice(-2)+"-"+("0"+dia).slice(-2)}
+function rcgMonto(base,c){var r=c.rec;return Math.round((r.tipo==="pct"?base*r.valor/100:r.valor)*100)/100}
+function rcgCand(){
+  var c=recCfg(),hoy=today(),mora=[],pp=[];
+  S.forEach(function(s){
+    if(esInact(s.id))return;
+    var a=applyAll(s),ri=(REC[s.id]&&REC[s.id].items)||[];
+    a.L.forEach(function(x,i){
+      if(!x.k||!(x.m>0))return;
+      var lim=rcgLim(x.k,s,c.diaLimite),rem=a.rem[i];
+      if(rem>0.004&&lim<hoy&&!ri.some(function(r){return r.tipo==="rec"&&r.cid===x.id})){var m=rcgMonto(x.m,c);if(m>0)mora.push({s:s,cid:x.id,c:x.c,lim:lim,rem:rem,m:m})}
+      var pagado=x.m-rem;
+      if(pagado<0.005&&lim.slice(0,7)===hoy.slice(0,7)&&hoy<=lim.slice(0,8)+("0"+c.pp.dia).slice(-2)&&!ri.some(function(r){return r.tipo==="desc"&&r.cid===x.id})){var d=Math.round(x.m*c.pp.pct)/100;if(d>0)pp.push({s:s,cid:x.id,c:x.c,lim:lim.slice(0,8)+("0"+c.pp.dia).slice(-2),base:x.m,m:d})}
+    });
+  });
+  return {mora:mora,pp:pp};
+}
+function rcgFiltra(L,q){var t=nz(q);return t?L.filter(function(r){return nz(r.s.nombre+" "+r.s.mat).indexOf(t)>-1}):L}
+var RCC=null;
+function rcgRender(){
+  for(var i=1;i<=4;i++){$("rcgP"+i).hidden=RCTAB!==i;$("rcgT"+i).className=RCTAB===i?"p":""}
+  var c=recCfg();
+  if(RCTAB===4){$("rcgDia").value=c.diaLimite;$("rcgTipo").value=c.rec.tipo;$("rcgVal").value=c.rec.valor;$("rcgPp").value=c.pp.pct;$("rcgPpD").value=c.pp.dia;return}
+  RCC=rcgCand();
+  if(RCTAB===1){
+    var L=rcgFiltra(RCC.mora,$("rcgB1").value);
+    $("rcgH1").textContent=RCC.mora.length+" colegiaturas vencidas sin recargo. Recargo configurado: "+(c.rec.tipo==="pct"?c.rec.valor+" % de la colegiatura":mx.format(c.rec.valor)+" fijos")+"; vencen el día "+c.diaLimite+" de cada mes.";
+    $("rcgTb1").innerHTML=L.length?L.map(function(r){return '<tr><td><input type="checkbox" class="rcg1" data-k="'+attr(r.s.id+"|"+r.cid)+'"></td><td>'+esc(r.s.nombre)+' <span class="hint">'+esc(r.s.mat)+'</span></td><td>'+esc(r.c)+'</td><td>'+fd(r.lim)+'</td><td class="n">'+mx.format(r.rem)+'</td><td class="n">'+mx.format(r.m)+'</td></tr>'}).join(""):'<tr><td colspan="6" class="hint">No hay colegiaturas vencidas pendientes de recargo.</td></tr>';
+  }else if(RCTAB===2){
+    var L2=rcgFiltra(RCC.pp,$("rcgB2").value);
+    $("rcgH2").textContent=RCC.pp.length+" colegiaturas del mes en curso con derecho a descuento. Descuento: "+c.pp.pct+" % si se paga hasta el día "+c.pp.dia+".";
+    $("rcgTb2").innerHTML=L2.length?L2.map(function(r){return '<tr><td><input type="checkbox" class="rcg2" data-k="'+attr(r.s.id+"|"+r.cid)+'"></td><td>'+esc(r.s.nombre)+' <span class="hint">'+esc(r.s.mat)+'</span></td><td>'+esc(r.c)+'</td><td>'+fd(r.lim)+'</td><td class="n">'+mx.format(r.base)+'</td><td class="n">'+mx.format(r.m)+'</td></tr>'}).join(""):'<tr><td colspan="6" class="hint">Sin colegiaturas elegibles. Solo cuentan las del mes en curso, sin pagos, y hasta el día límite de pronto pago.</td></tr>';
+  }else{
+    var t=nz($("rcgB3").value),R=[];
+    Object.keys(REC).forEach(function(sid){if(sid.charAt(0)==="_")return;var s=S.find(function(x){return x.id===sid});if(!s)return;((REC[sid].items)||[]).forEach(function(it){R.push({s:s,it:it})})});
+    R=R.filter(function(r){return !t||nz(r.s.nombre+" "+r.s.mat).indexOf(t)>-1}).sort(function(a,b){return String(b.it.f||"").localeCompare(String(a.it.f||""))});
+    $("rcgTb3").innerHTML=R.length?R.map(function(r){return '<tr><td>'+esc(r.s.nombre)+' <span class="hint">'+esc(r.s.mat)+'</span></td><td>'+(r.it.tipo==="rec"?"Recargo":"Descuento")+'</td><td>'+esc(r.it.c)+'</td><td>'+fd(r.it.f)+'</td><td class="n">'+mx.format(r.it.m)+'</td><td><button class="d rcgQ" data-s="'+attr(r.s.id)+'" data-i="'+attr(r.it.id)+'">Cancelar</button></td></tr>'}).join(""):'<tr><td colspan="6" class="hint">Aún no se aplica ningún recargo ni descuento.</td></tr>';
+  }
+}
+async function rcgAplica(tipo){
+  var clase=tipo==="rec"?".rcg1":".rcg2",ch=Array.prototype.slice.call(document.querySelectorAll(clase)).filter(function(x){return x.checked});
+  if(!ch.length){rcgMsg("Marca al menos una fila.");return}
+  var fuente=tipo==="rec"?RCC.mora:RCC.pp,por={};
+  ch.forEach(function(x){var k=x.dataset.k.split("|"),r=fuente.find(function(y){return y.s.id===k[0]&&y.cid===k[1]});if(!r)return;
+    (por[k[0]]=por[k[0]]||[]).push({id:uid()+uid(),tipo:tipo,cid:r.cid,c:(tipo==="rec"?"Recargo por mora: ":"Descuento por pronto pago: ")+r.c,m:r.m,f:today()})});
+  var ids=Object.keys(por),n=0;
+  try{
+    for(var j=0;j<ids.length;j++){var sid=ids[j],doc={items:(((REC[sid]&&REC[sid].items)||[]).concat(por[sid]))};await DBH.doc("recargos/"+sid).set(doc);REC[sid]=doc;n+=por[sid].length}
+    rebuild();rcgRender();rcgMsg(n+(tipo==="rec"?" recargos aplicados.":" descuentos aplicados."),true);
+  }catch(e){rcgMsg("No se pudo guardar: "+((e&&e.message)||"error"));rebuild();rcgRender()}
+}
+function abreRc(){if(ROL!=="admin")return;RCTAB=1;rcgMsg("");rcgRender();if(!$("dRcg").open)$("dRcg").showModal()}
+$("bRcg").onclick=abreRc;$("rcgCls").onclick=function(){$("dRcg").close()};
+[1,2,3,4].forEach(function(i){$("rcgT"+i).onclick=function(){RCTAB=i;rcgMsg("");rcgRender()}});
+$("rcgB1").oninput=$("rcgB2").oninput=$("rcgB3").oninput=rcgRender;
+$("rcgA1").onchange=function(){var v=this.checked;document.querySelectorAll(".rcg1").forEach(function(x){x.checked=v})};
+$("rcgA2").onchange=function(){var v=this.checked;document.querySelectorAll(".rcg2").forEach(function(x){x.checked=v})};
+$("rcgGo1").onclick=function(){rcgAplica("rec")};$("rcgGo2").onclick=function(){rcgAplica("desc")};
+$("rcgTb3").onclick=async function(e){
+  var b=e.target.closest(".rcgQ");if(!b)return;
+  var sid=b.dataset.s,doc={items:((REC[sid]&&REC[sid].items)||[]).filter(function(i){return i.id!==b.dataset.i})};
+  try{await DBH.doc("recargos/"+sid).set(doc);REC[sid]=doc;rebuild();rcgRender();rcgMsg("Cancelado: la cuenta del alumno vuelve a su monto anterior.",true)}catch(er){rcgMsg("No se pudo cancelar: "+((er&&er.message)||"error"))}
+};
+$("rcgGuarda").onclick=async function(){
+  var n=function(id,a,b){var v=Number($(id).value);return isFinite(v)&&$(id).value!==""&&v>=a&&v<=b?v:null};
+  var d=n("rcgDia",1,28),v=n("rcgVal",0,100000),pp=n("rcgPp",0,100),pd=n("rcgPpD",1,28),t=$("rcgTipo").value;
+  if(d==null||v==null||pp==null||pd==null){rcgMsg("Revisa los valores: los días van de 1 a 28 y el porcentaje de 0 a 100.");return}
+  if(t==="pct"&&v>100){rcgMsg("El recargo no puede pasar de 100 %.");return}
+  var doc={diaLimite:d,rec:{tipo:t,valor:v},pp:{pct:pp,dia:pd}};
+  try{await DBH.doc("recargos/_config").set(doc);REC._config=doc;rcgMsg("Ajustes guardados.",true)}catch(e){rcgMsg("No se pudo guardar: "+((e&&e.message)||"error"))}
+};
+
 
 $("sAdd").onclick=async function(){
   if(ROL==="consulta"||!cur)return;
@@ -3245,6 +3578,7 @@ function hbFunciones(){
   if(!(APP&&APP.rol==="alumno")){F("Calendario de eventos","agenda fechas actividades eventos examenes vacaciones juntas dias inhabiles festivos",true,function(){abreCal()});F("Nuevo evento del calendario","agregar cargar evento fecha actividad agenda",calPuede(),function(){abreCal(true)})}
   F("Costos y planes","precios colegiatura inscripcion credencial costo tarifa plan",pp&&adm,function(){ir("pagos");vista("al");hbClic("bPl")});
   F("Cobranza y avisos","adeudos recordatorios cobrar mora bloqueo",pp&&adm,function(){ir("pagos");vista("al");hbClic("bCob")});
+  F("Recargos y pronto pago","recargo mora descuento pronto pago penalizacion",pp&&adm,function(){ir("pagos");vista("al");hbClic("bRcg")});
   F("Estado de cuenta general (PDF)","reporte general alumnos",pp,function(){ir("pagos");vista("al");hbClic("bGen")});
   F("Nuevo alumno","alta agregar registrar alumno",pp&&adm,function(){ir("pagos");vista("al");hbClic("bNew")});
   F("Cargar pagos anteriores de colegiaturas y reinscripciones","historial pagos pasados anteriores previos antes de la plataforma al corriente pagado hasta inscripcion reinscripcion colegiatura cargar migrar",pp&&adm,function(){abreHc(null,1)});
@@ -3256,6 +3590,9 @@ function hbFunciones(){
    ["D","Control escolar · Docentes","maestros profesores expediente contrato foto acceso",pe],["N","Control escolar · Constancias","constancia estudios promedio cobrar",pe||pc],["H","Control escolar · Calificaciones anteriores","historial importar kardex",ee],
    ["S","Control escolar · Solicitudes de alumnos","solicitud tramite portal",ee],["T","Control escolar · Títulos en resguardo","certificado resguardo acta entrega",pe],["V","Control escolar · Evaluación docente","evaluar docentes maestros profesores encuesta resultados desempeño calificacion alumnos opinion",pe]
   ].forEach(function(x){F(x[1],x[2],x[3],function(){ir("esc");etab(x[0])})});
+  F("Servicio social y prácticas profesionales","servicio social practicas profesionales horas liberacion",pe,function(){ir("esc");etab("O")});
+  F("Seguimiento de egresados","egresados empleo seguimiento contacto bolsa de trabajo",pe,function(){ir("esc");etab("Y")});
+  F("Estadística 911","911 estadistica sep matricula formato reporte",pe,function(){ir("esc");etab("X")});
   F("Cierre de ciclo","cerrar cuatrimestre periodo promover alumnos bloquear calificaciones",ee,function(){ir("esc");etab("G");hbClic("ccAbre")});
   var vistos={};L=L.reverse().filter(function(x){if(vistos[x.t])return false;vistos[x.t]=1;return true}).reverse();   /* si una función fija repite el título de un módulo, manda la fija (trae más palabras clave) */
   return L;
@@ -3335,7 +3672,7 @@ function etab(t){
   var pe=permiso("escolar")!=="none",pc=permiso("constancias")!=="none";
   if(!pe&&pc)t="N";
   if(pe&&(t==="R"||t==="H"||t==="S"||t==="B")&&permiso("escolar")!=="editar")t="A";
-  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S","T","B","V"].forEach(function(k){$("e"+k).hidden=k!==t});if(t==="B")bjCarga();if(t==="V")EVR=null;
+  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S","T","B","V","O","Y","X"].forEach(function(k){$("e"+k).hidden=k!==t});if(t==="B")bjCarga();if(t==="V")EVR=null;
   var rt=t==="N"?mayorRol(efectivoRol("escolar"),efectivoRol("constancias")):efectivoRol("escolar");if(MOD==="esc"&&rt&&rt!==ROL)setRol(rt);
   Array.prototype.forEach.call($("eTabs").querySelectorAll("button"),function(b){
     var k=b.dataset.et;b.className=k===t?"p":"";
@@ -3344,7 +3681,7 @@ function etab(t){
   renderEsc();
 }
 $("eTabs").onclick=function(e){var t=e.target.dataset.et;if(t)etab(t)};
-function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="B")renderBj();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="T")renderRes();else if(ETAB==="V")renderEv();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
+function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="B")renderBj();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="T")renderRes();else if(ETAB==="V")renderEv();else if(ETAB==="O")renderPrac();else if(ETAB==="Y")renderSeg();else if(ETAB==="X")renderE911();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
 /* ---- Alumnos ---- */
 function renderAl(){
   setOpts($("ap"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
@@ -3437,7 +3774,34 @@ $("dcTb").onclick=async function(e){
 /* ---- Calendario escolar (asignaturas, docentes y horarios) ---- */
 $("mDias").innerHTML=DIAS.map(function(d){return '<label style="flex-direction:row;align-items:center;gap:4px;color:var(--ink)"><input type="checkbox" value="'+d+'" style="width:auto"> '+d+'</label>'}).join("");
 var MPERSET=false;
+/* Choques de horario: mismo periodo y bloque, horas que se traslapan, y el mismo docente, la misma aula o el mismo grupo (plan y cuatrimestre) */
+function hMin(t){var m=/^(\d{1,2}):(\d{2})$/.exec(t||"");return m?(+m[1])*60+(+m[2]):null}
+function mismoGrupoMat(a,b){
+  function pares(m){return [[m.plan,String(m.cuat)]].concat(fusDe(m).map(function(f){return [f.plan,String(f.cuat)]}))}
+  var A=pares(a),B=pares(b);return A.some(function(x){return B.some(function(y){return x[0]===y[0]&&x[1]===y[1]})});
+}
+function choques(solo){
+  var K=Object.keys(MAT).filter(function(k){var m=MAT[k];return m&&m.per&&hMin(m.ini)!==null&&hMin(m.fin)!==null&&hMin(m.fin)>hMin(m.ini)}),out=[],i,j;
+  for(i=0;i<K.length;i++)for(j=i+1;j<K.length;j++){
+    var a=MAT[K[i]],b=MAT[K[j]];
+    if(a.per!==b.per||(solo&&K[i]!==solo&&K[j]!==solo))continue;
+    var ba=blDe(a),bb=blDe(b);if(ba&&bb&&ba!==bb)continue;
+    if(!(hMin(a.ini)<hMin(b.fin)&&hMin(b.ini)<hMin(a.fin)))continue;
+    var d=[];
+    if(a.docId&&a.docId===b.docId)d.push({t:"Docente",quien:(DOC[a.docId]&&DOC[a.docId].nombre)||"Docente"});
+    var au=nz(a.aula||"").replace(/\s+/g," ").trim();if(au&&au===nz(b.aula||"").replace(/\s+/g," ").trim())d.push({t:"Aula",quien:a.aula});
+    if(mismoGrupoMat(a,b))d.push({t:"Grupo",quien:a.plan+" · cuatrimestre "+a.cuat});
+    d.forEach(function(x){out.push({t:x.t,quien:x.quien,a:K[i],b:K[j],per:a.per})});
+  }
+  return out;
+}
+function choqTxt(c){var a=MAT[c.a],b=MAT[c.b];return c.t+" «"+c.quien+"»: "+a.nom+" ("+a.plan+", "+a.ini+"–"+a.fin+") y "+b.nom+" ("+b.plan+", "+b.ini+"–"+b.fin+") se traslapan en "+c.per+"."}
+function renderChoq(){
+  var c=$("mChoq");if(!c)return;var L=choques();
+  c.innerHTML=L.length?'<div class="mod" style="cursor:default;border-color:var(--warn);margin:12px 0"><b>⚠ '+L.length+(L.length===1?" choque de horario":" choques de horario")+'</b><span>Estas asignaturas se traslapan en el mismo periodo. Corrige la hora, el aula o el docente en el calendario.</span><ul style="margin:6px 0 0;padding-left:18px">'+L.slice(0,30).map(function(x){return '<li>'+esc(choqTxt(x))+'</li>'}).join("")+(L.length>30?'<li>… y '+(L.length-30)+' más</li>':'')+'</ul></div>':'';
+}
 function renderMat(){
+  renderChoq();
   var po=periodos(),per=perAct();
   setOpts($("mPer"),po.map(function(p){return '<option>'+esc(p)+'</option>'}).join(""));
   if(!MPERSET){$("mPer").value=per;MPERSET=true}
@@ -4428,7 +4792,7 @@ async function borraAlumno(sid){
   for(var k in GRP){var g=GRP[k];if((g.alumnos||[]).indexOf(sid)>-1){var nd=Object.assign({},g,{alumnos:g.alumnos.filter(function(x){return x!==sid})});await DBH.doc("grupos/"+k).set(nd);GRP[k]=nd}}
   var ac=acDe(sid);for(var i=0;i<ac.length;i++){await DBH.doc("acuerdos/"+ac[i].id).delete();delete ACU[ac[i].id]}
   var ju=Object.keys(JUS).filter(function(k){return JUS[k].sid===sid});for(var q=0;q<ju.length;q++){var jd=JUS[ju[q]];await DBH.doc("justificantes/"+jd.id).delete();if(jd.doc)pdfs.push(jd.doc.id);delete JUS[jd.id]}
-  var cols=[["ledger",LG],["fotos",FOT],["calif",CAL],["constancias",CONS],["egresados",EGR]];
+  var cols=[["ledger",LG],["fotos",FOT],["calif",CAL],["constancias",CONS],["recargos",REC],["practicas",PRC],["seguim",SEG],["egresados",EGR]];
   for(var j=0;j<cols.length;j++){await DBH.doc(cols[j][0]+"/"+sid).delete();delete cols[j][1][sid]}
   await DBH.doc("students/"+sid).delete();delete ST[sid];
   if(pdfs.length){try{if(await assetsLib())pdfs.forEach(function(id){ASSETS.delete(id).catch(function(){})})}catch(e){}}
@@ -4477,7 +4841,24 @@ function misClases(){
   ofs.forEach(function(m){if(!usados[m.id])out.push({per:m.per,plan:m.plan,cuat:m.cuat,nom:m.nom,ses:null,m:m})});
   return out.sort(function(a,b){return po.indexOf(b.per)-po.indexOf(a.per)||String(a.plan).localeCompare(String(b.plan))||ordPlan(a,b)});
 }
+var EVDD=null,EVDDB=false;
+async function evdDocCarga(){EVDDB=true;try{var r=await cbApi("GET","/api/evaldoc/docente");EVDD=r.ok?r.j:{materias:[],minimo:3}}catch(e){EVDD={materias:[],minimo:3}}EVDDB=false;if(ROL==="docente")evdDocRender()}
+function evdDocRender(){
+  var c=$("dmEv");if(!c)return;if(ROL!=="docente"||!EVDD||!EVDD.materias.length){c.innerHTML="";return}
+  c.innerHTML='<h2 style="margin:18px 0 4px">Cómo te evaluaron tus alumnos</h2><p class="hint" style="margin:0 0 8px">La evaluación es anónima. Por privacidad solo se muestran los resultados de una asignatura cuando ya contestaron al menos '+EVDD.minimo+' alumnos. Promedios de 1 a 5.</p>'+
+   EVDD.materias.map(function(m){
+    var h='<details class="mod" style="cursor:default;margin-bottom:8px"><summary style="cursor:pointer"><b>'+esc(m.nom)+'</b> <span class="hint">· '+esc(m.plan||"")+(m.cuat?" · cuatrimestre "+esc(m.cuat):"")+" · "+esc(m.per||"")+" · "+m.n+(m.n===1?" respuesta":" respuestas")+'</span>'+(m.oculto?'':' <b style="float:right">'+evdFmt(m.gen)+' / 5</b>')+'</summary>';
+    if(m.oculto)return h+'<p class="hint">Todavía no hay suficientes respuestas para mostrar el resultado.</p></details>';
+    EVD_SEC.forEach(function(s,si){
+      h+='<h3 class="evd-h">'+esc(s.t)+' <span class="hint">· promedio '+evdFmt(evdProm(m.asp.slice(si*4,si*4+4)))+'</span></h3>';
+      s.a.forEach(function(a,ai){var p=m.asp[si*4+ai];h+='<div class="evr-f"><span>'+esc(a)+'</span><span class="evr-b"><i style="width:'+Math.round(p*20)+'%"></i></span><b>'+evdFmt(p)+'</b></div>'});
+    });
+    [["fort","Fortalezas que reconocen"],["mej","Aspectos por mejorar"],["com","Comentarios"]].forEach(function(k){var t=m[k[0]]||[];if(t.length)h+='<h3 class="evd-h">'+k[1]+'</h3><ul class="evr-c">'+t.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>'});
+    return h+'</details>';
+  }).join("");
+}
 function renderDm(){
+  if(ROL==="docente"&&EVDD===null&&!EVDDB)evdDocCarga();else if(ROL==="docente")evdDocRender();
   if(ROL!=="docente"){$("dmL").innerHTML="";return}
   var L=misClases(),d=DOC[miDoc()];
   $("dmSub").textContent=(d?d.nombre+" · ":"")+L.length+(L.length===1?" asignatura asignada":" asignaturas asignadas");
@@ -6220,7 +6601,7 @@ function verCred(sid,vig,code){
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
 /* ===== Respaldo completo (datos y archivos) ===== */
-var BKCOL=["agenda","students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas","bajas","checadas","asistpers"];
+var BKCOL=["agenda","students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","cortes","constancias","recargos","practicas","seguim","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas","bajas","checadas","asistpers"];
 var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioR","meta/folioRC","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT","meta/folioCH"];
 var BKLAST=null;
 function leeCol(n){
@@ -7468,7 +7849,7 @@ function renderPor(){
   var pagos=(s.pagos||[]).slice().sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))||String(b.folio).localeCompare(String(a.folio))}),A=alloc(s);
   var h='<p class="sub">Hola, <b>'+esc(s.nombre)+'</b>. Aquí puedes consultar tu información académica y el registro de tus pagos.</p>'+
    notifPor()+calPorHTML()+'<h2 style="margin-top:16px">Mis datos</h2><div class="row">'+datos.filter(function(x){return x[1]}).map(function(x){return '<label>'+esc(x[0])+'<b style="color:var(--ink);font-weight:600">'+esc(x[1])+'</b></label>'}).join("")+'</div>'+
-   '<h2 style="margin-top:16px">Mis materias y docentes'+(g?' · cuatrimestre '+esc(g.cuat)+'':'')+'</h2>'+
+   pracPorHTML(s)+'<h2 style="margin-top:16px">Mis materias y docentes'+(g?' · cuatrimestre '+esc(g.cuat)+'':'')+'</h2>'+
    (mats.length?evdAviso(mats)+'<div class="wrap"><table style="min-width:760px"><thead><tr><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Aula</th><th>Evaluación</th><th>Evaluar al docente</th></tr></thead><tbody>'+mats.map(function(m){var d=DOC[m.docId];return '<tr><td>'+esc((matParaPlan(m,g.plan)||m).nom)+(fusDe(m).length?'<br><span class="hint">Clase compartida con otra licenciatura</span>':'')+'</td><td>'+(d?esc(d.nombre)+(d.esp?'<br><span class="hint">'+esc(d.esp)+'</span>':''):'<span class="hint">Por asignar</span>')+'</td><td>'+esc(hor(m))+'</td><td>'+esc(m.aula||"")+'</td><td>'+(m.ev?esc(fd(m.ev)):'—')+'</td><td>'+evdCelda(m)+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Todavía no hay materias registradas para tu grupo.</p>')+
    '<h2 style="margin-top:16px">Mis calificaciones</h2>'+
    (ps.length?'<div class="bar"><select id="poPer" aria-label="Periodo" style="width:auto">'+ps.map(function(p){return '<option value="'+attr(p)+'"'+(p===per?' selected':'')+'>'+esc(etiquetaPer(s.id,p))+'</option>'}).join("")+'</select><button id="poBol">Boleta (PDF)</button></div><div id="poCal"></div>':'<p class="hint">Aún no tienes calificaciones capturadas.</p>')+
@@ -10877,8 +11258,8 @@ $("usL").onclick=async function(e){
     else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN}).catch(function(){});
     rebuild();
   },onErr);
-  [["agenda",function(d){AGN=d;if($("dCal").open)calRender();calHomeS();if(APP&&APP.rol==="alumno"&&typeof renderPor==="function"&&MOD==="por")renderPor()}],["checadas",function(d){CHK=d;if($("dAP").open)renderAP();refrescaNominasAP()}],["asistpers",function(d){APC=d.cfg||{};if($("dAP").open&&APTAB!==3)renderAP();refrescaNominasAP()}],["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["bajas",function(d){BAJ=d;if(MOD==="esc"&&ETAB==="B"&&!$("dBj").open)renderBj();var n=bjPend();if($("bjN")){$("bjN").hidden=!n;$("bjN").textContent=n}}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({id:k},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
-    DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(typeof ntProgramar==="function")ntProgramar();if(c[0]==="calif"||c[0]==="constancias")render();if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
+  [["agenda",function(d){AGN=d;if($("dCal").open)calRender();calHomeS();if(APP&&APP.rol==="alumno"&&typeof renderPor==="function"&&MOD==="por")renderPor()}],["checadas",function(d){CHK=d;if($("dAP").open)renderAP();refrescaNominasAP()}],["asistpers",function(d){APC=d.cfg||{};if($("dAP").open&&APTAB!==3)renderAP();refrescaNominasAP()}],["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["bajas",function(d){BAJ=d;if(MOD==="esc"&&ETAB==="B"&&!$("dBj").open)renderBj();var n=bjPend();if($("bjN")){$("bjN").hidden=!n;$("bjN").textContent=n}}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["recargos",function(d){REC=d}],["practicas",function(d){PRC=d;if(MOD==="esc"&&ETAB==="O"&&!$("dPr").open)renderPrac();if(MOD==="por")renderPor()}],["seguim",function(d){SEG=d;if(MOD==="esc"&&ETAB==="Y"&&!$("dSg").open)renderSeg()}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({id:k},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+    DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(typeof ntProgramar==="function")ntProgramar();if(c[0]==="calif"||c[0]==="constancias"||c[0]==="recargos"){if(c[0]==="recargos")rebuild();render();if($("dRcg").open)rcgRender()}if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
   DBH.collection("gastos").onSnapshot(function(s){G={};s.docs.forEach(function(d){G[d.id]=d.data()});if(!$("vGa").hidden)renderCaja()},onErr);
   DBH.collection("cortes").onSnapshot(function(s){CT={};s.docs.forEach(function(d){CT[d.id]=d.data()});if(!$("vGa").hidden){if(!cDirty)cargaCierre();renderCaja()}},onErr);

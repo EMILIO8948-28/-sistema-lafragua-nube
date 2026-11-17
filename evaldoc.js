@@ -71,6 +71,19 @@ function crea(ctx) {
   }
   /* Respuestas sin ningún dato del alumno: las lee Control escolar */
   function resultados() { return q.lista.all('evdoc').map(r => { try { return JSON.parse(r.data); } catch (e) { return null; } }).filter(Boolean); }
-  return { cfg, guardaCfg, mias, envia, resultados, NSEC, NASP };
+  /* Resultados de un docente (los suyos): solo asignaturas con al menos MIN respuestas, para que nadie pueda adivinar quién contestó */
+  const MIN = 3;
+  function paraDocente(docId) {
+    const por = {}; resultados().filter(x => x.docId === docId).forEach(x => { (por[x.mid] = por[x.mid] || []).push(x); });
+    const prom = L => L.length ? L.reduce((t, v) => t + v, 0) / L.length : 0;
+    return { minimo: MIN, materias: Object.keys(por).map(mid => {
+      const R = por[mid], b = R[0], n = R.length;
+      if (n < MIN) return { mid, nom: b.nom, plan: b.plan, cuat: b.cuat, per: b.per, n, oculto: true };
+      const asp = []; for (let i = 0; i < NSEC * NASP; i++) asp.push(prom(R.map(x => x.r[i])));
+      const com = k => R.map(x => x[k]).filter(Boolean);
+      return { mid, nom: b.nom, plan: b.plan, cuat: b.cuat, per: b.per, n, gen: prom(R.map(x => x.g)), asp, fort: com('fort'), mej: com('mej'), com: com('com') };
+    }) };
+  }
+  return { cfg, guardaCfg, mias, envia, resultados, paraDocente, clave: laClave, NSEC, NASP };
 }
 module.exports = { crea };

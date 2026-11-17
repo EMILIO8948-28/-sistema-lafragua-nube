@@ -27,6 +27,8 @@ if (!origen || !fs.existsSync(origen)) sal('Indica el archivo de respaldo. Ejemp
     for (const f of ['lafragua.db', 'lafragua.db-wal', 'lafragua.db-shm']) { const p = path.join(datos, f); if (fs.existsSync(p)) fs.renameSync(p, p + '.antes-' + marca); }
     fs.mkdirSync(path.join(datos, 'archivos'), { recursive: true });
     R.extraeEntrada(z, z.entradas.find(e => e.nombre === 'lafragua.db'), path.join(datos, 'lafragua.db'));
+    const ek = z.entradas.find(e => e.nombre === 'evdoc.key');
+    if (ek) { const kp = path.join(datos, 'evdoc.key'); if (fs.existsSync(kp)) fs.renameSync(kp, kp + '.antes-' + marca); R.extraeEntrada(z, ek, kp); try { fs.chmodSync(kp, 0o600); } catch (e) {} }
     let n = 0; for (const e of z.entradas) { const m = /^archivos\/([0-9a-f]{32})-/.exec(e.nombre); if (m) { R.extraeEntrada(z, e, path.join(datos, 'archivos', m[1])); n++; } }
     console.log('Listo: se restauraron la base de datos y ' + n + ' archivos en ' + datos + '.');
     console.log('Notas: las contraseñas iniciales de alumnos que se guardaban cifradas ya no se podrán ver (se pueden restablecer), y deberás volver a escribir las llaves de respaldos (almacenamiento y correo) en «Respaldos y seguridad».');

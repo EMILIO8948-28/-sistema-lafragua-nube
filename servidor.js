@@ -153,14 +153,14 @@ const listaUsuarios = () => q.usrs.all().map(x => publicoUsuario(x));
    Cada usuario tiene un nivel por módulo: "ver" (solo lectura) o "editar" (lectura y escritura).
    L = colecciones que lee; E = colecciones que además escribe cuando el nivel es "editar". */
 const MODULOS = {
-  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'cobranza', 'avisos', 'acuerdo286', 'fiscal', 'facturas'], E: ['ledger', 'meta', 'constancias'], plans: true },
+  pagos:        { L: ['students', 'ledger', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'egresados', 'constancias', 'recargos', 'cobranza', 'avisos', 'acuerdo286', 'fiscal', 'facturas'], E: ['ledger', 'meta', 'constancias', 'recargos'], plans: true },
   corte:        { L: ['gastos', 'cortes', 'ledger', 'students'], E: ['gastos', 'cortes'], plans: true },
-  estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'egresados'], E: [], plans: true, nomina: true },
+  estado:       { L: ['students', 'ledger', 'gastos', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'recargos', 'egresados'], E: [], plans: true, nomina: true },
   ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
-  inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
-  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'resguardos', 'ciclos', 'bajas'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
-  constancias:  { L: ['constancias', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
-  acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
+  inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias', 'recargos'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
+  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'recargos', 'practicas', 'seguim', 'justificantes', 'ledger', 'resguardos', 'ciclos', 'bajas'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'practicas', 'seguim', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
+  constancias:  { L: ['constancias', 'recargos', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
+  acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias', 'recargos'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
   a286:         { L: ['acuerdo286', 'resguardos286'], E: ['acuerdo286', 'meta', 'resguardos286'], archivos: true },
   titulaciones: { L: ['titulaciones'], E: ['titulaciones', 'meta'], archivos: true },
   nomina_doc:   { L: ['nomina', 'docentes', 'materias', 'checadas', 'asistpers'], E: ['nomina', 'meta', 'checadas', 'asistpers'], nomina: true, nominaE: true },
@@ -205,7 +205,7 @@ function filtraAlumno(s, col, id, data, ctx) {
   switch (col) {
     case 'students': { if (id !== sid) return null; const o = {}; CAMPOS_ALUMNO.forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
     case 'ledger': { if (id !== sid) return null; return { pagos: (data.pagos || []).map(g => { const o = Object.assign({}, g); delete o.by; delete o.confPor; return o; }) }; }
-    case 'calif': case 'constancias': case 'egresados': case 'fotos': return id === sid ? data : null;
+    case 'calif': case 'constancias': case 'egresados': case 'fotos': case 'recargos': case 'practicas': return id === sid ? data : null;
     case 'solicitudes': case 'avisos': case 'facturas': return data.sid === sid ? data : null;
     case 'fiscal': return id === sid ? data : null;
     case 'justificantes': { if (data.sid !== sid || data.estado !== 'Aprobado') return null; const o = {}; ['id', 'num', 'sid', 'nombre', 'mat', 'plan', 'sexo', 'grupo', 'fecha', 'desde', 'hasta', 'motivo', 'estado', 'solicitud'].forEach(k => { if (data[k] !== undefined) o[k] = data[k]; }); return o; }
@@ -218,7 +218,7 @@ function filtraAlumno(s, col, id, data, ctx) {
   }
 }
 function eventoAlumno(s, c, id) {
-  if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos'].includes(c)) return id === s.alumno;
+  if (['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'recargos', 'practicas'].includes(c)) return id === s.alumno;
   if (c === 'fiscal') return id === s.alumno;
   if (c === 'solicitudes' || c === 'justificantes' || c === 'avisos' || c === 'facturas') { const r = q.uno.get(c, id || ''); if (!r) return false; try { return JSON.parse(r.data).sid === s.alumno; } catch (e) { return false; } }
   if (['grupos', 'materias', 'docentes', 'catalogo', 'agenda'].includes(c)) return true;
@@ -233,6 +233,50 @@ function validaAjustes(e) {
   if (typeof e.pagoOn !== 'boolean') return 'Indica si se muestran los días de pago.';
   if (!dia(e.pagoIni) || !dia(e.pagoFin)) return 'Los días de pago deben ser números del 1 al 31.';
   if (e.pagoIni > e.pagoFin) return 'El primer día de pago no puede ser posterior al último.';
+  return '';
+}
+/* Servicio social y prácticas profesionales: un documento por alumno con sus programas y las horas registradas */
+function validaPracticas(d) {
+  if (!d || typeof d !== 'object' || !Array.isArray(d.items) || d.items.length > 20) return 'Lista no válida.';
+  const f = v => v === '' || v == null || /^\d{4}-\d{2}-\d{2}$/.test(v), t = (v, n) => v == null || (typeof v === 'string' && v.length <= n);
+  for (const i of d.items) {
+    if (!i || typeof i.id !== 'string' || !/^[\w-]{1,40}$/.test(i.id) || !['ss', 'pp'].includes(i.tipo)) return 'Un programa no es válido.';
+    if (!['en curso', 'liberado', 'cancelado'].includes(i.estado)) return 'Estado no válido.';
+    if (typeof i.horasReq !== 'number' || !(i.horasReq >= 0) || i.horasReq > 5000) return 'Las horas requeridas no son válidas.';
+    if (!f(i.inicio) || !f(i.fin) || !f(i.liberacion) || !t(i.inst, 160) || !t(i.resp, 120) || !t(i.obs, 800) || !t(i.proyecto, 200)) return 'Datos no válidos.';
+    if (!Array.isArray(i.registros) || i.registros.length > 600) return 'Registros no válidos.';
+    for (const r of i.registros) if (!r || typeof r.id !== 'string' || !/^[\w-]{1,40}$/.test(r.id) || !f(r.f) || !r.f || typeof r.h !== 'number' || !(r.h > 0) || r.h > 24 || !t(r.act, 300)) return 'Un registro de horas no es válido.';
+    if (i.estado === 'liberado' && i.registros.reduce((a, r) => a + r.h, 0) + 1e-9 < i.horasReq) return 'No se puede liberar con menos horas de las requeridas.';
+  }
+  return '';
+}
+/* Seguimiento de egresados: contactos con el egresado y su situación laboral o de estudios */
+function validaSeguim(d) {
+  if (!d || typeof d !== 'object' || !Array.isArray(d.contactos) || d.contactos.length > 100) return 'Lista no válida.';
+  const t = (v, n) => v == null || (typeof v === 'string' && v.length <= n);
+  for (const c of d.contactos) {
+    if (!c || typeof c.id !== 'string' || !/^[\w-]{1,40}$/.test(c.id) || !/^\d{4}-\d{2}-\d{2}$/.test(c.f || '')) return 'Un contacto no es válido.';
+    if (!['Teléfono', 'Correo', 'WhatsApp', 'Presencial', 'Encuesta'].includes(c.medio)) return 'Medio de contacto no válido.';
+    if (!['Trabaja en su área', 'Trabaja en otra área', 'Estudia posgrado', 'Trabaja y estudia', 'Busca empleo', 'Sin dato'].includes(c.situacion)) return 'Situación no válida.';
+    if (!t(c.empresa, 160) || !t(c.puesto, 120) || !t(c.estudios, 160) || !t(c.nota, 800)) return 'Datos no válidos.';
+    if (c.ingreso != null && (typeof c.ingreso !== 'number' || c.ingreso < 0 || c.ingreso > 10000000)) return 'Ingreso no válido.';
+  }
+  return '';
+}
+function validaRecargos(id, d) {
+  if (!d || typeof d !== 'object') return 'Datos no válidos.';
+  if (id === '_config') {
+    const n = (v, a, b) => typeof v === 'number' && v >= a && v <= b;
+    if (!d.rec || !d.pp) return 'Faltan los ajustes.';
+    if (!n(d.diaLimite, 1, 28) || !n(d.rec.valor, 0, 100000) || !['pct', 'fijo'].includes(d.rec.tipo) || !n(d.pp.pct, 0, 100) || !n(d.pp.dia, 1, 28)) return 'Ajustes no válidos.';
+    if (d.rec.tipo === 'pct' && d.rec.valor > 100) return 'El recargo no puede pasar de 100 %.';
+    return '';
+  }
+  if (!Array.isArray(d.items) || d.items.length > 300) return 'Lista no válida.';
+  for (const i of d.items) {
+    if (!i || typeof i.id !== 'string' || !/^[\w-]{1,40}$/.test(i.id) || !['rec', 'desc'].includes(i.tipo) || typeof i.c !== 'string' || i.c.length > 160 || typeof i.m !== 'number' || !(i.m > 0) || i.m > 100000) return 'Un recargo o descuento no es válido.';
+    if (i.tipo === 'desc' && !/^[\w-]{1,40}$/.test(String(i.cid || ''))) return 'Falta el cargo del descuento.';
+  }
   return '';
 }
 function validaEvento(e) {
@@ -557,6 +601,7 @@ async function creaPaquete() {
   const usuarios = d.prepare('SELECT COUNT(*) AS n FROM usuarios').get().n, registrosArchivos = d.prepare('SELECT COUNT(*) AS n FROM archivos').get().n, archs = d.prepare('SELECT id, nombre FROM archivos ORDER BY id').all(); d.close();
   const entradas = [{ nombre: 'lafragua.db', ruta: tdb }], man = { version: 1, sistema: 'lafragua', fecha: new Date().toISOString(), filas, usuarios, registrosArchivos, sha256Db: await RESPA.shaArchivo(tdb), archivos: [] };
   for (const a of archs) { const ruta = path.join(ARCH, a.id); if (!fs.existsSync(ruta)) continue; const ent = 'archivos/' + a.id + '-' + String(a.nombre || 'archivo').replace(/[^\w.\- áéíóúñÁÉÍÓÚÑ]/g, '_'); entradas.push({ nombre: ent, ruta }); man.archivos.push({ id: a.id, entrada: ent, tam: fs.statSync(ruta).size, crc: await crcRuta(ruta) }); }
+  entradas.push({ nombre: 'evdoc.key', datos: Buffer.from(EVD.clave() + '\n') }); /* sin esta clave, tras restaurar un alumno podría evaluar otra vez a un docente */
   entradas.push({ nombre: 'manifest.json', datos: Buffer.from(JSON.stringify(man)) });
   const w = await RESPA.escribeZip(destino, entradas); return { nombre, destino, tdb, bytes: w.bytes };
 }
@@ -794,7 +839,7 @@ async function api(req, res, partes) {
   }
   if (tipo === 'col' && m === 'GET' && NOMBRE_OK.test(a || '')) {
     if (s.rol === 'alumno') {
-      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes', 'avisos', 'facturas', 'fiscal'].includes(a)) return responde(res, 200, { docs: [] });
+      if (!eventoAlumno(s, a, null) && !['students', 'ledger', 'calif', 'constancias', 'egresados', 'fotos', 'recargos', 'practicas', 'grupos', 'materias', 'docentes', 'catalogo', 'solicitudes', 'justificantes', 'avisos', 'facturas', 'fiscal'].includes(a)) return responde(res, 200, { docs: [] });
       const ctx = contextoAlumno(s), docs = [];
       q.lista.all(a).forEach(r => { const d = filtraAlumno(s, a, r.id, JSON.parse(r.data), ctx); if (d) docs.push({ id: r.id, data: d }); });
       return responde(res, 200, { docs });
@@ -813,6 +858,8 @@ async function api(req, res, partes) {
       let cuerpo; try { cuerpo = JSON.parse((await leeCuerpo(req, 6 * 1024 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
       if (cuerpo === null || typeof cuerpo !== 'object' || Array.isArray(cuerpo)) return responde(res, 400, { error: 'Se esperaba un objeto' });
       let nuevo = cuerpo; if (m === 'PATCH') { const r = q.uno.get(a, b); nuevo = Object.assign(r ? JSON.parse(r.data) : {}, cuerpo); }
+      if (a === 'practicas' || a === 'seguim') { const er = a === 'practicas' ? validaPracticas(nuevo) : validaSeguim(nuevo); if (er) return responde(res, 400, { error: er }); }
+      if (a === 'recargos') { if (b === '_config' && s.rol !== 'admin') return responde(res, 403, { error: 'Solo el administrador cambia los ajustes de recargos.' }); const er = validaRecargos(b, nuevo); if (er) return responde(res, 400, { error: er }); }
       if (a === 'agenda') { const er = b === '_ajustes' ? validaAjustes(nuevo) : validaEvento(nuevo); if (er) return responde(res, 400, { error: er }); }
       if (s.rol !== 'admin') { const r1 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'PUT', col: a, id: b, viejo: r1 ? JSON.parse(r1.data) : null, nuevo })) return; }
       /* Planeaciones: quien las sube no puede aprobarlas; si cambia sus archivos, vuelven a revisión */
@@ -1038,6 +1085,7 @@ async function api(req, res, partes) {
         return responde(res, 403, { error: 'No permitido.' });
       }
       if (m === 'POST') return responde(res, 403, { error: 'Solo los alumnos evalúan a sus docentes.' });
+      if (rol === 'docente' && m === 'GET' && a === 'docente') return s.doc ? responde(res, 200, EVD.paraDocente(s.doc)) : responde(res, 403, { error: 'Tu usuario no está ligado a un docente.' });
       const ed = rol === 'admin' || nivel(s, 'escolar') === 'editar', ver = ed || nivel(s, 'escolar') !== 'none';
       if (!ver) return responde(res, 403, { error: 'No tienes permiso.' });
       if (m === 'GET' && a === 'resultados') return responde(res, 200, { cfg: EVD.cfg(), respuestas: EVD.resultados() });
@@ -1308,7 +1356,7 @@ const mesAnioC = (k, ing) => { const t = 8 + k - 1; return MESES_C[t % 12] + ' '
 const cicloMx = hoy => { const y = +hoy.slice(0, 4), m = +hoy.slice(5, 7); return m >= 9 ? y : y - 1; };
 function fechaLimiteCol(k, ing, dia) { const t = 8 + k - 1, y = ing + Math.floor(t / 12), m = (t % 12) + 1; return y + '-' + String(m).padStart(2, '0') + '-' + String(dia).padStart(2, '0'); }
 /* Misma regla de cargos que la pantalla: inscripción, reinscripciones, colegiaturas mensuales, titulación, extraordinarios y constancias (con beca) */
-function cargosAlumnoSrv(st, planes, EXTRA, cal, con, hoy) {
+function cargosAlumnoSrv(st, planes, EXTRA, cal, con, hoy, rec) {
   const P = (planes || []).find(p => p.k === st.programa) || null;
   let L = [];
   if (!P) L.push({ id: 'c0', c: 'Colegiatura', m: st.total || 0 });
@@ -1326,6 +1374,11 @@ function cargosAlumnoSrv(st, planes, EXTRA, cal, con, hoy) {
   (st.credCargos || []).forEach(x => L.push({ id: 'cr' + x.id, c: 'Credencial de estudiante (' + (x.motivo || 'primera') + ')', m: x.monto }));
   const b = st.beca;
   if (b && b.monto > 0) L = L.map(x => /^Colegiatura/.test(x.c) ? Object.assign({}, x, { m: Math.max(Math.round((x.m - b.monto) * 100) / 100, 0) }) : x);
+  const ri = (rec && rec.items) || [];   /* recargos por mora (cargos nuevos) y descuentos por pronto pago (reducen el cargo) */
+  if (ri.length) {
+    L = L.map(x => { const d = ri.filter(i => i.tipo === 'desc' && i.cid === x.id).reduce((t, i) => t + (Number(i.m) || 0), 0); return d ? Object.assign({}, x, { m: Math.max(Math.round((x.m - d) * 100) / 100, 0) }) : x; });
+    ri.filter(i => i.tipo === 'rec').forEach(i => L.push({ id: 'g' + i.id, c: i.c, m: Number(i.m) || 0 }));
+  }
   return L;
 }
 function restanteCargos(L, pagos) {
@@ -1348,7 +1401,7 @@ function acuerdoVigenteSrv(sid, hoy, pagos) {
 function adeudoDe(sid, hoy, cfg, pe) {
   const st = leeDoc('students', sid); if (!st) return null;
   const led = leeDoc('ledger', sid) || { pagos: [] }, cal = leeDoc('calif', sid) || { items: [] }, con = leeDoc('constancias', sid) || { items: [] };
-  const ing = st.ingreso || cicloMx(hoy), L = cargosAlumnoSrv(st, pe.planes, pe.extra, cal, con, hoy), rem = restanteCargos(L, led.pagos || []), meses = [];
+  const ing = st.ingreso || cicloMx(hoy), L = cargosAlumnoSrv(st, pe.planes, pe.extra, cal, con, hoy, leeDoc('recargos', sid)), rem = restanteCargos(L, led.pagos || []), meses = [];
   L.forEach((c, i) => { if (c.k && rem[i] > 0.004) { const v = fechaLimiteCol(c.k, ing, cfg.diaLimite); if (v < hoy) meses.push({ c: c.c, rem: Math.round(rem[i] * 100) / 100, vence: v }); } });
   return { st, pagos: led.pagos || [], n: meses.length, total: Math.round(meses.reduce((a, x) => a + x.rem, 0) * 100) / 100, meses };
 }
@@ -1427,7 +1480,7 @@ const baseUrlReq = req => { const h = String(req.headers['x-forwarded-host'] || 
 function pendientesSrv(sid) {
   const st = leeDoc('students', sid); if (!st) return null;
   const hoy = hoyMx(), pe = planesYExtra(), cfg = cobCfg(), led = leeDoc('ledger', sid) || { pagos: [] }, cal = leeDoc('calif', sid) || { items: [] }, con = leeDoc('constancias', sid) || { items: [] };
-  const ing = st.ingreso || cicloMx(hoy), L = cargosAlumnoSrv(st, pe.planes, pe.extra, cal, con, hoy), rem = restanteCargos(L, led.pagos || []), pend = [];
+  const ing = st.ingreso || cicloMx(hoy), L = cargosAlumnoSrv(st, pe.planes, pe.extra, cal, con, hoy, leeDoc('recargos', sid)), rem = restanteCargos(L, led.pagos || []), pend = [];
   L.forEach((c, i) => { if (rem[i] > 0.004) pend.push({ id: c.id, c: c.c, monto: Math.round(rem[i] * 100) / 100, vencido: !!(c.k && fechaLimiteCol(c.k, ing, cfg.diaLimite) < hoy) }); });
   return { st, hoy, pend };
 }
@@ -1444,7 +1497,8 @@ const CAP = require('./captacion.js').crea({ q, leeDoc, difunde, audita, avisaPr
 const cobPend = new Set(); let cobTodos = false, cobTimer = null;
 function cobHook(col, id) {
   try { BJ.hook(col, id); } catch (e) { console.error('Bajas:', e.message); }
-  if (!['ledger', 'students', 'calif', 'constancias', 'acuerdos', 'config', 'egresados'].includes(col)) return;
+  if (!['ledger', 'students', 'calif', 'constancias', 'recargos', 'acuerdos', 'config', 'egresados'].includes(col)) return;
+  if (col === 'recargos' && String(id).startsWith('_')) return;
   if (col === 'config') { if (id !== 'plans' && id !== 'cobranza') return; cobTodos = true; if (id === 'cobranza') cobUltimaCorrida = ''; }
   else if (col === 'acuerdos') { const a = leeDoc('acuerdos', id); if (a && a.sid) cobPend.add(a.sid); else cobTodos = true; }
   else cobPend.add(id);

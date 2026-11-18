@@ -50,6 +50,7 @@ with sync_playwright() as pw:
     hoy=datetime.date.today();viejo=(hoy-datetime.timedelta(days=10)).isoformat();futuro=(hoy+datetime.timedelta(days=30)).isoformat()
     C=lambda t,para,**k:dict({'titulo':t,'cuerpo':'Texto del comunicado '+t,'para':para,'importante':False,'hasta':'','activo':True,'fecha':hoy.isoformat(),'autor':'Esc Uno'},**k)
     DOC=lambda i:(ctx.request.get(B+'/api/doc/reinscripciones/'+i).json().get('data') or {})
+    DOCG=lambda i:(ctx.request.get(B+'/api/doc/grupos/'+i).json().get('data') or {})
     CFG=lambda **k:dict({'abierta':True,'periodo':'Ene–Abr 2027','desde':'','hasta':'','mensaje':'Confirma tu lugar','bloquea':True},**k)
     GET=lambda cx,p:cx.request.get(B+'/api/reinscripcion/'+p)
     POST=lambda cx,p,o:cx.request.post(B+'/api/reinscripcion/'+p,data=json.dumps(o),headers=HDR)
@@ -71,6 +72,13 @@ with sync_playwright() as pw:
     ok('solo_alumnos_responder_403',POST(P1,'responder',{'decision':'continuo'}).status==403)
     # ---- abierta ----
     ok('escolar_abre',raw(E1,'reinscripciones/_config',CFG()).status==200)
+    AVS=lambda:[v['data'] for v in ctx.request.get(B+'/api/col/avisos').json()['docs']]
+    TA='Reinscripción abierta: Ene–Abr 2027'
+    ok('abrir_avisa_a_los_4_alumnos',sorted(a['sid'] for a in AVS() if a['titulo']==TA)==['s1','s2','s3','s4'])
+    ok('aviso_apunta_al_portal',all('portal' in a['mensaje'] and 'Ene–Abr 2027' in a['mensaje'] for a in AVS() if a['titulo']==TA))
+    raw(E1,'reinscripciones/_config',CFG(mensaje='Otro texto'))
+    ok('guardar_de_nuevo_no_repite_aviso',len([a for a in AVS() if a['titulo']==TA])==4)
+    raw(E1,'reinscripciones/_config',CFG())
     e=GET(AL[0],'estado').json()
     ok('estado_abierta',e['abierta']==True and e['periodo']=='Ene–Abr 2027' and e['mensaje']=='Confirma tu lugar' and e['vencidas']==0)
     ok('decision_invalida_400',POST(AL[0],'responder',{'decision':'quiza'}).status==400)
@@ -103,6 +111,21 @@ with sync_playwright() as pw:
     # ---- nuevo periodo: las respuestas anteriores no cuentan ----
     raw(E1,'reinscripciones/_config',CFG(periodo='May–Ago 2027'))
     e=GET(AL[0],'estado').json();ok('nuevo_periodo_sin_respuesta',e['respuesta'] is None and e['periodo']=='May–Ago 2027')
+    # ---- avisos: recordatorio automático y manual ----
+    titR=lambda p:'Recordatorio: reinscripción '+p
+    raw(E1,'reinscripciones/_config',CFG(periodo='Sep–Dic 2027',hasta=(hoy+datetime.timedelta(days=1)).isoformat()))
+    ok('abrir_otro_periodo_avisa',len([a for a in AVS() if a['titulo']=='Reinscripción abierta: Sep–Dic 2027'])==4)
+    ok('aviso_con_fecha_limite',all('Tienes hasta el' in a['mensaje'] for a in AVS() if a['titulo']=='Reinscripción abierta: Sep–Dic 2027'))
+    ok('recordatorio_automatico_cerca_del_cierre',len([a for a in AVS() if a['titulo']==titR('Sep–Dic 2027')])==4)
+    ok('manual_mismo_dia_409',POST(E1,'recordar',{}).status==409)
+    raw(E1,'reinscripciones/_config',CFG(periodo='Ene–Abr 2028'))
+    ok('alumno_no_recuerda',POST(AL[0],'recordar',{}).status==403)
+    ok('escolar_ver_no_recuerda',POST(V1,'recordar',{}).status in (401,403))
+    ok('docente_no_recuerda',POST(P1,'recordar',{}).status==403)
+    r=POST(E1,'recordar',{});ok('recordatorio_manual_ok',r.status==200 and r.json()['n']==4 and len([a for a in AVS() if a['titulo']==titR('Ene–Abr 2028')])==4)
+    ok('recordatorio_manual_segundo_409',POST(E1,'recordar',{}).status==409)
+    raw(E1,'reinscripciones/_config',CFG(periodo='Ene–Abr 2029',abierta=False))
+    r=POST(E1,'recordar',{});ok('recordar_cerrada_409',r.status==409 and 'no está abierta' in r.json()['error'])
     # ---- limite de intentos ----
     n429=0
     for _ in range(25):
@@ -129,9 +152,34 @@ with sync_playwright() as pw:
     pg2.fill('#rqHas','2027-07-01');pg2.click('#rqGuarda');W(pg2,"document.getElementById('rqMsgS').textContent.indexOf('cierre')>=0")
     ok('ui_valida_fechas',DOC('_config')['hasta']=='2027-08-31')
     raw(E1,'reinscripciones/_config',CFG(periodo='Ene–Abr 2027'))
+    put('grupos/g3',{'num':'3333','plan':'Pedagogía','per':'Ene–Abr 2027','cuat':2,'alumnos':[]});put('grupos/g4',{'num':'4444','plan':'Derecho','per':'Ene–Abr 2027','cuat':2,'alumnos':[]})
     pg2.reload();W(pg2,"typeof APP!=='undefined'&&APP!==null&&S.length==4");pg2.evaluate("ir('esc');etab('Q')");W(pg2,"document.getElementById('rqTbl').rows.length==4")
     with pg2.expect_download() as dl:pg2.click('#rqCsv')
     csv=open(dl.value.path(),encoding='utf-8-sig').read();ok('ui_csv',csv.startswith('Periodo,Alumno') and 'Ana López' in csv and 'Continúa' in csv and csv.count('\n')>=4)
+    # asignación a grupos del nuevo periodo
+    pg2.click('#rqAsig');W(pg2,"document.getElementById('rqAsigR').textContent.indexOf('3 asignados')>=0")
+    ok('asig_pedagogia_a_g3',sorted(DOCG('g3')['alumnos'])==['s1','s2'])
+    ok('asig_derecho_a_g4',DOCG('g4')['alumnos']==['s3'])
+    ok('asig_avisa_sin_grupo_actual','sin grupo actual' in pg2.inner_text('#rqAsigR'))
+    ok('asig_columna_grupo_nuevo',pg2.evaluate("[].some.call(document.getElementById('rqTbl').rows,function(r){return r.textContent.indexOf('Ana López')>=0&&r.textContent.indexOf('3333')>=0&&r.textContent.indexOf('1111')>=0})"))
+    pg2.click('#rqAsig');W(pg2,"document.getElementById('rqAsigR').textContent.indexOf('Nada que asignar')>=0")
+    ok('asig_segunda_vez_no_duplica',sorted(DOCG('g3')['alumnos'])==['s1','s2'] and DOCG('g4')['alumnos']==['s3'])
+    # recordatorio manual desde la pantalla
+    put('students/s5',{'mat':'1005','nombre':'Eli Paz','carrera':'Pedagogía','programa':'Pedagogía','ingreso':2027,'nuevo':False})
+    W(pg2,"S.length==5")
+    pg2.click('#rqRec');W(pg2,"document.getElementById('rqMsgS').textContent.indexOf('Recordatorio enviado a 1 alumno')>=0")
+    ok('ui_recordatorio_solo_a_pendientes',len([a for a in AVS() if a['titulo']==titR('Ene–Abr 2027')])==1)
+    pg2.click('#rqRec');W(pg2,"document.getElementById('rqMsgS').textContent.indexOf('ya se envió')>=0")
+    ok('ui_recordatorio_una_vez_al_dia',len([a for a in AVS() if a['titulo']==titR('Ene–Abr 2027')])==1)
+    # no continúa -> baja
+    raw(E1,'reinscripciones/s5',{'sid':'s5','nombre':'Eli Paz','mat':'1005','periodo':'Ene–Abr 2027','decision':'no_continuo','motivo':'Cambio de ciudad','fecha':hoy.isoformat()})
+    W(pg2,"[].some.call(document.getElementById('rqTbl').rows,function(r){return r.querySelector('[data-rqb=s5]')})")
+    pg2.click('[data-rqb=s5]');W(pg2,"document.getElementById('dBj').open")
+    ok('baja_precargada',pg2.input_value('#bjTipo')=='Baja voluntaria' and 'Cambio de ciudad' in pg2.input_value('#bjBMot') and pg2.input_value('#bjSol')=='Alumno')
+    pg2.click('#bjDGo');W(pg2,"!document.getElementById('dBj').open")
+    st=ctx.request.get(B+'/api/doc/students/s5').json()['data'];ok('baja_registrada',bool(st.get('baja')) and st['baja']['tipo']=='Baja voluntaria')
+    ok('respuesta_se_conserva',DOC('s5').get('decision')=='no_continuo')
+    W(pg2,"![].some.call(document.getElementById('rqTbl').rows,function(r){return r.textContent.indexOf('Eli Paz')>=0})")
     cv=b.new_context(viewport={'width':1200,'height':950});cv.request.post(B+'/api/login',data=json.dumps({'u':'ver1','clave':'clave-ver1-123'}),headers=HDR)
     pg3=pagina(cv);pg3.goto(B+'/');W(pg3,"typeof APP!=='undefined'&&APP!==null&&typeof DBH!=='undefined'&&DBH!==null");pg3.evaluate("ir('esc')");W(pg3,"MOD==='esc'")
     ok('ui_ver_no_ve_pestana',pg3.evaluate("document.querySelector('[data-et=Q]').hidden"))

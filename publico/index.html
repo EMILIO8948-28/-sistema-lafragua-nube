@@ -288,11 +288,12 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <label style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="rqBlo" checked> Revisar adeudo: no dejar confirmar a quien tenga colegiaturas vencidas</label>
     <label style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="rqAbi"> Reinscripción abierta</label>
   </div>
-  <div class="bar" style="margin:6px 0"><button class="p" id="rqGuarda">Guardar configuración</button><button id="rqCsv">Exportar CSV</button></div>
+  <div class="bar" style="margin:6px 0"><button class="p" id="rqGuarda">Guardar configuración</button><button id="rqRec">Recordar a quienes no han respondido</button><button id="rqAsig">Asignar a grupos del nuevo periodo</button><button id="rqCsv">Exportar CSV</button></div>
+  <div id="rqAsigR"></div>
   <p class="hint" id="rqMsgS" role="status" style="min-height:1.4em"></p>
   <div id="rqRes" class="hint"></div>
   <div class="bar"><select id="rqFil" aria-label="Filtro"><option value="">Todos los alumnos activos</option><option value="confirmada">Continúan</option><option value="no">No continúan</option><option value="pend">Sin responder</option></select><input id="rqBus" class="grow" type="search" placeholder="Buscar alumno o matrícula" aria-label="Buscar"></div>
-  <div class="wrap"><table style="min-width:760px"><thead><tr><th>Alumno</th><th>Matrícula</th><th>Respuesta</th><th>Fecha</th><th>Motivo / nota</th></tr></thead><tbody id="rqTbl"></tbody></table></div>
+  <div class="wrap"><table style="min-width:960px"><thead><tr><th>Alumno</th><th>Matrícula</th><th>Respuesta</th><th>Fecha</th><th>Motivo / nota</th><th>Grupo actual</th><th>Grupo nuevo</th><th></th></tr></thead><tbody id="rqTbl"></tbody></table></div>
 </div>
 <div id="eW" hidden>
   <div class="bar" style="margin:0 0 8px"><button id="bbT1" class="p">Préstamos</button><button id="bbT2">Catálogo</button><button id="bbT3">Ajustes</button></div>
@@ -3262,7 +3263,8 @@ function cmHTML(){
 }
 function cmPaint(){["cmBoxP","cmBoxD"].forEach(function(i){var e=$(i);if(e)e.innerHTML=cmHTML()})}
 async function cmCarga(){
-  try{var r=await cbApi("GET","/api/comunicados/mios");if(r.ok){COMM=r.j.comunicados||[];COMT=Date.now();cmPaint()}}catch(e){}
+  if(!APP)return;
+  try{var r=await cbApi("GET","/api/comunicados/mios");if(r.ok){COMM=r.j.comunicados||[];COMT=Date.now();cmPaint()}else{COMM=COMM||[];COMT=Date.now()}}catch(e){COMM=COMM||[];COMT=Date.now()}
 }
 document.addEventListener("click",async function(e){
   var b=e.target.closest&&e.target.closest("[data-cml]");if(!b)return;var id=b.dataset.cml;b.disabled=true;
@@ -3288,8 +3290,58 @@ function renderRq(){
   tot.forEach(function(s){var r=RQ[s.id];if(r&&c.periodo&&r.periodo===c.periodo){if(r.decision==="continuo")cont++;else no++}});
   var hoy=today(),est=!c.periodo?"Sin periodo configurado":!c.abierta?"Cerrada":(c.desde&&c.desde>hoy?"Abre el "+fd(c.desde):(c.hasta&&hoy>c.hasta?"Cerró el "+fd(c.hasta):"Abierta"));
   $("rqRes").innerHTML='<b>'+esc(c.periodo||"—")+'</b> · '+est+' · '+cont+' continúan · '+no+' no continúan · '+(tot.length-cont-no)+' sin responder de '+tot.length+' alumnos activos';
-  $("rqTbl").innerHTML=F.length?F.map(function(o){var r=o.r;return '<tr><td>'+esc(o.s.nombre||"")+'</td><td>'+esc(o.s.mat||"")+'</td><td>'+(r?(r.decision==="continuo"?'<span class="tag">Continúa</span>':'<span class="tag sin">No continúa</span>'):'<span class="hint">Sin responder</span>')+'</td><td>'+(r?fd(r.fecha):"")+'</td><td>'+(r?esc(r.motivo||"")+(r.vencidas?' <span class="hint">(tenía '+r.vencidas+' vencida'+(r.vencidas===1?"":"s")+')</span>':""):"")+'</td></tr>'}).join(""):'<tr><td colspan="5" class="hint">No hay alumnos con ese filtro.</td></tr>';
+  $("rqTbl").innerHTML=F.length?F.map(function(o){var r=o.r;return '<tr><td>'+esc(o.s.nombre||"")+'</td><td>'+esc(o.s.mat||"")+'</td><td>'+(r?(r.decision==="continuo"?'<span class="tag">Continúa</span>':'<span class="tag sin">No continúa</span>'):'<span class="hint">Sin responder</span>')+'</td><td>'+(r?fd(r.fecha):"")+'</td><td>'+(r?esc(r.motivo||"")+(r.vencidas?' <span class="hint">(tenía '+r.vencidas+' vencida'+(r.vencidas===1?"":"s")+')</span>':""):"")+'</td><td>'+rqGrp(rqRef(o.s.id,c.periodo))+'</td><td>'+rqGrp(c.periodo?grupoDe(o.s.id,c.periodo):null)+'</td><td>'+(r&&r.decision==="no_continuo"?'<button class="d" data-rqb="'+attr(o.s.id)+'">Dar de baja</button>':"")+'</td></tr>'}).join(""):'<tr><td colspan="8" class="hint">No hay alumnos con ese filtro.</td></tr>';
 }
+function rqGrp(g){return g?esc(g.num)+' <span class="hint">· cuat. '+esc(g.cuat)+'</span>':'<span class="hint">—</span>'}
+function rqRef(sid,per){
+  var g=grupoDe(sid,perAct());if(g&&g.per!==per)return g;
+  var best=null;Object.keys(GRP).forEach(function(k){var x=GRP[k];if(x.per!==per&&(x.alumnos||[]).indexOf(sid)>-1&&(!best||Number(x.cuat)>Number(best.cuat)))best=Object.assign({id:k},x)});
+  return best;
+}
+function rqPlanAsig(){
+  var c=rqCfg(),dest=Object.keys(GRP).filter(function(k){return GRP[k].per===c.periodo}),add={},cnt={},o={add:add,ya:0,sinActual:[],sinDestino:[],n:0};
+  dest.forEach(function(k){cnt[k]=(GRP[k].alumnos||[]).length});
+  S.filter(function(s){return !esInact(s.id)}).forEach(function(s){
+    var r=RQ[s.id];if(!(r&&r.periodo===c.periodo&&r.decision==="continuo"))return;
+    if(grupoDe(s.id,c.periodo)){o.ya++;return}
+    var ref=rqRef(s.id,c.periodo);if(!ref){o.sinActual.push(s);return}
+    var cand=dest.filter(function(k){return GRP[k].plan===ref.plan&&Number(GRP[k].cuat)===Number(ref.cuat)+1}).sort(function(a,b){return cnt[a]-cnt[b]});
+    if(!cand.length){o.sinDestino.push(s);return}
+    (add[cand[0]]=add[cand[0]]||[]).push(s.id);cnt[cand[0]]++;o.n++;
+  });
+  return o;
+}
+$("rqAsig").onclick=async function(){
+  var c=rqCfg(),box=$("rqAsigR");
+  if(!c.periodo){rqm("Primero guarda el periodo a reinscribir.");return}
+  var pl=rqPlanAsig();
+  if(!Object.keys(GRP).some(function(k){return GRP[k].per===c.periodo})){box.innerHTML='<p class="hint" style="color:var(--bad)">Aún no hay grupos del periodo '+esc(c.periodo)+'. Créalos en la pestaña «Grupos» y vuelve a intentar.</p>';return}
+  if(!pl.n){box.innerHTML=rqAsigTxt(pl,0);return}
+  if(!confirm("Se asignarán "+pl.n+(pl.n===1?" alumno":" alumnos")+" que confirmaron su reinscripción al grupo del siguiente cuatrimestre de su plan, en el periodo "+c.periodo+". ¿Continuar?"))return;
+  var b=this,ok=0;b.disabled=true;
+  try{for(var k in pl.add){var nd=Object.assign({},GRP[k],{alumnos:(GRP[k].alumnos||[]).concat(pl.add[k])});await DBH.doc("grupos/"+k).set(nd);GRP[k]=nd;ok+=pl.add[k].length}
+    box.innerHTML=rqAsigTxt(pl,ok);rqm("Listo: "+ok+(ok===1?" alumno asignado":" alumnos asignados")+" a sus grupos.",true);renderRq()}
+  catch(er){rqm("No se pudo asignar: "+((er&&er.message)||"error"))}
+  b.disabled=false;
+};
+function rqAsigTxt(pl,hechos){
+  var l=function(a){return a.map(function(s){return esc(s.nombre)}).join(", ")};
+  return '<p class="hint">'+(hechos?'<b>'+hechos+' asignados.</b> ':'<b>Nada que asignar por ahora.</b> ')+(pl.ya?pl.ya+' ya tenían grupo en el nuevo periodo. ':'')+'</p>'+
+    (pl.sinActual.length?'<details><summary class="hint">'+pl.sinActual.length+' sin grupo actual (asígnalos a mano en «Grupos»)</summary><p class="hint">'+l(pl.sinActual)+'</p></details>':'')+
+    (pl.sinDestino.length?'<details><summary class="hint">'+pl.sinDestino.length+' sin grupo destino: no existe el grupo del siguiente cuatrimestre de su plan (o terminan el plan)</summary><p class="hint">'+l(pl.sinDestino)+'</p></details>':'');
+}
+$("rqRec").onclick=async function(){
+  var c=rqCfg();if(!c.abierta){rqm("La reinscripción está cerrada: guarda primero la configuración con «Reinscripción abierta».");return}
+  if(!confirm("Se enviará un aviso a los alumnos activos que aún no han respondido. ¿Continuar?"))return;
+  var b=this;b.disabled=true;
+  try{var r=await cbApi("POST","/api/reinscripcion/recordar",{});r.ok?rqm("Recordatorio enviado a "+r.j.n+(r.j.n===1?" alumno.":" alumnos."),true):rqm((r.j&&r.j.error)||"No se pudo enviar.")}catch(er){rqm("No se pudo enviar el recordatorio.")}
+  b.disabled=false;
+};
+$("rqTbl").onclick=function(e){
+  var b=e.target.closest("[data-rqb]");if(!b)return;var sid=b.dataset.rqb,r=RQ[sid];
+  if(!BJCFG)bjCarga();
+  bjAbre(sid,"baja");$("bjTipo").value="Baja voluntaria";$("bjSol").value="Alumno";$("bjBMot").value="No continúa (reinscripción): "+((r&&r.motivo)||"");
+};
 function perSig(){var t=today(),m=+t.slice(5,7),y=+t.slice(0,4);return m>=9?"Ene–Abr "+(y+1):m>=5?"Sep–Dic "+y:"May–Ago "+y}
 $("rqBus").oninput=$("rqFil").onchange=function(){renderRq()};
 $("rqGuarda").onclick=async function(){
@@ -3319,8 +3371,8 @@ function rqHTML(){
 }
 function rqPaint(){var e=$("rqBoxP");if(!e)return;var m=$("rqMot");if(m&&(m.value||document.activeElement===m))return;e.innerHTML=rqHTML()}
 async function rqCarga(){
-  if(RQBUSY)return;RQBUSY=true;
-  try{var r=await cbApi("GET","/api/reinscripcion/estado");if(r.ok){RQA=r.j;RQAT=Date.now();rqPaint()}}catch(e){}
+  if(RQBUSY||!APP)return;RQBUSY=true;
+  try{var r=await cbApi("GET","/api/reinscripcion/estado");if(r.ok){RQA=r.j;RQAT=Date.now();rqPaint()}else{RQAT=Date.now()}}catch(e){RQAT=Date.now()}
   RQBUSY=false;
 }
 document.addEventListener("click",async function(e){

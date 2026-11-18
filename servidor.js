@@ -285,6 +285,28 @@ function validaReinsc(id, d) {
   if (d.fecha != null && d.fecha !== '' && !fechaOk(d.fecha)) return 'La fecha no es válida.';
   return '';
 }
+/* Avisos de reinscripción: al abrir el periodo, recordatorio manual y recordatorio automático 2 días antes del cierre */
+const rqSis = () => { const r = q.uno.get('sistema', 'reinsc_avisos'); try { return r ? JSON.parse(r.data) : {}; } catch (e) { return {}; } };
+const rqSisPon = o => q.pon.run('sistema', 'reinsc_avisos', JSON.stringify(o), Date.now());
+const rqSuma = (iso, n) => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const rqFl = f => String(f || '').split('-').reverse().join('/');
+const rqCfgSrv = () => Object.assign({}, RQ_CFG0, leeDoc('reinscripciones', '_config') || {});
+const rqVentana = (c, hoy) => !!c.abierta && !!c.periodo && (!c.desde || c.desde <= hoy) && (!c.hasta || hoy <= c.hasta);
+function rqActivos() {
+  const out = [];
+  q.lista.all('students').forEach(r => { try { const st = JSON.parse(r.data); if (st.baja && !st.baja.revertida) return; const e = leeDoc('egresados', r.id); if (e && !e.revertido) return; out.push(r.id); } catch (err) { /* registro dañado */ } });
+  return out;
+}
+function rqSinResponder(c) { return rqActivos().filter(sid => { const r = leeDoc('reinscripciones', sid); return !(r && r.periodo === c.periodo); }); }
+function rqAvisa(sids, titulo, texto, ref) { sids.forEach(sid => { try { avisaAlumnoSrv('manual', sid, titulo, texto, ref); } catch (e) { /* un aviso fallido no detiene al resto */ } }); return sids.length; }
+function reinscRevisa() {
+  const c = rqCfgSrv(), hoy = hoyMx(); if (!rqVentana(c, hoy)) return { abrio: 0, recordo: 0 };
+  let mk = rqSis(); if (mk.periodo !== c.periodo) mk = { periodo: c.periodo, abrio: '', recordado: '', auto: false };
+  const fin = c.hasta ? ' Tienes hasta el ' + rqFl(c.hasta) + '.' : '', res = { abrio: 0, recordo: 0 };
+  if (!mk.abrio) { res.abrio = rqAvisa(rqSinResponder(c), 'Reinscripción abierta: ' + c.periodo, 'Ya puedes confirmar desde tu portal si continuarás el siguiente periodo (' + c.periodo + ').' + fin + (c.mensaje ? ' ' + c.mensaje : ''), 'rq:' + c.periodo + ':abre'); mk.abrio = hoy; }
+  if (!mk.auto && c.hasta && hoy >= rqSuma(c.hasta, -2) && mk.recordado !== hoy) { res.recordo = rqAvisa(rqSinResponder(c), 'Recordatorio: reinscripción ' + c.periodo, 'Aún no confirmas si continuarás el siguiente periodo.' + fin + ' Entra a tu portal y responde.', 'rq:' + c.periodo + ':rec:' + hoy); mk.auto = true; mk.recordado = hoy; }
+  rqSisPon(mk); return res;
+}
 const COM_PARA = ['todos', 'alumnos', 'docentes', 'plan', 'grupo'];
 function validaComunicado(id, d) {
   if (!/^[\w-]{1,60}$/.test(String(id || ''))) return 'Identificador no válido.';
@@ -1053,6 +1075,7 @@ async function api(req, res, partes) {
       }
       const viejoAv = (a === 'solicitudes' || a === 'planeaciones' || a === 'materias') ? q.uno.get(a, b) : null;
       q.pon.run(a, b, JSON.stringify(nuevo), Date.now()); difunde(a, b); cobHook(a, b);
+      if (a === 'reinscripciones' && b === '_config') { try { reinscRevisa(); } catch (e) { console.error('Reinscripción:', e.message); } }
       if (a === 'solicitudes' || (a === 'planeaciones' && (s.rol === 'admin' || (s.perm || {}).escolar === 'editar'))) { try { const vv = viejoAv ? JSON.parse(viejoAv.data) : null; if (a === 'solicitudes') AV.hookSolicitud(b, vv, nuevo); else AV.hookPlaneacion(b, vv, nuevo); } catch (e) { console.error('Avisos:', e.message); } }
       if (a === 'materias') { try { AV.hookEvaluacion(b, viejoAv ? JSON.parse(viejoAv.data) : null, nuevo); } catch (e) { console.error('Avisos:', e.message); } }
       if (reabre) { q.pon.run('planeaciones', b, JSON.stringify(reabre), Date.now()); difunde('planeaciones', b); }
@@ -1285,6 +1308,15 @@ async function api(req, res, partes) {
   /* Reinscripción en línea: el alumno confirma si continúa el siguiente periodo (con ventana de fechas y revisión de adeudo) */
   if (tipo === 'reinscripcion') {
     try {
+      if (m === 'POST' && a === 'recordar') {
+        if (!(rol === 'admin' || nivel(s, 'escolar') === 'editar')) return responde(res, 403, { error: 'Solo Control escolar con permiso de edición.' });
+        const c = rqCfgSrv(), hoy = hoyMx(); if (!rqVentana(c, hoy)) return responde(res, 409, { error: 'La reinscripción no está abierta: no hay a quién recordar.' });
+        const mk = rqSis(), mk2 = mk.periodo === c.periodo ? mk : { periodo: c.periodo, abrio: '', recordado: '', auto: false };
+        if (mk2.recordado === hoy) return responde(res, 409, { error: 'Hoy ya se envió un recordatorio. Inténtalo mañana.' });
+        const n = rqAvisa(rqSinResponder(c), 'Recordatorio: reinscripción ' + c.periodo, 'Aún no confirmas si continuarás el siguiente periodo.' + (c.hasta ? ' Tienes hasta el ' + rqFl(c.hasta) + '.' : '') + ' Entra a tu portal y responde.', 'rq:' + c.periodo + ':rec:' + hoy);
+        mk2.recordado = hoy; rqSisPon(mk2); audita(s.u, req, 'Envió recordatorio de reinscripción', c.periodo + ' · ' + n + ' alumnos');
+        return responde(res, 200, { ok: true, n });
+      }
       if (rol !== 'alumno' || !s.alumno) return responde(res, 403, { error: 'La reinscripción en línea es para alumnos. Control escolar revisa las respuestas desde su pestaña.' });
       const cfg = Object.assign({}, RQ_CFG0, leeDoc('reinscripciones', '_config') || {}), hoy = hoyMx();
       const ventana = !!cfg.abierta && (!cfg.desde || cfg.desde <= hoy) && (!cfg.hasta || hoy <= cfg.hasta);
@@ -1719,6 +1751,7 @@ function corridaCobranza(op) {
 /* ---------- Bajas y regularización de alumnos ---------- */
 const BJ = require('./bajas.js').crea({ q, leeDoc, difunde, audita, hoyMx: () => hoyMx(), adeudoDe, cobCfg, planesYExtra, avisaAlumno: (e, sid, t, m, r) => avisaAlumnoSrv(e, sid, t, m, r), avisaDireccion: (e, a, t, r) => AV.avisaDireccion(e, a, t, r), cierraSesiones: sid => q.usrDeAlumno.all(sid).forEach(c => q.borSesU.run(c.u)), evaluaCob: sid => evaluaAlumnoCob(sid, ctxCobranza(), { alivio: true }) });
 setTimeout(() => { try { BJ.revisa(); } catch (e) { console.error('Bajas:', e.message); } }, Number(ENV.LF_BAJAS_ARRANQUE_MS) || 8000).unref();
+setInterval(() => { try { reinscRevisa(); } catch (e) { console.error('Reinscripción:', e.message); } }, Number(ENV.LF_REINSC_TICK_MS) || 3600000).unref();
 setInterval(() => { try { BJ.revisa(); } catch (e) { console.error('Bajas:', e.message); } }, Number(ENV.LF_BAJAS_TICK_MS) || 3600000).unref();
 const MOV = require('./movimientos.js').crea({ q, leeDoc, difunde, audita, hoyMx: () => hoyMx(), planesYExtra, perCerrado, hook: (c, i) => cobHook(c, i) });
 /* ---------- Evaluación docente (anónima) ---------- */

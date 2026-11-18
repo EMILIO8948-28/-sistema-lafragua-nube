@@ -57,6 +57,7 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_pwa.py` · app instalable: manifest, iconos, service worker, caché solo del cascarón y datos siempre desde el servidor (22).
 - `test_proveedores.py` · proveedores, cuentas por pagar y gastos fijos: validación, permisos, pendientes que no restan del corte, pago y vencidos (60).
 - `test_buzon.py` · buzón de quejas y sugerencias: envío con nombre o anónimo con folio, atención de Control escolar, permisos y anonimato (73).
+- `test_historial_qr.py` · QR del historial académico: verificación pública (sin sesión), páginas, código alterado, correcciones posteriores, PDF con su QR legible con cámara, historial largo y verificación dentro de la aplicación (30).
 - `test_biblioteca_inventario.py` · biblioteca (catálogo, préstamos, límites, renovación, devolución, vencidos y multa estimada), inventario de bienes, permisos y portal del alumno (88).
 - `test_docente_choques_llave.py` · resultados de la evaluación para el docente (mínimo de 3 respuestas, anonimato), choques de horario y llave `evdoc.key` en el respaldo y su restauración (27).
 

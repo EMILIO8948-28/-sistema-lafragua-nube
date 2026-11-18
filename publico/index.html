@@ -4794,7 +4794,13 @@ function historialPDF(sid){
     d.setFont("helvetica","normal");d.setFontSize(9);d.text("Promedio del periodo: "+n1(promIt(a)),195,y,{align:"right"});y+=9;
   });
   var ap=todos.filter(function(x){return x.cal!=null&&x.cal>=MINAP}).length,rp=todos.filter(function(x){return x.cal!=null&&x.cal<MINAP}).length;
-  totales(d,y,[["Asignaturas aprobadas",String(ap)],["Asignaturas reprobadas",String(rp)],["Promedio general",pr===null?"—":pr.toFixed(1)]]);
+  y=totales(d,y,[["Asignaturas aprobadas",String(ap)],["Asignaturas reprobadas",String(rp)],["Promedio general",pr===null?"—":pr.toFixed(1)]]);
+  try{
+    y=(y||20)+8;if(y>248){d.addPage();y=22}
+    qrPDF(d,qrHist(sid,today()),15,y,26);
+    d.setTextColor(90,90,90);d.setFont("helvetica","bold");d.setFontSize(8);d.text("Verifique este historial",45,y+8);
+    d.setFont("helvetica","normal");d.setFontSize(7);d.text(d.splitTextToSize("Escanee el código QR para comprobar que este historial académico es auténtico y que sus datos coinciden con los registros de la institución. Fecha de emisión: "+fd(today())+".",120),45,y+13);
+  }catch(e){}
   saveFile("historial-academico-"+s.mat+".pdf",d.output("arraybuffer"));
 }
 $("pfBolPdf").onclick=function(){boletaPDF(ALID,$("pfPer").value)};
@@ -7073,9 +7079,10 @@ function verRecibo(folio,code){
 $("rcCls").onclick=function(){$("dRc").close()};
 $("vrVerif").onclick=function(){var f=$("vrFolio").value.trim();if(!f){$("vrMsg").textContent="Escribe el folio del recibo o de la constancia.";return}$("vrMsg").textContent="";if(/^C-/i.test(f))verConst(f,"");else verRecibo(f,"")};
 function qrHash(){
-  var m=/^#([vcabj])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(String(location.hash||""));if(!m)return null;
+  var m=/^#([vcabjh])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(String(location.hash||""));if(!m)return null;
   var p=m[3].split(".");
   if(m[1]==="a")return /^\d{8}$/.test(p[0])&&/^[0-9a-f]{8}$/.test(p[1]||"")?{tipo:"a",id:m[2],folio:m[2],vig:p[0],code:p[1]}:null;
+  if(m[1]==="h")return /^\d{8}$/.test(p[0])&&/^[0-9a-f]{8}$/.test(p[1]||"")?{tipo:"h",id:m[2],folio:m[2],fecha:p[0],code:p[1]}:null;
   if(m[1]==="b")return /^[SEM]\d{4}$/.test(p[0])&&/^\d{8}$/.test(p[1]||"")&&/^[0-9a-f]{8}$/.test(p[2]||"")?{tipo:"b",id:m[2],folio:m[2],per:p[0],fecha:p[1],code:p[2]}:null;
   return /^[0-9a-f]{8}$/.test(p[0])&&p.length===1?{tipo:m[1],id:m[2],folio:m[2],code:p[0]}:null;
 }
@@ -7084,7 +7091,7 @@ function lanzaVerif(){
   QRVISTO=key;var n=0;
   (function intenta(){
     var hay=q.tipo==="v"?buscaRecibo(q.id):q.tipo==="c"?buscaConst(q.id):q.tipo==="j"?buscaJust(q.id):S.some(function(s){return s.id===q.id});
-    if(hay||n>=3){if(q.tipo==="v")verRecibo(q.id,q.code);else if(q.tipo==="c")verConst(q.id,q.code);else if(q.tipo==="b")verBoleta(q.id,q.per,q.fecha,q.code);else if(q.tipo==="j")verJust(q.id,q.code);else verCred(q.id,q.vig,q.code);return}
+    if(hay||n>=3){if(q.tipo==="v")verRecibo(q.id,q.code);else if(q.tipo==="c")verConst(q.id,q.code);else if(q.tipo==="b")verBoleta(q.id,q.per,q.fecha,q.code);else if(q.tipo==="h")verHist(q.id,q.fecha,q.code);else if(q.tipo==="j")verJust(q.id,q.code);else verCred(q.id,q.vig,q.code);return}
     n++;setTimeout(intenta,2500);
   })();
 }
@@ -7096,6 +7103,7 @@ function qrConst(x){return appUrl()+"#c."+x.num+"."+chkTxt("C|"+x.num+"|"+x.mat+
 function perCod(per){var m=/^(Sep|Ene|May)[–-](Dic|Abr|Ago) (\d{4})$/.exec(String(per||""));return m?(m[1]==="Sep"?"S":m[1]==="Ene"?"E":"M")+m[3]:""}
 function perDeCod(c){var m=/^([SEM])(\d{4})$/.exec(c||"");return m?(m[1]==="S"?"Sep–Dic ":m[1]==="E"?"Ene–Abr ":"May–Ago ")+m[2]:""}
 function qrBoleta(sid,per,fecha){var pc=perCod(per),f=String(fecha||today()).replace(/-/g,"");return appUrl()+"#b."+sid+"."+pc+"."+f+"."+chkTxt("B|"+sid+"|"+pc+"|"+f)}
+function qrHist(sid,fecha){var f=String(fecha||today()).replace(/-/g,"");return appUrl()+"#h."+sid+"."+f+"."+chkTxt("H|"+sid+"|"+f)}
 function qrCred(s,vig){if(s.esDoc)return uni()+" · DOCENTE · "+s.nombre+" · "+s.mat+" · vigencia "+(vig||"");var v=String(vig||"").replace(/-/g,"");return appUrl()+"#a."+s.id+"."+v+"."+chkTxt("CR|"+s.id+"|"+v)}
 function buscaConst(num){
   var f=String(num||"").trim().toUpperCase(),r=null;
@@ -7123,6 +7131,19 @@ function verBoleta(sid,pc,f8,code){
     h=(malo?rcBanner("bad","Los datos del código QR no coinciden con el registro. La boleta puede estar alterada."):!a.length?rcBanner("bad","El alumno no tiene calificaciones registradas en ese periodo. La boleta puede ser falsa."):rcBanner("ok","Boleta auténtica: existe en el sistema."))+
       rcTabla([["Alumno",s.nombre],["Matrícula",s.mat],["Plan de estudios",planDe(s)],["Periodo",per],["Cuatrimestre",c?String(c):""],["Grupo",g?g.num:""],["Emitida el",ef?fd(ef):""]])+
       (a.length?'<div class="wrap" style="margin-top:10px"><table><thead><tr><th>Asignatura</th><th>Docente</th><th class="n">Calificación</th><th>Estatus</th></tr></thead><tbody>'+a.map(function(x){return '<tr><td>'+esc(x.mat)+'</td><td>'+esc(x.doc||"")+'</td><td class="n">'+esc(n1(x.cal))+'</td><td>'+esc(estat(x.cal))+'</td></tr>'}).join("")+'</tbody></table></div><p class="hint">Promedio del cuatrimestre: <b>'+(pr===null?"—":pr.toFixed(1))+'</b>. Las calificaciones mostradas son las registradas actualmente; compáralas con las de la boleta.</p>':"");
+  }
+  $("rcRes").innerHTML=h;$("dRc").showModal();
+}
+function verHist(sid,f8,code){
+  var s=S.find(function(y){return y.id===sid}),h;
+  if(ROL==="docente")h=rcBanner("bad","No tienes permiso para verificar historiales.");
+  else if(!s)h=rcBanner("bad","No se encontró al alumno de este historial.")+'<p class="hint" style="margin-top:8px">El historial puede ser falso o el alumno ya no está registrado.</p>';
+  else{
+    var ps=perDe(sid),malo=code&&code!==chkTxt("H|"+sid+"|"+f8),ef=/^\d{8}$/.test(f8)?f8.slice(0,4)+"-"+f8.slice(4,6)+"-"+f8.slice(6):"",todos=itemsDe(sid),pr=promedio(sid);
+    h=(malo?rcBanner("bad","Los datos del código QR no coinciden con el registro. El historial puede estar alterado."):!ps.length?rcBanner("bad","El alumno no tiene calificaciones registradas. El historial puede ser falso."):rcBanner("ok","Historial académico auténtico: existe en el sistema."))+
+      rcTabla([["Alumno",s.nombre],["Matrícula",s.mat],["Plan de estudios",planDe(s)],["Emitido el",ef?fd(ef):""]])+
+      ps.map(function(p){var a=datosPer(sid,p);return '<h3 style="margin:12px 0 4px">'+esc(etiquetaPer(sid,p))+'</h3><div class="wrap"><table><thead><tr><th>Asignatura</th><th class="n">Calificación</th><th>Estatus</th></tr></thead><tbody>'+a.map(function(x){return '<tr><td>'+esc(x.mat)+'</td><td class="n">'+esc(n1(x.cal))+'</td><td>'+esc(estat(x.cal))+'</td></tr>'}).join("")+'</tbody></table></div>'}).join("")+
+      (ps.length?'<p class="hint">Promedio general: <b>'+(pr===null?"—":pr.toFixed(1))+'</b>. Las calificaciones son las registradas actualmente en el sistema; si alguna no coincide con tu documento, pudo ser alterado o corregido después de emitirse.</p>':"");
   }
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }

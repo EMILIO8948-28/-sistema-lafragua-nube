@@ -816,6 +816,26 @@ function verificaDoc(t, id, code, vig, fecha) {
     const cuat = (items.find(x => x.cuat) || {}).cuat || (grupo && grupo.cuat) || '';
     return { ok: true, tipo: 'boleta', titulo: 'Boleta de calificaciones', nombre: a.nombre, matricula: enmascara(a.mat), plan: a.programa || a.carrera || '', periodo: per, cuatrimestre: cuat ? String(cuat) : '', grupo: grupo ? String(grupo.num || '') : '', emitida: fecha.slice(0, 4) + '-' + fecha.slice(4, 6) + '-' + fecha.slice(6, 8), promedio: prom === null ? null : prom.toFixed(1), materias: items.slice().sort((x, y) => String(x.mat).localeCompare(String(y.mat))).map(x => ({ asignatura: x.mat, docente: x.doc || '', cal: x.cal == null ? null : x.cal, estatus: x.cal == null ? 'En curso' : (x.cal >= CAL_APROBATORIA ? 'Aprobada' : 'Reprobada') })) };
   }
+  if (t === 'h') {
+    /* Historial académico: el código cubre alumno y fecha de emisión; se devuelven las calificaciones registradas hoy */
+    if (code !== chkTxt('H|' + id + '|' + vig)) return no;
+    const a = nombreAl(id); if (!a) return no;
+    const rc = q.uno.get('calif', id), items = (rc ? (JSON.parse(rc.data).items || []) : []);
+    if (!items.length) return { ok: false, motivo: 'El sistema no tiene calificaciones registradas de ese alumno. El historial puede no ser auténtico.' };
+    const clave = per => { const m = /^(Sep|Ene|May)[–-](Dic|Abr|Ago) (\d{4})$/.exec(String(per || '')); return m ? Number(m[3]) * 10 + (m[1] === 'Ene' ? 1 : m[1] === 'May' ? 2 : 3) : 0; };
+    const pers = [...new Set(items.map(x => x.per))].sort((x, y) => clave(x) - clave(y));
+    const grupos = q.lista.all('grupos').map(r => JSON.parse(r.data));
+    const estat = c => c == null ? 'En curso' : (c >= CAL_APROBATORIA ? 'Aprobada' : 'Reprobada');
+    const media = a2 => { const con = a2.filter(x => x.cal != null); return con.length ? Math.round(con.reduce((t2, x) => t2 + x.cal, 0) / con.length * 10) / 10 : null; };
+    const periodos = pers.map(per => {
+      const its = items.filter(x => x.per === per).sort((x, y) => String(x.mat).localeCompare(String(y.mat)));
+      const g = grupos.find(g2 => g2.per === per && Array.isArray(g2.alumnos) && g2.alumnos.includes(id)), cuat = (its.find(x => x.cuat) || {}).cuat || (g && g.cuat) || '';
+      const pm = media(its);
+      return { periodo: per, cuatrimestre: cuat ? String(cuat) : '', promedio: pm === null ? null : pm.toFixed(1), materias: its.map(x => ({ asignatura: x.mat, cal: x.cal == null ? null : x.cal, estatus: estat(x.cal) })) };
+    });
+    const con = items.filter(x => x.cal != null), gen = media(items);
+    return { ok: true, tipo: 'historial', titulo: 'Historial académico', nombre: a.nombre, matricula: enmascara(a.mat), plan: a.programa || a.carrera || '', emitido: vig.slice(0, 4) + '-' + vig.slice(4, 6) + '-' + vig.slice(6, 8), promedioGeneral: gen === null ? null : gen.toFixed(1), aprobadas: con.filter(x => x.cal >= CAL_APROBATORIA).length, reprobadas: con.filter(x => x.cal < CAL_APROBATORIA).length, periodos };
+  }
   if (t === 'j') {
     for (const r of q.lista.all('justificantes')) {
       const x = JSON.parse(r.data);
@@ -853,7 +873,7 @@ async function api(req, res, partes) {
     if (limite('ver|' + ip, 60, 60000)) return responde(res, 429, { ok: false, motivo: 'Demasiadas consultas. Espera un minuto e inténtalo de nuevo.' });
     falla('ver|' + ip, 60000);
     const u = new URL(req.url, 'http://x').searchParams, t = u.get('t') || '', id = u.get('id') || '', code = (u.get('c') || '').toLowerCase(), vig = u.get('v') || '', fechaB = u.get('f') || '';
-    if (!/^[vcabj]$/.test(t) || !/^[A-Za-z0-9_~-]{1,60}$/.test(id) || !/^[0-9a-f]{8}$/.test(code) || (t === 'a' && !/^\d{8}$/.test(vig)) || (t === 'b' && (!/^[SEM]\d{4}$/.test(vig) || !/^\d{8}$/.test(fechaB)))) return responde(res, 400, { ok: false, motivo: 'El código no es válido.' });
+    if (!/^[vcabjh]$/.test(t) || !/^[A-Za-z0-9_~-]{1,60}$/.test(id) || !/^[0-9a-f]{8}$/.test(code) || ((t === 'a' || t === 'h') && !/^\d{8}$/.test(vig)) || (t === 'b' && (!/^[SEM]\d{4}$/.test(vig) || !/^\d{8}$/.test(fechaB)))) return responde(res, 400, { ok: false, motivo: 'El código no es válido.' });
     res.setHeader('Cache-Control', 'no-store');
     return responde(res, 200, Object.assign({ consultado: new Date().toISOString() }, verificaDoc(t, id, code, vig, fechaB)));
   }

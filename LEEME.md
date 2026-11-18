@@ -15,7 +15,7 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_acceso_ficha.py` · usuario y contraseña inicial del alumno en su ficha: cifrado, bitácora, permisos, restablecer y hoja de acceso (24).
 - `test_portal_cred.py` · credencial digital y recibos descargables en el portal del alumno (19).
 - `test_constancias.py` · constancia simple y con promedio, QR hacia la plataforma y verificación pública sin inicio de sesión, con verificación manual (47).
-- `test_borrados.py` · borrados con autorización del encargado (contraseña o aprobación), notificaciones, vencimiento y eliminación de constancias (63). Tarda unos 40 segundos por una espera que comprueba que cada autorización sirve para una sola acción.
+- `test_borrados.py` · borrados con autorización del encargado (contraseña o aprobación), notificaciones, vencimiento y eliminación de constancias (64). Tarda unos 40 segundos por una espera que comprueba que cada autorización sirve para una sola acción.
 - `test_planeacion.py` · planeación y puntos de evaluación del docente, privacidad entre docentes, calendario escolar y que no haya identificadores repetidos (33).
 - `test_revision.py` · resumen del plan de estudios, quitar materias (una, varias y con autorización) y revisión de planeaciones por el encargado (38).
 - `test_carga_json.py` · carga del plan y los contenidos desde el archivo .json (con y sin materias ya cargadas) (26). Usa el archivo de Pedagogía de `/mnt/user-data/uploads` o de `outputs`; adáptalo a tu ruta.
@@ -59,6 +59,10 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_buzon.py` · buzón de quejas y sugerencias: envío con nombre o anónimo con folio, atención de Control escolar, permisos y anonimato (73).
 - `test_historial_qr.py` · QR del historial académico: verificación pública (sin sesión), páginas, código alterado, correcciones posteriores, PDF con su QR legible con cámara, historial largo y verificación dentro de la aplicación (30).
 - `test_biblioteca_inventario.py` · biblioteca (catálogo, préstamos, límites, renovación, devolución, vencidos y multa estimada), inventario de bienes, permisos y portal del alumno (88).
+- `test_estado_sistema.py` · tarjeta «Estado del sistema» (disco, respaldos, copia externa, cifrado) y permisos de admin (28).
+- `test_tablero.py` · tablero de dirección con fecha fija del navegador (27).
+- `test_comunicados.py` · comunicados generales: destinatarios, vigencia, confirmación de lectura, permisos y portales (65).
+- `test_reinscripcion.py` · reinscripción en línea: configuración, ventana de fechas, revisión de adeudo, respuesta del alumno, permisos, cascada y pantallas (57).
 - `test_docente_choques_llave.py` · resultados de la evaluación para el docente (mínimo de 3 respuestas, anonimato), choques de horario y llave `evdoc.key` en el respaldo y su restauración (27).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

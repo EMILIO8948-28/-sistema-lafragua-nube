@@ -158,7 +158,7 @@ const MODULOS = {
   estado:       { L: ['students', 'ledger', 'gastos', 'proveedores', 'cortes', 'nomina', 'nomina_admin', 'titulaciones', 'acuerdo286', 'docentes', 'materias', 'calif', 'catalogo', 'constancias', 'recargos', 'egresados'], E: [], plans: true, nomina: true },
   ver:          { L: ['students', 'ledger'], E: ['ledger'], plans: true },
   inscripcion:  { L: ['students', 'fotos', 'grupos', 'ledger', 'catalogo', 'materias', 'calif', 'egresados', 'constancias', 'recargos'], E: ['students', 'fotos', 'ledger', 'meta', 'grupos'], plans: true, archivos: true },
-  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'recargos', 'practicas', 'seguim', 'quejas', 'justificantes', 'ledger', 'resguardos', 'ciclos', 'bajas'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'practicas', 'seguim', 'quejas', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
+  escolar:      { L: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'recargos', 'practicas', 'seguim', 'quejas', 'comunicados', 'comlec', 'reinscripciones', 'justificantes', 'ledger', 'resguardos', 'ciclos', 'bajas'], E: ['students', 'fotos', 'grupos', 'materias', 'calif', 'catalogo', 'contenidos', 'criterios', 'docentes', 'egresados', 'constancias', 'practicas', 'seguim', 'quejas', 'comunicados', 'reinscripciones', 'justificantes', 'ledger', 'meta', 'planeaciones', 'resguardos', 'asistencia', 'ciclos'], plans: true, archivos: true },
   biblioteca:   { L: ['libros', 'prestamos', 'inventario', 'students', 'docentes'], E: ['libros', 'prestamos', 'inventario'] },
   constancias:  { L: ['constancias', 'recargos', 'students', 'ledger', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados'], E: ['constancias', 'ledger', 'meta'], plans: true },
   acuerdos:     { L: ['acuerdos', 'ledger', 'students', 'calif', 'catalogo', 'materias', 'grupos', 'fotos', 'egresados', 'constancias', 'recargos'], E: ['acuerdos', 'ledger', 'meta'], plans: true },
@@ -266,6 +266,56 @@ function validaGastos(d) {
 }
 const BZ_TIPOS = ['Queja', 'Sugerencia', 'Felicitación', 'Otro'], BZ_AREAS = ['Control escolar', 'Caja y pagos', 'Docentes', 'Instalaciones', 'Servicios y sistemas', 'Dirección', 'Otro'], BZ_ESTADOS = ['nuevo', 'en revisión', 'resuelto', 'cerrado'], BZ_ABC = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 /* Buzón: Control escolar solo puede responder, cambiar el estado y anotar; lo que escribió el alumno no se toca */
+const RQ_DEC = ['continuo', 'no_continuo'], RQ_CFG0 = { abierta: false, periodo: '', desde: '', hasta: '', mensaje: '', bloquea: true };
+function validaReinsc(id, d) {
+  if (!/^[\w-]{1,60}$/.test(String(id || ''))) return 'Identificador no válido.';
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return 'Datos no válidos.';
+  const t = (v, n) => typeof v === 'string' && v.length <= n;
+  if (id === '_config') {
+    if (typeof d.abierta !== 'boolean') return 'Indica si la reinscripción está abierta.';
+    if (!t(d.periodo, 40)) return 'El periodo no es válido.';
+    for (const k of ['desde', 'hasta']) if (d[k] != null && d[k] !== '' && !fechaOk(d[k])) return 'La fecha no es válida.';
+    if (d.desde && d.hasta && d.desde > d.hasta) return 'El cierre no puede ser antes de la apertura.';
+    if (d.mensaje != null && !t(d.mensaje, 1000)) return 'El mensaje es demasiado largo.';
+    if (d.bloquea != null && typeof d.bloquea !== 'boolean') return 'Valor no válido.';
+    return '';
+  }
+  if (!RQ_DEC.includes(d.decision)) return 'La decisión no es válida.';
+  if (!t(d.periodo || '', 40) || (d.motivo != null && !t(d.motivo, 300))) return 'Datos no válidos.';
+  if (d.fecha != null && d.fecha !== '' && !fechaOk(d.fecha)) return 'La fecha no es válida.';
+  return '';
+}
+const COM_PARA = ['todos', 'alumnos', 'docentes', 'plan', 'grupo'];
+function validaComunicado(id, d) {
+  if (!/^[\w-]{1,60}$/.test(String(id || ''))) return 'Identificador no válido.';
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return 'Datos no válidos.';
+  const t = (v, n) => typeof v === 'string' && v.length <= n;
+  if (!t(d.titulo, 120) || d.titulo.trim().length < 3) return 'El título debe tener entre 3 y 120 caracteres.';
+  if (!t(d.cuerpo, 5000) || d.cuerpo.trim().length < 3) return 'El mensaje debe tener entre 3 y 5000 caracteres.';
+  if (!d.para || typeof d.para !== 'object' || !COM_PARA.includes(d.para.tipo)) return 'Elige a quién va dirigido.';
+  if (d.para.tipo === 'plan' && !(t(d.para.plan, 80) && d.para.plan.trim())) return 'Elige el plan de estudios.';
+  if (d.para.tipo === 'grupo' && !(t(d.para.grupo, 60) && d.para.grupo.trim())) return 'Elige el grupo.';
+  if (d.fecha != null && d.fecha !== '' && !fechaOk(d.fecha)) return 'Fecha no válida.';
+  if (d.hasta != null && d.hasta !== '' && !fechaOk(d.hasta)) return 'La fecha de vigencia no es válida.';
+  if (d.importante != null && typeof d.importante !== 'boolean') return 'Importancia no válida.';
+  if (d.activo != null && typeof d.activo !== 'boolean') return 'Estado no válido.';
+  if (d.autor != null && !t(d.autor, 100)) return 'Autor no válido.';
+  return '';
+}
+/* ¿Le toca este comunicado a esta sesión (alumno o docente)? */
+function comunicadoPara(d, s) {
+  if (!d || d.activo === false || (d.hasta && d.hasta < hoyMx())) return false;
+  const esAl = s.rol === 'alumno' && !!s.alumno, esDoc = s.rol === 'docente' && !!s.doc;
+  if (!esAl && !esDoc) return false;
+  const tp = d.para && d.para.tipo;
+  if (tp === 'todos') return true;
+  if (tp === 'docentes') return esDoc;
+  if (!esAl) return false;
+  if (tp === 'alumnos') return true;
+  if (tp === 'plan') { const al = leeDoc('students', s.alumno) || {}; return String(al.programa || al.carrera || '') === d.para.plan; }
+  if (tp === 'grupo') { const g = leeDoc('grupos', d.para.grupo); return !!(g && Array.isArray(g.alumnos) && g.alumnos.includes(s.alumno)); }
+  return false;
+}
 function validaQueja(id, d) {
   const ex = leeDoc('quejas', id);
   if (!ex) return 'Los mensajes los crean los alumnos desde su portal.';
@@ -441,7 +491,7 @@ function validaModulos(m) {
 /* ---------- Borrados protegidos ----------
    Nadie que no sea Administrador borra nada sin autorización: o la contraseña del encargado, o su aprobación.
    Es un borrado: eliminar un documento o un archivo, o quitar elementos de un documento (un pago, un gasto, un documento cargado…). */
-const NOMBRES_COL = { libros: 'Libro de la biblioteca', prestamos: 'Préstamos de biblioteca', inventario: 'Bien del inventario', quejas: 'Mensaje del buzón', proveedores: 'Proveedor o gasto fijo', atencion: 'Registro de atención personalizada', prospectos: 'Prospecto', campanas: 'Campaña', students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura', contratos: 'Contrato de docente', fichasins: 'Ficha de inscripción firmada' };
+const NOMBRES_COL = { reinscripciones: 'Reinscripción', comunicados: 'Comunicado', comlec: 'Lecturas de comunicados', libros: 'Libro de la biblioteca', prestamos: 'Préstamos de biblioteca', inventario: 'Bien del inventario', quejas: 'Mensaje del buzón', proveedores: 'Proveedor o gasto fijo', atencion: 'Registro de atención personalizada', prospectos: 'Prospecto', campanas: 'Campaña', students: 'Alumno', ledger: 'Pagos del alumno', calif: 'Calificaciones del alumno', constancias: 'Constancias del alumno', fotos: 'Fotografía del alumno', egresados: 'Registro de egresado', gastos: 'Gastos del mes', cortes: 'Corte de caja', grupos: 'Grupo', materias: 'Materia del calendario', catalogo: 'Plan de estudios', docentes: 'Docente', docentes_docs: 'Expediente del docente', titulaciones: 'Titulación', acuerdo286: 'Acuerdo 286', acuerdos: 'Acuerdo de pago', justificantes: 'Justificante', empleados: 'Empleado', nomina: 'Nómina docente', nomina_admin: 'Nómina administrativa', criterios: 'Puntos de evaluación', contenidos: 'Contenido de asignatura', contratos: 'Contrato de docente', fichasins: 'Ficha de inscripción firmada' };
 const visibleAtencion = (s, d) => s.rol === 'admin' || !d.privado || d.creador === s.u;
 const idPer = per => String(per || '').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
 const cicloDe = per => { if (!per) return null; const r = q.uno.get('ciclos', idPer(per)); try { return r ? JSON.parse(r.data) : null; } catch (e) { return null; } };
@@ -501,6 +551,8 @@ function describeBorrado(m, col, id, viejo, nuevo) {
 }
 function envioBorrado(u) { difunde('_borrados', u); difunde('_borrados', '*'); }
 /* Devuelve true si ya respondió (403) porque el borrado necesita autorización. */
+/* Al eliminar un alumno se borra también lo suyo en estas colecciones, aunque quien lo elimina no tenga permiso sobre alguna */
+const COLS_DEL_ALUMNO = ['ledger', 'fotos', 'calif', 'constancias', 'recargos', 'practicas', 'seguim', 'prestamos', 'egresados', 'reinscripciones'];
 function protegeBorrado(s, req, res, o) {
   if (s.rol === 'admin') return false;
   let esBorrado = false;
@@ -951,11 +1003,13 @@ async function api(req, res, partes) {
     if (s.rol === 'alumno' && a === 'avisos' && m === 'PATCH') return guardaAvisoLeido(s, req, res, b);
     if (m === 'PUT' || m === 'PATCH' || m === 'DELETE') {
       if (!puedeEscribir(s, a, b)) { audita(s.u, req, 'Escritura denegada', m + ' ' + a + '/' + b); return responde(res, 403, { error: 'No tienes permiso para hacer esto.' }); }
-      if (m === 'DELETE') { const r0 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'DELETE', col: a, id: b, viejo: r0 ? JSON.parse(r0.data) : null })) return; q.borra.run(a, b); difunde(a, b); cobHook(a, b); return responde(res, 200, { ok: true }); }
+      if (m === 'DELETE') { const r0 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'DELETE', col: a, id: b, viejo: r0 ? JSON.parse(r0.data) : null })) return; q.borra.run(a, b); difunde(a, b); if (a === 'students') for (const c of COLS_DEL_ALUMNO) { q.borra.run(c, b); difunde(c, b); } cobHook(a, b); return responde(res, 200, { ok: true }); }
       let cuerpo; try { cuerpo = JSON.parse((await leeCuerpo(req, 6 * 1024 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
       if (cuerpo === null || typeof cuerpo !== 'object' || Array.isArray(cuerpo)) return responde(res, 400, { error: 'Se esperaba un objeto' });
       let nuevo = cuerpo; if (m === 'PATCH') { const r = q.uno.get(a, b); nuevo = Object.assign(r ? JSON.parse(r.data) : {}, cuerpo); }
       if (a === 'libros' || a === 'prestamos' || a === 'inventario') { const er = a === 'libros' ? validaLibro(b, nuevo) : a === 'prestamos' ? validaPrestamos(nuevo) : validaInventario(nuevo); if (er) return responde(res, 400, { error: er }); }
+      if (a === 'reinscripciones') { const er = validaReinsc(b, nuevo); if (er) return responde(res, 400, { error: er }); }
+      if (a === 'comunicados') { const er = validaComunicado(b, nuevo); if (er) return responde(res, 400, { error: er }); }
       if (a === 'quejas') { const er = validaQueja(b, nuevo); if (er) return responde(res, er.startsWith('Los mensajes') ? 403 : 400, { error: er }); }
       if (a === 'proveedores' || a === 'gastos') { const er = a === 'proveedores' ? validaProveedor(b, nuevo) : validaGastos(nuevo); if (er) return responde(res, 400, { error: er }); }
       if (a === 'practicas' || a === 'seguim') { const er = a === 'practicas' ? validaPracticas(nuevo) : validaSeguim(nuevo); if (er) return responde(res, 400, { error: er }); }
@@ -1228,6 +1282,64 @@ async function api(req, res, partes) {
       return responde(res, 404, { error: 'No encontrado' });
     } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
   }
+  /* Reinscripción en línea: el alumno confirma si continúa el siguiente periodo (con ventana de fechas y revisión de adeudo) */
+  if (tipo === 'reinscripcion') {
+    try {
+      if (rol !== 'alumno' || !s.alumno) return responde(res, 403, { error: 'La reinscripción en línea es para alumnos. Control escolar revisa las respuestas desde su pestaña.' });
+      const cfg = Object.assign({}, RQ_CFG0, leeDoc('reinscripciones', '_config') || {}), hoy = hoyMx();
+      const ventana = !!cfg.abierta && (!cfg.desde || cfg.desde <= hoy) && (!cfg.hasta || hoy <= cfg.hasta);
+      const adeudo = () => { const p = pendientesSrv(s.alumno), ven = p ? p.pend.filter(x => x.vencido) : [], cargo = p ? p.pend.find(x => /^Reinscripci/.test(x.c)) : null; return { n: ven.length, total: Math.round(ven.reduce((t, x) => t + x.monto, 0) * 100) / 100, cargo: cargo ? { c: cargo.c, monto: cargo.monto } : null }; };
+      if (m === 'GET' && a === 'estado') {
+        const ad = adeudo(), r = leeDoc('reinscripciones', s.alumno), vale = r && r.periodo === cfg.periodo;
+        let enLinea = false; try { enLinea = !!PL.estado(s.alumno).activo; } catch (e) { /* sin pagos en línea */ }
+        return responde(res, 200, { abierta: ventana, periodo: cfg.periodo, desde: cfg.desde || '', hasta: cfg.hasta || '', mensaje: cfg.mensaje || '', bloquea: !!cfg.bloquea, vencidas: ad.n, vencido: ad.total, cargo: ad.cargo, enLinea, respuesta: vale ? { decision: r.decision, motivo: r.motivo || '', fecha: r.fecha } : null });
+      }
+      if (m === 'POST' && a === 'responder') {
+        if (limite('rq|' + s.u, 20, 3600000)) return responde(res, 429, { error: 'Demasiados intentos. Inténtalo más tarde.' }); falla('rq|' + s.u, 3600000);
+        if (!ventana) return responde(res, 409, { error: 'La reinscripción no está abierta en este momento.' });
+        const c = await leeJSON(req, 1500), dec = String(c.decision || ''), motivo = String(c.motivo == null ? '' : c.motivo).trim().slice(0, 300);
+        if (!RQ_DEC.includes(dec)) return responde(res, 400, { error: 'Elige si continuarás o no.' });
+        if (dec === 'no_continuo' && motivo.length < 3) return responde(res, 400, { error: 'Cuéntanos brevemente el motivo.' });
+        const ad = adeudo();
+        if (dec === 'continuo' && cfg.bloquea && ad.n > 0) return responde(res, 409, { error: 'Tienes ' + ad.n + (ad.n === 1 ? ' colegiatura vencida' : ' colegiaturas vencidas') + ' por ' + ad.total.toFixed(2) + ' pesos. Regulariza tu pago (en caja o en línea) para confirmar tu reinscripción.', vencidas: ad.n, vencido: ad.total });
+        const al = leeDoc('students', s.alumno) || {}, prev = leeDoc('reinscripciones', s.alumno);
+        const d = { sid: s.alumno, nombre: al.nombre || '', mat: al.mat || '', plan: al.programa || al.carrera || '', periodo: cfg.periodo, decision: dec, motivo: dec === 'no_continuo' ? motivo : '', fecha: hoy, ts: Date.now(), cambios: prev && prev.periodo === cfg.periodo ? (prev.cambios || 0) + 1 : 0, vencidas: ad.n, vencido: ad.total };
+        q.pon.run('reinscripciones', s.alumno, JSON.stringify(d), Date.now()); difunde('reinscripciones', s.alumno);
+        audita(s.u, req, 'Respondió la reinscripción (' + (dec === 'continuo' ? 'continuará' : 'no continuará') + ')', cfg.periodo);
+        return responde(res, 200, { ok: true });
+      }
+      return responde(res, 404, { error: 'No encontrado' });
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
+  /* Comunicados generales: Control escolar publica; alumnos y docentes los leen y confirman la lectura */
+  if (tipo === 'comunicados') {
+    try {
+      const ed = rol === 'admin' || nivel(s, 'escolar') === 'editar';
+      const todos = () => q.lista.all('comunicados').map(r => { try { return Object.assign({ id: r.id }, JSON.parse(r.data)); } catch (e) { return null; } }).filter(Boolean);
+      if (m === 'GET' && a === 'mios') {
+        const o = todos().filter(d => comunicadoPara(d, s)).sort((x, y) => String(y.fecha).localeCompare(String(x.fecha)) || String(y.id).localeCompare(String(x.id))).slice(0, 50);
+        return responde(res, 200, { comunicados: o.map(d => { const l = (leeDoc('comlec', d.id) || {}).lect || {}; return { id: d.id, titulo: d.titulo, cuerpo: d.cuerpo, fecha: d.fecha, autor: d.autor || '', importante: !!d.importante, hasta: d.hasta || '', leido: !!l[s.u] }; }) });
+      }
+      if (m === 'POST' && a === 'leido') {
+        if (limite('cml|' + s.u, 200, 3600000)) return responde(res, 429, { error: 'Demasiadas acciones. Inténtalo más tarde.' });
+        const c = await leeJSON(req, 500), id = String(c.id || ''), d = /^[\w-]{1,60}$/.test(id) ? leeDoc('comunicados', id) : null;
+        if (!d || !comunicadoPara(d, s)) return responde(res, 404, { error: 'No encontrado.' });
+        const doc = leeDoc('comlec', id) || { lect: {} }; doc.lect = doc.lect || {};
+        if (!doc.lect[s.u]) { doc.lect[s.u] = { n: s.name || s.u, t: Date.now(), r: rol }; q.pon.run('comlec', id, JSON.stringify(doc), Date.now()); difunde('comlec', id); }
+        return responde(res, 200, { ok: true });
+      }
+      if (m === 'GET' && a === 'resumen') {
+        if (!ed && nivel(s, 'escolar') === 'none') return responde(res, 403, { error: 'No tienes permiso.' });
+        const us = db.prepare("SELECT u, nombre, rol, doc, alumno FROM usuarios WHERE (rol = 'alumno' AND alumno IS NOT NULL AND alumno <> '') OR (rol = 'docente' AND doc IS NOT NULL AND doc <> '')").all(), out = {};
+        for (const d of todos()) {
+          const dest = us.filter(u => comunicadoPara(Object.assign({}, d, { activo: true, hasta: '' }), { rol: u.rol, alumno: u.alumno, doc: u.doc, u: u.u })), l = (leeDoc('comlec', d.id) || {}).lect || {};
+          out[d.id] = { total: dest.length, leidos: dest.filter(u => l[u.u]).length, leyeron: dest.filter(u => l[u.u]).map(u => ({ n: u.nombre, t: new Date(l[u.u].t).toISOString() })).slice(0, 300), pendientes: dest.filter(u => !l[u.u]).map(u => u.nombre).slice(0, 300) };
+        }
+        return responde(res, 200, { resumen: out });
+      }
+      return responde(res, 404, { error: 'No encontrado' });
+    } catch (e) { return responde(res, e.cod || 500, { error: e.cod ? e.message : 'Error interno' }); }
+  }
   /* Bajas y regularización: Control escolar decide */
   if (tipo === 'bajas') {
     const ed = rol === 'admin' || nivel(s, 'escolar') === 'editar', ver = ed || nivel(s, 'escolar') !== 'none';
@@ -1381,6 +1493,10 @@ async function api(req, res, partes) {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
     const a1 = infoAlmacenamiento(), c = qCreada.get(), d = qUltDesc.get();
     return responde(res, 200, Object.assign(a1, { creada: c && c.f ? new Date(c.f).toISOString() : null, ultimaDescarga: d && d.f ? new Date(d.f).toISOString() : null, auto: resumenAuto(), respaldosEnServidor: (() => { try { return fs.readdirSync(RESP).filter(n => /^\d{4}-\d{2}-\d{2}$/.test(n)).length; } catch (e) { return 0; } })() }));
+  }
+  if (tipo === 'estado-sistema' && m === 'GET') {
+    if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
+    return responde(res, 200, estadoSistema());
   }
   if (tipo === 'info' && m === 'GET') {
     if (rol !== 'admin') return responde(res, 403, { error: 'Solo el Administrador.' });
@@ -1699,6 +1815,40 @@ function leeMontajes() {
   const arch = ENV.LF_MOUNTINFO_ARCHIVO || '/proc/self/mountinfo';
   const dec = s => String(s).replace(/\\([0-7]{3})/g, (m, o) => String.fromCharCode(parseInt(o, 8)));
   return fs.readFileSync(arch, 'utf8').split('\n').filter(Boolean).map(l => { const p = l.split(' '), g = p.indexOf('-'); return { punto: dec(p[4]), fs: p[g + 1], fuente: p[g + 2] }; });
+}
+/* Panel «Estado del sistema»: semáforo con lo que protege los datos y lo que está configurado (solo lectura; nunca devuelve llaves) */
+function estadoSistema() {
+  const it = [], ahora = Date.now(), H36 = 36 * 3600000;
+  const add = (id, nivel, titulo, detalle, accion) => it.push({ id, nivel, titulo, detalle, accion: accion || '' });
+  const al = infoAlmacenamiento();
+  if (al.persistente === true) add('disco', 'ok', 'Disco persistente', 'Los datos están en un disco aparte y sobreviven a reinicios y actualizaciones.');
+  else if (al.persistente === false) add('disco', 'mal', 'Los datos están en un disco temporal', 'Se borrarán cuando el servicio se actualice o se reinicie.', 'En Render: tu servicio > Disks > agrega un disco con ruta /var/data y define DATA_DIR=/var/data.');
+  else add('disco', al.motivo === 'No es un servidor en la nube.' ? 'info' : 'aviso', 'No se pudo confirmar el disco', al.motivo || '', 'Si estás en Render, confirma que el servicio tiene un disco persistente (Disks).');
+  const a = resumenAuto(), ver = a.ultimoVerificado && ahora - a.ultimoVerificado < H36;
+  if (!a.activo) add('respaldo', 'mal', 'El respaldo automático está apagado', 'No se está creando ningún respaldo diario.', 'Actívalo abajo, en «Respaldo automático».');
+  else if (ver) add('respaldo', 'ok', 'Respaldo diario verificado', 'El último respaldo se verificó como si se fuera a restaurar y es de las últimas 36 horas.');
+  else add('respaldo', 'mal', 'No hay un respaldo verificado reciente', a.ultimoError ? 'Último error: ' + a.ultimoError : 'Ninguno en las últimas 36 horas.', 'Pulsa «Respaldar ahora» y revisa el resultado.');
+  const ext = a.s3 || a.correo;
+  if (!ext) add('externa', 'mal', 'Sin copia fuera del servidor', 'Si el servidor se pierde, los respaldos se pierden con él.', 'Configura el almacenamiento externo (S3, Backblaze, R2…) o el correo en «Respaldo automático».');
+  else if (a.ultimaExterna && ahora - a.ultimaExterna < H36) add('externa', 'ok', 'Copia fuera del servidor al día', 'Se envía a ' + [a.s3 ? 'almacenamiento externo' : '', a.correo ? 'correo' : ''].filter(Boolean).join(' y ') + '.');
+  else add('externa', 'aviso', 'La copia externa no se ha entregado en 36 horas', 'Está configurada pero no se completó recientemente.', 'Usa «Probar» en el destino y revisa las llaves.');
+  if (ext) { if (a.cifrado) add('cifrado', 'ok', 'Copias cifradas', 'Solo quien tiene la clave puede abrir los respaldos externos.'); else add('cifrado', 'aviso', 'Copias externas sin cifrar', 'Los respaldos contienen datos personales de alumnos.', 'Activa el cifrado y guarda la clave en un lugar seguro.'); }
+  let cf = null; try { cf = AV.cfg(); } catch (e) { /* sin módulo */ }
+  if (cf && cf.activo && cf.correo && cf.correo.activo && (cf.correo.usarRespaldos || (cf.correo.host && cf.correo.de))) add('correo', 'ok', 'Avisos por correo listos', 'Cobranza, solicitudes y calificaciones pueden avisar por correo.');
+  else add('correo', 'aviso', 'Avisos por correo sin configurar', 'Los alumnos y docentes no reciben correos de la plataforma.', 'Configúralos en «Avisos por correo y WhatsApp».');
+  if (cf && cf.activo && cf.whatsapp && cf.whatsapp.activo && cf.whatsapp.phoneId && cf.whatsapp.token) add('whatsapp', 'ok', 'WhatsApp Business conectado', 'Los avisos pueden enviarse también por WhatsApp.');
+  else add('whatsapp', 'info', 'WhatsApp no está configurado', 'Es opcional.', 'Si lo quieres, conéctalo en «Avisos por correo y WhatsApp».');
+  let pc = null; try { pc = PL.cfg(); } catch (e) { /* sin módulo */ }
+  if (pc && pc.activo && pc.stripeKey) add('stripe', 'ok', 'Pagos en línea activos', 'Los alumnos pueden pagar con tarjeta' + (pc.metodos && pc.metodos.oxxo ? ' u OXXO' : '') + '.');
+  else add('stripe', 'info', 'Pagos en línea apagados', 'Es opcional.', 'Si los quieres, configura Stripe en Finanzas.');
+  let sin2 = []; try { sin2 = db.prepare("SELECT u FROM usuarios WHERE rol = 'admin'").all().map(r => r.u).filter(u => !SEG.tiene(u)); } catch (e) { /* sin módulo */ }
+  if (!sin2.length) add('dospasos', 'ok', 'Administradores con verificación en dos pasos', 'Todas las cuentas de administrador la tienen activa.');
+  else add('dospasos', 'aviso', sin2.length === 1 ? 'Un administrador sin verificación en dos pasos' : sin2.length + ' administradores sin verificación en dos pasos', 'Usuarios: ' + sin2.join(', ') + '.', 'Actívala desde tu cuenta: protege contra contraseñas robadas.');
+  let bd = 0, arch = 0; try { bd = fs.statSync(path.join(DATOS, 'lafragua.db')).size; } catch (e) {} try { fs.readdirSync(ARCH).forEach(f => { arch += fs.statSync(path.join(ARCH, f)).size; }); } catch (e) {}
+  const mb = n => (n / 1048576).toFixed(1) + ' MB';
+  add('datos', 'info', 'Tamaño de los datos', 'Base de datos ' + mb(bd) + ' · archivos ' + mb(arch) + '.');
+  const cuenta = n => it.filter(x => x.nivel === n).length;
+  return { generado: new Date().toISOString(), mal: cuenta('mal'), aviso: cuenta('aviso'), ok: cuenta('ok'), items: it };
 }
 function infoAlmacenamiento() {
   const r = { persistente: null, montaje: '', sistema: '', ruta: DATOS, motivo: '' };

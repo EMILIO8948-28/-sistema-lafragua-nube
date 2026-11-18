@@ -181,13 +181,14 @@ with sync_playwright() as pw:
     # cada autorización sirve para una sola acción: pasado un momento ya no vale
     time.sleep(17)
     # (6) eliminar un alumno es varios pasos y se autoriza una sola vez
-    put('students/s9',{'mat':'1009','nombre':'Zoe Prueba','carrera':'Derecho','programa':'Derecho','ingreso':2025});put('ledger/s9',{'pagos':[pago('z1','R-000900',100)]});put('grupos/g1',{'num':'1111','plan':'Derecho','per':'Sep–Dic 2026','cuat':1,'alumnos':['s1','s9']})
+    put('students/s9',{'mat':'1009','nombre':'Zoe Prueba','carrera':'Derecho','programa':'Derecho','ingreso':2025});put('ledger/s9',{'pagos':[pago('z1','R-000900',100)]});put('prestamos/s9',{'nombre':'Zoe Prueba','tipo':'alumno','items':[]});put('grupos/g1',{'num':'1111','plan':'Derecho','per':'Sep–Dic 2026','cuat':1,'alumnos':['s1','s9']})
     W(pe,"S.some(function(s){return s.id==='s9'})")
     pe.evaluate("ir('esc');etab('A')");pe.evaluate("openPf('s9')");pe.wait_for_selector('#dPf[open]')
     pe.click('#pfDel');pe.wait_for_timeout(200);pe.click('#pfDel');pe.wait_for_selector('#dAu[open]');ok('eliminar_alumno_pide_autorizacion','Zoe' in pe.inner_text('#auDesc') or 'grupo' in pe.inner_text('#auDesc').lower())
     pe.click('#auSolicita');W(pg,"(NOTS.pendientes||[]).length===1",15);pg.evaluate("ir('not')");pg.evaluate("renderNot()");pg.click('#ntPend [data-ap]')
     W(pe,"!S.some(function(s){return s.id==='s9'})",25)
     ok('alumno_eliminado_con_una_sola_autorizacion',adm('get','/api/doc/students/s9').json()['exists'] is False and adm('get','/api/doc/ledger/s9').json()['exists'] is False and 's9' not in adm('get','/api/doc/grupos/g1').json()['data']['alumnos'])
+    ok('lo_de_colecciones_sin_permiso_tambien_se_limpia',adm('get','/api/doc/prestamos/s9').json()['exists'] is False)
     hist=adm('get','/api/borrados').json()['historial'];ok('se_registran_todas_las_operaciones',max(len(x['ops']) for x in hist if 'Zoe' in x['descripcion'] or 'grupo' in x['descripcion'].lower() or True)>=3)
     aud=adm('get','/api/auditoria').json()['registros'];ac=' | '.join(a['accion'] for a in aud)
     ok('bitacora','Borrado bloqueado' in ac and 'Aprobó un borrado' in ac and 'Denegó un borrado' in ac and 'con la contraseña del encargado' in ac and 'Borrado autorizado' in ac)

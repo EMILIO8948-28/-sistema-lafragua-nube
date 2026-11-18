@@ -150,6 +150,7 @@ dialog::backdrop{background:rgba(10,20,35,.55)}
 .mod .ico{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:4px;color:var(--ink);background:rgba(22,37,59,.07);background:color-mix(in srgb,var(--ink) 8%,transparent)}
 .mod .ico svg{width:26px;height:26px}
 .mod:hover .ico,.mod:focus-visible .ico{background:var(--ink);color:var(--surface)}
+.drg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:6px 0 10px}
 .mod{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:6px;font:inherit;color:var(--ink)}
 button.mod{cursor:pointer}button.mod:hover{border-color:var(--accent)}
 .mod b{font:700 18px "Bricolage Grotesque",Figtree,sans-serif}.mod span{color:var(--muted);font-size:14px;font-weight:400}.mod .st{color:var(--ink);font-weight:600}
@@ -212,6 +213,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <button class="mod" id="mPr" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg></span><b>Prospectos y campañas</b><span>Interesados que llegan de redes sociales: registro, seguimiento y resultados de cada campaña.</span><span class="st" id="mPrS"></span></button>
     <button class="mod" id="mSp" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><rect x="9" y="10.5" width="6" height="5" rx="1"/><path d="M10.5 10.5V9a1.5 1.5 0 013 0v1.5"/></svg></span><b>Seguridad y privacidad</b><span>Verificación en dos pasos, aviso de privacidad y plazos de conservación de datos.</span><span class="st" id="mSpS"></span></button>
     <button class="mod" id="mAv" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/><path d="M8 21l2.5-3.5h5L18 21"/></svg></span><b>Avisos por correo y WhatsApp</b><span>Avisa fuera de la plataforma: adeudos, respuestas a solicitudes, planeaciones, calificaciones y avisos generales.</span><span class="st" id="mAvS"></span></button>
+    <button class="mod" id="mDir" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg></span><b>Tablero de dirección</b><span>Matrícula, cobranza, calificaciones y pendientes de un vistazo.</span><span class="st" id="mDirS"></span></button>
     <button class="mod" id="mBk" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="11" cy="5.5" rx="7" ry="3"/><path d="M4 5.5v6c0 1.66 3.13 3 7 3 .9 0 1.77-.08 2.57-.22"/><path d="M4 11.5v6c0 1.66 3.13 3 7 3 .5 0 1-.03 1.5-.08"/><path d="M18 12l4 1.6v3.2c0 2.5-1.7 4.3-4 5.2-2.3-.9-4-2.7-4-5.2v-3.2z"/><path d="M16.3 17.3l1.3 1.3 2.4-2.6"/></svg></span><b>Respaldos y seguridad</b><span>Respaldo automático diario, copia fuera del servidor, cifrado y prueba de restauración.</span><span class="st" id="mBkS"></span></button>
     <button class="mod" id="mUsr" hidden><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/><circle cx="12" cy="10" r="2.3"/><path d="M8.3 16.2c.6-1.9 2-2.8 3.7-2.8s3.1.9 3.7 2.8"/></svg></span><b>Usuarios y permisos</b><span>Crea usuarios y decide a qué módulos entra cada uno y con qué privilegio: solo ver o editar.</span><span class="st" id="mUsrS"></span></button>
     <button class="mod" id="mVer" hidden data-fin="1"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.6 2.6L16 9.5"/></svg></span><b>Verificación de pagos</b><span>Transferencias por verificar en la app del banco, según los recibos emitidos.</span><span class="st" id="mVerS"></span></button>
@@ -222,7 +224,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
 </div>
 <div id="vEsc" hidden>
-  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="B" class="need-admin">Bajas <span id="bjN" class="tag sin" hidden></span></button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button><button data-et="T">Títulos en resguardo</button><button data-et="V">Evaluación docente</button><button data-et="O">Servicio social y prácticas</button><button data-et="Y">Seguimiento de egresados</button><button data-et="X">Estadística 911</button><button data-et="U" id="tUbz">Buzón</button><button data-et="W">Biblioteca</button><button data-et="Z">Inventario</button></div>
+  <div class="bar" id="eTabs"><button class="p" data-et="A">Alumnos</button><button data-et="P">Plan de estudios</button><button data-et="G">Grupos</button><button data-et="K">Calendario escolar</button><button data-et="C">Calificaciones</button><button data-et="E">Egresados</button><button data-et="B" class="need-admin">Bajas <span id="bjN" class="tag sin" hidden></span></button><button data-et="J">Justificantes</button><button data-et="R" data-na="1" class="need-admin">Credenciales</button><button data-et="D">Docentes</button><button data-et="N" data-nc="1" class="need-cobro">Constancias</button><button data-et="H" class="need-admin">Calificaciones anteriores</button><button data-et="S" class="need-admin">Solicitudes de alumnos</button><button data-et="T">Títulos en resguardo</button><button data-et="V">Evaluación docente</button><button data-et="O">Servicio social y prácticas</button><button data-et="Y">Seguimiento de egresados</button><button data-et="X">Estadística 911</button><button data-et="U" id="tUbz">Buzón</button><button data-et="M">Comunicados</button><button data-et="Q">Reinscripción</button><button data-et="W">Biblioteca</button><button data-et="Z">Inventario</button></div>
 <div id="eV" hidden>
   <p class="hint">Resultados de la evaluación que los alumnos hacen a sus docentes después de la evaluación de cada asignatura. Es <b>anónima</b>: aquí nunca aparece quién respondió.</p>
   <div class="bar"><select id="evPer" aria-label="Periodo"></select><select id="evDoc" aria-label="Docente"></select><input id="evBus" class="grow" type="search" placeholder="Buscar docente o asignatura" aria-label="Buscar"><button id="evRef">Actualizar</button><button id="evCsv">Exportar CSV</button></div>
@@ -259,6 +261,38 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   <div class="bar"><input id="bzBus" class="grow" type="search" placeholder="Buscar por folio, asunto o alumno" aria-label="Buscar"><select id="bzEst" aria-label="Estado"><option value="">Todos los estados</option><option value="abiertos">Pendientes (nuevo y en revisión)</option><option value="nuevo">Nuevo</option><option value="en revisión">En revisión</option><option value="resuelto">Resuelto</option><option value="cerrado">Cerrado</option></select><select id="bzTip" aria-label="Tipo"><option value="">Todos los tipos</option><option>Queja</option><option>Sugerencia</option><option>Felicitación</option><option>Otro</option></select><button id="bzCsv">Exportar CSV</button></div>
   <div id="bzRes" class="hint"></div>
   <div class="wrap"><table style="min-width:820px"><thead><tr><th>Folio</th><th>Fecha</th><th>Tipo</th><th>Área</th><th>Asunto</th><th>De</th><th>Estado</th><th></th></tr></thead><tbody id="bzTbl"></tbody></table></div>
+</div>
+<div id="eM" hidden>
+  <p class="hint">Publica avisos para todos, solo alumnos, solo docentes, un plan de estudios o un grupo. Cada persona los ve en su portal y confirma que los leyó; aquí ves quién ya lo hizo.</p>
+  <div class="row">
+    <label class="full">Título<input id="cmTit" maxlength="120"></label>
+    <label class="full">Mensaje<textarea id="cmCue" rows="5" maxlength="5000" style="width:100%;font:inherit"></textarea></label>
+    <label>Dirigido a<select id="cmPara"><option value="todos">Todos (alumnos y docentes)</option><option value="alumnos">Solo alumnos</option><option value="docentes">Solo docentes</option><option value="plan">Alumnos de un plan de estudios</option><option value="grupo">Alumnos de un grupo</option></select></label>
+    <label id="cmPlanL" hidden>Plan de estudios<select id="cmPlan"></select></label>
+    <label id="cmGrpL" hidden>Grupo<select id="cmGrp"></select></label>
+    <label>Se muestra hasta (opcional)<input id="cmHas" type="date"></label>
+    <label style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="cmImp"> Marcar como importante</label>
+  </div>
+  <div class="bar" style="margin:6px 0"><button class="p" id="cmPub">Publicar</button><button id="cmLimp">Limpiar</button></div>
+  <p class="hint" id="cmcMsg" role="status" style="min-height:1.4em"></p>
+  <h2>Publicados</h2>
+  <div id="cmLista"></div>
+</div>
+<div id="eQ" hidden>
+  <p class="hint">Abre un periodo para que cada alumno confirme desde su portal si continúa el siguiente cuatrimestre. Si activas la revisión de adeudo, quien tenga colegiaturas vencidas no podrá confirmar hasta regularizarse. Los alumnos que decidan no continuar deben dar su motivo.</p>
+  <div class="row">
+    <label>Periodo a reinscribir<input id="rqPer" maxlength="40" placeholder="Ej. Ene–Abr 2027"></label>
+    <label>Abre el<input id="rqDes" type="date"></label>
+    <label>Cierra el<input id="rqHas" type="date"></label>
+    <label class="full">Mensaje para los alumnos (opcional)<textarea id="rqMsg" rows="2" maxlength="1000" style="width:100%;font:inherit"></textarea></label>
+    <label style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="rqBlo" checked> Revisar adeudo: no dejar confirmar a quien tenga colegiaturas vencidas</label>
+    <label style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="rqAbi"> Reinscripción abierta</label>
+  </div>
+  <div class="bar" style="margin:6px 0"><button class="p" id="rqGuarda">Guardar configuración</button><button id="rqCsv">Exportar CSV</button></div>
+  <p class="hint" id="rqMsgS" role="status" style="min-height:1.4em"></p>
+  <div id="rqRes" class="hint"></div>
+  <div class="bar"><select id="rqFil" aria-label="Filtro"><option value="">Todos los alumnos activos</option><option value="confirmada">Continúan</option><option value="no">No continúan</option><option value="pend">Sin responder</option></select><input id="rqBus" class="grow" type="search" placeholder="Buscar alumno o matrícula" aria-label="Buscar"></div>
+  <div class="wrap"><table style="min-width:760px"><thead><tr><th>Alumno</th><th>Matrícula</th><th>Respuesta</th><th>Fecha</th><th>Motivo / nota</th></tr></thead><tbody id="rqTbl"></tbody></table></div>
 </div>
 <div id="eW" hidden>
   <div class="bar" style="margin:0 0 8px"><button id="bbT1" class="p">Préstamos</button><button id="bbT2">Catálogo</button><button id="bbT3">Ajustes</button></div>
@@ -666,8 +700,24 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
   </div>
   </div>
 </div>
+<div id="vDir" hidden>
+  <div class="bar" style="margin:0 0 8px"><span class="hint" id="drFecha" style="flex:1"></span><button id="drRef">Actualizar</button><button id="drCsv">Exportar resumen (CSV)</button></div>
+  <h2>Matrícula</h2>
+  <div id="drMat" class="drg"></div>
+  <div id="drPlanes" style="margin:8px 0"></div>
+  <h2>Finanzas del mes</h2>
+  <div id="drFin" class="drg"></div>
+  <h2>Alumnos con colegiaturas vencidas</h2>
+  <div class="wrap"><table style="min-width:560px"><thead><tr><th>Alumno</th><th>Plan</th><th class="n">Vencidas</th><th class="n">Debe</th></tr></thead><tbody id="drMor"></tbody></table></div>
+  <p class="hint" id="drMorN"></p>
+  <h2>Académico</h2>
+  <div id="drAca" class="drg"></div>
+  <h2>Pendientes</h2>
+  <div id="drPen" class="drg"></div>
+</div>
 <div id="vBk" hidden>
   <p class="hint">Aquí cuidas que la información de la escuela no se pierda: el sistema hace un respaldo cada día, lo <b>verifica</b> (lo abre como si lo fuera a restaurar) y lo manda <b>fuera del servidor</b>. Puede ir cifrado, para que solo tú lo abras.</p>
+  <div id="esSis" style="margin:0 0 14px" hidden><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0">Estado del sistema</h2><span id="esRes" class="tag"></span><span class="grow" style="flex:1"></span><button id="esRef">Actualizar</button></div><div id="esLista" style="margin-top:8px"></div></div>
   <div id="rbLocalAv" class="mod" style="cursor:default" hidden><b>Respaldos automáticos</b><span>Esta versión no tiene un servidor propio: usa el respaldo desde el navegador.</span><div class="bar" style="margin:8px 0 0"><button class="p" id="rbLocalOld">Respaldo desde el navegador</button></div></div>
   <div id="rbSrv">
     <div id="rbEst" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-bottom:12px"></div>
@@ -814,6 +864,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
 </div>
 <div id="vDoc" hidden>
   <div class="mod" style="cursor:default;border-color:var(--accent);margin-bottom:12px"><b>📌 La asistencia vale un 20 % sobre el valor de la calificación</b><span>Tenlo presente al planear y al evaluar a tus grupos.</span></div>
+  <div id="cmBoxD"></div>
   <p class="hint" id="dmSub"></p>
   <div id="dmL"></div>
   <div id="dmEv"></div>
@@ -3163,6 +3214,182 @@ $("hcGo2").onclick=async function(){
 };
 $("sHist").onclick=function(){if(cur){var id=cur.id;$("dSt").close();abreHc(id,1)}};
 $("bHist").onclick=function(){abreHc(null,1)};
+/* ===== Comunicados generales ===== */
+var COM={},COMR=null,COMM=null,COMT=0,CME=null,CMBUSY=false;
+function cmcMsg(t,ok){$("cmcMsg").style.color=ok?"var(--ok)":"var(--bad)";$("cmcMsg").textContent=t||""}
+function cmParaTxt(p){if(!p)return "";return p.tipo==="todos"?"Todos":p.tipo==="alumnos"?"Solo alumnos":p.tipo==="docentes"?"Solo docentes":p.tipo==="plan"?"Alumnos de "+p.plan:(function(){var g=GRP[p.grupo];return "Grupo "+(g?g.num+" · "+g.plan:p.grupo)})()}
+function cmRes(){
+  cbApi("GET","/api/comunicados/resumen").then(function(r){if(r.ok){COMR=r.j.resumen||{};if(MOD==="esc"&&ETAB==="M")renderCm(true)}}).catch(function(){});
+}
+function cmCampos(){
+  var t=$("cmPara").value;$("cmPlanL").hidden=t!=="plan";$("cmGrpL").hidden=t!=="grupo";
+  var pv=$("cmPlan").value;$("cmPlan").innerHTML=PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join("");if(pv)$("cmPlan").value=pv;
+  var gv=$("cmGrp").value;$("cmGrp").innerHTML=Object.keys(GRP).map(function(k){var g=GRP[k];return {k:k,t:g.num+" · "+g.plan+" · cuatrimestre "+g.cuat+" · "+g.per}}).sort(function(a,b){return a.t.localeCompare(b.t)}).map(function(o){return '<option value="'+attr(o.k)+'">'+esc(o.t)+'</option>'}).join("");if(gv)$("cmGrp").value=gv;
+}
+$("cmPara").onchange=cmCampos;
+function cmLimpia(){CME=null;$("cmTit").value="";$("cmCue").value="";$("cmPara").value="todos";$("cmHas").value="";$("cmImp").checked=false;$("cmPub").textContent="Publicar";cmCampos()}
+$("cmLimp").onclick=function(){cmLimpia();cmcMsg("")};
+function renderCm(soloLista){
+  if(!soloLista)cmCampos();
+  if(COMR===null&&!CMBUSY){CMBUSY=true;cmRes();setTimeout(function(){CMBUSY=false},3000)}
+  var L=Object.keys(COM).map(function(k){return Object.assign({id:k},COM[k])}).sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))||String(b.id).localeCompare(String(a.id))}),hoy=today();
+  $("cmLista").innerHTML=L.length?L.map(function(c){
+    var r=COMR&&COMR[c.id],vig=c.activo===false?"Archivado":(c.hasta&&c.hasta<hoy?"Vencido":"Vigente");
+    return '<div class="pay" style="display:block;border-left:4px solid '+(c.importante?"var(--bad)":"var(--line)")+'"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b>'+esc(c.titulo)+'</b>'+(c.importante?'<span class="tag sin">Importante</span>':'')+'<span class="tag'+(vig==="Vigente"?"":" sin")+'">'+vig+'</span><span class="hint" style="flex:1">'+fd(c.fecha)+' · '+esc(cmParaTxt(c.para))+(c.hasta?' · hasta '+fd(c.hasta):'')+'</span><button data-cme="'+attr(c.id)+'">Editar</button><button data-cma="'+attr(c.id)+'">'+(c.activo===false?"Reactivar":"Archivar")+'</button></div>'+
+      '<div style="white-space:pre-wrap;margin:6px 0">'+esc(c.cuerpo)+'</div>'+
+      (r?'<details><summary class="hint">Leído por '+r.leidos+' de '+r.total+' personas con cuenta</summary>'+(r.leyeron.length?'<p class="hint"><b>Ya lo leyeron:</b> '+r.leyeron.map(function(x){return esc(x.n)+' ('+fd(String(x.t).slice(0,10))+')'}).join(", ")+'</p>':'')+(r.pendientes.length?'<p class="hint"><b>Aún no lo leen:</b> '+r.pendientes.map(esc).join(", ")+'</p>':'')+'</details>':'<span class="hint">Calculando lecturas…</span>')+'</div>'}).join(""):'<p class="hint">Aún no has publicado comunicados.</p>';
+}
+$("cmLista").onclick=async function(e){
+  var b=e.target.closest("[data-cme],[data-cma]");if(!b)return;
+  if(b.dataset.cme){var c=COM[b.dataset.cme];if(!c)return;CME=b.dataset.cme;$("cmTit").value=c.titulo;$("cmCue").value=c.cuerpo;$("cmPara").value=c.para.tipo;cmCampos();if(c.para.tipo==="plan")$("cmPlan").value=c.para.plan;if(c.para.tipo==="grupo")$("cmGrp").value=c.para.grupo;$("cmHas").value=c.hasta||"";$("cmImp").checked=!!c.importante;$("cmPub").textContent="Guardar cambios";cmcMsg("Editando «"+c.titulo+"».",true);$("cmTit").focus();return}
+  var id=b.dataset.cma,d=COM[id];if(!d)return;var nd=Object.assign({},d,{activo:d.activo===false});
+  try{await DBH.doc("comunicados/"+id).set(nd);COM[id]=nd;cmcMsg(nd.activo?"Comunicado reactivado.":"Comunicado archivado: ya no se muestra en los portales.",true);renderCm(true)}catch(er){cmcMsg("No se pudo guardar: "+((er&&er.message)||"error"))}
+};
+$("cmPub").onclick=async function(){
+  var t=$("cmTit").value.trim(),c=$("cmCue").value.trim(),tp=$("cmPara").value,h=$("cmHas").value;
+  if(t.length<3){cmcMsg("Escribe el título (mínimo 3 letras).");return}if(c.length<3){cmcMsg("Escribe el mensaje.");return}
+  if(tp==="plan"&&!$("cmPlan").value){cmcMsg("Elige el plan de estudios.");return}if(tp==="grupo"&&!$("cmGrp").value){cmcMsg("Elige el grupo.");return}
+  if(h&&h<today()){cmcMsg("La fecha de vigencia ya pasó.");return}
+  var para={tipo:tp};if(tp==="plan")para.plan=$("cmPlan").value;if(tp==="grupo")para.grupo=$("cmGrp").value;
+  var id=CME||uid()+uid(),ant=CME&&COM[CME]?COM[CME]:{},d={titulo:t,cuerpo:c,para:para,importante:$("cmImp").checked,hasta:h||"",activo:ant.activo!==false,fecha:ant.fecha||today(),autor:(APP&&APP.name)||""};
+  try{await DBH.doc("comunicados/"+id).set(d);COM[id]=d;var edit=!!CME;cmLimpia();cmcMsg(edit?"Cambios guardados.":"Comunicado publicado. Ya aparece en el portal de los destinatarios.",true);COMR=null;renderCm(true);cmRes()}catch(er){cmcMsg("No se pudo guardar: "+((er&&er.message)||"error"))}
+};
+/* Alumnos y docentes: leen sus comunicados y confirman la lectura */
+function cmHTML(){
+  if(!COMM||!COMM.length)return "";
+  var nl=COMM.filter(function(x){return !x.leido}).length;
+  return '<h2 style="margin-top:16px">Comunicados'+(nl?' <span class="tag sin">'+nl+(nl===1?" nuevo":" nuevos")+'</span>':'')+'</h2>'+COMM.slice(0,8).map(function(x){return '<div class="pay" style="display:block;border-left:4px solid '+(x.importante?"var(--bad)":"var(--line)")+(x.leido?'':';background:var(--surface-2,#f6f9ff)')+'"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b>'+esc(x.titulo)+'</b>'+(x.importante?'<span class="tag sin">Importante</span>':'')+'<span class="hint" style="flex:1">'+fd(x.fecha)+(x.autor?' · '+esc(x.autor):'')+'</span>'+(x.leido?'<span class="hint">✔ Leído</span>':'<button class="p" data-cml="'+attr(x.id)+'">Entendido</button>')+'</div><div style="white-space:pre-wrap;margin-top:6px">'+esc(x.cuerpo)+'</div></div>'}).join("");
+}
+function cmPaint(){["cmBoxP","cmBoxD"].forEach(function(i){var e=$(i);if(e)e.innerHTML=cmHTML()})}
+async function cmCarga(){
+  try{var r=await cbApi("GET","/api/comunicados/mios");if(r.ok){COMM=r.j.comunicados||[];COMT=Date.now();cmPaint()}}catch(e){}
+}
+document.addEventListener("click",async function(e){
+  var b=e.target.closest&&e.target.closest("[data-cml]");if(!b)return;var id=b.dataset.cml;b.disabled=true;
+  try{var r=await cbApi("POST","/api/comunicados/leido",{id:id});if(r.ok){(COMM||[]).forEach(function(x){if(x.id===id)x.leido=true});cmPaint()}else b.disabled=false}catch(er){b.disabled=false}
+});
+var _rpCm=renderPor;renderPor=function(){_rpCm();cmPaint();if($("cmBoxP")&&(COMM===null||Date.now()-COMT>60000))cmCarga()};
+var _rdCm=renderDm;renderDm=function(){_rdCm();cmPaint();if($("cmBoxD")&&ROL==="docente"&&(COMM===null||Date.now()-COMT>60000))cmCarga()};
+
+/* ===== Reinscripción en línea ===== */
+var RQ={},RQE=null,RQT=0;
+function rqm(t,ok){var e=$("rqMsgS");e.style.color=ok?"var(--ok)":"var(--bad)";e.textContent=t||""}
+function rqCfg(){return Object.assign({abierta:false,periodo:"",desde:"",hasta:"",mensaje:"",bloquea:true},RQ._config||{})}
+function rqFormLlena(){var c=rqCfg();$("rqPer").value=c.periodo||"";$("rqDes").value=c.desde||"";$("rqHas").value=c.hasta||"";$("rqMsg").value=c.mensaje||"";$("rqBlo").checked=c.bloquea!==false;$("rqAbi").checked=!!c.abierta}
+function rqFilas(){
+  var c=rqCfg(),B=($("rqBus").value||"").toLowerCase().trim(),F=$("rqFil").value;
+  return S.filter(function(s){return !esInact(s.id)}).map(function(s){var r=RQ[s.id];return {s:s,r:r&&r.periodo===c.periodo&&c.periodo?r:null}}).filter(function(o){
+    if(F==="confirmada"&&!(o.r&&o.r.decision==="continuo"))return false;if(F==="no"&&!(o.r&&o.r.decision==="no_continuo"))return false;if(F==="pend"&&o.r)return false;
+    return !B||((o.s.nombre||"")+" "+(o.s.mat||"")).toLowerCase().indexOf(B)>=0}).sort(function(a,b){return (a.s.nombre||"").localeCompare(b.s.nombre||"")});
+}
+function renderRq(){
+  if(!$("rqPer").dataset.ini){rqFormLlena();$("rqPer").dataset.ini="1";if(!$("rqPer").value)$("rqPer").value=perSig()}
+  var c=rqCfg(),F=rqFilas(),tot=S.filter(function(s){return !esInact(s.id)}),cont=0,no=0;
+  tot.forEach(function(s){var r=RQ[s.id];if(r&&c.periodo&&r.periodo===c.periodo){if(r.decision==="continuo")cont++;else no++}});
+  var hoy=today(),est=!c.periodo?"Sin periodo configurado":!c.abierta?"Cerrada":(c.desde&&c.desde>hoy?"Abre el "+fd(c.desde):(c.hasta&&hoy>c.hasta?"Cerró el "+fd(c.hasta):"Abierta"));
+  $("rqRes").innerHTML='<b>'+esc(c.periodo||"—")+'</b> · '+est+' · '+cont+' continúan · '+no+' no continúan · '+(tot.length-cont-no)+' sin responder de '+tot.length+' alumnos activos';
+  $("rqTbl").innerHTML=F.length?F.map(function(o){var r=o.r;return '<tr><td>'+esc(o.s.nombre||"")+'</td><td>'+esc(o.s.mat||"")+'</td><td>'+(r?(r.decision==="continuo"?'<span class="tag">Continúa</span>':'<span class="tag sin">No continúa</span>'):'<span class="hint">Sin responder</span>')+'</td><td>'+(r?fd(r.fecha):"")+'</td><td>'+(r?esc(r.motivo||"")+(r.vencidas?' <span class="hint">(tenía '+r.vencidas+' vencida'+(r.vencidas===1?"":"s")+')</span>':""):"")+'</td></tr>'}).join(""):'<tr><td colspan="5" class="hint">No hay alumnos con ese filtro.</td></tr>';
+}
+function perSig(){var t=today(),m=+t.slice(5,7),y=+t.slice(0,4);return m>=9?"Ene–Abr "+(y+1):m>=5?"Sep–Dic "+y:"May–Ago "+y}
+$("rqBus").oninput=$("rqFil").onchange=function(){renderRq()};
+$("rqGuarda").onclick=async function(){
+  var d={abierta:$("rqAbi").checked,periodo:$("rqPer").value.trim(),desde:$("rqDes").value,hasta:$("rqHas").value,mensaje:$("rqMsg").value.trim(),bloquea:$("rqBlo").checked};
+  if(d.abierta&&!d.periodo){rqm("Escribe el periodo a reinscribir.");return}
+  if(d.desde&&d.hasta&&d.desde>d.hasta){rqm("El cierre no puede ser antes de la apertura.");return}
+  try{await DBH.doc("reinscripciones/_config").set(d);RQ._config=d;rqm(d.abierta?"Guardado. Los alumnos ya pueden responder desde su portal"+(d.desde&&d.desde>today()?" a partir del "+fd(d.desde):"")+".":"Guardado. La reinscripción está cerrada.",true);renderRq()}catch(er){rqm("No se pudo guardar: "+((er&&er.message)||"error"))}
+};
+$("rqCsv").onclick=function(){
+  var c=rqCfg(),rows=[["Periodo","Alumno","Matrícula","Respuesta","Fecha","Motivo"]];
+  rqFilas().forEach(function(o){var r=o.r;rows.push([c.periodo,o.s.nombre||"",o.s.mat||"",r?(r.decision==="continuo"?"Continúa":"No continúa"):"Sin responder",r?r.fecha:"",r?r.motivo||"":""])});
+  saveFile("reinscripcion_"+(c.periodo||"periodo").replace(/[^\w-]+/g,"_")+".csv","﻿"+rows.map(function(r){return r.map(csvq).join(",")}).join("\r\n"),"text/csv")
+};
+/* Alumno: confirma si continúa */
+var RQA=null,RQAT=0,RQBUSY=false;
+function rqHTML(){
+  var e=RQA;if(!e||!e.abierta)return (e&&e.respuesta&&e.periodo?'<div class="pay" style="display:block"><b>Reinscripción '+esc(e.periodo)+'</b><div class="hint">Tu respuesta: '+(e.respuesta.decision==="continuo"?"continuarás":"no continuarás")+'.</div></div>':"");
+  var r=e.respuesta,blo=e.bloquea&&e.vencidas>0;
+  return '<h2 style="margin-top:16px">Reinscripción '+esc(e.periodo)+(r?'':' <span class="tag sin">Pendiente</span>')+'</h2><div class="pay" style="display:block;border-left:4px solid '+(r?'var(--ok)':'var(--bad)')+'">'+
+    (e.mensaje?'<div style="white-space:pre-wrap;margin-bottom:6px">'+esc(e.mensaje)+'</div>':'')+
+    (e.hasta?'<div class="hint">Puedes responder hasta el '+fd(e.hasta)+'.</div>':'')+
+    (r?'<div style="margin:6px 0"><b>Tu respuesta:</b> '+(r.decision==="continuo"?"Continuaré el siguiente periodo.":"No continuaré. "+esc(r.motivo||""))+' <span class="hint">('+fd(r.fecha)+')</span></div>':'')+
+    (blo?'<div class="warn" style="margin:6px 0">Tienes '+e.vencidas+(e.vencidas===1?' colegiatura vencida':' colegiaturas vencidas')+' por '+mx.format(e.vencido)+'. Regularízala'+(e.enLinea?' (puedes pagar en línea aquí abajo)':' en caja')+' para confirmar tu reinscripción.</div>':'')+
+    '<div class="bar" style="margin:6px 0"><button class="p" data-rq="continuo"'+(blo?' disabled':'')+'>'+(r&&r.decision==="continuo"?"Ya confirmé: continúo":"Sí, continuaré")+'</button><button data-rq="no_continuo">No continuaré</button></div>'+
+    '<div id="rqNoBox" hidden><label class="full">Cuéntanos brevemente por qué<input id="rqMot" maxlength="300"></label><div class="bar"><button class="p" data-rq="no_ok">Enviar</button></div></div>'+
+    '<p class="hint" id="rqMsgP" role="status"></p></div>';
+}
+function rqPaint(){var e=$("rqBoxP");if(!e)return;var m=$("rqMot");if(m&&(m.value||document.activeElement===m))return;e.innerHTML=rqHTML()}
+async function rqCarga(){
+  if(RQBUSY)return;RQBUSY=true;
+  try{var r=await cbApi("GET","/api/reinscripcion/estado");if(r.ok){RQA=r.j;RQAT=Date.now();rqPaint()}}catch(e){}
+  RQBUSY=false;
+}
+document.addEventListener("click",async function(e){
+  var b=e.target.closest&&e.target.closest("[data-rq]");if(!b)return;var k=b.dataset.rq,m=$("rqMsgP");
+  if(k==="no_continuo"){$("rqNoBox").hidden=false;$("rqMot").focus();return}
+  var body=k==="continuo"?{decision:"continuo"}:{decision:"no_continuo",motivo:($("rqMot").value||"").trim()};
+  if(k==="no_ok"&&body.motivo.length<3){m.style.color="var(--bad)";m.textContent="Cuéntanos brevemente el motivo.";return}
+  if(k==="no_ok"&&!confirm("¿Confirmas que NO continuarás el siguiente periodo?"))return;
+  b.disabled=true;
+  try{var r=await cbApi("POST","/api/reinscripcion/responder",body);
+    if(r.ok){await rqCarga();var m2=$("rqMsgP");if(m2){m2.style.color="var(--ok)";m2.textContent="Listo, quedó registrada tu respuesta."}}
+    else{m.style.color="var(--bad)";m.textContent=(r.j&&r.j.error)||"No se pudo registrar.";b.disabled=false;rqCarga()}
+  }catch(er){m.style.color="var(--bad)";m.textContent="No se pudo registrar. Revisa tu conexión.";b.disabled=false}
+});
+var _rpRq=renderPor;renderPor=function(){_rpRq();rqPaint();if($("rqBoxP")&&(RQA===null||Date.now()-RQAT>60000))rqCarga()};
+
+/* ===== Tablero de dirección ===== */
+function drCalc(){
+  var hoy=today(),mes=hoy.slice(0,7),act=S.filter(function(s){return !esInact(s.id)}),o={};
+  o.activos=act.length;o.bajas=S.filter(function(s){return esBaja(s.id)}).length;o.egresados=S.filter(function(s){return esEgr(s.id)}).length;
+  o.nuevos=act.filter(function(s){return (+s.ingreso||0)===cicloAct()}).length;
+  var pl={};act.forEach(function(s){var k=(planOf(s)&&planOf(s).k)||s.carrera||"Sin plan";pl[k]=(pl[k]||0)+1});
+  o.planes=Object.keys(pl).map(function(k){return {k:k,n:pl[k]}}).sort(function(a,b){return b.n-a.n});
+  /* Finanzas del mes */
+  o.cobrado=0;S.forEach(function(s){(s.pagos||[]).forEach(function(g){if(esConf(g)&&String(fechaCobro(g)).slice(0,7)===mes)o.cobrado+=+g.monto||0})});
+  o.gastos=gastosTodos().filter(function(x){return String(x.fecha||"").slice(0,7)===mes}).reduce(function(t,x){return t+(+x.monto||0)},0);
+  o.balance=o.cobrado-o.gastos;
+  o.pendN=0;o.pendM=0;o.pendV=0;Object.keys(G).forEach(function(k){((G[k]&&G[k].items)||[]).forEach(function(x){if(x.pend){o.pendN++;o.pendM+=+x.monto||0;if(String(x.vence||x.fecha||"")<hoy)o.pendV++}})});
+  /* Colegiaturas vencidas */
+  var c=recCfg(),mor=[];
+  act.forEach(function(s){
+    var a=applyAll(s),n=0,m=0;
+    a.L.forEach(function(x,i){if(!x.k||!(x.m>0))return;var rem=a.rem[i];if(rem>0.004&&rcgLim(x.k,s,c.diaLimite)<hoy){n++;m+=rem}});
+    if(n)mor.push({s:s,n:n,m:Math.round(m*100)/100});
+  });
+  mor.sort(function(a,b){return b.m-a.m});o.mor=mor;o.morM=mor.reduce(function(t,x){return t+x.m},0);o.mor2=mor.filter(function(x){return x.n>=2}).length;
+  /* Académico del periodo actual */
+  var per=perAct(),its=[];Object.keys(CAL).forEach(function(k){if(esInact(k))return;((CAL[k]&&CAL[k].items)||[]).forEach(function(i){if(i.per===per&&i.cal!=null)its.push({sid:k,cal:+i.cal})})});
+  o.per=per;o.califN=its.length;o.prom=its.length?its.reduce(function(t,x){return t+x.cal},0)/its.length:null;
+  var rp=its.filter(function(x){return x.cal<MINAP});o.reprob=its.length?rp.length/its.length*100:null;
+  var rs={};rp.forEach(function(x){rs[x.sid]=1});o.alumRep=Object.keys(rs).length;
+  var cp=califPend(null,"vencidas");o.califVenc=cp.length;var dd={};cp.forEach(function(x){if(x.m.docId)dd[x.m.docId]=1});o.docVenc=Object.keys(dd).length;
+  o.solPend=Object.keys(SOL||{}).filter(function(k){return SOL[k]&&SOL[k].estado==="pendiente"}).length;
+  o.quejasN=Object.keys(BZQ||{}).filter(function(k){return BZQ[k]&&BZQ[k].estado==="nuevo"}).length;
+  o.prestVenc=0;Object.keys(PRE||{}).forEach(function(k){((PRE[k]&&PRE[k].items)||[]).forEach(function(x){if(!x.devuelto&&x.vence<hoy)o.prestVenc++})});
+  return o;
+}
+function drCard(t,v,sub,tono){return '<div class="mod" style="cursor:default'+(tono?';border-color:'+(tono==="bad"?"var(--bad)":tono==="warn"?"var(--warn)":"var(--ok)"):"")+'"><span>'+esc(t)+'</span><b style="font-size:1.6em;display:block;margin:2px 0">'+esc(v)+'</b>'+(sub?'<span class="hint">'+esc(sub)+'</span>':'')+'</div>'}
+var DRD=null;
+function renderDir(){
+  if(MOD!=="dir")return;var o=DRD=drCalc();
+  $("drFecha").textContent="Datos al "+fd(today())+" · periodo "+o.per;
+  $("drMat").innerHTML=drCard("Alumnos activos",o.activos,o.nuevos+" de nuevo ingreso")+drCard("Bajas",o.bajas,"registradas")+drCard("Egresados",o.egresados,"")
+  var mx_=o.planes.reduce(function(t,x){return Math.max(t,x.n)},1);
+  $("drPlanes").innerHTML=o.planes.length?o.planes.map(function(p){return '<div style="display:flex;align-items:center;gap:8px;margin:3px 0"><span style="width:min(260px,40%);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(p.k)+'</span><div style="flex:1;background:var(--line,#e6e6e6);border-radius:4px;height:14px"><div style="width:'+Math.round(p.n/mx_*100)+'%;background:var(--accent);height:14px;border-radius:4px"></div></div><b style="min-width:2.5em;text-align:right">'+p.n+'</b></div>'}).join(""):'<p class="hint">Aún no hay alumnos activos.</p>';
+  $("drFin").innerHTML=drCard("Cobrado este mes",mx.format(o.cobrado),"pagos confirmados")+drCard("Gastos del mes",mx.format(o.gastos),"incluye nómina")+drCard("Balance del mes",mx.format(o.balance),o.balance>=0?"a favor":"en contra",o.balance>=0?"ok":"bad")+drCard("Vencido por cobrar",mx.format(o.morM),o.mor.length+" alumnos",o.morM>0?"warn":"")+drCard("Cuentas por pagar",mx.format(o.pendM),o.pendN+" pendientes"+(o.pendV?" · "+o.pendV+" vencidas":""),o.pendV?"bad":"");
+  $("drMor").innerHTML=o.mor.length?o.mor.slice(0,10).map(function(x){return '<tr><td>'+esc(x.s.nombre)+' <span class="hint">'+esc(x.s.mat)+'</span></td><td>'+esc(x.s.carrera||"")+'</td><td class="n">'+x.n+'</td><td class="n">'+mx.format(x.m)+'</td></tr>'}).join(""):'<tr><td colspan="4" class="hint">Nadie tiene colegiaturas vencidas.</td></tr>';
+  $("drMorN").textContent=o.mor.length>10?"Se muestran los 10 con mayor adeudo de "+o.mor.length+". "+o.mor2+" deben dos o más colegiaturas.":(o.mor.length?o.mor2+" deben dos o más colegiaturas.":"");
+  $("drAca").innerHTML=drCard("Promedio del periodo",o.prom===null?"—":o.prom.toFixed(1),o.califN+" calificaciones capturadas")+drCard("Reprobación",o.reprob===null?"—":o.reprob.toFixed(1)+" %",o.alumRep+" alumnos con alguna reprobada",o.reprob>20?"warn":"")+drCard("Calificaciones atrasadas",String(o.califVenc),o.califVenc?"asignaturas de "+o.docVenc+" docentes fuera de plazo":"todo al corriente",o.califVenc?"bad":"ok");
+  $("drPen").innerHTML=drCard("Solicitudes de alumnos",String(o.solPend),"pendientes de atender",o.solPend?"warn":"")+drCard("Buzón de quejas",String(o.quejasN),"nuevas sin revisar",o.quejasN?"warn":"")+drCard("Libros vencidos",String(o.prestVenc),"en préstamo fuera de plazo",o.prestVenc?"warn":"");
+}
+$("drRef").onclick=renderDir;
+$("drCsv").onclick=function(){
+  var o=DRD||drCalc(),f=[["Indicador","Valor"],["Fecha",today()],["Periodo",o.per],["Alumnos activos",o.activos],["Nuevo ingreso",o.nuevos],["Bajas",o.bajas],["Egresados",o.egresados]];
+  o.planes.forEach(function(p){f.push(["Alumnos en "+p.k,p.n])});
+  f.push(["Cobrado del mes",o.cobrado.toFixed(2)],["Gastos del mes",o.gastos.toFixed(2)],["Balance del mes",o.balance.toFixed(2)],["Vencido por cobrar",o.morM.toFixed(2)],["Alumnos con colegiaturas vencidas",o.mor.length],["Cuentas por pagar",o.pendM.toFixed(2)],["Promedio del periodo",o.prom===null?"":o.prom.toFixed(2)],["Reprobación %",o.reprob===null?"":o.reprob.toFixed(1)],["Calificaciones atrasadas",o.califVenc],["Solicitudes pendientes",o.solPend],["Quejas nuevas",o.quejasN],["Libros vencidos",o.prestVenc]);
+  saveFile("tablero-direccion-"+today()+".csv","﻿"+f.map(function(r){return r.map(csvq).join(",")}).join("\n"));
+};
+
 /* ===== Biblioteca e inventario ===== */
 var LIB={},PRE={},INV={},BBT=1,BLE=null,IFE=null,BBD={dias:7,max:3,multa:5};
 function bbCfg(){var c=LIB._config;return c&&c.dias?c:BBD}
@@ -3977,12 +4204,12 @@ function ir(m){
   if(m!=="home"&&!accesoVista(m))m="home";
   var rv=m==="home"?BASEROL:rolDeVista(m);if(rv&&rv!==ROL)setRol(rv);
   MOD=m;var home=m==="home";if(!home&&typeof $("hBus")!=="undefined"&&$("hBus")&&$("hBus").value){$("hBus").value="";$("hBusR").hidden=true;$("hBusR").innerHTML=""}
-  $("vUsr").hidden=m!=="usr";$("vBk").hidden=m!=="bk";$("vAv").hidden=m!=="av";$("vSp").hidden=m!=="sp";$("vAt").hidden=m!=="at";$("vPr").hidden=m!=="pr";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
+  $("vUsr").hidden=m!=="usr";$("vDir").hidden=m!=="dir";$("vBk").hidden=m!=="bk";$("vAv").hidden=m!=="av";$("vSp").hidden=m!=="sp";$("vAt").hidden=m!=="at";$("vPr").hidden=m!=="pr";$("vPor").hidden=m!=="por";$("vNot").hidden=m!=="not";
   $("vHome").hidden=!home;$("vEsc").hidden=m!=="esc";$("vIns").hidden=m!=="ins";$("vAcu").hidden=m!=="acu";$("vDoc").hidden=m!=="doc";$("vTit").hidden=m!=="tit";$("vA2").hidden=m!=="a2";$("vVer").hidden=m!=="ver";$("vNom").hidden=m!=="nom";$("vNa").hidden=m!=="na";
   $("tabs").hidden=m!=="pagos";$("nav").hidden=home||m==="por";$("subt").hidden=m!=="pagos";$("warn").hidden=m!=="pagos";
-  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":(m==="bk"?"Respaldos y seguridad":(m==="av"?"Avisos por correo y WhatsApp":(m==="sp"?"Seguridad y privacidad":(m==="at"?"Atención personalizada":(m==="pr"?"Prospectos y campañas":"Control escolar")))))))))))))))));
+  $("ttl").textContent=home?"Panel principal":(m==="pagos"?"Finanzas":(m==="ins"?"Inscripción de alumnos":(m==="acu"?"Acuerdos":(m==="doc"?"Mis asignaturas":(m==="tit"?"Titulaciones por experiencia laboral":(m==="a2"?"Acuerdo 286":(m==="ver"?"Verificación de pagos":(m==="nom"?"Nómina docente":(m==="na"?"Nómina administrativa":(m==="usr"?"Usuarios y permisos":(m==="por"?"Mi portal":(m==="not"?"Notificaciones":(m==="bk"?"Respaldos y seguridad":(m==="dir"?"Tablero de dirección":(m==="av"?"Avisos por correo y WhatsApp":(m==="sp"?"Seguridad y privacidad":(m==="at"?"Atención personalizada":(m==="pr"?"Prospectos y campañas":"Control escolar"))))))))))))))))));
   if(FIN.indexOf(m)>-1)$("ttl").textContent="Finanzas";renderFinTabs(m);
-  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="bk")renderBk();if(m==="av")renderAv();if(m==="sp")renderSp();if(m==="at")renderAt();if(m==="pr")renderPr();if(m==="por")renderPor();if(m==="not")cargaNot();
+  vista(TAB);if(m==="esc")etab(ETAB);if(m==="ins")inShow();if(m==="acu")renderAcu();if(m==="doc")renderDm();if(m==="tit")renderTit();if(m==="a2")renderA2();if(m==="ver")renderVer();if(m==="nom")renderNom();if(m==="na")renderNa();if(m==="usr")renderUsr();if(m==="bk")renderBk();if(m==="dir")renderDir();if(m==="av")renderAv();if(m==="sp")renderSp();if(m==="at")renderAt();if(m==="pr")renderPr();if(m==="por")renderPor();if(m==="not")cargaNot();
   if(home){if(typeof MODDEF!=="undefined"&&MODDEF)aplicaModulos();renderHome()}
   if(typeof cargaAlm==="function")cargaAlm();if(typeof actualizaInsigniaBk==="function")actualizaInsigniaBk();if(typeof ntProgramar==="function")ntProgramar();if(typeof cargaMiFoto==="function"){pintaPerfil();cargaMiFoto()}
 }
@@ -4128,6 +4355,10 @@ function hbFunciones(){
   F("Buzón de quejas y sugerencias","buzon queja sugerencia felicitacion mensaje alumnos atencion",pe,function(){ir("esc");etab("U")});
   F("Biblioteca: préstamos y catálogo","biblioteca libro prestamo devolucion catalogo lectura",permiso("biblioteca")!=="none",function(){ir("esc");etab("W")});
   F("Inventario de bienes","inventario bienes mobiliario equipo activos computadoras mantenimiento",permiso("biblioteca")!=="none",function(){ir("esc");etab("Z")});
+  F("Estado del sistema: disco, respaldos, correo, 2FA","estado sistema salud disco respaldo copia externa dos pasos 2fa configuracion",esAdminReal(),function(){ir("bk")});
+  F("Tablero de dirección","tablero direccion resumen indicadores matricula cobranza morosos promedio reprobacion kpi",esAdminReal()&&BASEROL==="admin",function(){ir("dir")});
+  F("Reinscripción en línea: abrir periodo y ver respuestas","reinscripcion reinscribir continuar siguiente cuatrimestre confirmar baja periodo",permiso("escolar")==="editar",function(){ir("esc");etab("Q")});
+  F("Comunicados generales","comunicado aviso circular avisos generales publicar alumnos docentes lectura",permiso("escolar")==="editar",function(){ir("esc");etab("M")});
   F("Seguimiento de egresados","egresados empleo seguimiento contacto bolsa de trabajo",pe,function(){ir("esc");etab("Y")});
   F("Estadística 911","911 estadistica sep matricula formato reporte",pe,function(){ir("esc");etab("X")});
   F("Cierre de ciclo","cerrar cuatrimestre periodo promover alumnos bloquear calificaciones",ee,function(){ir("esc");etab("G");hbClic("ccAbre")});
@@ -4209,17 +4440,17 @@ function etab(t){
   var pe=permiso("escolar")!=="none",pc=permiso("constancias")!=="none",pb=permiso("biblioteca")!=="none";
   if(!pe){var okT=[];if(pc)okT.push("N");if(pb)okT.push("W","Z");if(okT.indexOf(t)<0)t=okT[0]||"A"}
   if((t==="W"||t==="Z")&&!pb)t="A";
-  if(pe&&(t==="R"||t==="H"||t==="S"||t==="B"||t==="U")&&permiso("escolar")!=="editar")t="A";
-  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S","T","B","V","O","Y","X","U","W","Z"].forEach(function(k){$("e"+k).hidden=k!==t});if(t==="B")bjCarga();if(t==="V")EVR=null;
+  if(pe&&(t==="R"||t==="H"||t==="S"||t==="B"||t==="U"||t==="M"||t==="Q")&&permiso("escolar")!=="editar")t="A";
+  ETAB=t;["A","P","G","C","K","D","N","E","J","R","H","S","T","B","V","O","Y","X","U","W","Z","M","Q"].forEach(function(k){$("e"+k).hidden=k!==t});if(t==="B")bjCarga();if(t==="V")EVR=null;
   var rt=t==="N"?mayorRol(efectivoRol("escolar"),efectivoRol("constancias")):((t==="W"||t==="Z")?efectivoRol("biblioteca"):efectivoRol("escolar"));if(MOD==="esc"&&rt&&rt!==ROL)setRol(rt);
   Array.prototype.forEach.call($("eTabs").querySelectorAll("button"),function(b){
     var k=b.dataset.et;b.className=k===t?"p":"";
-    b.hidden=(k==="W"||k==="Z")?!pb:k==="N"?!(pe||pc):((k==="R"||k==="H"||k==="S"||k==="B"||k==="U")?permiso("escolar")!=="editar":!pe);
+    b.hidden=(k==="W"||k==="Z")?!pb:k==="N"?!(pe||pc):((k==="R"||k==="H"||k==="S"||k==="B"||k==="U"||k==="M"||k==="Q")?permiso("escolar")!=="editar":!pe);
   });
   renderEsc();
 }
 $("eTabs").onclick=function(e){var t=e.target.dataset.et;if(t)etab(t)};
-function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="B")renderBj();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="T")renderRes();else if(ETAB==="V")renderEv();else if(ETAB==="O")renderPrac();else if(ETAB==="Y")renderSeg();else if(ETAB==="X")renderE911();else if(ETAB==="U")renderBz();else if(ETAB==="W")renderBb();else if(ETAB==="Z")renderIv();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
+function renderEsc(){if(MOD!=="esc")return;if(ETAB==="A")renderAl();else if(ETAB==="B")renderBj();else if(ETAB==="P")renderPlan();else if(ETAB==="G")renderGr();else if(ETAB==="N")renderCons();else if(ETAB==="E")renderEgr();else if(ETAB==="J")renderJus();else if(ETAB==="R")renderCred();else if(ETAB==="H")renderHist();else if(ETAB==="S")renderSol();else if(ETAB==="T")renderRes();else if(ETAB==="V")renderEv();else if(ETAB==="O")renderPrac();else if(ETAB==="Y")renderSeg();else if(ETAB==="X")renderE911();else if(ETAB==="U")renderBz();else if(ETAB==="M")renderCm();else if(ETAB==="Q")renderRq();else if(ETAB==="W")renderBb();else if(ETAB==="Z")renderIv();else if(ETAB==="C")renderCal();else if(ETAB==="K")renderMat();else renderDoc()}
 /* ---- Alumnos ---- */
 function renderAl(){
   setOpts($("ap"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
@@ -5337,7 +5568,8 @@ async function borraAlumno(sid){
   var ac=acDe(sid);for(var i=0;i<ac.length;i++){await DBH.doc("acuerdos/"+ac[i].id).delete();delete ACU[ac[i].id]}
   var ju=Object.keys(JUS).filter(function(k){return JUS[k].sid===sid});for(var q=0;q<ju.length;q++){var jd=JUS[ju[q]];await DBH.doc("justificantes/"+jd.id).delete();if(jd.doc)pdfs.push(jd.doc.id);delete JUS[jd.id]}
   var cols=[["ledger",LG],["fotos",FOT],["calif",CAL],["constancias",CONS],["recargos",REC],["practicas",PRC],["seguim",SEG],["quejas",BZQ],["prestamos",PRE],["egresados",EGR]];
-  for(var j=0;j<cols.length;j++){await DBH.doc(cols[j][0]+"/"+sid).delete();delete cols[j][1][sid]}
+  /* Quien no tiene permiso sobre una colección (p. ej. Control escolar sobre recargos) no detiene el borrado: el servidor limpia al final lo que quede de ese alumno */
+  for(var j=0;j<cols.length;j++){try{await DBH.doc(cols[j][0]+"/"+sid).delete();delete cols[j][1][sid]}catch(e){if(String((e&&(e.code||e.status||e.message))||"").indexOf("403")<0)throw e}}
   await DBH.doc("students/"+sid).delete();delete ST[sid];
   if(pdfs.length){try{if(await assetsLib())pdfs.forEach(function(id){ASSETS.delete(id).catch(function(){})})}catch(e){}}
   rebuild();
@@ -7160,7 +7392,7 @@ function verCred(sid,vig,code){
   $("rcRes").innerHTML=h;$("dRc").showModal();
 }
 /* ===== Respaldo completo (datos y archivos) ===== */
-var BKCOL=["agenda","students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","proveedores","cortes","constancias","recargos","practicas","seguim","quejas","libros","prestamos","inventario","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas","bajas","checadas","asistpers"];
+var BKCOL=["agenda","students","ledger","fotos","calif","materias","docentes","catalogo","grupos","gastos","proveedores","cortes","constancias","recargos","practicas","seguim","quejas","comunicados","reinscripciones","libros","prestamos","inventario","acuerdos","egresados","criterios","planeaciones","solicitudes","resguardos","resguardos286","titulaciones","justificantes","acuerdo286","nomina","empleados","nomina_admin","docentes_docs","contratos","fichasins","asistencia","ciclos","fiscal","facturas","atencion","prospectos","campanas","bajas","checadas","asistpers"];
 var BKDOC=["config/app","config/plans","config/nomina","meta/folio","meta/folio286","meta/folio286R","meta/folioA","meta/folioC","meta/folioJ","meta/folioR","meta/folioRC","meta/folioN","meta/folioNA","meta/folioRT","meta/folioT","meta/folioCH"];
 var BKLAST=null;
 function leeCol(n){
@@ -8125,7 +8357,7 @@ function accesoVista(m){
   if(m==="not")return !!window.LF_NUBE&&esAdminReal()&&BASEROL==="admin";
   if(m==="por")return !!(APP&&APP.rol==="alumno");
   if(APP&&APP.rol==="alumno")return false;
-  if(m==="usr"||m==="bk"||m==="sp")return esAdminReal()&&BASEROL==="admin";
+  if(m==="usr"||m==="bk"||m==="sp"||m==="dir")return esAdminReal()&&BASEROL==="admin";
   if(m==="av")return (esAdminReal()&&BASEROL==="admin")||permiso("escolar")==="editar";
   if(m==="pagos")return permiso("pagos")!=="none"||permiso("corte")!=="none"||permiso("estado")!=="none";
   if(m==="esc")return permiso("escolar")!=="none"||permiso("constancias")!=="none"||permiso("biblioteca")!=="none";
@@ -8133,7 +8365,7 @@ function accesoVista(m){
   return !!MODV[m]&&permiso(MODV[m])!=="none";
 }
 function rolDeVista(m){
-  if(m==="usr"||m==="por"||m==="not"||m==="bk"||m==="av"||m==="sp")return BASEROL;
+  if(m==="usr"||m==="por"||m==="not"||m==="bk"||m==="av"||m==="sp"||m==="dir")return BASEROL;
   if(m==="pagos")return efectivoRol(permiso("pagos")!=="none"?"pagos":(permiso("corte")!=="none"?"corte":"estado"));
   if(m==="esc")return mayorRol(mayorRol(efectivoRol("escolar"),efectivoRol("constancias")),efectivoRol("biblioteca"));
   return efectivoRol(MODV[m]);
@@ -8150,7 +8382,7 @@ function aplicaModulos(){
     if(m[0]==="calendario")vis=!(APP&&APP.rol==="alumno");   /* lo ven todos */
     $(t).hidden=!vis;
   });
-  $("mUsr").hidden=!accesoVista("usr");$("mBk").hidden=!accesoVista("bk");$("mAv").hidden=!accesoVista("av");$("mSp").hidden=!accesoVista("sp");
+  $("mUsr").hidden=!accesoVista("usr");$("mBk").hidden=!accesoVista("bk");$("mDir").hidden=!accesoVista("dir");$("mAv").hidden=!accesoVista("av");$("mSp").hidden=!accesoVista("sp");
   $("mNot").hidden=!accesoVista("not");if(typeof renderNotBadge==="function")renderNotBadge();
   if(accesoVista("not")&&typeof cargaNot==="function"&&!aplicaModulos.nt){aplicaModulos.nt=1;setTimeout(cargaNot,50)}
 }
@@ -8170,7 +8402,7 @@ function renderUsr(){
   $("usTb").innerHTML=L.length?L.map(function(u){var doc=u.doc&&DOC[u.doc];return '<tr><td>'+esc(u.name)+(doc?'<br><span class="hint">Docente: '+esc(doc.nombre)+'</span>':'')+'</td><td>'+esc(u.u)+'</td><td>'+esc(ROLTXT[u.rol]||u.rol)+'</td><td style="white-space:normal;min-width:260px"><span class="hint">'+esc(resumenMods(u))+'</span></td><td>'+(u.rol==="alumno"?(window.LF_NUBE?'<button data-ra="'+esc(u.alumno)+'">Restablecer contraseña</button> ':''):'<button data-ed="'+esc(u.u)+'">Editar</button> ')+'<button class="d" data-dl="'+esc(u.u)+'">'+(USCONF===u.u?"Confirmar":"Eliminar")+'</button></td></tr>'}).join(""):'<tr><td colspan="5" class="empty">'+(USERS.length?"Sin resultados.":"Aún no hay usuarios. Mientras no existan, el sistema no pide contraseña.")+'</td></tr>';
   $("mUsrS").textContent=(USERS||[]).length+((USERS||[]).length===1?" usuario":" usuarios");
 }
-$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mBk").onclick=function(){ir("bk")};$("mAv").onclick=function(){ir("av")};$("mAt").onclick=function(){ir("at")};$("mPr").onclick=function(){ir("pr")};$("mSp").onclick=function(){ir("sp")};
+$("usBus").oninput=renderUsr;$("usVerAl").onchange=renderUsr;$("mBk").onclick=function(){ir("bk")};$("mDir").onclick=function(){ir("dir")};$("mAv").onclick=function(){ir("av")};$("mAt").onclick=function(){ir("at")};$("mPr").onclick=function(){ir("pr")};$("mSp").onclick=function(){ir("sp")};
 $("mUsr").onclick=function(){ir("usr")};
 function nivelesMods(){var o={};Array.prototype.forEach.call($("usMods").querySelectorAll("select[data-m]"),function(s){if(s.value!=="none")o[s.dataset.m]=s.value});return o}
 function pintaMods(p,bloqueado){
@@ -8408,7 +8640,7 @@ function renderPor(){
   var ps=perDe(s.id).slice().reverse(),per=$("poPer")&&$("poPer").value&&ps.indexOf($("poPer").value)>-1?$("poPer").value:(ps[0]||"");
   var pagos=(s.pagos||[]).slice().sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha))||String(b.folio).localeCompare(String(a.folio))}),A=alloc(s);
   var h='<p class="sub">Hola, <b>'+esc(s.nombre)+'</b>. Aquí puedes consultar tu información académica y el registro de tus pagos.</p>'+
-   notifPor()+calPorHTML()+'<h2 style="margin-top:16px">Mis datos</h2><div class="row">'+datos.filter(function(x){return x[1]}).map(function(x){return '<label>'+esc(x[0])+'<b style="color:var(--ink);font-weight:600">'+esc(x[1])+'</b></label>'}).join("")+'</div>'+
+   notifPor()+'<div id="rqBoxP">'+rqHTML()+'</div><div id="cmBoxP">'+cmHTML()+'</div>'+calPorHTML()+'<h2 style="margin-top:16px">Mis datos</h2><div class="row">'+datos.filter(function(x){return x[1]}).map(function(x){return '<label>'+esc(x[0])+'<b style="color:var(--ink);font-weight:600">'+esc(x[1])+'</b></label>'}).join("")+'</div>'+
    pracPorHTML(s)+bbPorHTML(s)+bzPorHTML(s)+'<h2 style="margin-top:16px">Mis materias y docentes'+(g?' · cuatrimestre '+esc(g.cuat)+'':'')+'</h2>'+
    (mats.length?evdAviso(mats)+'<div class="wrap"><table style="min-width:760px"><thead><tr><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Aula</th><th>Evaluación</th><th>Evaluar al docente</th></tr></thead><tbody>'+mats.map(function(m){var d=DOC[m.docId];return '<tr><td>'+esc((matParaPlan(m,g.plan)||m).nom)+(fusDe(m).length?'<br><span class="hint">Clase compartida con otra licenciatura</span>':'')+'</td><td>'+(d?esc(d.nombre)+(d.esp?'<br><span class="hint">'+esc(d.esp)+'</span>':''):'<span class="hint">Por asignar</span>')+'</td><td>'+esc(hor(m))+'</td><td>'+esc(m.aula||"")+'</td><td>'+(m.ev?esc(fd(m.ev)):'—')+'</td><td>'+evdCelda(m)+'</td></tr>'}).join("")+'</tbody></table></div>':'<p class="hint">Todavía no hay materias registradas para tu grupo.</p>')+
    '<h2 style="margin-top:16px">Mis calificaciones</h2>'+
@@ -10850,7 +11082,20 @@ async function rbCarga(llena){
   $("rbLocalAv").hidden=true;$("rbSrv").hidden=false;
   try{var r=await cbApi("GET","/api/respaldos");if(r.ok){rbRender(r.j,llena===true||!RBCARGA);RBCARGA=true;ALM=null;ALMT=0;cargaAlm()}}catch(e){}
 }
-function renderBk(){rbCarga(true)}
+var ESIS=null;
+async function esCarga(){
+  if(!window.LF_NUBE||!esAdminReal())return;
+  try{var r=await cbApi("GET","/api/estado-sistema");if(r.ok){ESIS=r.j;esRender()}}catch(e){}
+}
+function esRender(){
+  var box=$("esSis");if(!ESIS||!box){return}box.hidden=false;
+  var ic={ok:["✔","var(--ok)"],aviso:["!","var(--warn)"],mal:["✖","var(--bad)"],info:["i","var(--muted)"]};
+  $("esRes").textContent=ESIS.mal?ESIS.mal+" por resolver":(ESIS.aviso?ESIS.aviso+" por revisar":"Todo en orden");
+  $("esRes").style.color=ESIS.mal?"var(--bad)":(ESIS.aviso?"var(--warn)":"var(--ok)");
+  $("esLista").innerHTML=ESIS.items.map(function(x){var c=ic[x.nivel]||ic.info;return '<div class="pay" style="align-items:flex-start;gap:10px;border-left:4px solid '+c[1]+'"><b style="color:'+c[1]+';min-width:1.2em;text-align:center">'+c[0]+'</b><div style="flex:1"><div><b>'+esc(x.titulo)+'</b></div><div class="hint">'+esc(x.detalle)+'</div>'+(x.accion&&x.nivel!=="ok"?'<div class="hint" style="color:var(--ink)">➜ '+esc(x.accion)+'</div>':'')+'</div></div>'}).join("");
+}
+$("esRef").onclick=esCarga;
+function renderBk(){rbCarga(true);esCarga()}
 function rbLee(){
   return {activo:$("rbAct").checked,hora:+$("rbHora").value,conservar:+$("rbCons").value,cifrar:$("rbCif").checked,claveCif:$("rbClave").value,
     s3:{activo:$("rbS3A").checked,endpoint:$("rbS3E").value.trim(),region:$("rbS3R").value.trim(),bucket:$("rbS3B").value.trim(),prefijo:$("rbS3P").value.trim(),acceso:$("rbS3K").value.trim(),secreto:$("rbS3S").value},
@@ -11818,7 +12063,7 @@ $("usL").onclick=async function(e){
     else if(BASEROL==="admin"&&ROL==="admin")DBH.doc("config/plans").set({plans:PL,extra:EXTRA,cons:CONSC,ren:REN}).catch(function(){});
     rebuild();
   },onErr);
-  [["agenda",function(d){AGN=d;if($("dCal").open)calRender();calHomeS();if(APP&&APP.rol==="alumno"&&typeof renderPor==="function"&&MOD==="por")renderPor()}],["checadas",function(d){CHK=d;if($("dAP").open)renderAP();refrescaNominasAP()}],["asistpers",function(d){APC=d.cfg||{};if($("dAP").open&&APTAB!==3)renderAP();refrescaNominasAP()}],["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["bajas",function(d){BAJ=d;if(MOD==="esc"&&ETAB==="B"&&!$("dBj").open)renderBj();var n=bjPend();if($("bjN")){$("bjN").hidden=!n;$("bjN").textContent=n}}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["recargos",function(d){REC=d}],["practicas",function(d){PRC=d;if(MOD==="esc"&&ETAB==="O"&&!$("dPr").open)renderPrac();if(MOD==="por")renderPor()}],["libros",function(d){LIB=d;if(MOD==="esc"&&ETAB==="W"&&!$("dBl").open&&!$("dBp").open)renderBb();if(MOD==="por")renderPor()}],["prestamos",function(d){PRE=d;if(MOD==="esc"&&ETAB==="W"&&!$("dBl").open&&!$("dBp").open)renderBb();if(MOD==="por")renderPor()}],["inventario",function(d){INV=d;if(MOD==="esc"&&ETAB==="Z"&&!$("dIf").open)renderIv()}],["quejas",function(d){BZQ=d;bzBadge();if(MOD==="esc"&&ETAB==="U"&&!$("dBzS").open)renderBz()}],["seguim",function(d){SEG=d;if(MOD==="esc"&&ETAB==="Y"&&!$("dSg").open)renderSeg()}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({id:k},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
+  [["agenda",function(d){AGN=d;if($("dCal").open)calRender();calHomeS();if(APP&&APP.rol==="alumno"&&typeof renderPor==="function"&&MOD==="por")renderPor()}],["checadas",function(d){CHK=d;if($("dAP").open)renderAP();refrescaNominasAP()}],["asistpers",function(d){APC=d.cfg||{};if($("dAP").open&&APTAB!==3)renderAP();refrescaNominasAP()}],["asistencia",function(d){ASI=d;if($("dAs").open)asRender()}],["ciclos",function(d){CIC=d;if($("dCc").open)ccRender();if(typeof ntProgramar==="function")ntProgramar()}],["bajas",function(d){BAJ=d;if(MOD==="esc"&&ETAB==="B"&&!$("dBj").open)renderBj();var n=bjPend();if($("bjN")){$("bjN").hidden=!n;$("bjN").textContent=n}}],["atencion",function(d){ATN=d;if(MOD==="at"){renderAt();if($("dAxD").open)axDetalle()}}],["prospectos",function(d){PRO=d;if(MOD==="pr"&&PXTAB==="p"&&!$("dPx").open)prProspectos();if(typeof ntProgramar==="function")ntProgramar()}],["campanas",function(d){CMP=d;if(MOD==="pr"&&PXTAB==="c")prCampanas()}],["fiscal",function(d){FISC=d;if(typeof plPortal==="function"&&MOD==="por")plPortal()}],["facturas",function(d){FACT=d;if(MOD==="por")renderPor();if(MOD==="pagos"&&TAB==="fl"&&FLTAB==="f")flFacturas()}],["fichasins",function(d){FICH=d;if($("dFz").open)fzRender();if($("dFzL").open)fzLista();if(!$("inRes").hidden)inEstadoFirma()}],["contratos",function(d){HNR=d;if($("dHn").open)renderHnL()}],["avisos",function(d){AVI=d;if(MOD==="por")renderPor();if(typeof ntProgramar==="function")ntProgramar()}],["resguardos286",function(d){RGD=d;if(MOD==="a2"&&A2PAN==="C"&&!$("dRg").open&&!$("dRgE").open&&!$("dRgZ").open)renderRg()}],["resguardos",function(d){RSG=d;if(MOD==="esc"&&ETAB==="T"&&!$("dRs").open&&!$("dRsE").open)renderRes()}],["solicitudes",function(d){SOL=d;if(MOD==="por")renderPor();else if(MOD==="esc"&&ETAB==="S")renderSol();else if(MOD==="home")solBadge();else if(MOD==="esc")solBadge()}],["planeaciones",function(d){PLN=d;if($("dPn").open)renderPlEst();else if(MOD==="doc")renderDm();if(MOD==="home")renderPlBadge();if(MOD==="esc"&&ETAB==="D"&&!$("dRv").open)renderDoc()}],["docentes_docs",function(d){DXD=d}],["empleados",function(d){EMP=d}],["nomina_admin",function(d){NAD=d}],["nomina",function(d){NOM=d}],["acuerdo286",function(d){A2=d;if(MOD==="pagos"&&TAB==="a86"&&!$("dA86").open)renderA86();if($("dA86").open)a86Detalle()}],["justificantes",function(d){JUS=d}],["titulaciones",function(d){TIT_=d}],["criterios",function(d){CRIT=d}],["egresados",function(d){EGR=d}],["acuerdos",function(d){ACU=d}],["constancias",function(d){CONS=d}],["recargos",function(d){REC=d}],["practicas",function(d){PRC=d;if(MOD==="esc"&&ETAB==="O"&&!$("dPr").open)renderPrac();if(MOD==="por")renderPor()}],["libros",function(d){LIB=d;if(MOD==="esc"&&ETAB==="W"&&!$("dBl").open&&!$("dBp").open)renderBb();if(MOD==="por")renderPor()}],["prestamos",function(d){PRE=d;if(MOD==="esc"&&ETAB==="W"&&!$("dBl").open&&!$("dBp").open)renderBb();if(MOD==="por")renderPor()}],["inventario",function(d){INV=d;if(MOD==="esc"&&ETAB==="Z"&&!$("dIf").open)renderIv()}],["reinscripciones",function(d){RQ=d;if(MOD==="esc"&&ETAB==="Q"&&document.activeElement&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName))renderRq()}],["comunicados",function(d){COM=d;if(MOD==="esc"&&ETAB==="M"&&document.activeElement&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName))renderCm(true)}],["comlec",function(d){if(MOD==="esc"&&ETAB==="M"){COMR=null;renderCm(true)}}],["quejas",function(d){BZQ=d;bzBadge();if(MOD==="esc"&&ETAB==="U"&&!$("dBzS").open)renderBz()}],["seguim",function(d){SEG=d;if(MOD==="esc"&&ETAB==="Y"&&!$("dSg").open)renderSeg()}],["grupos",function(d){Object.keys(d).forEach(function(k){if(d[k].turno)d[k]=Object.assign({},d[k],{turno:""})});GRP=d}],["catalogo",function(d){CATA=d}],["docentes",function(d){DOC=d}],["materias",function(d){Object.keys(d).forEach(function(k){if(!d[k].ev&&d[k].ev1)d[k]=Object.assign({},d[k],{ev:d[k].ev1});d[k]=Object.assign({id:k},d[k],{dias:["Sáb"]})});MAT=d}],["calif",function(d){Object.keys(d).forEach(function(k){d[k]=Object.assign({},d[k],{items:(d[k].items||[]).map(function(i){return i.cal==null&&i.e1!=null?Object.assign({},i,{cal:i.e1}):i})})});CAL=d}],["fotos",function(d){FOT=d}]].forEach(function(c){
     DBH.collection(c[0]).onSnapshot(function(s){var o={};s.docs.forEach(function(d){o[d.id]=d.data()});c[1](o);if(typeof ntProgramar==="function")ntProgramar();if(c[0]==="calif"||c[0]==="constancias"||c[0]==="recargos"){if(c[0]==="recargos")rebuild();render();if($("dRcg").open)rcgRender()}if(c[0]==="acuerdos"&&MOD==="acu")renderAcu();agendaEgresos();if(MOD==="doc"&&!$("dEv").open)renderDm();if(MOD==="ver"&&!$("dCf").open)renderVer();if(MOD==="nom"&&!$("dNm").open)renderNom();if(c[0]==="docentes_docs"&&MOD==="esc"&&ETAB==="D"&&!$("dDx").open)renderDoc();if(MOD==="na"&&!$("dNa").open&&!$("dEm").open&&!(document.activeElement&&$("naTb").contains(document.activeElement)))renderNa();if(MOD==="pagos"&&TAB==="ef")renderEf();if(MOD==="por")renderPor();if(c[0]==="titulaciones"&&MOD==="tit"&&!$("dTt").open)renderTit();if(c[0]==="acuerdo286"&&MOD==="a2"&&!$("dA2").open)renderA2();renderEsc();if(MOD==="home")renderHome()},onErr);
   });
   DBH.collection("proveedores").onSnapshot(function(s){PVD={};s.docs.forEach(function(d){PVD[d.id]=d.data()});pvLlena();pvBadge();if($("dPrv").open)pvRender()},onErr);

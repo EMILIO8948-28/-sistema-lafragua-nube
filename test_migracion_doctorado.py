@@ -54,7 +54,7 @@ ok('A_no_se_repite_en_el_siguiente_arranque',c2['items'][0]['cuat']==2)
 # B: el administrador ya había movido una materia: no se toca
 d2=dict(ANT);d2['ED16']=3
 cat,pl,marca,aud,log,_,_=escenario(2,3431,d2,20)
-ok('B_si_ya_estaba_personalizado_no_se_toca_nada',dist(cat)==[4,3,4,3,2] and pl['plans'][0]['n']==20 and marca==1 and not any('Migración' in a for a in aud))
+ok('B_si_ya_estaba_personalizado_no_se_toca_nada',dist(cat)==[4,3,4,3,2] and pl['plans'][0]['n']==20 and marca==1 and not any('redistribuido' in a for a in aud))
 # C: duración distinta de 20: se redistribuye pero se respeta la duración
 cat,pl,marca,aud,log,_,_=escenario(3,3432,ANT,12)
 ok('C_con_duracion_propia_se_redistribuye_pero_no_se_cambia_la_duracion',dist(cat)==[4,4,4,4,0] and pl['plans'][0]['n']==12 and 'la duración' not in log.split('Migración:')[1].split('.')[0] if 'Migración:' in log else False)

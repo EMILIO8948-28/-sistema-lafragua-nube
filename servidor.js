@@ -1920,6 +1920,19 @@ function migraDoctorado4() {
   } catch (e) { console.error('No se pudo migrar el Doctorado:', e.message); }
 }
 try { migraDoctorado4(); } catch (e) { console.error('Migración del Doctorado:', e.message); }
+/* Migración única: colegiatura del Doctorado en $1,800 al mes. Solo si el plan sigue con la colegiatura en $0 (nunca definida); si ya tiene un monto, no se toca. */
+function migraDoctoradoCol() {
+  const marca = 'migracion-doctorado-col1800'; if (q.uno.get('meta', marca)) return;
+  try {
+    const pr = q.uno.get('config', 'plans');
+    if (pr) {
+      const P = JSON.parse(pr.data), nm = (P.ren && P.ren['Doctorado']) || 'Doctorado', pl = (P.plans || []).find(x => x.k === nm);
+      if (pl && !(Number(pl.col) > 0)) { pl.col = 1800; q.pon.run('config', 'plans', JSON.stringify(P), Date.now()); difunde('config', 'plans'); cobHook('config', 'plans'); audita(null, null, 'Migración: colegiatura del Doctorado en $1,800', nm); console.log('Migración: colegiatura del Doctorado en $1,800'); }
+    }
+    q.pon.run('meta', marca, JSON.stringify({ fecha: new Date().toISOString() }), Date.now());
+  } catch (e) { console.error('No se pudo fijar la colegiatura del Doctorado:', e.message); }
+}
+try { migraDoctoradoCol(); } catch (e) { console.error('Migración colegiatura Doctorado:', e.message); }
 
 servidor.listen(PUERTO, '0.0.0.0', () => {
   console.log('Sistema escolar Lafragua (nube) escuchando en el puerto ' + PUERTO + '. Datos en ' + DATOS);

@@ -62,6 +62,7 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_estado_sistema.py` · tarjeta «Estado del sistema» (disco, respaldos, copia externa, cifrado) y permisos de admin (28).
 - `test_tablero.py` · tablero de dirección con fecha fija del navegador (27).
 - `test_comunicados.py` · comunicados generales: destinatarios, vigencia, confirmación de lectura, permisos y portales (65).
+- `test_doctorado_costo_aviso.py` · colegiatura del Doctorado en $1,800 (migración única que respeta costos ya definidos y planes renombrados) y contenido del aviso de privacidad público conforme a la ley de 2025 (28).
 - `test_reinscripcion.py` · reinscripción en línea: configuración, ventana de fechas, revisión de adeudo, respuesta del alumno, avisos de apertura y recordatorios, asignación a grupos, baja desde la lista, permisos, cascada y pantallas (80).
 - `test_docente_choques_llave.py` · resultados de la evaluación para el docente (mínimo de 3 respuestas, anonimato), choques de horario y llave `evdoc.key` en el respaldo y su restauración (27).
 

@@ -328,7 +328,7 @@ Recibos, constancias y credenciales llevan un QR con una liga a la plataforma: `
 - No agregar totales de dinero visibles para Caja ni Consulta.
 
 ## Pendientes y decisiones abiertas
-- Confirmar si $1,300/$1,800 son mensualidades. Definir colegiatura, inscripción y reinscripción del Doctorado.
+- Confirmar si $1,300/$1,800 son mensualidades. Doctorado: colegiatura $1,800 (definida; migración `migraDoctoradoCol`); inscripción y reinscripción siguen en $0, falta definirlas.
 - Portal para alumnos: qué verán (calificaciones y boleta, avance de pagos, credencial y constancias, solicitud de justificantes). Sin definir.
-- Aviso de privacidad y política de resguardo de datos (alumnos, algunos menores de edad).
+- Aviso de privacidad: la página pública `/privacidad` (`paginaPrivacidad` en `seguridad.js`) ya sigue la LFPDPPP vigente (DOF 20-mar-2025; autoridad: Secretaría Anticorrupción y Buen Gobierno; ARCO 20 + 15 días hábiles), con finalidades necesarias/voluntarias, transferencias, menores y revocación. Falta que el Administrador capture domicilio, correo y teléfono en «Seguridad y privacidad» y que un abogado lo revise.
 - Posibles mejoras no pedidas: baja de alumno sin borrarlo, reporte por medio de enterarse/asesor, bloqueo de captura de calificaciones por fecha, bitácora de quién quitó pagos, calendario con sábados sin clase.

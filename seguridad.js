@@ -15,7 +15,7 @@ function verificaTotp(secretoB32, codigo, ultimoPaso, ahoraMs) {
   return 0;
 }
 const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const PRIV0 = { entidad: 'Universidad Lafragua', domicilio: '', correo: '', telefono: '', responsable: 'Control escolar', version: 1, actualizado: '', aceptacion: false, extra: '' };
+const PRIV0 = { entidad: 'Universidad Lafragua', domicilio: 'Guadalupe Victoria No. 3, Tejupilco de Hidalgo, Estado de México', correo: 'universidadlafragua@gmail.com', telefono: '', responsable: 'Control escolar', version: 1, actualizado: '', aceptacion: false, extra: '' };
 const CONS0 = { ineAnios: 1, firmasAnios: 5, mensajesMeses: 12, sesionesPagoMeses: 24, auditoriaMeses: 36, prospectosMeses: 18 };
 function crea(ctx) {
   const { db, q, leeDoc, cifra, descifra, audita, claveOk, ARCH, difunde, hoyMx, ENV } = ctx, ahora = ctx.ahora || (() => Date.now());

@@ -62,7 +62,7 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_estado_sistema.py` · tarjeta «Estado del sistema» (disco, respaldos, copia externa, cifrado) y permisos de admin (28).
 - `test_tablero.py` · tablero de dirección con fecha fija del navegador, incluida la sección de reinscripción (36).
 - `test_comunicados.py` · comunicados generales: destinatarios, vigencia, confirmación de lectura, permisos y portales (65).
-- `test_doctorado_costo_aviso.py` · colegiatura del Doctorado en $1,800 (migración única que respeta costos ya definidos y planes renombrados) y contenido del aviso de privacidad público conforme a la ley de 2025 (28).
+- `test_doctorado_costo_aviso.py` · costos del Doctorado ($2,000 de colegiatura; $1,000 de inscripción y reinscripción; migración única que respeta costos ya definidos y planes renombrados) y contenido del aviso de privacidad público conforme a la ley de 2025 (28).
 - `test_reinscripcion.py` · reinscripción en línea: configuración, ventana de fechas, revisión de adeudo, respuesta del alumno, avisos de apertura y recordatorios, asignación a grupos, baja desde la lista, permisos, cascada y pantallas (80).
 - `test_certificado_parcial.py` · certificado parcial de estudios: solo aprobadas, QR tipo `k`, verificación pública y en la app, PDF con QR legible, alumno sin aprobadas (28).
 - `test_portal_resumen.py` · portal del alumno: tarjetas de resumen (cuatrimestre, promedio, avance de pagos, avisos), menú fijo de secciones, desplazamiento y que no se dupliquen al repintar (22).

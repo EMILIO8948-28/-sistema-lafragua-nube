@@ -34,31 +34,37 @@ def escenario(n,port,col,ren=None,plan_nombre='Doctorado',marca=True):
     adm('PUT','/api/doc/config/plans',{'plans':[{'k':'Pedagogía','n':36,'col':1300,'ins':800,'rein':800,'tit':23000},{'k':plan_nombre,'n':16,'col':col,'ins':0,'rein':0,'tit':30000}],'extra':{'costo':300,'min':8},'cons':{'costo':50},'ren':ren or {}})
     para(p);time.sleep(1)
     db=sqlite3.connect(data+'/lafragua.db')
-    if marca:db.execute("delete from docs where coleccion='meta' and id='migracion-doctorado-col1800'")
+    if marca:db.execute("delete from docs where coleccion='meta' and id='migracion-doctorado-costos-1000-2000'")
     db.commit();db.close()
     p=arranca(port,data,'tk-dc');time.sleep(1.5);log=para(p);time.sleep(0.5)
     db=sqlite3.connect(data+'/lafragua.db')
     pl=json.loads(db.execute("select data from docs where coleccion='config' and id='plans'").fetchone()[0])
-    m=db.execute("select count(*) from docs where coleccion='meta' and id='migracion-doctorado-col1800'").fetchone()[0];aud=[r[0] for r in db.execute("select accion from auditoria").fetchall()];db.close()
+    m=db.execute("select count(*) from docs where coleccion='meta' and id='migracion-doctorado-costos-1000-2000'").fetchone()[0];aud=[r[0] for r in db.execute("select accion from auditoria").fetchall()];db.close()
     return pl,m,aud,log,data
 col=lambda pl,k='Doctorado':[p for p in pl['plans'] if p['k']==k][0]['col']
-# A: costo sin definir -> $1,800
+# A: costo sin definir -> col 2000, inscripción y reinscripción 1000
 pl,m,aud,log,data=escenario(1,3440,0)
-ok('A_doctorado_sin_costo_queda_en_1800',col(pl)==1800 and m==1)
-ok('A_no_toca_los_demas_planes',col(pl,'Pedagogía')==1300 and [p for p in pl['plans'] if p['k']=='Doctorado'][0]['ins']==0)
-ok('A_queda_en_la_auditoria',any('colegiatura del Doctorado' in a for a in aud) and '$1,800' in log)
+d0=[p for p in pl['plans'] if p['k']=='Doctorado'][0]
+ok('A_doctorado_sin_costo_queda_en_2000_y_1000',col(pl)==2000 and d0['ins']==1000 and d0['rein']==1000 and m==1)
+ok('A_no_toca_los_demas_planes',col(pl,'Pedagogía')==1300 and [p for p in pl['plans'] if p['k']=='Pedagogía'][0]['ins']==800)
+ok('A_queda_en_la_auditoria',any('costos del Doctorado' in a for a in aud) and 'costos del Doctorado' in log)
 db=sqlite3.connect(data+'/lafragua.db');P=pl;[p for p in P['plans'] if p['k']=='Doctorado'][0]['col']=0;db.execute("update docs set data=? where coleccion='config' and id='plans'",(json.dumps(P),));db.commit();db.close()
 p=arranca(3440,data,'tk-dc');time.sleep(1);para(p);db=sqlite3.connect(data+'/lafragua.db');p2=json.loads(db.execute("select data from docs where coleccion='config' and id='plans'").fetchone()[0]);db.close()
-ok('A_no_se_repite_en_el_siguiente_arranque',col(p2)==0)
-# B: ya tenía un costo propio: no se toca
+ok('A_no_se_repite_en_el_siguiente_arranque',col(p2)==0 and [p for p in p2['plans'] if p['k']=='Doctorado'][0]['ins']==1000)
+# B: ya tenía un costo propio: la colegiatura no se toca
 pl,m,aud,log,_=escenario(2,3441,2500)
-ok('B_con_costo_propio_no_se_toca',col(pl)==2500 and m==1 and not any('colegiatura del Doctorado' in a for a in aud))
+ok('B_con_costo_propio_no_se_toca',col(pl)==2500 and m==1)
+# B2: la colegiatura provisional de 1800 de la migración anterior pasa a 2000
+pl,m,aud,log,_=escenario(5,3444,1800)
+ok('B2_provisional_1800_pasa_a_2000',col(pl)==2000)
 # C: plan renombrado
 pl,m,aud,log,_=escenario(3,3442,0,ren={'Doctorado':'Doctorado en Educación'},plan_nombre='Doctorado en Educación')
-ok('C_respeta_el_nombre_cambiado',col(pl,'Doctorado en Educación')==1800)
+ok('C_respeta_el_nombre_cambiado',col(pl,'Doctorado en Educación')==2000)
 # D: aviso de privacidad vigente
 port=3443;data='/tmp/nbdata_dc4';os.system('rm -rf %s && mkdir -p %s'%(data,data));B='http://127.0.0.1:%d'%port
 p=arranca(port,data,'tk-dc');adm=sesion(B,'tk-dc')
+t0=urllib.request.urlopen(B+'/privacidad').read().decode()
+ok('aviso_sin_configurar_ya_trae_domicilio_y_correo','Guadalupe Victoria No. 3, Tejupilco de Hidalgo, Estado de México' in t0 and 'universidadlafragua@gmail.com' in t0)
 s,j=adm('PUT','/api/seguridad/privacidad',{'entidad':'Universidad Lafragua','domicilio':'Calle Falsa 123, Tejupilco, Estado de México','correo':'privacidad@lafragua.mx','telefono':'722 000 0000','responsable':'Control escolar','extra':'<script>alert(1)</script>','aceptacion':False})
 ok('guarda_los_datos_del_aviso',s==200)
 t=urllib.request.urlopen(B+'/privacidad').read().decode()

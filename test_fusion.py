@@ -103,7 +103,7 @@ with sync_playwright() as pw:
         W(pp,"typeof APP!=='undefined'&&APP!==null&&APP.rol==='alumno'&&MOD==='por'&&S.length===1&&!document.getElementById('dPw').open");pp.wait_for_timeout(600);return pp
     pdd=entra('20230201','cccc-dddd','clave-carla-77');tm=pdd.inner_text('#poBody')
     ok('alumno_de_derecho_ve_la_clase_con_su_nombre','Técnicas de investigación jurídica' in tm and 'Clase compartida con otra licenciatura' in tm and 'Mtra. Laura Díaz' in tm and 'Introducción a la investigación' not in tm.split('Mis calificaciones')[0])
-    ok('alumno_de_derecho_ve_su_calificacion','9.5' in tm.split('Mis calificaciones')[1])
+    ok('alumno_de_derecho_ve_su_calificacion','9.5' in tm.split('Mis calificaciones')[-1])
     ok('progreso_de_egreso_cuenta_la_materia_equivalente',pdd.evaluate("progEgreso(S[0]).apr")==1)
     ppp=entra('20230101','aaaa-bbbb','clave-ana-77');tp=ppp.inner_text('#poBody')
     ok('alumno_de_pedagogia_ve_la_clase_con_su_nombre','Introducción a la investigación' in tp and 'Clase compartida' in tp and 'Técnicas de investigación jurídica' not in tp.split('Mis calificaciones')[0])

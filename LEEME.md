@@ -25,7 +25,7 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_solicitudes.py` · solicitudes del alumno (justificante, boleta, constancia), atención de Control escolar, notificaciones del alumno, QR del justificante y privacidad (59).
 - `test_fusion.py` · fusión de grupos de dos licenciaturas: calendario, docente, calificaciones por plan, portal y Control escolar (30).
 - `test_credencial_pvc.py` · credencial vertical CR80 para PVC (diseño A): tamaños de página (54 × 85.6, con sangrado y carta), datos, solo QR, cargo de $80 y reposición, validez al dar de baja y reincorporar (verificación pública y en pantalla) y sin credenciales de Acuerdo 286 (33). Usa un registro de dibujo en lugar de jsPDF y deja imágenes en `/tmp/cpvc_*.png`.
-- `test_asistencia_personal.py` · asistencia del personal con reloj checador: configuración, carga de CSV (dos formatos), reglas de administrativos (faltas y retardos) y docentes (minutos), justificaciones, checada manual, nómina, recibos y permisos del servidor (41). Usa octubre de 2026 para no depender de la fecha de hoy.
+- `test_asistencia_personal.py` · asistencia del personal con reloj checador: configuración, carga de CSV (dos formatos), reglas de administrativos (faltas y retardos) y docentes (minutos), justificaciones, checada manual, nómina, recibos y permisos del servidor (41). Usa octubre de 2026 para no depender de la fecha de hoy. Incluye los sábados sin clase del calendario (50).
 - `test_buscador_y_dias_admin.py` · buscador del panel principal (alumnos y funciones, permisos, teclado) y días de los administrativos: días de la semana, marca día por día, «Se presentó» masivo y descuento en la nómina (53).
 - `test_calendario_eventos.py` · calendario de eventos: carga manual (crear, editar, eliminar, varios días), validaciones, lectura para todos (alumno, docente, caja, personal), escritura solo con permiso, portal del alumno, buscador y actualización en vivo (60).
 - `test_calendario_automatico.py` · fechas automáticas del calendario: evaluaciones y plazos de captura (según Control escolar, con prórroga y agrupación), días de pago del 15 al 30 de cada mes y sus ajustes, y qué ve cada rol (alumno, docente, caja, personal) (48).
@@ -60,10 +60,14 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_historial_qr.py` · QR del historial académico: verificación pública (sin sesión), páginas, código alterado, correcciones posteriores, PDF con su QR legible con cámara, historial largo y verificación dentro de la aplicación (30).
 - `test_biblioteca_inventario.py` · biblioteca (catálogo, préstamos, límites, renovación, devolución, vencidos y multa estimada), inventario de bienes, permisos y portal del alumno (88).
 - `test_estado_sistema.py` · tarjeta «Estado del sistema» (disco, respaldos, copia externa, cifrado) y permisos de admin (28).
-- `test_tablero.py` · tablero de dirección con fecha fija del navegador (27).
+- `test_tablero.py` · tablero de dirección con fecha fija del navegador, incluida la sección de reinscripción (36).
 - `test_comunicados.py` · comunicados generales: destinatarios, vigencia, confirmación de lectura, permisos y portales (65).
 - `test_doctorado_costo_aviso.py` · colegiatura del Doctorado en $1,800 (migración única que respeta costos ya definidos y planes renombrados) y contenido del aviso de privacidad público conforme a la ley de 2025 (28).
 - `test_reinscripcion.py` · reinscripción en línea: configuración, ventana de fechas, revisión de adeudo, respuesta del alumno, avisos de apertura y recordatorios, asignación a grupos, baja desde la lista, permisos, cascada y pantallas (80).
+- `test_certificado_parcial.py` · certificado parcial de estudios: solo aprobadas, QR tipo `k`, verificación pública y en la app, PDF con QR legible, alumno sin aprobadas (28).
+- `test_portal_resumen.py` · portal del alumno: tarjetas de resumen (cuatrimestre, promedio, avance de pagos, avisos), menú fijo de secciones, desplazamiento y que no se dupliquen al repintar (22).
+- `test_pagos_quitados.py` · bitácora de pagos quitados: quién, cuándo y cuánto; solo admin; no escribible por clientes (31).
+- `test_via_asesor.py` · reporte de medio por el que se enteraron y asesor de los alumnos inscritos, con filtros y CSV (13).
 - `test_docente_choques_llave.py` · resultados de la evaluación para el docente (mínimo de 3 respuestas, anonimato), choques de horario y llave `evdoc.key` en el respaldo y su restauración (27).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

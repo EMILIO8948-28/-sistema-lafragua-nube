@@ -68,6 +68,24 @@ with sync_playwright() as pw:
     ok('muestra_lo_academico','7.8' in tx and '33.3 %' in tx and '2 alumnos con alguna reprobada' in tx and 'asignaturas de 1 docentes fuera de plazo' in tx)
     ok('muestra_pendientes','Libros vencidos' in tx and 'Solicitudes de alumnos' in tx and 'Buzón de quejas' in tx)
     ok('barras_de_matricula',pg.locator('#drPlanes > div').count()==2)
+    # reinscripción
+    RQP=lambda sid,n,dec,mot='':{'sid':sid,'nombre':n,'periodo':'Ene–Abr 2027','decision':dec,'motivo':mot,'fecha':'2026-11-18'}
+    ok('sin_periodo_avisa_que_falta_configurarlo','Aún no hay un periodo de reinscripción' in pg.inner_text('#drRqP') and pg.evaluate("document.getElementById('drRqW').hidden"))
+    put('reinscripciones/_config',{'abierta':True,'periodo':'Ene–Abr 2027','desde':'','hasta':'2026-12-15','mensaje':'','bloquea':True})
+    put('reinscripciones/s1',RQP('s1','Ana López','continuo'));put('reinscripciones/s2',RQP('s2','Beto Mena','no_continuo','Cambio de ciudad'));put('reinscripciones/s3',RQP('s3','Carla Díaz','no_continuo','cambio  de ciudad'))
+    put('reinscripciones/s4',{'sid':'s4','nombre':'Dani Ruiz','periodo':'Sep–Dic 2025','decision':'continuo','motivo':'','fecha':'2025-08-01'})
+    W(pg,"RQ.s3&&RQ._config&&document.getElementById('drRqP').textContent.indexOf('Ene–Abr 2027')>=0");pg.wait_for_timeout(200)
+    r=pg.evaluate("drCalc().rq")
+    ok('reinscripcion_cuenta',r['per']=='Ene–Abr 2027' and r['n']==4 and r['si']==1 and r['no']==2 and r['pend']==1)
+    ok('respuesta_de_otro_periodo_no_cuenta',r['pend']==1 and any(x['k']=='Derecho' and x['pend']==1 and x['si']==0 for x in r['lista']))
+    ok('reinscripcion_ingresos',r['ingNow']==5400 and r['ingSi']==1300 and r['ingNo']==2600 and r['ingPend']==1500)
+    ok('motivos_agrupados_sin_importar_mayusculas_ni_espacios',r['motivos']==[{'t':'cambio de ciudad','n':2}])
+    ok('reinscripcion_por_plan',[(x['k'],x['n'],x['si'],x['no'],x['pend']) for x in r['lista']]==[('Pedagogía',3,1,2,0),('Derecho',1,0,0,1)])
+    tx=pg.inner_text('#vDir')
+    ok('muestra_reinscripcion','abierta hasta el' in tx and 'Continúan' in tx and '25 % de los activos' in tx and '$1,300.00' in tx and '$2,600.00' in tx and '$1,500.00' in tx and 'cambio de ciudad' in tx and '2 alumnos' in tx)
+    ok('tabla_reinscripcion_por_plan','Pedagogía' in pg.inner_text('#drRqT') and '33 %' in pg.inner_text('#drRqT'))
+    put('reinscripciones/_config',{'abierta':False,'periodo':'Ene–Abr 2027','desde':'','hasta':'','mensaje':'','bloquea':True})
+    W(pg,"document.getElementById('drRqP').textContent.indexOf('cerrada')>=0");ok('reinscripcion_cerrada_se_actualiza_sola',True)
     # cambia un dato y actualiza
     put('ledger/s1',{'pagos':[P('p7','2026-11-18',3900)]});pg.evaluate("ir('home')");pg.reload();W(pg,"typeof APP!=='undefined'&&APP!==null&&S.length===4&&S[0].pagos");pg.evaluate("ir('dir')");W(pg,"MOD==='dir'");pg.wait_for_timeout(300)
     d2=pg.evaluate("drCalc()");ok('al_pagar_baja_lo_vencido_y_sube_lo_cobrado',abs(d2['morM']-5800)<0.01 and len(d2['mor'])==2 and abs(d2['cobrado']-9100)<0.01)
@@ -75,7 +93,7 @@ with sync_playwright() as pw:
     # exportar
     with pg.expect_download() as dl:pg.click('#drCsv')
     cv=open(dl.value.path(),encoding='utf-8-sig').read()
-    ok('csv_del_resumen','Cobrado del mes,9100.00' in cv and 'Alumnos activos,4' in cv and 'Alumnos en Pedagogía,3' in cv and 'Libros vencidos,1' in cv and dl.value.suggested_filename=='tablero-direccion-2026-11-18.csv')
+    ok('csv_del_resumen','Cobrado del mes,9100.00' in cv and 'Alumnos activos,4' in cv and 'Alumnos en Pedagogía,3' in cv and 'Libros vencidos,1' in cv and 'Reinscripción: continúan,1' in cv and 'Ingreso mensual perdido,2600.00' in cv and 'Reinscripción en Pedagogía (continúan/no/sin responder),1/2/0' in cv and dl.value.suggested_filename=='tablero-direccion-2026-11-18.csv')
     # buscador
     pg.evaluate("ir('home')");W(pg,"MOD==='home'");pg.fill('#hBus','tablero');pg.wait_for_timeout(300);ok('buscador_lo_encuentra','Tablero de dirección' in pg.inner_text('#hBusR'))
     # sin acceso para otros roles

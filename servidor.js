@@ -575,6 +575,26 @@ function envioBorrado(u) { difunde('_borrados', u); difunde('_borrados', '*'); }
 /* Devuelve true si ya respondió (403) porque el borrado necesita autorización. */
 /* Al eliminar un alumno se borra también lo suyo en estas colecciones, aunque quien lo elimina no tenga permiso sobre alguna */
 const COLS_DEL_ALUMNO = ['ledger', 'fotos', 'calif', 'constancias', 'recargos', 'practicas', 'seguim', 'prestamos', 'egresados', 'reinscripciones'];
+/* Bitácora de pagos: cada pago que se quita o se cambia (monto, o deja de estar confirmado) queda registrado aparte, con quién, cuándo y cómo era, aunque lo haga el Administrador. Solo el servidor escribe aquí (colección `pagosquit`); solo el Administrador la lee. */
+function bitacoraPagos(s, req, sid, viejo, nuevo, via) {
+  try {
+    const vp = viejo && Array.isArray(viejo.pagos) ? viejo.pagos : []; if (!vp.length) return;
+    const np = nuevo && Array.isArray(nuevo.pagos) ? nuevo.pagos : [], nm = new Map(np.filter(x => x && x.id != null).map(x => [String(x.id), x]));
+    const rs = q.uno.get('students', sid); let al = {}; try { al = rs ? JSON.parse(rs.data) : {}; } catch (e) { /* alumno dañado */ }
+    const conf = x => x.estado !== 'pendiente';
+    vp.forEach(p => {
+      if (!p || typeof p !== 'object' || p.id == null) return;
+      const n = nm.get(String(p.id)); let tipo = '', antes = null, despues = null;
+      if (!n) tipo = 'quitado';
+      else if (Number(n.monto) !== Number(p.monto)) { tipo = 'monto'; antes = Number(p.monto) || 0; despues = Number(n.monto) || 0; }
+      else if (conf(p) && !conf(n)) { tipo = 'estado'; antes = String(p.estado || 'confirmado'); despues = String(n.estado); }
+      if (!tipo) return;
+      const ts = Date.now(), id = ts.toString(36) + crypto.randomBytes(3).toString('hex');
+      q.pon.run('pagosquit', id, JSON.stringify({ id, ts, fecha: new Date(ts).toISOString(), u: s ? s.u : 'sistema', nombre: s ? (s.name || s.u) : 'Sistema', rol: s ? s.rol : '', sid, alumno: al.nombre || '', mat: al.mat || '', tipo, via: via || 'Edición del historial de pagos', antes, despues, pago: { id: p.id, folio: p.folio || '', monto: Number(p.monto) || 0, fecha: p.fecha || '', metodo: p.metodo || '', estado: p.estado || 'confirmado', concepto: p.concepto || p.c || '', nota: String(p.nota || '').slice(0, 200) } }), ts);
+      difunde('pagosquit', id);
+    });
+  } catch (e) { console.error('Bitácora de pagos:', e.message); }
+}
 function protegeBorrado(s, req, res, o) {
   if (s.rol === 'admin') return false;
   let esBorrado = false;
@@ -910,6 +930,17 @@ function verificaDoc(t, id, code, vig, fecha) {
     const con = items.filter(x => x.cal != null), gen = media(items);
     return { ok: true, tipo: 'historial', titulo: 'Historial académico', nombre: a.nombre, matricula: enmascara(a.mat), plan: a.programa || a.carrera || '', emitido: vig.slice(0, 4) + '-' + vig.slice(4, 6) + '-' + vig.slice(6, 8), promedioGeneral: gen === null ? null : gen.toFixed(1), aprobadas: con.filter(x => x.cal >= CAL_APROBATORIA).length, reprobadas: con.filter(x => x.cal < CAL_APROBATORIA).length, periodos };
   }
+  if (t === 'k') {
+    /* Certificado parcial de estudios: solo asignaturas aprobadas; el código cubre alumno y fecha de emisión */
+    if (code !== chkTxt('K|' + id + '|' + vig)) return no;
+    const a = nombreAl(id); if (!a) return no;
+    const rc = q.uno.get('calif', id), items = (rc ? (JSON.parse(rc.data).items || []) : []).filter(x => x.cal != null && x.cal >= CAL_APROBATORIA);
+    if (!items.length) return { ok: false, motivo: 'El sistema no tiene asignaturas aprobadas de ese alumno. El certificado puede no ser auténtico.' };
+    const clave = per => { const m = /^(Sep|Ene|May)[–-](Dic|Abr|Ago) (\d{4})$/.exec(String(per || '')); return m ? Number(m[3]) * 10 + (m[1] === 'Ene' ? 1 : m[1] === 'May' ? 2 : 3) : 0; };
+    const pers = [...new Set(items.map(x => x.per))].sort((x, y) => clave(x) - clave(y));
+    const prom = Math.round(items.reduce((t2, x) => t2 + x.cal, 0) / items.length * 10) / 10;
+    return { ok: true, tipo: 'certificado', titulo: 'Certificado parcial de estudios', nombre: a.nombre, matricula: enmascara(a.mat), plan: a.programa || a.carrera || '', emitido: vig.slice(0, 4) + '-' + vig.slice(4, 6) + '-' + vig.slice(6, 8), aprobadas: items.length, promedio: prom.toFixed(1), periodos: pers.map(per => ({ periodo: per, materias: items.filter(x => x.per === per).sort((x, y) => String(x.mat).localeCompare(String(y.mat))).map(x => ({ asignatura: x.mat, cal: x.cal })) })) };
+  }
   if (t === 'j') {
     for (const r of q.lista.all('justificantes')) {
       const x = JSON.parse(r.data);
@@ -947,7 +978,7 @@ async function api(req, res, partes) {
     if (limite('ver|' + ip, 60, 60000)) return responde(res, 429, { ok: false, motivo: 'Demasiadas consultas. Espera un minuto e inténtalo de nuevo.' });
     falla('ver|' + ip, 60000);
     const u = new URL(req.url, 'http://x').searchParams, t = u.get('t') || '', id = u.get('id') || '', code = (u.get('c') || '').toLowerCase(), vig = u.get('v') || '', fechaB = u.get('f') || '';
-    if (!/^[vcabjh]$/.test(t) || !/^[A-Za-z0-9_~-]{1,60}$/.test(id) || !/^[0-9a-f]{8}$/.test(code) || ((t === 'a' || t === 'h') && !/^\d{8}$/.test(vig)) || (t === 'b' && (!/^[SEM]\d{4}$/.test(vig) || !/^\d{8}$/.test(fechaB)))) return responde(res, 400, { ok: false, motivo: 'El código no es válido.' });
+    if (!/^[vcabjhk]$/.test(t) || !/^[A-Za-z0-9_~-]{1,60}$/.test(id) || !/^[0-9a-f]{8}$/.test(code) || ((t === 'a' || t === 'h' || t === 'k') && !/^\d{8}$/.test(vig)) || (t === 'b' && (!/^[SEM]\d{4}$/.test(vig) || !/^\d{8}$/.test(fechaB)))) return responde(res, 400, { ok: false, motivo: 'El código no es válido.' });
     res.setHeader('Cache-Control', 'no-store');
     return responde(res, 200, Object.assign({ consultado: new Date().toISOString() }, verificaDoc(t, id, code, vig, fechaB)));
   }
@@ -1023,9 +1054,10 @@ async function api(req, res, partes) {
     if (m === 'GET') { if (!puedeLeer(s, a, b)) return responde(res, 200, { exists: false, data: null }); const r = q.uno.get(a, b); if (r && a === 'atencion' && !visibleAtencion(s, JSON.parse(r.data))) return responde(res, 200, { exists: false, data: null }); return responde(res, 200, r ? { exists: true, data: reduce(s, a, JSON.parse(r.data)) } : { exists: false, data: null }); }
     if (s.rol === 'alumno' && a === 'solicitudes' && (m === 'PUT' || m === 'PATCH')) return guardaSolicitudAlumno(s, req, res, b, m);
     if (s.rol === 'alumno' && a === 'avisos' && m === 'PATCH') return guardaAvisoLeido(s, req, res, b);
+    if ((m === 'PUT' || m === 'PATCH' || m === 'DELETE') && a === 'pagosquit') { audita(s.u, req, 'Intento de cambiar la bitácora de pagos', m + ' ' + b); return responde(res, 403, { error: 'La bitácora de pagos solo la escribe el sistema.' }); }
     if (m === 'PUT' || m === 'PATCH' || m === 'DELETE') {
       if (!puedeEscribir(s, a, b)) { audita(s.u, req, 'Escritura denegada', m + ' ' + a + '/' + b); return responde(res, 403, { error: 'No tienes permiso para hacer esto.' }); }
-      if (m === 'DELETE') { const r0 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'DELETE', col: a, id: b, viejo: r0 ? JSON.parse(r0.data) : null })) return; q.borra.run(a, b); difunde(a, b); if (a === 'students') for (const c of COLS_DEL_ALUMNO) { q.borra.run(c, b); difunde(c, b); } cobHook(a, b); return responde(res, 200, { ok: true }); }
+      if (m === 'DELETE') { const r0 = q.uno.get(a, b); if (protegeBorrado(s, req, res, { accion: 'DELETE', col: a, id: b, viejo: r0 ? JSON.parse(r0.data) : null })) return; if (a === 'ledger' && r0) bitacoraPagos(s, req, b, JSON.parse(r0.data), null, 'Se eliminó el historial de pagos'); if (a === 'students') { const rl = q.uno.get('ledger', b); if (rl) bitacoraPagos(s, req, b, JSON.parse(rl.data), null, 'Se eliminó al alumno'); } q.borra.run(a, b); difunde(a, b); if (a === 'students') for (const c of COLS_DEL_ALUMNO) { q.borra.run(c, b); difunde(c, b); } cobHook(a, b); return responde(res, 200, { ok: true }); }
       let cuerpo; try { cuerpo = JSON.parse((await leeCuerpo(req, 6 * 1024 * 1024)).toString('utf8') || '{}'); } catch (e) { if (e.cod) throw e; return responde(res, 400, { error: 'JSON no válido' }); }
       if (cuerpo === null || typeof cuerpo !== 'object' || Array.isArray(cuerpo)) return responde(res, 400, { error: 'Se esperaba un objeto' });
       let nuevo = cuerpo; if (m === 'PATCH') { const r = q.uno.get(a, b); nuevo = Object.assign(r ? JSON.parse(r.data) : {}, cuerpo); }
@@ -1074,6 +1106,7 @@ async function api(req, res, partes) {
         }
       }
       const viejoAv = (a === 'solicitudes' || a === 'planeaciones' || a === 'materias') ? q.uno.get(a, b) : null;
+      if (a === 'ledger') { const rv = q.uno.get(a, b); if (rv) bitacoraPagos(s, req, b, JSON.parse(rv.data), nuevo, ''); }
       q.pon.run(a, b, JSON.stringify(nuevo), Date.now()); difunde(a, b); cobHook(a, b);
       if (a === 'reinscripciones' && b === '_config') { try { reinscRevisa(); } catch (e) { console.error('Reinscripción:', e.message); } }
       if (a === 'solicitudes' || (a === 'planeaciones' && (s.rol === 'admin' || (s.perm || {}).escolar === 'editar'))) { try { const vv = viejoAv ? JSON.parse(viejoAv.data) : null; if (a === 'solicitudes') AV.hookSolicitud(b, vv, nuevo); else AV.hookPlaneacion(b, vv, nuevo); } catch (e) { console.error('Avisos:', e.message); } }

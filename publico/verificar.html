@@ -105,6 +105,11 @@ input,select{font:inherit;padding:10px;border:1px solid var(--line);border-radiu
         tabla([["Documento",j.titulo],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Promedio general",j.promedioGeneral],["Asignaturas aprobadas",String(j.aprobadas)],["Asignaturas reprobadas",String(j.reprobadas)],["Fecha de emisión",fd(j.emitido)]])+
         j.periodos.map(function(p){return '<div class="sec"><h2>'+(p.cuatrimestre?'Cuatrimestre '+esc(p.cuatrimestre)+' · ':'')+esc(p.periodo)+(p.promedio?' · promedio '+esc(p.promedio):'')+'</h2><dl>'+p.materias.map(function(x){return '<dt>'+esc(x.asignatura)+'</dt><dd>'+(x.cal==null?"—":Number(x.cal).toFixed(1))+' · '+esc(x.estatus)+'</dd>'}).join("")+'</dl></div>'}).join("")+
         '<div class="nota">Las calificaciones mostradas son las registradas actualmente en el sistema. Compáralas con las del historial que tienes: si alguna no coincide, el documento pudo haber sido alterado o corregido después de emitirse.</div>';
+    }else if(j.tipo==="certificado"){
+      h=sello("ok","✔","Documento auténtico","Este <b>certificado parcial de estudios</b> fue emitido por Universidad Lafragua y existe en su base de datos.")+
+        tabla([["Documento",j.titulo],["Nombre",j.nombre],["Matrícula",j.matricula],["Plan de estudios",j.plan],["Asignaturas aprobadas",String(j.aprobadas)],["Promedio de las aprobadas",j.promedio],["Fecha de emisión",fd(j.emitido)]])+
+        j.periodos.map(function(p){return '<div class="sec"><h2>'+esc(p.periodo)+'</h2><dl>'+p.materias.map(function(x){return '<dt>'+esc(x.asignatura)+'</dt><dd>'+Number(x.cal).toFixed(1)+'</dd>'}).join("")+'</dl></div>'}).join("")+
+        '<div class="nota">Certificado parcial: solo ampara las asignaturas aprobadas a la fecha de emisión; no acredita la conclusión del plan de estudios. Compáralo con el documento que tienes: si algún dato no coincide, pudo ser alterado.</div>';
     }else if(j.tipo==="credencial"&&j.baja){
       h=sello("bad","✖","Credencial NO válida","Esta credencial ya no es válida: la persona ya no es alumna de Universidad Lafragua. No la aceptes como identificación.");
     }else if(j.tipo==="credencial"){
@@ -114,10 +119,10 @@ input,select{font:inherit;padding:10px;border:1px solid var(--line);border-radiu
     res.innerHTML=h;marca(j);
   }
   function verifica(){
-    var m=/^#([vcabjh])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(location.hash||"");
+    var m=/^#([vcabjhk])\.([A-Za-z0-9_~-]+)\.([A-Za-z0-9_~.-]+)$/.exec(location.hash||"");
     if(!m){res.innerHTML=sello("warn","⌖","Escanea el código QR","Escanea el código QR de un documento de la institución para comprobar que es auténtico, o usa el formulario de abajo.");document.getElementById("man").open=true;return}
     var t=m[1],id=m[2],p=m[3].split("."),code,vig="",fec="";
-    if(t==="a"){vig=p[0]||"";code=p[1]||""}else if(t==="b"){vig=p[0]||"";fec=p[1]||"";code=p[2]||""}else if(t==="h"){vig=p[0]||"";code=p[1]||""}else code=p[0]||"";
+    if(t==="a"){vig=p[0]||"";code=p[1]||""}else if(t==="b"){vig=p[0]||"";fec=p[1]||"";code=p[2]||""}else if(t==="h"||t==="k"){vig=p[0]||"";code=p[1]||""}else code=p[0]||"";
     res.innerHTML='<div class="cargando">Verificando el documento…</div>';pie.hidden=true;
     fetch("/api/verificar?t="+t+"&id="+encodeURIComponent(id)+"&c="+encodeURIComponent(code)+(vig?"&v="+encodeURIComponent(vig):"")+(fec?"&f="+encodeURIComponent(fec):""),{headers:{"Accept":"application/json"}})
       .then(function(r){return r.json().catch(function(){return {ok:false,motivo:"No se pudo leer la respuesta del servidor."}})})

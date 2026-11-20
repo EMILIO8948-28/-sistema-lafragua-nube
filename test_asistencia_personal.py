@@ -152,13 +152,27 @@ with sync_playwright() as pw:
     pago=get('nomina/'+MES)['data']['pagos']['d1']
     ok('pago_docente_congela_horas_descontadas',abs(pago['monto']-15*tar)<0.01 and sorted(f['hDesc'] for f in pago['filas'])==[2.5,2.5])
     tx=' | '.join(pg.evaluate("window.__txt"));ok('recibo_docente_trae_el_descuento','Desc. asist.' in tx and '-2.5 h' in tx and 'Horas descontadas por asistencia' in tx)
-    cf=get('asistpers/cfg')['data'];cf['map'].pop('doc:d1');put('asistpers/cfg',cf);W(pg,"!APC.map['doc:d1']");pg.wait_for_timeout(300)
+    cf=get('asistpers/cfg')['data'];MP=cf['map'].pop('doc:d1');put('asistpers/cfg',cf);W(pg,"!APC.map['doc:d1']");pg.wait_for_timeout(300)
     ok('docente_pagado_no_cambia',abs(pg.evaluate("resumenNom('d1',2026,10).total")-15*tar)<0.01)
     pg.evaluate("$('dNm').close()")
     pg.evaluate("abreAP('doc')");pg.wait_for_selector('#dAP[open]');pg.select_option('#apM','10');pg.select_option('#apY','2026');pg.wait_for_timeout(300)
     tx=pg.inner_text('#apTb');ok('resumen_docentes','Prof. Dos' in tx and 'Prof. Uno' in tx and 'Sin ID de reloj' in tx)
     pg.screenshot(path='/tmp/asis_docentes.png',full_page=True)
     pg.evaluate("$('dAP').close()")
+    # ---- sábados sin clase: eventos del calendario tipo «inh» ----
+    ok('sin_eventos_cuentan_todos_los_sabados',pg.evaluate("sabadosMes(2026,10)")==5 and pg.evaluate("sabadosPeriodo('Sep–Dic 2026')")==17)
+    put('agenda/e1',{'id':'e1','titulo':'Puente','fecha':'2026-10-10','cat':'inh'});put('agenda/e3',{'id':'e3','titulo':'Junta','fecha':'2026-10-17','cat':'reu'});W(pg,"AGN&&AGN.e1&&AGN.e3")
+    ok('sabado_sin_clase_resta_del_mes',pg.evaluate("sabadosMes(2026,10)")==4)
+    ok('un_evento_que_no_es_inhabil_no_resta',pg.evaluate("scSet()['2026-10-17']")is None)
+    put('agenda/e2',{'id':'e2','titulo':'Vacaciones de diciembre','fecha':'2026-12-19','fin':'2027-01-04','cat':'inh'});W(pg,"AGN.e2")
+    ok('rango_de_vacaciones_resta_los_sabados_del_rango',pg.evaluate("sabadosPeriodo('Sep–Dic 2026')")==17-1-2 and pg.evaluate("sabadosMes(2026,12)")==2)
+    ok('las_sesiones_de_la_nomina_no_cuentan_sabados_sin_clase',pg.evaluate("filasNom('d1',2026,12).length>0&&filasNom('d1',2026,12).every(function(f){return f.ses===2})") and pg.evaluate("filasNom('d1',2026,11).every(function(f){return f.ses===4})"))
+    ok('mes_ya_pagado_conserva_sus_sesiones',pg.evaluate("filasNom('d1',2026,10).every(function(f){return f.ses===5})"))
+    cf=get('asistpers/cfg')['data'];cf['map']['doc:d1']=MP;put('asistpers/cfg',cf);W(pg,"APC.map['doc:d1']");pg.wait_for_timeout(300)
+    d=pg.evaluate("(function(){var a=apDocDet('d1',2026,10);return {f:a.faltas,e:a.dias.map(function(x){return x.f.slice(8)+':'+x.estado})}})()")
+    ok('docente_no_tiene_falta_en_sabado_sin_clase',d['f']==0 and '10:inh' in d['e'] and '03:ok' in d['e'])
+    ok('sabado_sin_clase_conserva_el_motivo',pg.evaluate("apDocDet('d1',2026,10).dias.filter(function(x){return x.f==='2026-10-10'})[0].nota")=='Puente')
+    ok('el_calendario_muestra_el_texto_nuevo','sábado sin clase' in pg.evaluate("CALCATS.map(function(c){return c[1]}).join('|')"))
     # ---- permisos en el servidor ----
     def usr(u,mod):
         ctx.request.post(B+'/api/usuarios',data=json.dumps({'u':u,'name':u,'rol':'personalizado','modulos':mod,'clave':'clave-%s-123'%u}),headers=HDR)

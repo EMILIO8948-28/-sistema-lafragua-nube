@@ -8788,14 +8788,11 @@ $("poBody").onclick=function(e){
 /* ---- Portal del alumno: resumen arriba y menú de secciones (se arma sobre lo que ya pinta renderPor) ---- */
 function poTitulo(h){var c=h.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll(".tag"),function(t){t.remove()});return c.textContent.replace(/\s+/g," ").trim()}
 function poResumen(s){
-  var g=grupoReciente(s.id),pr=promedio(s.id),c=cEst(s),tot=0,pag=0;
-  c.forEach(function(x){tot+=x.m;pag+=Math.min(x.p,x.m)});
-  var pct=tot>0?Math.round(pag/tot*100):100,pend=Math.max(tot-pag,0),n=solNoLeidas().length+aviNoLeidos().length;
-  function t(tit,val,sub,extra){return '<div class="mod" style="cursor:default;flex:1 1 150px;min-width:150px;margin:0"><span class="hint">'+esc(tit)+'</span><b style="font-size:1.25em;color:var(--ink)">'+val+'</b>'+(sub?'<span class="hint">'+sub+'</span>':'')+(extra||'')+'</div>'}
+  var g=grupoReciente(s.id),pr=promedio(s.id),n=solNoLeidas().length+aviNoLeidos().length;
+  function t(tit,val,sub){return '<div class="mod" style="cursor:default;flex:1 1 150px;min-width:150px;margin:0"><span class="hint">'+esc(tit)+'</span><b style="font-size:1.25em;color:var(--ink)">'+val+'</b>'+(sub?'<span class="hint">'+sub+'</span>':'')+'</div>'}
   return '<div id="poRes" style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0">'+
     t("Cuatrimestre actual",g?esc(String(g.cuat)):"—",g?"Grupo "+esc(String(g.num))+" · "+esc(g.per):"Aún sin grupo asignado")+
     t("Promedio general",pr===null?"—":pr.toFixed(1),pr===null?"Aún sin calificaciones":"Aprobatoria: "+MINAP)+
-    t("Avance de pagos",pct+"%",tot>0?(pend>0.004?"Pendiente "+esc(mx.format(pend)):"Sin saldo pendiente"):"Sin cargos",'<div style="height:6px;border-radius:4px;background:var(--line);margin-top:6px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:var(--ok)"></div></div>')+
     t("Avisos nuevos",String(n),n?"Revisa Notificaciones":"Estás al corriente")+'</div>';
 }
 function poNav(){
@@ -8803,7 +8800,7 @@ function poNav(){
   var hs=Array.prototype.slice.call(B.querySelectorAll("h2")),tit=hs.map(poTitulo).filter(function(x,i,a){return x&&a.indexOf(x)===i});
   var sub=B.querySelector(".sub");
   if(!$("poRes"))sub.insertAdjacentHTML("afterend",poResumen(S[0]));
-  if(!$("poNav")&&tit.length>2)$("poRes").insertAdjacentHTML("afterend",'<nav id="poNav" aria-label="Secciones" style="position:sticky;top:0;z-index:5;background:var(--surface);padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap">'+tit.map(function(x){return '<button type="button" data-posec="'+attr(x)+'">'+esc(x)+'</button>'}).join("")+'</nav>');
+  if(!$("poNav")&&tit.length>2)$("poRes").insertAdjacentHTML("afterend",'<nav id="poNav" aria-label="Secciones" style="position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch">'+tit.map(function(x){return '<button type="button" data-posec="'+attr(x)+'" style="flex:none;white-space:nowrap">'+esc(x.split(" · ")[0])+'</button>'}).join("")+'</nav>');
 }
 var _rpNav=renderPor;renderPor=function(){_rpNav();poNav()};
 $("poBody").addEventListener("click",function(e){

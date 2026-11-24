@@ -44,6 +44,7 @@ with sync_playwright() as pw:
     tp=doc('/tmp/pcd_a','contenidos','adm-cp419')['txt'];tc=doc('/tmp/pcd_a','contenidos','adm-compras')['txt']
     ok('administracion_personal_y_compras_traen_programa_completo',all(x in tp for x in ('OBJETIVO GENERAL','8. INDUCCIÓN','Pruebas o tests','Elaboración de curso de capacitación: 10%','Total: 100%')) and all(x in tc for x in ('OBJETIVO GENERAL','6. COMPRAS ESTRATÉGICAS Y TECNOLOGÍA','Compras electrónicas','Un examen parcial: 70%','Ensayo: 10%','Total: 100%')) and 'tets' not in tp)
     ec=doc('/tmp/pcd_a','catalogo','enfermeria');ok('carga_tambien_enfermeria_54_materias_en_9_cuatrimestres_con_contenido',ec is not None and len(ec['items'])==54 and sorted(set(i['cuat'] for i in ec['items']))==list(range(1,12)) and len([i for i in ec['items'] if i['cuat']==11])==3 and ec['plan']=='Enfermería' and all(i['ct']==1 for i in ec['items']) and 'Farmacocinética' in doc('/tmp/pcd_a','contenidos','enf-farmacologia')['txt'] and cuenta('/tmp/pcd_a','contenidos')==465)
+    ec2=sorted(ec['items'],key=lambda i:i['clave']);ok('enfermeria_trae_claves_LE01_a_LE54_sin_repetir',[i['clave'] for i in ec2]==['LE%02d'%n for n in range(1,55)] and ec['items'][0]['clave']=='LE01' and ec['items'][-1]['clave']=='LE54' and [i['clave'] for i in ec['items']]==['LE%02d'%n for n in range(1,55)])
     ps=doc('/tmp/pcd_a','catalogo','psicologia');ok('carga_tambien_psicologia_49_materias_en_9_cuatrimestres_max_6',ps is not None and ps['plan']=='Psicología' and len(ps['items'])==49 and [len([i for i in ps['items'] if i['cuat']==c]) for c in range(1,10)]==[6,6,6,6,5,5,5,5,5] and len(set(i['clave'] for i in ps['items']))==49 and sorted(i['clave'] for i in ps['items'])==['LP%02d'%n for n in range(1,50)])
     cp=doc('/tmp/pcd_a','contenidos','psi-lp03');ok('psicologia_trae_programa_completo',all(k in cp['txt'] for k in ('OBJETIVO GENERAL DE LA ASIGNATURA','CONTENIDO TEMÁTICO','ACTIVIDADES DE APRENDIZAJE','CRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN','Freud','Total: 100%')) and all(doc('/tmp/pcd_a','contenidos',i['id']) for i in ps['items']))
     ok('deja_marca_y_bitacora',doc('/tmp/pcd_a','meta','precarga-pedagogia')['cargados'][0].startswith('pedagogia (47') and any('Precarga de plan' in r[0] for r in db('/tmp/pcd_a').execute("select accion from auditoria").fetchall()))
@@ -134,6 +135,26 @@ with sync_playwright() as pw:
     para(pg_);pg_=arranca(3106,'/tmp/pcd_g','/tmp/pc_g')
     ok('migracion_administracion_corre_una_sola_vez',len(doc('/tmp/pcd_g','catalogo','administracion')['items'])==49)
     para(pg_);para(ph_)
+    # ---- H: instalaciones con Enfermería sin clave reciben LE01–LE54 (sin pisar claves ya escritas) ----
+    for d in ('/tmp/pc_i','/tmp/pc_j'):
+        shutil.rmtree(d,ignore_errors=True);shutil.copytree(src,d);shutil.copy(d+'/precarga/enfermeria.json',d+'/enfermeria_nueva.json')
+        nj=json.load(open(d+'/precarga/enfermeria.json'))
+        for i in nj['colecciones']['catalogo']['enfermeria']['items']:i['clave']=''
+        json.dump(nj,open(d+'/precarga/enfermeria.json','w'),ensure_ascii=False)
+    os.system('rm -rf /tmp/pcd_i /tmp/pcd_j && mkdir -p /tmp/pcd_i /tmp/pcd_j')
+    for pto,dd,ap_ in ((3108,'/tmp/pcd_i','/tmp/pc_i'),(3109,'/tmp/pcd_j','/tmp/pc_j')):
+        pe=arranca(pto,dd,ap_);para(pe)
+    ok('prueba_H_parte_de_enfermeria_sin_claves',all(not i['clave'] for i in doc('/tmp/pcd_i','catalogo','enfermeria')['items']))
+    for dd,ap_ in (('/tmp/pcd_i','/tmp/pc_i'),('/tmp/pcd_j','/tmp/pc_j')):
+        shutil.copy(ap_+'/enfermeria_nueva.json',ap_+'/precarga/enfermeria.json')
+        c=db(dd);c.execute("delete from docs where coleccion='meta' and id='migracion-enfermeria-claves-le'");c.commit();c.close()
+    c=db('/tmp/pcd_j');r=json.loads(c.execute("select data from docs where coleccion='catalogo' and id='enfermeria'").fetchone()[0]);r['items'][0]['clave']='MIA-1';c.execute("update docs set data=? where coleccion='catalogo' and id='enfermeria'",(json.dumps(r),));c.commit();c.close()
+    pi_=arranca(3108,'/tmp/pcd_i','/tmp/pc_i');pj_=arranca(3109,'/tmp/pcd_j','/tmp/pc_j')
+    ei=doc('/tmp/pcd_i','catalogo','enfermeria');ej=doc('/tmp/pcd_j','catalogo','enfermeria')
+    ok('migracion_enfermeria_pone_LE01_a_LE54',[i['clave'] for i in ei['items']]==['LE%02d'%n for n in range(1,55)] and len(ei['items'])==54)
+    ok('migracion_enfermeria_deja_la_bitacora',db('/tmp/pcd_i').execute("select count(*) from auditoria where accion like 'Migración: claves de materia del plan de Enfermería%'").fetchone()[0]==1)
+    ok('migracion_enfermeria_no_pisa_una_clave_ya_escrita',ej['items'][0]['clave']=='MIA-1' and [i['clave'] for i in ej['items'][1:]]==['LE%02d'%n for n in range(2,55)])
+    para(pi_);para(pj_)
     # ---- D: el paquete trae la carpeta y el Dockerfile la copia ----
     ok('dockerfile_copia_la_precarga','COPY precarga ./precarga' in open('/tmp/pc_d/Dockerfile').read() and os.path.exists('/tmp/pc_d/precarga/pedagogia.json'))
     b.close()

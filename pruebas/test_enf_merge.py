@@ -24,6 +24,9 @@ with sync_playwright() as pw:
     pg.goto(B+'/');pg.wait_for_url('**/configurar.html');pg.fill('#tk','tk');pg.fill('#nm','A');pg.fill('#us','admin');pg.fill('#pw','clave-segura-1');pg.fill('#p2','clave-segura-1');pg.click('#go');pg.wait_for_url(B+'/')
     W(pg,"typeof APP!=='undefined'&&APP!==null&&ROL==='admin'")
     pg.evaluate("ir('esc');etab('P')")
+    os.makedirs('/tmp/enf',exist_ok=True);_j=json.load(open('/mnt/user-data/outputs/carga_enfermeria_plan_y_contenidos.json'));_j['contenidos']={}
+    for _i in _j['colecciones']['catalogo']['enfermeria']['items']:_i['clave']='';_i['ct']=0
+    json.dump(_j,open('/tmp/enf/solo_nombres.json','w'),ensure_ascii=False)
     pg.set_input_files('#pFileJ','/tmp/enf/solo_nombres.json');pg.wait_for_selector('#pJBar:not([hidden])');ok('primero_solo_los_nombres','54 asignaturas de Enfermería con 0 contenidos: 54 nuevas y 0' in pg.inner_text('#pJMsg'))
     pg.click('#pJOk');W(pg,"document.getElementById('pJMsg').textContent.indexOf('Listo')===0")
     ids=pg.evaluate("catItems('Enfermería').map(function(i){return i.id}).sort().join()");ok('quedan_54_sin_contenido',pg.evaluate("catItems('Enfermería').length")==54 and pg.evaluate("catItems('Enfermería').every(function(i){return !i.ct})"))

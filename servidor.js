@@ -2024,6 +2024,28 @@ function migraAdmPersonalCompras() {
   } catch (e) { console.error('No se pudo migrar el plan de Administración:', e.message); }
 }
 try { migraAdmPersonalCompras(); } catch (e) { console.error('Migración del plan de Administración:', e.message); }
+/* Migración única: claves LE01–LE54 en las materias del plan de Enfermería (que se cargó sin clave). Solo pone la clave a las materias de la precarga (por id) que siguen sin ella;
+   una clave que el Administrador ya haya escrito no se toca. */
+function migraEnfermeriaClaves() {
+  const marca = 'migracion-enfermeria-claves-le'; if (q.uno.get('meta', marca)) return;
+  try {
+    const f = path.join(__dirname, 'precarga', 'enfermeria.json');
+    if (ENV.LF_SIN_PRECARGA !== '1' && fs.existsSync(f)) {
+      const D = JSON.parse(fs.readFileSync(f, 'utf8')), mapa = {};
+      (((D.colecciones.catalogo.enfermeria || {}).items) || []).forEach(i => { if (i.clave) mapa[i.id] = i.clave; });
+      let clave = 'enfermeria';
+      try { const pl = q.uno.get('config', 'plans'), ren = (pl && JSON.parse(pl.data).ren) || {}; if (ren['Enfermería']) { const kn = String(ren['Enfermería']).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); if (kn && NOMBRE_OK.test(kn)) clave = kn; } } catch (e) {}
+      const r = q.uno.get('catalogo', clave);
+      if (r) {
+        const cat = JSON.parse(r.data); let n = 0;
+        (cat.items || []).forEach(i => { if (mapa[i.id] && !String(i.clave || '').trim()) { i.clave = mapa[i.id]; n++; } });
+        if (n) { q.pon.run('catalogo', clave, JSON.stringify(cat), Date.now()); difunde('catalogo', clave); audita(null, null, 'Migración: claves de materia del plan de Enfermería', n + ' materias (LE01 a LE54)'); console.log('Migración: ' + n + ' claves de materia en Enfermería.'); }
+      }
+    }
+    q.pon.run('meta', marca, JSON.stringify({ fecha: new Date().toISOString() }), Date.now());
+  } catch (e) { console.error('No se pudieron poner las claves de Enfermería:', e.message); }
+}
+try { migraEnfermeriaClaves(); } catch (e) { console.error('Migración de claves de Enfermería:', e.message); }
 
 servidor.listen(PUERTO, '0.0.0.0', () => {
   console.log('Sistema escolar Lafragua (nube) escuchando en el puerto ' + PUERTO + '. Datos en ' + DATOS);

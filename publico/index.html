@@ -1096,7 +1096,9 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <div class="row" style="margin-top:10px">
       <label>Descuento por colegiatura ($)<input id="bMon" type="number" min="0" step="0.01" placeholder="Ej. 300"></label>
       <label>Nombre o motivo de la beca<input id="bMot" placeholder="Ej. Excelencia académica"></label>
+      <label>Aplica a partir de<select id="bDes"></select></label>
     </div>
+    <p class="hint" style="margin:0 0 8px">Las colegiaturas anteriores a ese mes se cobran completas; las de ese mes en adelante, con el descuento.</p>
     <div class="bar" style="margin:0"><button class="p" id="bSave">Guardar beca</button><button class="d" id="bDel">Quitar beca</button></div>
   </details>
   <h2 class="need-cobro" style="margin-top:16px">Registrar pago</h2>
@@ -1136,6 +1138,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
         <label>Beca: descuento por colegiatura ($)<input id="hcBeca" type="number" min="0" step="0.01" placeholder="Sin beca"></label>
         <label>Monto que paga por colegiatura ($)<input id="hcPaga" type="number" min="0" step="0.01"></label>
         <label>Motivo de la beca<input id="hcBecaMot" maxlength="60" placeholder="Ej. Excelencia académica"></label>
+        <label>La beca aplica a partir de<select id="hcBecaDes"></select></label>
       </div>
       <div class="bar" style="margin:4px 0 8px"><button id="hcBecaGo">Guardar beca</button><button class="d" id="hcBecaDel">Quitar beca</button><span class="hint" id="hcBecaTx"></span></div>
       <div class="bar" style="margin:6px 0"><button id="hcHastaGo">Marcar todo hasta ese mes</button><button id="hcClr">Quitar marcas</button></div>
@@ -1149,7 +1152,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
       <li>Descarga la plantilla y llénala: una fila por pago, o una fila con «pagado_hasta» para dejar al corriente a un alumno hasta cierto mes.</li>
       <li>En «concepto» escribe Inscripción, Reinscripción 2 o Colegiatura septiembre 2025. Si dejas el monto vacío se toma el saldo completo y si dejas la fecha vacía se usa el día habitual del mes del cargo.</li>
       <li>Si la matrícula no existe, llena nombre, programa y ciclo_ingreso para crear al alumno.</li>
-      <li>Para asignar beca usa «beca_monto» (descuento por colegiatura) o «paga_colegiatura» (lo que el alumno paga al mes); sirve también para alumnos que ya existen y se aplica antes de calcular los saldos.</li>
+      <li>Para asignar beca usa «beca_monto» (descuento por colegiatura) o «paga_colegiatura» (lo que el alumno paga al mes); sirve también para alumnos que ya existen y se aplica antes de calcular los saldos. Si la beca empezó a medio ciclo, agrega «beca_desde» con el mes en que entró (por ejemplo enero 2026): los meses anteriores se cobran completos y de ese mes en adelante con el descuento; sin esa columna la beca aplica a todas las colegiaturas.</li>
     </ol>
     <div class="row">
       <label>Día habitual de pago (si no hay fecha)<input id="hcDia2" type="number" min="1" max="31" value="10"></label>
@@ -2400,7 +2403,7 @@ function render(){
   $("sum").innerHTML='<div><b>'+S.length+'</b><span>Alumnos</span></div>'+(ROL==="admin"?'<div><b>'+mx.format(P)+'</b><span>Total cobrado</span></div>':'')+'<div><b>'+S.reduce(function(a,s){return a+s.pagos.length},0)+'</b><span>Pagos registrados</span></div>';
   var rows=S.filter(function(s){return (s.nombre+" "+s.mat+" "+s.carrera).toLowerCase().indexOf(q)>-1});
   $("tb").innerHTML=rows.length?rows.map(function(s){var p=paid(s),pg=prog(s);
-    return '<tr data-id="'+s.id+'"><td>'+esc(s.mat)+'</td><td>'+esc(s.nombre)+(s.beca&&s.beca.monto>0?' <span class="tag parcial">Beca '+mx.format(s.beca.monto)+'</span>':'')+'</td><td>'+esc(s.carrera)+'</td><td class="n">'+pg.cub+' de '+pg.tot+'</td><td>'+esc(pg.nx?(pg.cub+1)+' · '+pg.nx:'Completo')+'</td><td class="n">'+mx.format(p)+'</td></tr>'}).join(""):'<tr><td colspan="6" class="empty">No hay alumnos que coincidan. Agrega uno con “Nuevo alumno” o importa un CSV.</td></tr>';
+    return '<tr data-id="'+s.id+'"><td>'+esc(s.mat)+'</td><td>'+esc(s.nombre)+(s.beca&&s.beca.monto>0?' <span class="tag parcial">Beca '+mx.format(s.beca.monto)+becaDesdeLbl(s)+'</span>':'')+'</td><td>'+esc(s.carrera)+'</td><td class="n">'+pg.cub+' de '+pg.tot+'</td><td>'+esc(pg.nx?(pg.cub+1)+' · '+pg.nx:'Completo')+'</td><td class="n">'+mx.format(p)+'</td></tr>'}).join(""):'<tr><td colspan="6" class="empty">No hay alumnos que coincidan. Agrega uno con “Nuevo alumno” o importa un CSV.</td></tr>';
 }
 function openSt(id){cur=S.find(function(s){return s.id===id});if(!cur)return;
   $("sName").textContent=cur.nombre;
@@ -2506,10 +2509,34 @@ function matchPlan(t){var x=nz(t);if(!x)return null;var p=PL.find(function(p){va
 function planOf(s){return PL.find(function(p){return p.k===s.programa})||null}
 /* Cargos del alumno: inscripción (nuevo ingreso), 4 colegiaturas por cuatrimestre, reinscripción al iniciar cada cuatrimestre siguiente, titulación */
 var MES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+/* Beca: descuento por colegiatura que aplica desde la colegiatura número `desde` (sin `desde`, desde la primera). Las colegiaturas anteriores se cobran completas. */
+function becaK(b){var k=parseInt(b&&b.desde,10);return k>0?k:1}
+function becaAplica(b,x){return !!(b&&b.monto>0&&/^Colegiatura/.test(x.c)&&(x.k==null||x.k>=becaK(b)))}
+function becaDesdeLbl(s){var b=s&&s.beca;return b&&b.monto>0&&becaK(b)>1?" a partir de "+mesAnio(becaK(b),s.ingreso||cicloAct()):""}
+/* texto de un mes ("marzo 2026", "2026-03", "marzo") o número de colegiatura → {k} (o {k:0} si está vacío, o {err}) */
+function becaKtxt(txt,ing,P){
+  var t=String(txt==null?"":txt).trim();if(!t)return {k:0};
+  var n=P?P.n:36;
+  if(/^\d{1,2}$/.test(t)){var q=parseInt(t,10);return q>=1&&q<=n?{k:q}:{err:"La colegiatura "+t+" no existe en este plan (tiene "+n+")."}}
+  var ym=hcMesTxt(t),i,mm=-1;
+  if(ym){for(i=1;i<=n;i++){var tt=8+i-1;if((ing+Math.floor(tt/12))+"-"+pad2(tt%12+1)===ym)return {k:i}}
+    var d1=8,y1=ing+Math.floor(d1/12);if(ym<y1+"-"+pad2(d1%12+1))return {k:1};return {err:"El mes «"+t+"» queda fuera de las colegiaturas de este plan."}}
+  var w=nz(t).split(/[^a-z]+/).filter(Boolean)[0];if(w)mm=hcM3(w);
+  if(mm>-1){for(i=1;i<=n;i++){if((8+i-1)%12===mm)return {k:i}}}
+  return {err:"No entendí a partir de qué mes aplica la beca: «"+t+"». Usa un mes y año (por ejemplo marzo 2026)."};
+}
+function becaKSug(s){var a=applyAll(s),i;for(i=0;i<a.L.length;i++)if(a.L[i].k&&a.rem[i]>0.004)return a.L[i].k;return 1}
+function becaDesOpts(sel,s,k){
+  var P=planOf(s),ing=s.ingreso||cicloAct(),h="",a=applyAll(s),pg={},i;
+  if(!P){sel.innerHTML='<option value="1">Todas las colegiaturas</option>';return}
+  a.L.forEach(function(c,j){if(c.k&&a.rem[j]<0.004)pg[c.k]=1});
+  for(i=1;i<=P.n;i++)h+='<option value="'+i+'">'+(i===1?"Desde el inicio · ":"")+esc(mesAnio(i,ing))+(pg[i]?" (ya pagada)":"")+'</option>';
+  sel.innerHTML=h;sel.value=String(Math.min(Math.max(k||1,1),P.n));
+}
 function cargos(s){
   var L=cargos0(s).concat(extraCargos(s)).concat(constCargos(s)).concat(credCargos(s)),b=s.beca;
   if(b&&b.monto>0)L=L.map(function(x){
-    return /^Colegiatura/.test(x.c)?{id:x.id,c:x.c,k:x.k,m:Math.max(Math.round((x.m-b.monto)*100)/100,0)}:x;
+    return becaAplica(b,x)?{id:x.id,c:x.c,k:x.k,m:Math.max(Math.round((x.m-b.monto)*100)/100,0)}:x;
   });
   return cargosRec(L,s.id);
 }
@@ -2607,13 +2634,13 @@ function refreshTotals(){
 /* ---- Beca de descuento ---- */
 function becaUI(s){
   var b=s.beca||{};
-  $("bMon").value=b.monto||"";$("bMot").value=b.mot||"";
-  $("sBecaT").textContent=b.monto>0?"Beca de descuento: "+mx.format(b.monto)+" menos por colegiatura"+(b.mot?" ("+b.mot+")":""):"Beca de descuento (sin beca)";
+  $("bMon").value=b.monto||"";$("bMot").value=b.mot||"";becaDesOpts($("bDes"),s,b.monto>0?becaK(b):becaKSug(s));
+  $("sBecaT").textContent=b.monto>0?"Beca de descuento: "+mx.format(b.monto)+" menos por colegiatura"+becaDesdeLbl(s)+(b.mot?" ("+b.mot+")":""):"Beca de descuento (sin beca)";
 }
 $("bSave").onclick=function(){
   var v=parseFloat($("bMon").value);
   if(!(v>0)){alert("Escribe el monto del descuento por colegiatura.");return}
-  cur.beca={monto:v,mot:$("bMot").value.trim()};
+  var ds=parseInt($("bDes").value,10)||1;cur.beca={monto:v,mot:$("bMot").value.trim()};if(ds>1)cur.beca.desde=ds;
   save();render();openSt(cur.id);
 };
 $("bDel").onclick=function(){delete cur.beca;save();render();openSt(cur.id)};
@@ -2718,7 +2745,7 @@ function recRows(s,g){
   return [["t","Recibo de pago"],["c","Guadalupe Victoria No. 3"],["c","Tejupilco de Hidalgo, Edo. de México"],["c","C.P. 51400"],["-"],
     ["l","Folio: "+(g.folio||g.id.toUpperCase())],["l","Fecha: "+fd(g.fecha)],["l","Matrícula: "+s.mat],["l","Alumno: "+s.nombre]]
     .concat(s.carrera?[["l","Carrera: "+s.carrera]]:[])
-    .concat(s.beca&&s.beca.monto>0?[["l","Beca: "+mx.format(s.beca.monto)+" por colegiatura"]]:[])
+    .concat(s.beca&&s.beca.monto>0?[["l","Beca: "+mx.format(s.beca.monto)+" por colegiatura"+becaDesdeLbl(s)]]:[])
     .concat([["-"],["l","Concepto: "+conc(alloc(s)[g.id])],["l","Método: "+g.metodo+(g.ref?" ("+g.ref+")":"")],["b","Monto recibido: "+mx.format(g.monto)],["l","("+letras(g.monto)+")"],["-"],
     ["l","Pagos cubiertos: "+P.cub+" de "+P.tot],["l",P.nx?"Va en el pago "+(P.cub+1)+" de "+P.tot:"Plan completo"],
     ["-"],["l","Recibió: "+(g.byn||"—")],["c","Gracias por su pago"],["c","Conserve este recibo"]]);
@@ -2797,7 +2824,7 @@ function stPDF(s0){
   var J=pdfLib();if(!J)return;
   var s=hasta(s0),d=new J.jsPDF({unit:"mm",format:"a4"}),p=paid(s),P=prog(s),AL=alloc(s),y=titulo(d,"Estado de cuenta al "+fd(today()));
   d.setFontSize(10);
-  [["Alumno",s.nombre],["Matrícula",s.mat],["Carrera",s.carrera]].concat(s.beca&&s.beca.monto>0?[["Beca",mx.format(s.beca.monto)+" por colegiatura"+(s.beca.mot?" ("+s.beca.mot+")":"")]]:[]).forEach(function(r){
+  [["Alumno",s.nombre],["Matrícula",s.mat],["Carrera",s.carrera]].concat(s.beca&&s.beca.monto>0?[["Beca",mx.format(s.beca.monto)+" por colegiatura"+becaDesdeLbl(s)+(s.beca.mot?" ("+s.beca.mot+")":"")]]:[]).forEach(function(r){
     d.setFont("helvetica","bold");d.text(r[0]+":",15,y);
     d.setFont("helvetica","normal");d.text(String(r[1]||"-"),40,y);y+=5.5;
   });
@@ -2895,7 +2922,7 @@ function recFormalPDF(s,g){
     fila("Por concepto de:",cn);
     fila("Forma de pago:",g.metodo+(g.ref?"  ·  Ref. "+g.ref:""));
     fila("Avance del plan:",P.nx?"Pagos cubiertos "+P.cub+" de "+P.tot+". Va en el pago "+(P.cub+1)+" de "+P.tot+".":"Plan completo ("+P.cub+" de "+P.tot+" pagos cubiertos).");
-    if(s.beca&&s.beca.monto>0)fila("Beca:",mx.format(s.beca.monto)+" de descuento por colegiatura"+(s.beca.mot?" ("+s.beca.mot+")":""));
+    if(s.beca&&s.beca.monto>0)fila("Beca:",mx.format(s.beca.monto)+" de descuento por colegiatura"+becaDesdeLbl(s)+(s.beca.mot?" ("+s.beca.mot+")":""));
     var ys=y0+h-17;
     d.setDrawColor(90,90,90);d.setLineWidth(0.3);d.line(x0+14,ys,x0+84,ys);
     d.setTextColor(0,0,0);d.setFont("helvetica","normal");d.setFontSize(8.5);
@@ -3016,7 +3043,8 @@ function hcPlanea(filas,op){
         if(al.paga>mp.col+0.004){er(n,"El monto que paga por colegiatura ("+mx.format(al.paga)+") es mayor a la colegiatura del plan ("+mx.format(mp.col)+").");return}
         var bn=al.becaMonto||(al.paga>0?Math.round((mp.col-al.paga)*100)/100:0);
         if(bn>=mp.col&&mp.col>0){er(n,"La beca ("+mx.format(bn)+") no puede ser igual o mayor a la colegiatura ("+mx.format(mp.col)+").");return}
-        if(bn>0)s.beca={monto:bn,mot:al.becaMot||""};
+        var kd=becaKtxt(al.becaDesde,s.ingreso,mp);if(kd.err){er(n,kd.err);return}
+        if(bn>0){s.beca={monto:bn,mot:al.becaMot||""};if(kd.k>1)s.beca.desde=kd.k}
         a={s:s,nuevo:true,cambiaIng:null,cambiaBeca:null,pagos:[]};
       }else{
         a={s:Object.assign({},s,{pagos:s.pagos.slice()}),nuevo:false,cambiaIng:null,cambiaBeca:null,pagos:[]};
@@ -3031,7 +3059,9 @@ function hcPlanea(filas,op){
       var bm=f.alumno.becaMonto||(f.alumno.paga>0&&Pb?Math.round((Pb.col-f.alumno.paga)*100)/100:0);
       if(bm>0){
         if(Pb&&bm>=Pb.col){er(n,"La beca ("+mx.format(bm)+") no puede ser igual o mayor a la colegiatura ("+mx.format(Pb.col)+").");return}
-        if(!s2.beca||s2.beca.monto!==bm){a.cambiaBeca={monto:bm,mot:f.alumno.becaMot||(s2.beca&&s2.beca.mot)||""};s2.beca=a.cambiaBeca}
+        var kd2=becaKtxt(f.alumno.becaDesde,s2.ingreso,Pb);if(kd2.err){er(n,kd2.err);return}
+        var kn=kd2.k||(s2.beca?becaK(s2.beca):1);
+        if(!s2.beca||s2.beca.monto!==bm||becaK(s2.beca)!==kn){a.cambiaBeca={monto:bm,mot:f.alumno.becaMot||(s2.beca&&s2.beca.mot)||""};if(kn>1)a.cambiaBeca.desde=kn;s2.beca=a.cambiaBeca}
       }
     }
     if(!planOf(s2)){er(n,"El alumno "+s2.nombre+" no tiene un plan de estudios válido.");return}
@@ -3120,7 +3150,8 @@ function hcCol(s){var P=planOf(s);return P?P.col:0}
 function hcBecaPon(s){
   var b=s.beca&&s.beca.monto>0?s.beca:null,col=hcCol(s);
   $("hcBeca").value=b?b.monto:"";$("hcBecaMot").value=b?(b.mot||""):"";$("hcPaga").value=col?(b?Math.max(col-b.monto,0):col):"";
-  $("hcBecaTx").textContent=col?"Colegiatura del plan: "+mx.format(col)+(b?" · con beca paga "+mx.format(Math.max(col-b.monto,0))+" al mes":" · sin beca")+". La beca aplica a todas las colegiaturas del alumno.":"";
+  becaDesOpts($("hcBecaDes"),s,b?becaK(b):becaKSug(s));
+  $("hcBecaTx").textContent=col?"Colegiatura del plan: "+mx.format(col)+(b?" · con beca paga "+mx.format(Math.max(col-b.monto,0))+" al mes"+(becaK(b)>1?" desde "+mesAnio(becaK(b),s.ingreso||cicloAct())+"; antes de ese mes paga la colegiatura completa":""):" · sin beca")+". Elige desde qué mes aplica: los meses anteriores se cobran completos.":"";
   $("hcBecaDel").hidden=!b;
 }
 function hcFila(tr,on){
@@ -3144,7 +3175,8 @@ $("hcBecaGo").onclick=async function(){
   if(ROL!=="admin"||!HCSID)return;var s=S.find(function(x){return x.id===HCSID}),c=s?hcCol(s):0,v=parseFloat($("hcBeca").value);
   if(!(v>0)){hcMsg("Escribe el descuento por colegiatura o el monto que paga el alumno.");return}
   if(c&&v>=c){hcMsg("La beca ("+mx.format(v)+") no puede ser igual o mayor a la colegiatura ("+mx.format(c)+").");return}
-  try{await updS(s.id,{beca:{monto:Math.round(v*100)/100,mot:$("hcBecaMot").value.trim().slice(0,60)}});hcMsg("Beca guardada: el alumno paga "+mx.format(c-v)+" por colegiatura. Los saldos ya se recalcularon.",true);hcRenderAl()}catch(er){dberr(er)}
+  var ds=parseInt($("hcBecaDes").value,10)||1,bc={monto:Math.round(v*100)/100,mot:$("hcBecaMot").value.trim().slice(0,60)};if(ds>1)bc.desde=ds;
+  try{await updS(s.id,{beca:bc});hcMsg("Beca guardada: el alumno paga "+mx.format(c-v)+" por colegiatura"+(ds>1?" a partir de "+mesAnio(ds,s.ingreso||cicloAct())+" (antes paga la colegiatura completa)":"")+". Los saldos ya se recalcularon.",true);hcRenderAl()}catch(er){dberr(er)}
 };
 $("hcBecaDel").onclick=async function(){
   if(ROL!=="admin"||!HCSID)return;
@@ -3185,15 +3217,15 @@ $("hcGo").onclick=async function(){
   b.disabled=false;
 };
 /* ---- Varios alumnos: archivo CSV ---- */
-var HC_PLANTILLA="matricula,concepto,pagado_hasta,fecha_pago,monto_pagado,metodo,referencia,nombre,programa,ciclo_ingreso,nuevo_ingreso,beca_monto,beca_motivo,paga_colegiatura\n"+
- "20250001,Colegiatura septiembre 2025,,2025-09-05,1000,Efectivo,R-0001,Ana López Ramírez,Derecho,2025,si,300,Excelencia académica,\n"+
- "20250001,Reinscripción 2,,2026-01-08,800,Transferencia,R-0045,,,,,,,\n"+
- "20250002,,octubre 2026,,,Efectivo,,Beto Mena Ruiz,Pedagogía,2025,si,,,1000\n";
+var HC_PLANTILLA="matricula,concepto,pagado_hasta,fecha_pago,monto_pagado,metodo,referencia,nombre,programa,ciclo_ingreso,nuevo_ingreso,beca_monto,beca_motivo,paga_colegiatura,beca_desde\n"+
+ "20250001,Colegiatura septiembre 2025,,2025-09-05,1300,Efectivo,R-0001,Ana López Ramírez,Derecho,2025,si,300,Excelencia académica,,enero 2026\n"+
+ "20250001,Reinscripción 2,,2026-01-08,800,Transferencia,R-0045,,,,,,,,\n"+
+ "20250002,,octubre 2026,,,Efectivo,,Beto Mena Ruiz,Pedagogía,2025,si,,,1000,\n";
 $("hcTpl").onclick=function(){saveFile("plantilla_pagos_anteriores.csv","﻿"+HC_PLANTILLA)};
 function hcFilasCsv(R){
   var H=R[0].map(function(h){return nz(h).replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")});
   function ix(){for(var i=0;i<arguments.length;i++){var k=H.indexOf(arguments[i]);if(k>-1)return k}return -1}
-  var iM=ix("matricula"),iCo=ix("concepto"),iH=ix("pagado_hasta","al_corriente_hasta","hasta"),iF=ix("fecha_pago","fecha"),iP=ix("monto_pagado","monto"),iMe=ix("metodo","forma_de_pago"),iRe=ix("referencia","recibo","folio_anterior"),iN=ix("nombre"),iPr=ix("programa","carrera"),iCi=ix("ciclo_ingreso","ciclo"),iNu=ix("nuevo_ingreso","nuevo"),iBm=ix("beca_monto"),iBt=ix("beca_motivo"),iPg=ix("paga_colegiatura","monto_que_paga","paga_mensual");
+  var iM=ix("matricula"),iCo=ix("concepto"),iH=ix("pagado_hasta","al_corriente_hasta","hasta"),iF=ix("fecha_pago","fecha"),iP=ix("monto_pagado","monto"),iMe=ix("metodo","forma_de_pago"),iRe=ix("referencia","recibo","folio_anterior"),iN=ix("nombre"),iPr=ix("programa","carrera"),iCi=ix("ciclo_ingreso","ciclo"),iNu=ix("nuevo_ingreso","nuevo"),iBm=ix("beca_monto"),iBt=ix("beca_motivo"),iPg=ix("paga_colegiatura","monto_que_paga","paga_mensual"),iBd=ix("beca_desde","beca_a_partir_de","beca_desde_mes");
   if(iM<0)return {err:"Falta la columna «matricula» en la primera fila."};
   if(iCo<0&&iH<0)return {err:"Falta la columna «concepto» o «pagado_hasta»."};
   function c(r,i){return i>-1?String(r[i]||"").trim():""}
@@ -3202,7 +3234,7 @@ function hcFilasCsv(R){
     var mat=c(r,iM);if(!mat)return;
     var monto=c(r,iP).replace(/[$,\s]/g,""),ciclo=parseInt(c(r,iCi),10);
     filas.push({n:j+2,mat:mat,concepto:c(r,iCo),hasta:iH>-1?hcMesTxt(c(r,iH)):"",fecha:hcFecha(c(r,iF)),monto:monto===""?"":parseFloat(monto),metodo:c(r,iMe),ref:c(r,iRe),
-      alumno:{nombre:c(r,iN),programa:c(r,iPr),ciclo:ciclo>=2000&&ciclo<=2100?ciclo:0,nuevo:iNu>-1&&c(r,iNu)?/^(s|1|t|x|y)/i.test(c(r,iNu)):true,becaMonto:parseFloat(c(r,iBm))||0,becaMot:c(r,iBt),paga:parseFloat(c(r,iPg))||0}});
+      alumno:{nombre:c(r,iN),programa:c(r,iPr),ciclo:ciclo>=2000&&ciclo<=2100?ciclo:0,nuevo:iNu>-1&&c(r,iNu)?/^(s|1|t|x|y)/i.test(c(r,iNu)):true,becaMonto:parseFloat(c(r,iBm))||0,becaMot:c(r,iBt),paga:parseFloat(c(r,iPg))||0,becaDesde:c(r,iBd)}});
   });
   return {filas:filas};
 }
@@ -4114,7 +4146,8 @@ $("nOk").onclick=async function(){
 $("bSave").onclick=async function(){
   if(ROL!=="admin"||!cur)return;
   var v=parseFloat($("bMon").value);if(!(v>0)){alert("Escribe el monto del descuento por colegiatura.");return}
-  await updS(cur.id,{beca:{monto:v,mot:$("bMot").value.trim()}});openSt(cur.id);
+  var ds=parseInt($("bDes").value,10)||1,bc={monto:v,mot:$("bMot").value.trim()};if(ds>1)bc.desde=ds;
+  await updS(cur.id,{beca:bc});openSt(cur.id);
 };
 $("bDel").onclick=async function(){if(ROL!=="admin"||!cur)return;await updS(cur.id,{beca:null});openSt(cur.id)};
 $("sIng").onchange=async function(){var v=parseInt(this.value,10);if(ROL==="admin"&&cur&&v>=2000&&v<=2100){await updS(cur.id,{ingreso:v});openSt(cur.id)}};
@@ -6645,7 +6678,7 @@ function recibo286PDF(t,g){
 }
 /* ===== Carga masiva de alumnos (años anteriores) ===== */
 var MAS=null;
-var MASCOL=["matricula","nombre","sexo","edad","programa","ciclo_ingreso","grupo","nuevo_ingreso","telefono","correo","domicilio","escuela_procedencia","tutor","telefono_tutor","beca_monto","beca_motivo"];
+var MASCOL=["matricula","nombre","sexo","edad","programa","ciclo_ingreso","grupo","nuevo_ingreso","telefono","correo","domicilio","escuela_procedencia","tutor","telefono_tutor","beca_monto","beca_motivo","beca_desde"];
 function sexoNorm(v){var x=nz(v);if(/^(f|fem|mujer)/.test(x))return "Femenino";if(/^(m|masc|hombre)/.test(x))return "Masculino";return ""}
 var PLCOD={"Pedagogía":"PED","Ciencias de la Educación":"CED","Administración":"ADM","Contaduría":"CON","Derecho":"DER","Psicología":"PSI","Enfermería":"ENF","Arquitectura":"ARQ","Ingeniería Industrial":"IIN","Maestría en Educación":"MED","Doctorado":"DOC"};
 /* Clave de tres letras del plan para la matrícula automática (los planes nuevos la sacan de las iniciales de su nombre) */
@@ -6667,7 +6700,7 @@ function claveLista(nom){
 function analizaMasivo(R){
   var H=R[0].map(function(h){return nz(h).replace(/\s+/g,"_")});
   function ix(){for(var i=0;i<arguments.length;i++){var k=H.indexOf(arguments[i]);if(k>-1)return k}return -1}
-  var c={mat:ix("matricula"),nom:ix("nombre"),sex:ix("sexo"),edad:ix("edad"),prog:ix("programa","plan","plan_de_estudios"),ing:ix("ciclo_ingreso","ciclo_de_ingreso","ciclo","ingreso"),gru:ix("grupo"),nue:ix("nuevo_ingreso"),tel:ix("telefono"),mail:ix("correo"),dom:ix("domicilio"),proc:ix("escuela_procedencia","escuela_de_procedencia"),tut:ix("tutor"),tutTel:ix("telefono_tutor","telefono_del_tutor"),bm:ix("beca_monto"),bmot:ix("beca_motivo")};
+  var c={mat:ix("matricula"),nom:ix("nombre"),sex:ix("sexo"),edad:ix("edad"),prog:ix("programa","plan","plan_de_estudios"),ing:ix("ciclo_ingreso","ciclo_de_ingreso","ciclo","ingreso"),gru:ix("grupo"),nue:ix("nuevo_ingreso"),tel:ix("telefono"),mail:ix("correo"),dom:ix("domicilio"),proc:ix("escuela_procedencia","escuela_de_procedencia"),tut:ix("tutor"),tutTel:ix("telefono_tutor","telefono_del_tutor"),bm:ix("beca_monto"),bmot:ix("beca_motivo"),bd:ix("beca_desde","beca_a_partir_de")};
   if(c.nom<0||c.prog<0)return {err:"El archivo debe tener, en la primera fila, las columnas nombre y programa. La matricula es opcional: si la dejas vacía, se genera sola."};
   var vistos={},usados={},nombres={},o={ok:[],dup:[],dupNom:[],bad:[],sinGrupo:[],sinCiclo:0,filas:0,auto:0,ejemplo:""},pend=[];
   S.forEach(function(s){usados[s.mat]=1});
@@ -6686,8 +6719,10 @@ function analizaMasivo(R){
     else{var kk=nk(nom,pl.k,ing);if(nombres[kk]){o.dupNom.push({fila:fila,nombre:nom});return}nombres[kk]=1}
     var gnum=v(r,c.gru),gid="";
     if(gnum){gid=Object.keys(GRP).find(function(k){return String(GRP[k].num)===gnum&&GRP[k].plan===pl.k})||"";if(!gid)o.sinGrupo.push({fila:fila,mat:mat||nom,grupo:gnum})}
-    var bm=parseFloat(v(r,c.bm).replace(/[$,]/g,"")),rec={mat:mat,auto:!mat,nombre:nom,sexo:sexoNorm(v(r,c.sex)),edad:parseInt(v(r,c.edad),10)||null,plan:pl.k,ing:ing,nuevo:/^(s|1|t|x|y)/i.test(nz(v(r,c.nue))),gid:gid,
-      tel:v(r,c.tel),mail:v(r,c.mail),dom:v(r,c.dom),proc:v(r,c.proc),tut:v(r,c.tut),tutTel:v(r,c.tutTel),beca:bm>0?{monto:bm,mot:v(r,c.bmot)}:null};
+    var bm=parseFloat(v(r,c.bm).replace(/[$,]/g,"")),kd=becaKtxt(v(r,c.bd),ing,pl);
+    if(kd.err){o.bad.push({fila:fila,mat:mat,motivo:kd.err});return}
+    var rec={mat:mat,auto:!mat,nombre:nom,sexo:sexoNorm(v(r,c.sex)),edad:parseInt(v(r,c.edad),10)||null,plan:pl.k,ing:ing,nuevo:/^(s|1|t|x|y)/i.test(nz(v(r,c.nue))),gid:gid,
+      tel:v(r,c.tel),mail:v(r,c.mail),dom:v(r,c.dom),proc:v(r,c.proc),tut:v(r,c.tut),tutTel:v(r,c.tutTel),beca:bm>0?Object.assign({monto:bm,mot:v(r,c.bmot)},kd.k>1?{desde:kd.k}:{}):null};
     o.ok.push(rec);if(!mat)pend.push(rec);
   });
   /* Matrícula automática: año de ingreso + clave del plan + número de lista (orden alfabético de apellidos y nombre dentro de su plan y ciclo) */
@@ -9372,7 +9407,7 @@ $("npOk").onclick=async function(){
   b.disabled=false;
 };
 /* ===== Calificaciones anteriores (historial de alumnos que ya venían avanzados) ===== */
-var HIDX={},HSID=null,HIMP=null;
+var HIDX={},HSID=null,HIMP=null,hDirty=false;
 function perKey(p){var m=/^(Sep|Ene|May)[–-](Dic|Abr|Ago) (\d{4})$/.exec(String(p||""));if(!m)return -1;var y=+m[3];return m[1]==="Sep"?y*3:m[1]==="Ene"?(y-1)*3+1:(y-1)*3+2}
 function perDeCuat(s,k){var y=+s.ingreso||cicloAct(),i=k-1,yy=y+Math.floor(i/3),t=i%3;return t===0?"Sep–Dic "+yy:t===1?"Ene–Abr "+(yy+1):"May–Ago "+(yy+1)}
 function perOpcionesH(s){var y0=Math.min(+s.ingreso||cicloAct(),cicloAct()),o=[];for(var y=y0;y<=cicloAct()+1;y++)o.push("Sep–Dic "+y,"Ene–Abr "+(y+1),"May–Ago "+(y+1));return o}
@@ -9380,9 +9415,9 @@ function hMsg(t,bad){$("hMsg").textContent=t;$("hMsg").style.color=bad?"var(--ba
 function renderHist(){
   var L=S.slice().sort(function(a,b){return String(a.nombre).localeCompare(String(b.nombre))});
   HIDX={};$("hAlL").innerHTML=L.map(function(s){var k=s.mat+" — "+s.nombre;HIDX[k]=s.id;return '<option value="'+attr(k)+'">'}).join("");
-  if(HSID&&!S.some(function(x){return x.id===HSID}))HSID=null;
+  if(HSID&&!S.some(function(x){return x.id===HSID})){HSID=null;hDirty=false}
   $("hExtraT").textContent="Generar cargo de examen extraordinario para las calificaciones menores a "+Number(EXTRA.min).toFixed(1)+" (normalmente no: estos exámenes ya se atendieron antes)";
-  hGrid();
+  if(!hDirty)hGrid();   /* si hay calificaciones escritas sin guardar, no se vuelve a dibujar la tabla (se perderían) */
 }
 function hGrid(){
   var s=HSID&&S.find(function(x){return x.id===HSID});
@@ -9402,8 +9437,9 @@ function hGrid(){
         return '<tr><td>'+esc(f.clave||"")+'</td><td>'+esc(f.nom)+(bloq?'<br><span class="hint">Ya capturada en un grupo ('+esc(ex.per)+'); se corrige desde Calificaciones</span>':(ex&&ex.hist&&ex.per?'<br><span class="hint">'+esc(ex.per)+'</span>':''))+'</td><td class="n"><input type="text" inputmode="decimal" autocomplete="off" data-hid="'+attr(f.id)+'" value="'+(ex&&ex.cal!=null?ex.cal:"")+'"'+(bloq?' disabled':'')+' style="width:110px"></td></tr>'}).join("")+'</tbody></table></div>'}).join("");
   $("hGuarda").hidden=false;
 }
-$("hAl").oninput=function(){HSID=HIDX[this.value]||null;hMsg("");hGrid()};
-$("hGrid").onchange=function(e){if(e.target.dataset&&e.target.dataset.hp!==undefined)e.target.dataset.sucio="1"};
+$("hAl").oninput=function(){var n=HIDX[this.value]||null;if(n!==HSID)hDirty=false;HSID=n;hMsg("");if(!hDirty)hGrid()};
+$("hGrid").oninput=function(){hDirty=true};
+$("hGrid").onchange=function(e){hDirty=true;if(e.target.dataset&&e.target.dataset.hp!==undefined)e.target.dataset.sucio="1"};
 $("hGuarda").onclick=async function(){
   var s=HSID&&S.find(function(x){return x.id===HSID});if(!s||ROL!=="admin")return;
   var plan=planDe(s),cat=catItems(plan),items=itemsDe(s.id),per={},sucio={},ins=$("hGrid").querySelectorAll("input[data-hid]:not([disabled])"),nuevos=0,cambiados=0,quitados=0;
@@ -9423,7 +9459,7 @@ $("hGuarda").onclick=async function(){
     }
     if(!nuevos&&!cambiados&&!quitados){hMsg("No hay cambios que guardar.");b.disabled=false;return}
     await DBH.doc("calif/"+s.id).set({items:items});CAL[s.id]={items:items};
-    render();var pg=progEgreso(s);hMsg("Listo: "+nuevos+(nuevos===1?" calificación nueva":" calificaciones nuevas")+(cambiados?", "+cambiados+" corregidas":"")+(quitados?", "+quitados+" quitadas":"")+". "+s.nombre+" lleva "+pg.apr+" de "+pg.n+" asignaturas aprobadas.");hGrid();
+    hDirty=false;render();var pg=progEgreso(s);hMsg("Listo: "+nuevos+(nuevos===1?" calificación nueva":" calificaciones nuevas")+(cambiados?", "+cambiados+" corregidas":"")+(quitados?", "+quitados+" quitadas":"")+". "+s.nombre+" lleva "+pg.apr+" de "+pg.n+" asignaturas aprobadas.");hGrid();
   }catch(e){hMsg("No se pudo guardar ("+((e&&(e.code||e.message))||"error")+").",true)}
   b.disabled=false;
 };

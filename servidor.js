@@ -1687,8 +1687,8 @@ function cargosAlumnoSrv(st, planes, EXTRA, cal, con, hoy, rec) {
   if (EXTRA && EXTRA.costo > 0) (cal.items || []).filter(x => x.cal != null && x.cal < EXTRA.min && (!x.hist || x.exCobro)).forEach(x => L.push({ id: 'x' + x.mid, c: 'Examen extraordinario: ' + x.mat + ' (' + x.per + ')', m: EXTRA.costo }));
   (con.items || []).forEach(x => L.push({ id: 'k' + x.id, c: 'Constancia de estudios (' + x.num + ')', m: x.monto }));
   (st.credCargos || []).forEach(x => L.push({ id: 'cr' + x.id, c: 'Credencial de estudiante (' + (x.motivo || 'primera') + ')', m: x.monto }));
-  const b = st.beca;
-  if (b && b.monto > 0) L = L.map(x => /^Colegiatura/.test(x.c) ? Object.assign({}, x, { m: Math.max(Math.round((x.m - b.monto) * 100) / 100, 0) }) : x);
+  const b = st.beca, bk = parseInt(b && b.desde, 10) > 0 ? parseInt(b.desde, 10) : 1;   /* la beca aplica desde la colegiatura bk (sin `desde`, desde la primera) */
+  if (b && b.monto > 0) L = L.map(x => /^Colegiatura/.test(x.c) && (x.k == null || x.k >= bk) ? Object.assign({}, x, { m: Math.max(Math.round((x.m - b.monto) * 100) / 100, 0) }) : x);
   const ri = (rec && rec.items) || [];   /* recargos por mora (cargos nuevos) y descuentos por pronto pago (reducen el cargo) */
   if (ri.length) {
     L = L.map(x => { const d = ri.filter(i => i.tipo === 'desc' && i.cid === x.id).reduce((t, i) => t + (Number(i.m) || 0), 0); return d ? Object.assign({}, x, { m: Math.max(Math.round((x.m - d) * 100) / 100, 0) }) : x; });

@@ -19,7 +19,7 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_planeacion.py` · planeación y puntos de evaluación del docente, privacidad entre docentes, calendario escolar y que no haya identificadores repetidos (33).
 - `test_revision.py` · resumen del plan de estudios, quitar materias (una, varias y con autorización) y revisión de planeaciones por el encargado (38).
 - `test_carga_json.py` · carga del plan y los contenidos desde el archivo .json (con y sin materias ya cargadas) (26). Usa el archivo de Pedagogía de `/mnt/user-data/uploads` o de `outputs`; adáptalo a tu ruta.
-- `test_precarga.py` · precarga automática de los planes de estudio (Pedagogía, Derecho, Psicología…) al arrancar: una sola vez, sin pisar lo existente (33).
+- `test_precarga.py` · precarga automática de los planes de estudio (Pedagogía, Derecho, Psicología…) al arrancar: una sola vez, sin pisar lo existente; incluye la migración de Psicología a 9 cuatrimestres (37).
 - `test_historial.py` · calificaciones anteriores por alumno y por CSV, sin cobros de extraordinario, periodos y permisos (32).
 - `test_boleta_qr.py` · QR de la boleta: verificación pública, PDF, lectura con cámara (necesita `opencv-python` y `numpy`) y verificación dentro de la aplicación (28).
 - `test_solicitudes.py` · solicitudes del alumno (justificante, boleta, constancia), atención de Control escolar, notificaciones del alumno, QR del justificante y privacidad (59).
@@ -66,6 +66,8 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_reinscripcion.py` · reinscripción en línea: configuración, ventana de fechas, revisión de adeudo, respuesta del alumno, avisos de apertura y recordatorios, asignación a grupos, baja desde la lista, permisos, cascada y pantallas (80).
 - `test_certificado_parcial.py` · certificado parcial de estudios: solo aprobadas, QR tipo `k`, verificación pública y en la app, PDF con QR legible, alumno sin aprobadas (28).
 - `test_portal_resumen.py` · portal del alumno: tarjetas de resumen (cuatrimestre, promedio, avisos; sin avance de pagos), menú fijo de secciones, desplazamiento y que no se dupliquen al repintar (22).
+- `test_beca_desde.py` · beca que entra a medio ciclo: mes de inicio (`beca.desde`), colegiaturas anteriores completas, monto sugerido con beca, selectores `bDes`/`hcBecaDes`, columna `beca_desde` en CSV de pagos anteriores y alta masiva, y el cálculo del servidor (27).
+- `test_captura_estable.py` · que lo escrito en las pantallas de calificaciones (anteriores, por grupo y del docente) no desaparezca cuando llega un cambio de datos antes de guardar (9).
 - `test_pagos_quitados.py` · bitácora de pagos quitados: quién, cuándo y cuánto; solo admin; no escribible por clientes (31).
 - `test_via_asesor.py` · reporte de medio por el que se enteraron y asesor de los alumnos inscritos, con filtros y CSV (13).
 - `test_docente_choques_llave.py` · resultados de la evaluación para el docente (mínimo de 3 respuestas, anonimato), choques de horario y llave `evdoc.key` en el respaldo y su restauración (27).

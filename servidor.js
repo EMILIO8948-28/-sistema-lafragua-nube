@@ -1972,6 +1972,26 @@ function migraDoctoradoCostos() {
   } catch (e) { console.error('No se pudieron fijar los costos del Doctorado:', e.message); }
 }
 try { migraDoctoradoCostos(); } catch (e) { console.error('Migración costos Doctorado:', e.message); }
+/* Migración única: Psicología en 9 cuatrimestres (máximo 6 materias por cuatrimestre). Solo redistribuye si el plan sigue tal cual lo cargó la precarga anterior
+   (49 materias LP01–LP49 en 7 cuatrimestres: 8,8,6,9,4,11,3); si el Administrador ya movió, quitó o agregó materias, no se toca nada. */
+function migraPsicologia9() {
+  const marca = 'migracion-psicologia-9-cuatrimestres'; if (q.uno.get('meta', marca)) return;
+  try {
+    const ANT = {"LP01":1,"LP02":1,"LP03":1,"LP04":1,"LP05":1,"LP06":1,"LP07":1,"LP08":1,"LP09":2,"LP10":2,"LP11":2,"LP12":2,"LP13":2,"LP14":2,"LP15":2,"LP16":2,"LP17":3,"LP18":3,"LP19":3,"LP20":3,"LP21":3,"LP22":3,"LP23":4,"LP24":4,"LP25":4,"LP26":4,"LP27":4,"LP28":4,"LP29":4,"LP31":4,"LP32":4,"LP30":5,"LP33":5,"LP34":5,"LP35":5,"LP36":6,"LP37":6,"LP38":6,"LP39":6,"LP40":6,"LP41":6,"LP42":6,"LP44":6,"LP45":6,"LP47":6,"LP48":6,"LP43":7,"LP46":7,"LP49":7}, NUE = {"LP01":1,"LP02":1,"LP03":1,"LP04":1,"LP05":1,"LP06":1,"LP07":2,"LP08":2,"LP09":2,"LP10":2,"LP11":2,"LP12":2,"LP13":3,"LP14":3,"LP15":3,"LP16":3,"LP17":3,"LP18":3,"LP19":4,"LP20":4,"LP21":4,"LP22":4,"LP23":4,"LP24":4,"LP25":5,"LP26":5,"LP27":5,"LP28":5,"LP29":5,"LP30":6,"LP31":6,"LP32":6,"LP33":6,"LP34":6,"LP35":7,"LP36":7,"LP37":7,"LP38":7,"LP39":7,"LP40":8,"LP41":8,"LP42":8,"LP44":8,"LP45":8,"LP47":9,"LP48":9,"LP43":9,"LP46":9,"LP49":9};
+    const r = q.uno.get('catalogo', 'psicologia');
+    if (r) {
+      const cat = JSON.parse(r.data), items = cat.items || [];
+      if (items.length === 49 && items.every(i => ANT[i.clave] === i.cuat && NUE[i.clave])) {
+        items.forEach(i => { i.cuat = NUE[i.clave]; });
+        items.sort((a, b) => a.cuat - b.cuat || String(a.clave).localeCompare(String(b.clave)));
+        q.pon.run('catalogo', 'psicologia', JSON.stringify(cat), Date.now());
+        difunde('catalogo', 'psicologia'); audita(null, null, 'Migración: Psicología redistribuida en 9 cuatrimestres', '49 materias, máximo 6 por cuatrimestre'); console.log('Migración: Psicología redistribuida en 9 cuatrimestres.');
+      }
+    }
+    q.pon.run('meta', marca, JSON.stringify({ fecha: new Date().toISOString() }), Date.now());
+  } catch (e) { console.error('No se pudo migrar Psicología:', e.message); }
+}
+try { migraPsicologia9(); } catch (e) { console.error('Migración de Psicología:', e.message); }
 
 servidor.listen(PUERTO, '0.0.0.0', () => {
   console.log('Sistema escolar Lafragua (nube) escuchando en el puerto ' + PUERTO + '. Datos en ' + DATOS);

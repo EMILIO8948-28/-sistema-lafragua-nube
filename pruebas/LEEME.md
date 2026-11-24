@@ -15,17 +15,17 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_acceso_ficha.py` · usuario y contraseña inicial del alumno en su ficha: cifrado, bitácora, permisos, restablecer y hoja de acceso (24).
 - `test_portal_cred.py` · credencial digital y recibos descargables en el portal del alumno (19).
 - `test_constancias.py` · constancia simple y con promedio, QR hacia la plataforma y verificación pública sin inicio de sesión, con verificación manual (47).
-- `test_borrados.py` · borrados con autorización del encargado (contraseña o aprobación), notificaciones, vencimiento y eliminación de constancias (63). Tarda unos 40 segundos por una espera que comprueba que cada autorización sirve para una sola acción.
+- `test_borrados.py` · borrados con autorización del encargado (contraseña o aprobación), notificaciones, vencimiento y eliminación de constancias (64). Tarda unos 40 segundos por una espera que comprueba que cada autorización sirve para una sola acción.
 - `test_planeacion.py` · planeación y puntos de evaluación del docente, privacidad entre docentes, calendario escolar y que no haya identificadores repetidos (33).
 - `test_revision.py` · resumen del plan de estudios, quitar materias (una, varias y con autorización) y revisión de planeaciones por el encargado (38).
 - `test_carga_json.py` · carga del plan y los contenidos desde el archivo .json (con y sin materias ya cargadas) (26). Usa el archivo de Pedagogía de `/mnt/user-data/uploads` o de `outputs`; adáptalo a tu ruta.
-- `test_precarga.py` · precarga automática del plan de Pedagogía al arrancar: una sola vez, sin pisar lo existente (13).
+- `test_precarga.py` · precarga automática de los planes de estudio (Pedagogía, Derecho, Psicología…) al arrancar: una sola vez, sin pisar lo existente (33).
 - `test_historial.py` · calificaciones anteriores por alumno y por CSV, sin cobros de extraordinario, periodos y permisos (32).
 - `test_boleta_qr.py` · QR de la boleta: verificación pública, PDF, lectura con cámara (necesita `opencv-python` y `numpy`) y verificación dentro de la aplicación (28).
 - `test_solicitudes.py` · solicitudes del alumno (justificante, boleta, constancia), atención de Control escolar, notificaciones del alumno, QR del justificante y privacidad (59).
 - `test_fusion.py` · fusión de grupos de dos licenciaturas: calendario, docente, calificaciones por plan, portal y Control escolar (30).
 - `test_credencial_pvc.py` · credencial vertical CR80 para PVC (diseño A): tamaños de página (54 × 85.6, con sangrado y carta), datos, solo QR, cargo de $80 y reposición, validez al dar de baja y reincorporar (verificación pública y en pantalla) y sin credenciales de Acuerdo 286 (33). Usa un registro de dibujo en lugar de jsPDF y deja imágenes en `/tmp/cpvc_*.png`.
-- `test_asistencia_personal.py` · asistencia del personal con reloj checador: configuración, carga de CSV (dos formatos), reglas de administrativos (faltas y retardos) y docentes (minutos), justificaciones, checada manual, nómina, recibos y permisos del servidor (41). Usa octubre de 2026 para no depender de la fecha de hoy.
+- `test_asistencia_personal.py` · asistencia del personal con reloj checador: configuración, carga de CSV (dos formatos), reglas de administrativos (faltas y retardos) y docentes (minutos), justificaciones, checada manual, nómina, recibos y permisos del servidor (41). Usa octubre de 2026 para no depender de la fecha de hoy. Incluye los sábados sin clase del calendario (50).
 - `test_buscador_y_dias_admin.py` · buscador del panel principal (alumnos y funciones, permisos, teclado) y días de los administrativos: días de la semana, marca día por día, «Se presentó» masivo y descuento en la nómina (53).
 - `test_calendario_eventos.py` · calendario de eventos: carga manual (crear, editar, eliminar, varios días), validaciones, lectura para todos (alumno, docente, caja, personal), escritura solo con permiso, portal del alumno, buscador y actualización en vivo (60).
 - `test_calendario_automatico.py` · fechas automáticas del calendario: evaluaciones y plazos de captura (según Control escolar, con prórroga y agrupación), días de pago del 15 al 30 de cada mes y sus ajustes, y qué ve cada rol (alumno, docente, caja, personal) (48).
@@ -52,5 +52,22 @@ Antes de las pruebas: copiar el repositorio a una carpeta temporal (`/tmp/nb`), 
 - `test_respaldos_motor.js` · motor de respaldos: firma AWS oficial, ZIP, daños, cifrado, almacenamiento y correo simulados, programación (23). `test_respaldos_api.py` · API con destinos simulados, restauración real con `restaurar.js`, daños, retención y programación automática (43; usa `fake_destinos.js`). `test_respaldos_ui.py` · pantalla Respaldos y seguridad (21).
 - `test_pagos_anteriores.py` · cargar pagos anteriores de colegiaturas, inscripción y reinscripciones: por alumno y por archivo CSV, fechas, folios, validaciones, duplicados, alumnos nuevos, beca y monto que paga, buscador y permisos (84).
 - `test_evaluacion_docente.py` · evaluación docente por los alumnos: disponibilidad desde la evaluación de la asignatura, validaciones, anonimato, una sola vez, formulario, resultados de Control escolar, ajustes, buscador y permisos (80).
+- `test_recargos.py` · recargos por mora y descuento por pronto pago: ajustes, aplicación por lote, cancelación, mismo cálculo en pantalla y servidor, validación, permisos y portal del alumno (62).
+- `test_practicas_egresados_911.py` · servicio social y prácticas (horas, liberación, solo lectura, portal del alumno), seguimiento de egresados y estadística 911 con exportación (75).
+- `test_pwa.py` · app instalable: manifest, iconos, service worker, caché solo del cascarón y datos siempre desde el servidor (22).
+- `test_proveedores.py` · proveedores, cuentas por pagar y gastos fijos: validación, permisos, pendientes que no restan del corte, pago y vencidos (60).
+- `test_buzon.py` · buzón de quejas y sugerencias: envío con nombre o anónimo con folio, atención de Control escolar, permisos y anonimato (73).
+- `test_historial_qr.py` · QR del historial académico: verificación pública (sin sesión), páginas, código alterado, correcciones posteriores, PDF con su QR legible con cámara, historial largo y verificación dentro de la aplicación (30).
+- `test_biblioteca_inventario.py` · biblioteca (catálogo, préstamos, límites, renovación, devolución, vencidos y multa estimada), inventario de bienes, permisos y portal del alumno (88).
+- `test_estado_sistema.py` · tarjeta «Estado del sistema» (disco, respaldos, copia externa, cifrado) y permisos de admin (28).
+- `test_tablero.py` · tablero de dirección con fecha fija del navegador, incluida la sección de reinscripción (36).
+- `test_comunicados.py` · comunicados generales: destinatarios, vigencia, confirmación de lectura, permisos y portales (65).
+- `test_doctorado_costo_aviso.py` · costos del Doctorado ($2,000 de colegiatura; $1,000 de inscripción y reinscripción; migración única que respeta costos ya definidos y planes renombrados) y contenido del aviso de privacidad público conforme a la ley de 2025 (28).
+- `test_reinscripcion.py` · reinscripción en línea: configuración, ventana de fechas, revisión de adeudo, respuesta del alumno, avisos de apertura y recordatorios, asignación a grupos, baja desde la lista, permisos, cascada y pantallas (80).
+- `test_certificado_parcial.py` · certificado parcial de estudios: solo aprobadas, QR tipo `k`, verificación pública y en la app, PDF con QR legible, alumno sin aprobadas (28).
+- `test_portal_resumen.py` · portal del alumno: tarjetas de resumen (cuatrimestre, promedio, avisos; sin avance de pagos), menú fijo de secciones, desplazamiento y que no se dupliquen al repintar (22).
+- `test_pagos_quitados.py` · bitácora de pagos quitados: quién, cuándo y cuánto; solo admin; no escribible por clientes (31).
+- `test_via_asesor.py` · reporte de medio por el que se enteraron y asesor de los alumnos inscritos, con filtros y CSV (13).
+- `test_docente_choques_llave.py` · resultados de la evaluación para el docente (mínimo de 3 respuestas, anonimato), choques de horario y llave `evdoc.key` en el respaldo y su restauración (27).
 
 Regla: ninguna actualización se sube a producción sin que estas pruebas pasen (salvo que el cambio no toque lo que prueban).

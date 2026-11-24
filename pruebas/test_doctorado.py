@@ -50,8 +50,10 @@ with sync_playwright() as pw:
     ctx.request.put(B+'/api/doc/students/s1',data=json.dumps({'mat':'D001','nombre':'Dra. Prueba','carrera':'Doctorado','programa':'Doctorado','ingreso':2026,'nuevo':True}),headers=HDR)
     W(pg,"S.length===1")
     cols=lambda:pg.evaluate("cargos(S[0]).filter(function(c){return /^Colegiatura/.test(c.c)}).length")
+    ok('doctorado_trae_2000_de_colegiatura_y_1000_de_inscripcion_y_reinscripcion',pg.evaluate("(function(){var d=PL.find(function(p){return p.k==='Doctorado'});return [d.col,d.ins,d.rein].join()})()")=='2000,1000,1000' and cols()==16)
+    pg.evaluate("PL.find(function(p){return p.k==='Doctorado'}).col=0;refreshTotals()")
     ok('sin_costo_de_colegiatura_no_genera_cobros_en_cero',cols()==0)
-    pg.evaluate("PL.find(function(p){return p.k==='Doctorado'}).col=2500;refreshTotals()");ok('con_costo_genera_16_colegiaturas',cols()==16 and pg.evaluate("cargos(S[0]).filter(function(c){return /^Reinscripci/.test(c.c)}).length")==0)
+    pg.evaluate("PL.find(function(p){return p.k==='Doctorado'}).col=2500;PL.find(function(p){return p.k==='Doctorado'}).rein=0;refreshTotals()");ok('con_costo_genera_16_colegiaturas',cols()==16 and pg.evaluate("cargos(S[0]).filter(function(c){return /^Reinscripci/.test(c.c)}).length")==0)
     pg.evaluate("PL.find(function(p){return p.k==='Doctorado'}).rein=900;refreshTotals()");ok('y_3_reinscripciones',pg.evaluate("cargos(S[0]).filter(function(c){return /^Reinscripci/.test(c.c)}).length")==3)
     b.close();p.terminate();time.sleep(0.5)
     # ============ 2. precarga del servidor: fija la duración si el plan no la tenía ============

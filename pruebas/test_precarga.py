@@ -31,15 +31,19 @@ with sync_playwright() as pw:
     pa=arranca(3101,'/tmp/pcd_a','/tmp/pc_a')
     cat=doc('/tmp/pcd_a','catalogo','pedagogia')
     ok('carga_las_47_asignaturas_al_arrancar',cat is not None and len(cat['items'])==47 and len(set(i['cuat'] for i in cat['items']))==9)
-    ok('carga_los_47_contenidos',cuenta('/tmp/pcd_a','contenidos')==463 and 'Mesopotamia' in doc('/tmp/pcd_a','contenidos','ped-lp01')['txt'] and 'Antropología' in doc('/tmp/pcd_a','contenidos','ped-lp06')['txt'])
+    ok('carga_los_47_contenidos',cuenta('/tmp/pcd_a','contenidos')==465 and 'Mesopotamia' in doc('/tmp/pcd_a','contenidos','ped-lp01')['txt'] and 'Antropología' in doc('/tmp/pcd_a','contenidos','ped-lp06')['txt'])
     dc=doc('/tmp/pcd_a','catalogo','derecho');ok('carga_tambien_derecho_49_materias_en_9_cuatrimestres',dc is not None and len(dc['items'])==49 and len(set(i['cuat'] for i in dc['items']))==9 and 'Derecho' in dc['plan'] and doc('/tmp/pcd_a','contenidos','der-ld01') is not None and doc('/tmp/pcd_a','meta','precarga-derecho') is not None)
     ic=doc('/tmp/pcd_a','catalogo','ingenieria-industrial');ok('carga_tambien_ingenieria_industrial_39_materias_en_9_cuatrimestres',ic is not None and len(ic['items'])==39 and len(set(i['cuat'] for i in ic['items']))==9 and ic['plan']=='Ingeniería Industrial' and doc('/tmp/pcd_a','contenidos','ind-li01') is not None)
     cc=doc('/tmp/pcd_a','catalogo','contaduria');ok('carga_tambien_contaduria_52_materias_en_9_cuatrimestres',cc is not None and len(cc['items'])==52 and sorted(set(i['cuat'] for i in cc['items']))==list(range(1,10)) and cc['plan']=='Contaduría' and doc('/tmp/pcd_a','contenidos','con-tc101') is not None and doc('/tmp/pcd_a','contenidos','con-lae737') is not None)
     dr=doc('/tmp/pcd_a','catalogo','doctorado');ok('carga_tambien_doctorado_16_materias_en_4_cuatrimestres',dr is not None and dr['plan']=='Doctorado' and len(dr['items'])==16 and [len([i for i in dr['items'] if i['cuat']==c]) for c in (1,2,3,4,5)]==[4,4,4,4,0] and [i['clave'] for i in dr['items']]==['ED%02d'%n for n in range(1,17)] and all(i['ct']==1 for i in dr['items']) and dr['config']['n']==16 and 'Total: 100%' in doc('/tmp/pcd_a','contenidos','doc-ed16')['txt'])
     ma=doc('/tmp/pcd_a','catalogo','maestria-en-educacion');ok('carga_tambien_maestria_12_materias_en_4_cuatrimestres',ma is not None and ma['plan']=='Maestría en Educación' and len(ma['items'])==12 and [len([i for i in ma['items'] if i['cuat']==c]) for c in (1,2,3,4)]==[3,3,3,3] and [i['clave'] for i in ma['items']]==['M%d'%n for n in range(13,25)] and all(i['ct']==1 for i in ma['items']) and 'Nomenclatura de los archivos' in doc('/tmp/pcd_a','contenidos','mae-m13')['txt'] and 'Total: 100%' in doc('/tmp/pcd_a','contenidos','mae-m24')['txt'])
     ar=doc('/tmp/pcd_a','catalogo','arquitectura');ok('carga_tambien_arquitectura_48_materias_en_10_cuatrimestres_y_medio_con_contenido',ar is not None and len(ar['items'])==48 and sorted(set(i['cuat'] for i in ar['items']))==list(range(1,12)) and len([i for i in ar['items'] if i['cuat']==11])==2 and ar['plan']=='Arquitectura' and all(i['ct']==1 for i in ar['items']) and 'Defensa ante el jurado' in doc('/tmp/pcd_a','contenidos','arq-proyecto-final')['txt'] and 'Proyecto final' in [i['nom'] for i in ar['items'] if i['cuat']==11])
-    ad=doc('/tmp/pcd_a','catalogo','administracion');ok('carga_tambien_administracion_47_materias_en_9_cuatrimestres',ad is not None and len(ad['items'])==47 and sorted(set(i['cuat'] for i in ad['items']))==list(range(1,10)) and ad['plan']=='Administración' and all(i['ct']==1 for i in ad['items']) and doc('/tmp/pcd_a','contenidos','adm-tc101') is not None and 'Matemáticas aplicadas a los negocios II' in [i['nom'] for i in ad['items']])
-    ec=doc('/tmp/pcd_a','catalogo','enfermeria');ok('carga_tambien_enfermeria_54_materias_en_9_cuatrimestres_con_contenido',ec is not None and len(ec['items'])==54 and sorted(set(i['cuat'] for i in ec['items']))==list(range(1,12)) and len([i for i in ec['items'] if i['cuat']==11])==3 and ec['plan']=='Enfermería' and all(i['ct']==1 for i in ec['items']) and 'Farmacocinética' in doc('/tmp/pcd_a','contenidos','enf-farmacologia')['txt'] and cuenta('/tmp/pcd_a','contenidos')==463)
+    ad=doc('/tmp/pcd_a','catalogo','administracion');ok('carga_tambien_administracion_49_materias_en_9_cuatrimestres',ad is not None and len(ad['items'])==49 and sorted(set(i['cuat'] for i in ad['items']))==list(range(1,10)) and ad['plan']=='Administración' and all(i['ct']==1 for i in ad['items']) and doc('/tmp/pcd_a','contenidos','adm-tc101') is not None and 'Matemáticas aplicadas a los negocios II' in [i['nom'] for i in ad['items']])
+    ap=[i for i in ad['items'] if i['id']=='adm-cp419'];ac=[i for i in ad['items'] if i['id']=='adm-compras']
+    ok('administracion_trae_personal_en_4_y_compras_en_5',len(ap)==1 and ap[0]['cuat']==4 and ap[0]['clave']=='CP419' and ap[0]['nom']=='Administración de personal' and len(ac)==1 and ac[0]['cuat']==5 and ac[0]['nom']=='Administración de compras' and not ac[0]['clave'] and len([i for i in ad['items'] if i['clave']=='LAE634'])==1 and [len([i for i in ad['items'] if i['cuat']==c]) for c in range(1,10)]==[6,6,6,6,5,5,5,5,5])
+    tp=doc('/tmp/pcd_a','contenidos','adm-cp419')['txt'];tc=doc('/tmp/pcd_a','contenidos','adm-compras')['txt']
+    ok('administracion_personal_y_compras_traen_programa_completo',all(x in tp for x in ('OBJETIVO GENERAL','8. INDUCCIÓN','Pruebas o tests','Elaboración de curso de capacitación: 10%','Total: 100%')) and all(x in tc for x in ('OBJETIVO GENERAL','6. COMPRAS ESTRATÉGICAS Y TECNOLOGÍA','Compras electrónicas','Un examen parcial: 70%','Ensayo: 10%','Total: 100%')) and 'tets' not in tp)
+    ec=doc('/tmp/pcd_a','catalogo','enfermeria');ok('carga_tambien_enfermeria_54_materias_en_9_cuatrimestres_con_contenido',ec is not None and len(ec['items'])==54 and sorted(set(i['cuat'] for i in ec['items']))==list(range(1,12)) and len([i for i in ec['items'] if i['cuat']==11])==3 and ec['plan']=='Enfermería' and all(i['ct']==1 for i in ec['items']) and 'Farmacocinética' in doc('/tmp/pcd_a','contenidos','enf-farmacologia')['txt'] and cuenta('/tmp/pcd_a','contenidos')==465)
     ps=doc('/tmp/pcd_a','catalogo','psicologia');ok('carga_tambien_psicologia_49_materias_en_9_cuatrimestres_max_6',ps is not None and ps['plan']=='Psicología' and len(ps['items'])==49 and [len([i for i in ps['items'] if i['cuat']==c]) for c in range(1,10)]==[6,6,6,6,5,5,5,5,5] and len(set(i['clave'] for i in ps['items']))==49 and sorted(i['clave'] for i in ps['items'])==['LP%02d'%n for n in range(1,50)])
     cp=doc('/tmp/pcd_a','contenidos','psi-lp03');ok('psicologia_trae_programa_completo',all(k in cp['txt'] for k in ('OBJETIVO GENERAL DE LA ASIGNATURA','CONTENIDO TEMÁTICO','ACTIVIDADES DE APRENDIZAJE','CRITERIOS Y PROCEDIMIENTOS DE EVALUACIÓN Y ACREDITACIÓN','Freud','Total: 100%')) and all(doc('/tmp/pcd_a','contenidos',i['id']) for i in ps['items']))
     ok('deja_marca_y_bitacora',doc('/tmp/pcd_a','meta','precarga-pedagogia')['cargados'][0].startswith('pedagogia (47') and any('Precarga de plan' in r[0] for r in db('/tmp/pcd_a').execute("select accion from auditoria").fetchall()))
@@ -59,7 +63,7 @@ with sync_playwright() as pw:
     pg.select_option('#pPlan','Doctorado');pg.evaluate("renderPlan()");ok('doctorado_se_ve_con_sus_16_materias','16 asignaturas en 4 cuatrimestres' in pg.inner_text('#pRes') and 'el plan tiene 4' in pg.inner_text('#pRes') and 'Seminario de investigación especializado' in pg.inner_text('#pLista') and pg.locator('#pLista tbody tr').count()==16)
     pg.select_option('#pPlan','Maestría en Educación');pg.evaluate("renderPlan()");ok('maestria_se_ve_con_sus_12_materias','12 asignaturas en 4 cuatrimestres' in pg.inner_text('#pRes') and 'el plan tiene 4' in pg.inner_text('#pRes') and 'Seminario de proyecto de investigación' in pg.inner_text('#pLista') and pg.locator('#pLista tbody tr').count()==12)
     pg.select_option('#pPlan','Arquitectura');pg.evaluate("renderPlan()");ok('arquitectura_se_ve_con_sus_48_materias','48 asignaturas en 11 cuatrimestres' in pg.inner_text('#pRes') and '10 cuatrimestres y medio' in pg.inner_text('#pRes') and 'Medio cuatrimestre' in pg.inner_text('#pLista') and pg.locator('#pLista tbody tr').count()==48)
-    pg.select_option('#pPlan','Administración');pg.evaluate("renderPlan()");ok('administracion_se_ve_con_sus_47_materias','47 asignaturas en 9 cuatrimestres' in pg.inner_text('#pRes') and pg.locator('#pLista [data-ct]').count()==47)
+    pg.select_option('#pPlan','Administración');pg.evaluate("renderPlan()");ok('administracion_se_ve_con_sus_49_materias','49 asignaturas en 9 cuatrimestres' in pg.inner_text('#pRes') and pg.locator('#pLista [data-ct]').count()==49)
     pg.select_option('#pPlan','Enfermería');pg.evaluate("renderPlan()");ok('enfermeria_se_ve_con_sus_54_materias','54 asignaturas en 11 cuatrimestres' in pg.inner_text('#pRes') and '10 cuatrimestres y medio' in pg.inner_text('#pRes') and 'Medio cuatrimestre' in pg.inner_text('#pLista') and pg.locator('#pLista tbody tr').count()==54 and pg.locator('#pLista [data-ct]').count()==54)
     pg.select_option('#pPlan','Contaduría');pg.evaluate("renderPlan()");ok('contaduria_se_ve_con_sus_52_materias','52 asignaturas en 9 cuatrimestres' in pg.inner_text('#pRes') and pg.locator('#pLista [data-ct]').count()==52)
     pg.select_option('#pPlan','Ingeniería Industrial');pg.evaluate("renderPlan()");ok('ingenieria_industrial_existe_como_plan_y_se_ve','39 asignaturas en 9 cuatrimestres' in pg.inner_text('#pRes') and pg.locator('#pLista [data-ct]').count()==39)
@@ -70,7 +74,7 @@ with sync_playwright() as pw:
     cat['items']=[i for i in cat['items'] if i['id']!='ped-lp01']
     c=db('/tmp/pcd_a');c.execute("update docs set data=? where coleccion='catalogo' and id='pedagogia'",(json.dumps(cat),));c.execute("delete from docs where coleccion='contenidos' and id='ped-lp01'");c.commit();c.close()
     para(pa);pa=arranca(3101,'/tmp/pcd_a','/tmp/pc_a')
-    ok('no_vuelve_a_cargar_ni_repone_lo_que_se_quito',len(doc('/tmp/pcd_a','catalogo','pedagogia')['items'])==46 and doc('/tmp/pcd_a','contenidos','ped-lp01') is None and cuenta('/tmp/pcd_a','contenidos')==462)
+    ok('no_vuelve_a_cargar_ni_repone_lo_que_se_quito',len(doc('/tmp/pcd_a','catalogo','pedagogia')['items'])==46 and doc('/tmp/pcd_a','contenidos','ped-lp01') is None and cuenta('/tmp/pcd_a','contenidos')==464)
     ok('no_duplica_la_bitacora',db('/tmp/pcd_a').execute("select count(*) from auditoria where accion like 'Precarga%'").fetchone()[0]==11)
     para(pa)
     # ---- B: el plan ya tenía materias: no se toca ----
@@ -79,13 +83,13 @@ with sync_playwright() as pw:
     para(pb0)
     c=db('/tmp/pcd_b');c.execute("insert into docs (coleccion,id,data,actualizado) values ('catalogo','pedagogia',?,1)",(json.dumps({'plan':'Pedagogía','items':[{'id':'mia','cuat':1,'clave':'X1','nom':'Mi materia','ct':0,'pdf':0}]}),));c.commit();c.close()
     pb=arranca(3102,'/tmp/pcd_b','/tmp/pc_b')
-    cat=doc('/tmp/pcd_b','catalogo','pedagogia');ok('si_ya_hay_materias_no_las_toca',len(cat['items'])==1 and cat['items'][0]['id']=='mia' and cuenta('/tmp/pcd_b','contenidos')==416)
+    cat=doc('/tmp/pcd_b','catalogo','pedagogia');ok('si_ya_hay_materias_no_las_toca',len(cat['items'])==1 and cat['items'][0]['id']=='mia' and cuenta('/tmp/pcd_b','contenidos')==418)
     ok('lo_marca_como_aplicado_sin_cambios',doc('/tmp/pcd_b','meta','precarga-pedagogia')['omitidos']==['pedagogia'])
     para(pb)
     # ---- C: un contenido ya existente no se pisa ----
     c=db('/tmp/pcd_c');c.executescript("create table if not exists docs (coleccion TEXT NOT NULL, id TEXT NOT NULL, data TEXT NOT NULL, actualizado INTEGER NOT NULL, PRIMARY KEY (coleccion,id))");c.execute("insert into docs values ('contenidos','ped-lp02',?,1)",(json.dumps({'txt':'texto propio','pdf':None}),));c.commit();c.close()
     pc=arranca(3103,'/tmp/pcd_c','/tmp/pc_c')
-    ok('no_pisa_contenido_existente',doc('/tmp/pcd_c','contenidos','ped-lp02')['txt']=='texto propio' and len(doc('/tmp/pcd_c','catalogo','pedagogia')['items'])==47 and cuenta('/tmp/pcd_c','contenidos')==463)
+    ok('no_pisa_contenido_existente',doc('/tmp/pcd_c','contenidos','ped-lp02')['txt']=='texto propio' and len(doc('/tmp/pcd_c','catalogo','pedagogia')['items'])==47 and cuenta('/tmp/pcd_c','contenidos')==465)
     para(pc)
     # ---- E: instalaciones con Psicología en 7 cuatrimestres se redistribuyen en 9 (solo si no se tocó) ----
     for d in ('/tmp/pc_e','/tmp/pc_f'):
@@ -106,6 +110,30 @@ with sync_playwright() as pw:
     ok('migracion_psicologia_deja_la_bitacora',db('/tmp/pcd_e').execute("select count(*) from auditoria where accion like 'Migración: Psicología redistribuida%'").fetchone()[0]==1)
     pn2=doc('/tmp/pcd_f','catalogo','psicologia');ok('migracion_psicologia_respeta_si_ya_fue_editado',[len([i for i in pn2['items'] if i['cuat']==c]) for c in range(1,8)]==[7,9,6,9,4,11,3])
     para(pe);para(pf)
+    # ---- G: instalaciones con Administración de 47 materias reciben personal y compras (sin duplicar ni pisar) ----
+    for d in ('/tmp/pc_g','/tmp/pc_h'):
+        shutil.rmtree(d,ignore_errors=True);shutil.copytree(src,d)
+        nj=json.load(open(d+'/precarga/administracion.json'))
+        nj['colecciones']['catalogo']['administracion']['items']=[i for i in nj['colecciones']['catalogo']['administracion']['items'] if i['id'] not in ('adm-cp419','adm-compras')]
+        for k3 in ('adm-cp419','adm-compras'):nj['contenidos'].pop(k3,None)
+        json.dump(nj,open(d+'/precarga/administracion_vieja.json','w'),ensure_ascii=False);os.replace(d+'/precarga/administracion.json',d+'/administracion_nueva.json');os.replace(d+'/precarga/administracion_vieja.json',d+'/precarga/administracion.json')
+    os.system('rm -rf /tmp/pcd_g /tmp/pcd_h && mkdir -p /tmp/pcd_g /tmp/pcd_h')
+    for pto,dd,ap_ in ((3106,'/tmp/pcd_g','/tmp/pc_g'),(3107,'/tmp/pcd_h','/tmp/pc_h')):
+        pe=arranca(pto,dd,ap_);para(pe)
+    ok('prueba_G_parte_de_47_materias',len(doc('/tmp/pcd_g','catalogo','administracion')['items'])==47 and doc('/tmp/pcd_g','contenidos','adm-cp419') is None)
+    for dd,ap_ in (('/tmp/pcd_g','/tmp/pc_g'),('/tmp/pcd_h','/tmp/pc_h')):
+        os.replace(ap_+'/administracion_nueva.json',ap_+'/precarga/administracion.json')
+        c=db(dd);c.execute("delete from docs where coleccion='meta' and id='migracion-administracion-personal-compras'");c.commit();c.close()
+    c=db('/tmp/pcd_h');r=json.loads(c.execute("select data from docs where coleccion='catalogo' and id='administracion'").fetchone()[0]);r['items'].append({'id':'mia','cuat':4,'clave':'X9','nom':'administración de compras','ct':0,'pdf':0});c.execute("update docs set data=? where coleccion='catalogo' and id='administracion'",(json.dumps(r),));c.execute("insert into docs values ('contenidos','adm-cp419',?,1)",(json.dumps({'txt':'mi texto','pdf':None}),));c.commit();c.close()
+    pg_=arranca(3106,'/tmp/pcd_g','/tmp/pc_g');ph_=arranca(3107,'/tmp/pcd_h','/tmp/pc_h')
+    ag=doc('/tmp/pcd_g','catalogo','administracion');agp=[i for i in ag['items'] if i['id']=='adm-cp419'];agc=[i for i in ag['items'] if i['id']=='adm-compras']
+    ok('migracion_administracion_agrega_personal_en_4_y_compras_en_5',len(ag['items'])==49 and len(agp)==1 and agp[0]['cuat']==4 and len(agc)==1 and agc[0]['cuat']==5 and 'INDUCCIÓN' in doc('/tmp/pcd_g','contenidos','adm-cp419')['txt'] and 'COMPRAS ESTRATÉGICAS' in doc('/tmp/pcd_g','contenidos','adm-compras')['txt'] and [i['id'] for i in ag['items'] if i['cuat']==4][0]=='adm-cp419')
+    ok('migracion_administracion_deja_la_bitacora',db('/tmp/pcd_g').execute("select count(*) from auditoria where accion like 'Migración: materias agregadas al plan de Administración%'").fetchone()[0]==1)
+    ah=doc('/tmp/pcd_h','catalogo','administracion')
+    ok('migracion_administracion_no_duplica_si_ya_existe_por_nombre_y_no_pisa_contenido',len(ah['items'])==49 and len([i for i in ah['items'] if i['id']=='adm-compras'])==0 and len([i for i in ah['items'] if i['id']=='adm-cp419'])==1 and doc('/tmp/pcd_h','contenidos','adm-cp419')['txt']=='mi texto')
+    para(pg_);pg_=arranca(3106,'/tmp/pcd_g','/tmp/pc_g')
+    ok('migracion_administracion_corre_una_sola_vez',len(doc('/tmp/pcd_g','catalogo','administracion')['items'])==49)
+    para(pg_);para(ph_)
     # ---- D: el paquete trae la carpeta y el Dockerfile la copia ----
     ok('dockerfile_copia_la_precarga','COPY precarga ./precarga' in open('/tmp/pc_d/Dockerfile').read() and os.path.exists('/tmp/pc_d/precarga/pedagogia.json'))
     b.close()

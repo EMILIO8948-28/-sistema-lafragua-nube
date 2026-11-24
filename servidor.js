@@ -1992,6 +1992,38 @@ function migraPsicologia9() {
   } catch (e) { console.error('No se pudo migrar Psicología:', e.message); }
 }
 try { migraPsicologia9(); } catch (e) { console.error('Migración de Psicología:', e.message); }
+/* Migración única: Administración de personal (4.º) y Administración de compras (5.º) en el plan de Administración. Las instalaciones que ya cargaron el plan las reciben desde precarga/administracion.json;
+   solo se agregan si el plan ya tiene materias y no existe una con ese id, esa clave o ese nombre (nunca se pisa ni se duplica nada); los contenidos ya existentes se respetan. */
+function migraAdmPersonalCompras() {
+  const marca = 'migracion-administracion-personal-compras'; if (q.uno.get('meta', marca)) return;
+  try {
+    const f = path.join(__dirname, 'precarga', 'administracion.json');
+    if (ENV.LF_SIN_PRECARGA !== '1' && fs.existsSync(f)) {
+      const D = JSON.parse(fs.readFileSync(f, 'utf8')), nuevas = ((D.colecciones.catalogo.administracion || {}).items || []).filter(i => i.id === 'adm-cp419' || i.id === 'adm-compras');
+      let clave = 'administracion';
+      try { const pl = q.uno.get('config', 'plans'), ren = (pl && JSON.parse(pl.data).ren) || {}; if (ren['Administración']) { const kn = String(ren['Administración']).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); if (kn && NOMBRE_OK.test(kn)) clave = kn; } } catch (e) {}
+      const r = q.uno.get('catalogo', clave);
+      if (r && nuevas.length === 2) {
+        const cat = JSON.parse(r.data), items = cat.items || [], nz = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(), hechas = [];
+        if (items.length) {
+          nuevas.forEach(n => {
+            if (items.some(i => i.id === n.id || (n.clave && i.clave === n.clave) || nz(i.nom) === nz(n.nom))) return;
+            items.push(Object.assign({}, n)); hechas.push(n.nom);
+            const cd = D.contenidos && D.contenidos[n.id];
+            if (cd && cd.txt && !q.uno.get('contenidos', n.id)) q.pon.run('contenidos', n.id, JSON.stringify({ txt: String(cd.txt), pdf: null, ts: new Date().toISOString(), byn: 'Carga inicial del programa de estudios' }), Date.now());
+          });
+          if (hechas.length) {
+            items.sort((a, b) => a.cuat - b.cuat || String(a.clave || 'ZZZ').localeCompare(String(b.clave || 'ZZZ'), undefined, { numeric: true }) || String(a.nom).localeCompare(String(b.nom)));
+            q.pon.run('catalogo', clave, JSON.stringify(Object.assign(cat, { items })), Date.now());
+            difunde('catalogo', clave); audita(null, null, 'Migración: materias agregadas al plan de Administración', hechas.join(', ')); console.log('Migración: agregadas al plan de Administración: ' + hechas.join(', ') + '.');
+          }
+        }
+      }
+    }
+    q.pon.run('meta', marca, JSON.stringify({ fecha: new Date().toISOString() }), Date.now());
+  } catch (e) { console.error('No se pudo migrar el plan de Administración:', e.message); }
+}
+try { migraAdmPersonalCompras(); } catch (e) { console.error('Migración del plan de Administración:', e.message); }
 
 servidor.listen(PUERTO, '0.0.0.0', () => {
   console.log('Sistema escolar Lafragua (nube) escuchando en el puerto ' + PUERTO + '. Datos en ' + DATOS);

@@ -28,7 +28,7 @@
     if(L.off)return;
     yoLista.then(function(){
       if(L.off)return;
-      if(!window.LF_ME||window.LF_ME.forzar)return;   /* sin sesión (o con cambio de contraseña pendiente) no se entrega nada: así la aplicación nunca cree que un registro "no existe" y escriba valores por defecto */
+      if(!window.LF_ME||window.LF_ME.forzar||window.LF_ME.contacto)return;   /* sin sesión (o con cambio de contraseña pendiente) no se entrega nada: así la aplicación nunca cree que un registro "no existe" y escriba valores por defecto */
       if(L.tipo==="col"){
         api("GET","col/"+encodeURIComponent(L.col)).then(function(r){if(L.off)return;L.cb({docs:r.docs.map(function(d){return {id:d.id,exists:true,data:function(){return JSON.parse(JSON.stringify(d.data))}}})})}).catch(function(e){if(L.err)L.err(e)});
       }else{
@@ -64,7 +64,7 @@
       var p=String(ruta).split("/"),col=p[0],id=p[1];
       var base="doc/"+encodeURIComponent(col)+"/"+encodeURIComponent(id);
       return {
-        get:function(){return yoLista.then(function(){return window.LF_ME&&!window.LF_ME.forzar?api("GET",base):{exists:false,data:null}}).then(function(r){return snapDoc(id,r)})},
+        get:function(){return yoLista.then(function(){return window.LF_ME&&!window.LF_ME.forzar&&!window.LF_ME.contacto?api("GET",base):{exists:false,data:null}}).then(function(r){return snapDoc(id,r)})},
         set:function(obj){return api("PUT",base,obj).then(function(){refresca(col,id)})},
         update:function(obj){return api("PATCH",base,obj).then(function(){refresca(col,id)})},
         delete:function(){return api("DELETE",base).then(function(){refresca(col,id)})},

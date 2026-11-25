@@ -35,8 +35,29 @@ rep('<dialog id="dRc"','''<dialog id="dPw" style="width:min(440px,96vw)">
     <label class="full">Contraseña nueva (mínimo 8 caracteres)<input id="pwN" type="password" autocomplete="new-password"></label>
     <label class="full">Repite la contraseña nueva<input id="pwR" type="password" autocomplete="new-password"></label>
   </div>
+  <div id="pwCt" hidden>
+    <h3 style="margin:12px 0 4px">Tus datos de contacto (obligatorios)</h3>
+    <p class="hint" style="margin:0 0 6px">Ahí te llegan los avisos de pagos, calificaciones y solicitudes. El teléfono <b>debe tener WhatsApp</b>.</p>
+    <div class="row">
+      <label class="full">Celular con WhatsApp (10 dígitos)<input id="pwTel" type="tel" inputmode="numeric" maxlength="16" autocomplete="tel" placeholder="Ej. 7121234567"></label>
+      <label class="full">Correo electrónico<input id="pwMail" type="email" maxlength="120" autocomplete="email" placeholder="tucorreo@ejemplo.com"></label>
+      <label class="full" style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="pwWa" style="width:auto"> Confirmo que este número tiene WhatsApp activo</label>
+    </div>
+  </div>
   <p class="hint" id="pwMsg" style="min-height:1.4em"></p>
   <div class="bar" style="justify-content:flex-end;margin:0"><button id="pwCan">Cerrar</button><button class="p" id="pwOk">Cambiar contraseña</button></div>
+</dialog>
+
+<dialog id="dCtc" style="width:min(440px,96vw)">
+  <h2>Registra tus datos de contacto</h2>
+  <p class="hint">Para continuar necesitamos tu celular y tu correo: ahí te llegan los avisos de pagos, calificaciones y solicitudes. El teléfono <b>debe tener WhatsApp</b>.</p>
+  <div class="row">
+    <label class="full">Celular con WhatsApp (10 dígitos)<input id="ctcTel" type="tel" inputmode="numeric" maxlength="16" autocomplete="tel" placeholder="Ej. 7121234567"></label>
+    <label class="full">Correo electrónico<input id="ctcMail" type="email" maxlength="120" autocomplete="email" placeholder="tucorreo@ejemplo.com"></label>
+    <label class="full" style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="ctcWa" style="width:auto"> Confirmo que este número tiene WhatsApp activo</label>
+  </div>
+  <p class="hint" id="ctcMsg" style="min-height:1.4em"></p>
+  <div class="bar" style="justify-content:flex-end;margin:0"><button id="ctcOut">Cerrar sesión</button><button class="p" id="ctcOk">Guardar y continuar</button></div>
 </dialog>
 
 <dialog id="dRc"''')

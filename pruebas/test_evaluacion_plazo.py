@@ -4,7 +4,7 @@ PORT=3270;B='http://127.0.0.1:%d'%PORT;TOK='tok-ep-123';HDR={'Content-Type':'app
 os.system('rm -rf /tmp/nbdata101 /tmp/fd101 /tmp/relep && mkdir -p /tmp/nbdata101 /tmp/relep')
 HOY=datetime.date.today();RELOJ='/tmp/relep/reloj.txt';open(RELOJ,'w').write(HOY.isoformat())
 fake=subprocess.Popen(['node','/tmp/fake_destinos.js','3271','3272','/tmp/fd101','3273'],stdout=subprocess.PIPE,text=True);time.sleep(1.0)
-env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata101',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_RELOJ_ARCHIVO=RELOJ,LF_WA_BASE='http://127.0.0.1:3273',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000')
+env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata101',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_RELOJ_ARCHIVO=RELOJ,LF_WA_BASE='http://127.0.0.1:3273',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(80):
     time.sleep(0.25)

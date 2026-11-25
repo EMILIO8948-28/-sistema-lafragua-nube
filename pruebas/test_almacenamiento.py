@@ -5,7 +5,7 @@ os.system('rm -rf /tmp/alm && mkdir -p /tmp/alm')
 RAIZ='/tmp/nb'
 def arranca(n,extra):
     port=3120+n;datos='/tmp/alm/d%d'%n;os.makedirs(datos,exist_ok=True)
-    env=dict(os.environ,PORT=str(port),DATA_DIR=datos,LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_VERIFICAR_DISCO='1');env.update(extra(datos) if callable(extra) else extra)
+    env=dict(os.environ,PORT=str(port),DATA_DIR=datos,LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_VERIFICAR_DISCO='1');env.update(extra(datos) if callable(extra) else extra)
     pr=subprocess.Popen(['node','servidor.js'],cwd=RAIZ,env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
     for _ in range(80):
         time.sleep(0.25)

@@ -5,7 +5,7 @@ os.system('rm -rf /tmp/nbdata116 /tmp/ca && mkdir -p /tmp/nbdata116 /tmp/ca')
 open('/tmp/ca/cert.pdf','wb').write(b'%PDF-1.4 certificado escaneado')
 with zipfile.ZipFile('/tmp/ca/esc.zip','w') as z:
     z.writestr('Marcos Ibarra Salgado.pdf',b'%PDF-1.4 a');z.writestr('Laura Pérez Núñez.pdf',b'%PDF-1.4 b');z.writestr('Laura Pérez Núñez_parcial.pdf',b'%PDF-1.4 c');z.writestr('B286-000001.pdf',b'%PDF-1.4 d');z.writestr('desconocido.pdf',b'%PDF-1.4 e');z.writestr('notas.txt',b'hola');z.writestr('B286-000099.pdf',b'%PDF-1.4 f')
-env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata116',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000',LF_BAJAS_ARRANQUE_MS='600000')
+env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata116',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000',LF_BAJAS_ARRANQUE_MS='600000')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(80):
     time.sleep(0.25)

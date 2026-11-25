@@ -2,7 +2,7 @@ import subprocess,time,json,os,urllib.request,datetime
 from playwright.sync_api import sync_playwright
 PORT=3131;B='http://127.0.0.1:%d'%PORT;TOK='tok-nt-123';HDR={'Content-Type':'application/json','x-lafragua':'1'}
 os.system('rm -rf /tmp/nbdata53 && mkdir -p /tmp/nbdata53')
-env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata53',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1')
+env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata53',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(80):
     time.sleep(0.25)

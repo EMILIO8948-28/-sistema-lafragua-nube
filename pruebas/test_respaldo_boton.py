@@ -3,7 +3,7 @@ from playwright.sync_api import sync_playwright
 PORT=3128;B='http://127.0.0.1:%d'%PORT;TOK='tok-rb-123';HDR={'Content-Type':'application/json','x-lafragua':'1'}
 os.system('rm -rf /tmp/nbdata50 && mkdir -p /tmp/nbdata50')
 mi='/tmp/nbdata50.mountinfo';open(mi,'w').write('22 1 0:20 / / rw shared:1 - overlay overlay rw\n45 22 8:1 / /tmp/nbdata50 rw - ext4 /dev/sda1 rw\n')
-env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata50',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_VERIFICAR_DISCO='1',LF_MOUNTINFO_ARCHIVO=mi)
+env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata50',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_VERIFICAR_DISCO='1',LF_MOUNTINFO_ARCHIVO=mi)
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(80):
     time.sleep(0.25)

@@ -5,7 +5,7 @@ os.system('rm -rf /tmp/nbdata103 /tmp/fs103 /tmp/relpu && mkdir -p /tmp/nbdata10
 RELOJ='/tmp/relpu/reloj.txt';open(RELOJ,'w').write('2026-11-12')
 open('/tmp/relpu/f.xml','w').write('<cfdi/>');open('/tmp/relpu/f.pdf','wb').write(b'%PDF-1.4 factura')
 fake=subprocess.Popen(['node','/tmp/fake_stripe.js','3291','/tmp/fs103'],stdout=subprocess.PIPE,text=True);time.sleep(0.8)
-env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata103',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_RELOJ_ARCHIVO=RELOJ,LF_STRIPE_BASE='http://127.0.0.1:3291',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000')
+env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata103',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_RELOJ_ARCHIVO=RELOJ,LF_STRIPE_BASE='http://127.0.0.1:3291',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(80):
     time.sleep(0.25)

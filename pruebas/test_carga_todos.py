@@ -1,7 +1,7 @@
 import subprocess,time,json,os,urllib.request
 from playwright.sync_api import sync_playwright
 PORT=3098;B='http://127.0.0.1:%d'%PORT
-ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata28',LF_SETUP_TOKEN='tk',LF_SIN_PRECARGA='1')
+ENVV=dict(os.environ,LF_SIN_CONTACTO='1',PORT=str(PORT),DATA_DIR='/tmp/nbdata28',LF_SETUP_TOKEN='tk',LF_SIN_PRECARGA='1')
 os.system('rm -rf /tmp/nbdata28 && mkdir -p /tmp/nbdata28')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=ENVV,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(60):

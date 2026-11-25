@@ -7,7 +7,7 @@ def ok(n,c):
     R[n]=bool(c)
     if not c:print('FALLA',n,flush=True)
 os.system('rm -rf /tmp/nbdata115 && mkdir -p /tmp/nbdata115')
-env=dict(os.environ,PORT='3420',DATA_DIR='/tmp/nbdata115',LF_SETUP_TOKEN='tk-mv',LF_SIN_PRECARGA='1',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000',LF_BAJAS_ARRANQUE_MS='600000')
+env=dict(os.environ,LF_SIN_CONTACTO='1',PORT='3420',DATA_DIR='/tmp/nbdata115',LF_SETUP_TOKEN='tk-mv',LF_SIN_PRECARGA='1',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000',LF_BAJAS_ARRANQUE_MS='600000')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 B='http://127.0.0.1:3420'
 for _ in range(80):

@@ -1112,6 +1112,14 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <label>Método<select id="pMet"><option>Transferencia</option><option>Efectivo</option><option>Tarjeta</option><option>Depósito</option></select></label>
     <label>Referencia<input id="pRef"></label>
   </div>
+  <details class="need-cobro" id="pDscBox" style="margin:8px 0 0"><summary style="cursor:pointer;font-weight:600">Descuento por recomendación (opcional)</summary>
+    <div class="row">
+      <label class="full">Alumno nuevo que recomendó (escribe matrícula o nombre y elige)<input id="pDscAl" list="pDscL" autocomplete="off" placeholder="Matrícula o nombre"></label>
+      <datalist id="pDscL"></datalist>
+      <label>Descuento ($)<input id="pDscMon" type="number" min="0" step="0.01" placeholder="Ej. 200"></label>
+    </div>
+    <p class="hint" id="pDscTx" style="margin:4px 0 0"></p>
+  </details>
   <p class="hint" id="sMsg" style="min-height:1.4em;margin:8px 0 0"></p>
   <div class="bar" style="justify-content:space-between;margin:0"><button class="d need-admin" id="sDel">Eliminar alumno</button><span><button id="sCls">Cerrar</button> <button id="sSt">Estado de cuenta (PDF)</button> <button class="p need-cobro" id="sAdd">Agregar pago</button></span></div>
 </dialog>
@@ -2137,8 +2145,29 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     <label class="full">Contraseña nueva (mínimo 8 caracteres)<input id="pwN" type="password" autocomplete="new-password"></label>
     <label class="full">Repite la contraseña nueva<input id="pwR" type="password" autocomplete="new-password"></label>
   </div>
+  <div id="pwCt" hidden>
+    <h3 style="margin:12px 0 4px">Tus datos de contacto (obligatorios)</h3>
+    <p class="hint" style="margin:0 0 6px">Ahí te llegan los avisos de pagos, calificaciones y solicitudes. El teléfono <b>debe tener WhatsApp</b>.</p>
+    <div class="row">
+      <label class="full">Celular con WhatsApp (10 dígitos)<input id="pwTel" type="tel" inputmode="numeric" maxlength="16" autocomplete="tel" placeholder="Ej. 7121234567"></label>
+      <label class="full">Correo electrónico<input id="pwMail" type="email" maxlength="120" autocomplete="email" placeholder="tucorreo@ejemplo.com"></label>
+      <label class="full" style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="pwWa" style="width:auto"> Confirmo que este número tiene WhatsApp activo</label>
+    </div>
+  </div>
   <p class="hint" id="pwMsg" style="min-height:1.4em"></p>
   <div class="bar" style="justify-content:flex-end;margin:0"><button id="pwCan">Cerrar</button><button class="p" id="pwOk">Cambiar contraseña</button></div>
+</dialog>
+
+<dialog id="dCtc" style="width:min(440px,96vw)">
+  <h2>Registra tus datos de contacto</h2>
+  <p class="hint">Para continuar necesitamos tu celular y tu correo: ahí te llegan los avisos de pagos, calificaciones y solicitudes. El teléfono <b>debe tener WhatsApp</b>.</p>
+  <div class="row">
+    <label class="full">Celular con WhatsApp (10 dígitos)<input id="ctcTel" type="tel" inputmode="numeric" maxlength="16" autocomplete="tel" placeholder="Ej. 7121234567"></label>
+    <label class="full">Correo electrónico<input id="ctcMail" type="email" maxlength="120" autocomplete="email" placeholder="tucorreo@ejemplo.com"></label>
+    <label class="full" style="flex-direction:row;gap:8px;align-items:center"><input type="checkbox" id="ctcWa" style="width:auto"> Confirmo que este número tiene WhatsApp activo</label>
+  </div>
+  <p class="hint" id="ctcMsg" style="min-height:1.4em"></p>
+  <div class="bar" style="justify-content:flex-end;margin:0"><button id="ctcOut">Cerrar sesión</button><button class="p" id="ctcOk">Guardar y continuar</button></div>
 </dialog>
 
 <dialog id="dRc" style="width:min(520px,96vw)">
@@ -2410,8 +2439,8 @@ function openSt(id){cur=S.find(function(s){return s.id===id});if(!cur)return;
   var p=paid(cur);
   $("sInfo").textContent=cur.mat+" · "+cur.carrera;
   $("sPays").innerHTML=cur.pagos.length?cur.pagos.slice().sort(function(a,b){return a.fecha<b.fecha?1:-1}).map(function(g){
-    return '<div class="pay"><span>'+mx.format(g.monto)+' <small>'+esc(g.folio||"")+' · '+esc(g.fecha)+' · '+esc(g.metodo)+(g.ref?' · '+esc(g.ref):'')+(g.byn?' · capturó '+esc(g.byn):(g.by?' · <span data-by="'+esc(g.by)+'"></span>':''))+'</small> '+estPago(g)+'</span><span style="display:flex;gap:6px;flex-wrap:wrap">'+botonesPago(g)+'</span></div>'}).join(""):'<p class="hint">Este alumno aún no tiene pagos registrados.</p>';
-  $("pMon").value=nextAmt(cur);$("pN").value="";$("pRef").value="";$("pFec").value=today();$("sProg").textContent=progTxt(cur);becaUI(cur);fillCon(cur);acuUI(cur);$("sIng").value=cur.ingreso||cicloAct();
+    return '<div class="pay"><span>'+mx.format(g.monto)+' <small>'+esc(g.folio||"")+' · '+esc(g.fecha)+' · '+esc(g.metodo)+(g.ref?' · '+esc(g.ref):'')+(g.dsc?' · con descuento por recomendación de '+mx.format(g.dsc.m):'')+(g.byn?' · capturó '+esc(g.byn):(g.by?' · <span data-by="'+esc(g.by)+'"></span>':''))+'</small> '+estPago(g)+'</span><span style="display:flex;gap:6px;flex-wrap:wrap">'+botonesPago(g)+'</span></div>'}).join(""):'<p class="hint">Este alumno aún no tiene pagos registrados.</p>';
+  $("pMon").value=nextAmt(cur);$("pN").value="";$("pRef").value="";$("pFec").value=today();$("sProg").textContent=progTxt(cur);becaUI(cur);fillCon(cur);dscFill();acuUI(cur);$("sIng").value=cur.ingreso||cicloAct();
   if(!$("dSt").open)$("dSt").showModal()}
 $("tb").onclick=function(e){var tr=e.target.closest("tr[data-id]");if(tr)openSt(tr.dataset.id)};
 $("sPays").onclick=function(e){var t=e.target.dataset,id=t.del||t.tk||t.rpdf;if(!id)return;
@@ -2655,7 +2684,29 @@ $("pCon").onchange=function(){
   var v=this.value;
   if(!v)$("pMon").value=nextAmt(cur);
   else{var x=pend(cur).find(function(c){return c.id===v});$("pMon").value=x?Math.round(x.rem*100)/100:""}
-  titUI();
+  titUI();$("pDscMon").value="";dscTx();
+};
+/* ---- Descuento por recomendación al cobrar: el alumno que recomendó a uno nuevo paga menos ese cargo (queda en «Recargos y descuentos · Aplicados») ---- */
+function dscTarget(){if(!cur)return null;var p=pend(cur),v=$("pCon").value;return v?(p.find(function(x){return x.id===v})||null):(p[0]||null)}
+function dscAl(){var v=$("pDscAl").value;return cur?S.find(function(x){return x.id!==cur.id&&x.mat+" — "+x.nombre===v}):null}
+function dscUsado(al){var sid=Object.keys(REC).find(function(k){return k.charAt(0)!=="_"&&((REC[k]&&REC[k].items)||[]).some(function(i){return i.rec&&i.rec.id===al.id})});return sid?(S.find(function(x){return x.id===sid})||{nombre:"otro alumno"}):null}
+function dscTx(){
+  var t=dscTarget(),d=parseFloat($("pDscMon").value)||0,al=dscAl(),u=al?dscUsado(al):null,x="";
+  if(!t)x="No hay cargos pendientes a los que aplicar un descuento.";
+  else{x="El descuento se aplica a: "+t.c+" (falta "+mx.format(t.rem)+"). ";if(d>0)x+="Con el descuento queda en "+mx.format(Math.max(Math.round((t.rem-d)*100)/100,0))+" y el monto del pago se ajusta solo. ";}
+  if(al&&al.nuevo===false)x+="Ese alumno no es de nuevo ingreso. ";
+  if(u)x+="Ya se aplicó un descuento por la recomendación de "+al.nombre+" (a "+u.nombre+").";
+  $("pDscTx").textContent=x;
+}
+function dscFill(){
+  if(!cur)return;
+  $("pDscL").innerHTML=S.filter(function(x){return x.id!==cur.id&&x.nuevo!==false&&!esInact(x.id)}).map(function(x){return '<option value="'+attr(x.mat+" — "+x.nombre)+'">'}).join("");
+  $("pDscAl").value="";$("pDscMon").value="";$("pDscBox").open=false;dscTx();
+}
+$("pDscAl").oninput=dscTx;
+$("pDscMon").oninput=function(){
+  var t=dscTarget(),d=parseFloat(this.value)||0;dscTx();
+  if(t&&!$("pN").value&&$("pCon").value!=="t")$("pMon").value=Math.round(Math.max(t.rem-Math.min(d,t.rem),0)*100)/100;
 };
 /* Pago de derecho a título: pago total, o pago parcial en dos partes (primer y segundo pago) */
 function titE(){return cEst(cur).find(function(c){return c.c===TIT})}
@@ -2746,6 +2797,7 @@ function recRows(s,g){
     ["l","Folio: "+(g.folio||g.id.toUpperCase())],["l","Fecha: "+fd(g.fecha)],["l","Matrícula: "+s.mat],["l","Alumno: "+s.nombre]]
     .concat(s.carrera?[["l","Carrera: "+s.carrera]]:[])
     .concat(s.beca&&s.beca.monto>0?[["l","Beca: "+mx.format(s.beca.monto)+" por colegiatura"+becaDesdeLbl(s)]]:[])
+    .concat(g.dsc?[["l","Descuento por recomendación: "+mx.format(g.dsc.m)]]:[])
     .concat([["-"],["l","Concepto: "+conc(alloc(s)[g.id])],["l","Método: "+g.metodo+(g.ref?" ("+g.ref+")":"")],["b","Monto recibido: "+mx.format(g.monto)],["l","("+letras(g.monto)+")"],["-"],
     ["l","Pagos cubiertos: "+P.cub+" de "+P.tot],["l",P.nx?"Va en el pago "+(P.cub+1)+" de "+P.tot:"Plan completo"],
     ["-"],["l","Recibió: "+(g.byn||"—")],["c","Gracias por su pago"],["c","Conserve este recibo"]]);
@@ -2923,6 +2975,7 @@ function recFormalPDF(s,g){
     fila("Forma de pago:",g.metodo+(g.ref?"  ·  Ref. "+g.ref:""));
     fila("Avance del plan:",P.nx?"Pagos cubiertos "+P.cub+" de "+P.tot+". Va en el pago "+(P.cub+1)+" de "+P.tot+".":"Plan completo ("+P.cub+" de "+P.tot+" pagos cubiertos).");
     if(s.beca&&s.beca.monto>0)fila("Beca:",mx.format(s.beca.monto)+" de descuento por colegiatura"+becaDesdeLbl(s)+(s.beca.mot?" ("+s.beca.mot+")":""));
+    if(g.dsc)fila("Descuento:",mx.format(g.dsc.m)+" por recomendación de un alumno nuevo ("+g.dsc.rec.nom+")");
     var ys=y0+h-17;
     d.setDrawColor(90,90,90);d.setLineWidth(0.3);d.line(x0+14,ys,x0+84,ys);
     d.setTextColor(0,0,0);d.setFont("helvetica","normal");d.setFontSize(8.5);
@@ -4097,12 +4150,29 @@ $("rcgGuarda").onclick=async function(){
 
 $("sAdd").onclick=async function(){
   if(ROL==="consulta"||!cur)return;
-  var m=parseFloat($("pMon").value);if(!(m>0)){alert("Escribe un monto mayor a cero.");return}
+  var m=parseFloat($("pMon").value),dsc=null,dm=parseFloat($("pDscMon").value)||0;
+  if(dm>0||$("pDscAl").value.trim()){
+    var dt=dscTarget(),da=dscAl(),du=da?dscUsado(da):null;
+    if(!dt){alert("No hay un cargo pendiente al que aplicar el descuento.");return}
+    if(!(dm>0)){alert("Escribe el monto del descuento por recomendación.");return}
+    if(!da){alert("Elige de la lista al alumno nuevo que recomendó.");return}
+    if(da.nuevo===false){alert("Ese alumno no es de nuevo ingreso: el descuento por recomendación es solo por alumnos nuevos.");return}
+    if(du){alert("Ya se aplicó un descuento por la recomendación de "+da.nombre+" (a "+du.nombre+").");return}
+    if(dm>dt.rem+0.004){alert("El descuento ("+mx.format(dm)+") no puede ser mayor a lo que falta de ese cargo ("+mx.format(dt.rem)+").");return}
+    dsc={t:dt,al:da,m:Math.round(dm*100)/100};
+  }
+  if(!(m>0)){alert("Escribe un monto mayor a cero.");return}
   var er=titCheck(m);if(er){alert(er);return}
   var b=this;b.disabled=true;
   try{
-    var n=await folios(1);
-    await addPay(cur.id,[{id:uid(),folio:fmtFolio(n),fecha:$("pFec").value||today(),monto:m,metodo:$("pMet").value,ref:$("pRef").value.trim(),cc:$("pCon").value?[$("pCon").value]:[],tm:titTm(),by:MY,byn:APP?APP.name:""}].map(function(x){return $("pMet").value==="Transferencia"?Object.assign(x,{estado:"pendiente"}):x}));
+    var n=await folios(1),dscPago=null;
+    if(dsc){
+      var it={id:uid()+uid(),tipo:"desc",cid:dsc.t.id,c:"Descuento por recomendación de "+dsc.al.nombre+" ("+dsc.al.mat+"): "+dsc.t.c,m:dsc.m,f:today(),rec:{id:dsc.al.id,mat:dsc.al.mat,nom:dsc.al.nombre},by:MY,byn:APP?APP.name:""};
+      var rdoc={items:((REC[cur.id]&&REC[cur.id].items)||[]).concat([it])};
+      await DBH.doc("recargos/"+cur.id).set(rdoc);REC[cur.id]=rdoc;rebuild();
+      dscPago={m:dsc.m,rid:it.id,rec:{id:dsc.al.id,mat:dsc.al.mat,nom:dsc.al.nombre}};
+    }
+    await addPay(cur.id,[{id:uid(),folio:fmtFolio(n),fecha:$("pFec").value||today(),monto:m,metodo:$("pMet").value,ref:$("pRef").value.trim(),cc:$("pCon").value?[$("pCon").value]:[],tm:titTm(),by:MY,byn:APP?APP.name:""}].map(function(x){if(dscPago)x.dsc=dscPago;return $("pMet").value==="Transferencia"?Object.assign(x,{estado:"pendiente"}):x}));
     openSt(cur.id);
   }catch(e){dberr(e)}
   b.disabled=false;

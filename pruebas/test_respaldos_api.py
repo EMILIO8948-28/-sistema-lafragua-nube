@@ -2,7 +2,7 @@ import subprocess,time,json,os,urllib.request,sqlite3,base64,gzip,shutil,glob,re
 PORT=3210;B='http://127.0.0.1:%d'%PORT;TOK='tok-rs-123';HDR={'Content-Type':'application/json','x-lafragua':'1'}
 os.system('rm -rf /tmp/nbdata95 /tmp/fd95 /tmp/rest95 && mkdir -p /tmp/nbdata95')
 fake=subprocess.Popen(['node','/tmp/fake_destinos.js','3211','3212','/tmp/fd95'],stdout=subprocess.PIPE,text=True);time.sleep(1.0)
-env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata95',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_RESPALDO_TICK_MS='700')
+env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata95',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_RESPALDO_TICK_MS='700')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(80):
     time.sleep(0.25)

@@ -12,7 +12,7 @@ def W(pg,js,t=40):
         time.sleep(0.1)
     raise TimeoutError('espera: '+js[:90])
 def arranca(port,datos,precarga):
-    env=dict(os.environ,PORT=str(port),DATA_DIR=datos,LF_SETUP_TOKEN=TOK)
+    env=dict(os.environ,PORT=str(port),DATA_DIR=datos,LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1')
     if not precarga:env['LF_SIN_PRECARGA']='1'
     p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
     for _ in range(80):

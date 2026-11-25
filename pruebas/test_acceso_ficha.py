@@ -65,7 +65,7 @@ with sync_playwright() as pw:
     ok('admin_ve_estado',ctx.request.get(B+'/api/usuarios/alumno/s1').json()=={'tiene':True,'u':'1001','forzar':True,'temporal':pw1} and ctx.request.get(B+'/api/usuarios/alumno/s2').json()=={'tiene':False})
     ok('lista_marca_temporal_sin_mostrarla',[u for u in ctx.request.get(B+'/api/usuarios').json()['usuarios'] if u['u']=='1001'][0]['temporal'] is True and pw1 not in ctx.request.get(B+'/api/usuarios').text())
     # ---- el alumno cambia su contraseña: la inicial desaparece ----
-    ok('alumno_cambia',al.request.post(B+'/api/cambiar-clave',data=json.dumps({'actual':pw1,'nueva':'mi-clave-propia-77'}),headers=HDR).status==200)
+    ok('alumno_cambia',al.request.post(B+'/api/cambiar-clave',data=json.dumps({'actual':pw1,'nueva':'mi-clave-propia-77','tel':'7261234567','mail':'ana@ejemplo.com','wa':True}),headers=HDR).status==200)
     ok('inicial_borrada',ctx.request.get(B+'/api/usuarios/alumno/s1').json()=={'tiene':True,'u':'1001','forzar':False,'temporal':None})
     con=sqlite3.connect('/tmp/nbdata10/lafragua.db');ok('columna_vacia',con.execute("select temporal from usuarios where u='1001'").fetchone()[0] is None);con.close()
     pg.evaluate("window.cargaUsuariosSrv()");pg.evaluate("document.getElementById('dPf').close()");pg.evaluate("ACCPF={sid:null,p:null}");pg.evaluate("openPf('s1')");W(pg,"document.getElementById('pfAcc').innerText.includes('1001')")

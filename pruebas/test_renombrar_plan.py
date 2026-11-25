@@ -3,7 +3,7 @@ from playwright.sync_api import sync_playwright
 PORT=3113;B='http://127.0.0.1:%d'%PORT;TOK='tok-rn-123'
 os.system('rm -rf /tmp/nbdata43 /tmp/rnx /tmp/nbdata44 && mkdir -p /tmp/nbdata43 /tmp/rnx /tmp/nbdata44')
 def inicia(datos,port,sin=True):
-    e=dict(os.environ,PORT=str(port),DATA_DIR=datos,LF_SETUP_TOKEN=TOK)
+    e=dict(os.environ,PORT=str(port),DATA_DIR=datos,LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1')
     if sin:e['LF_SIN_PRECARGA']='1'
     pr=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=e,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
     for _ in range(80):

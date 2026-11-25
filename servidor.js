@@ -140,13 +140,30 @@ function sesionDe(req) {
   if (u.rol === 'alumno' && bloqueadoPorPago(u.alumno)) { q.borSes.run(s.token); return null; }
   if (ahora - s.ultimo > 60000) q.tocaSes.run(ahora, s.token);
   const modulos = parseModulos(u.modulos);
-  return { u: u.u, name: u.nombre, rol: u.rol, doc: u.doc || '', modulos, perm: permisosDe(u.rol, modulos), alumno: u.alumno || '', forzar: !!u.forzar, _token: s.token };
+  return { u: u.u, name: u.nombre, rol: u.rol, doc: u.doc || '', modulos, perm: permisosDe(u.rol, modulos), alumno: u.alumno || '', forzar: !!u.forzar, contacto: u.rol === 'alumno' && contactoFalta(u.alumno), _token: s.token };
 }
 const intentos = new Map();
 function limite(clave, max, ventanaMs) { const a = intentos.get(clave), ahora = Date.now(); if (!a || ahora - a.desde > ventanaMs) return false; return a.n >= max; }
 function falla(clave, ventanaMs) { const a = intentos.get(clave), ahora = Date.now(); if (!a || ahora - a.desde > ventanaMs) intentos.set(clave, { n: 1, desde: ahora }); else a.n++; }
 setInterval(() => { const ahora = Date.now(); intentos.forEach((v, k) => { if (ahora - v.desde > 3600000) intentos.delete(k); }); q.limpiaSes.run(ahora); }, 600000).unref();
-const publicoUsuario = u => { const m = u.perm ? u.modulos : parseModulos(u.modulos); return { u: u.u, name: u.nombre || u.name, rol: u.rol, doc: u.doc || '', modulos: m || null, perm: permisosDe(u.rol, m), alumno: u.alumno || '', forzar: !!u.forzar, temporal: !!u.tmp, dosPasos: !!u.dos }; };
+/* Datos de contacto del alumno: celular de 10 dígitos (con WhatsApp) y correo. Sin ellos no entra al portal (se piden en el primer ingreso). */
+const MAIL_OK = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const telDiez = t => { let d = String(t || '').replace(/\D/g, ''); if (d.length === 13 && d.startsWith('521')) d = d.slice(3); else if (d.length === 12 && d.startsWith('52')) d = d.slice(2); return d.length === 10 ? d : ''; };
+function contactoFalta(alumnoId) { if (!alumnoId || process.env.LF_SIN_CONTACTO === '1') return false; const st = leeDoc('students', alumnoId); if (!st) return false; return !telDiez(st.tel) || !MAIL_OK.test(String(st.mail || '').trim()); }
+function validaContacto(c) {
+  const tel = telDiez(c && c.tel), mail = String((c && c.mail) || '').trim();
+  if (!tel) return { error: 'Escribe tu número de celular a 10 dígitos (el que tiene WhatsApp).' };
+  if (!MAIL_OK.test(mail) || mail.length > 120) return { error: 'Escribe un correo electrónico válido.' };
+  if (!(c && (c.wa === true || c.wa === 'true' || c.wa === 1))) return { error: 'Confirma que ese número tiene WhatsApp.' };
+  return { tel, mail: mail.toLowerCase() };
+}
+function guardaContacto(s, v, req) {
+  const st = leeDoc('students', s.alumno); if (!st) return false;
+  st.tel = v.tel; st.mail = v.mail; st.contactoTs = new Date().toISOString();
+  q.pon.run('students', s.alumno, JSON.stringify(st), Date.now()); difunde('students', s.alumno);
+  audita(s.u, req, 'Registró sus datos de contacto', st.mat || s.alumno); return true;
+}
+const publicoUsuario = u => { const m = u.perm ? u.modulos : parseModulos(u.modulos); return { u: u.u, name: u.nombre || u.name, rol: u.rol, doc: u.doc || '', modulos: m || null, perm: permisosDe(u.rol, m), alumno: u.alumno || '', forzar: !!u.forzar, contacto: !!u.contacto, temporal: !!u.tmp, dosPasos: !!u.dos }; };
 const listaUsuarios = () => q.usrs.all().map(x => publicoUsuario(x));
 
 /* ---------- Permisos por módulo (se aplican aquí, no solo en la pantalla) ----------
@@ -1031,6 +1048,7 @@ async function api(req, res, partes) {
   if (!s) return responde(res, 401, { error: 'Sesión requerida' });
   const rol = s.rol;
   if (s.forzar && !['logout', 'cambiar-clave'].includes(tipo)) return responde(res, 403, { error: 'Debes cambiar tu contraseña antes de continuar.', forzar: true });
+  if (s.contacto && !['logout', 'cambiar-clave', 'contacto'].includes(tipo)) return responde(res, 403, { error: 'Antes de continuar registra tu teléfono (con WhatsApp) y tu correo.', contacto: true });
   if (s.rol === 'admin' && !['logout', 'cambiar-clave', '2fa', 'yo', 'privacidad'].includes(tipo) && SEG.cfgSeg().exigir2fa && !SEG.tiene(s.u)) return responde(res, 403, { error: 'La escuela exige la verificación en dos pasos para los administradores. Actívala para continuar.', requiere2fa: true });
 
   if (tipo === 'logout' && m === 'POST') { q.borSes.run(s._token); ponCookie(req, res, '', 0); audita(s.u, req, 'Cierre de sesión'); return responde(res, 200, { ok: true }); }
@@ -1208,8 +1226,16 @@ async function api(req, res, partes) {
     if (limite('pw|' + s.u, 5, 900000)) return responde(res, 429, { error: 'Demasiados intentos. Espera 15 minutos.' });
     if (!claveOk(String(c.actual || ''), usr)) { falla('pw|' + s.u, 900000); await dormir(400); return responde(res, 400, { error: 'La contraseña actual no es correcta.' }); }
     const err = validaClave(c.nueva, s.u); if (err) return responde(res, 400, { error: err });
+    const vct = s.contacto ? validaContacto(c) : null; if (vct && vct.error) return responde(res, 400, { error: vct.error });
     const salt = crypto.randomBytes(16).toString('hex'); q.insUsr.run(s.u, usr.nombre, usr.rol, usr.doc, salt, hashClave(c.nueva, salt), usr.creado, usr.modulos || null); q.borSesUmenos.run(s.u, s._token); q.setForzar.run(0, s.u); q.setTemporal.run(null, s.u);
+    if (vct) guardaContacto(s, vct, req);
     audita(s.u, req, 'Cambió su contraseña'); return responde(res, 200, { ok: true });
+  }
+  if (tipo === 'contacto' && m === 'POST') {
+    if (s.rol !== 'alumno' || !s.alumno) return responde(res, 403, { error: 'Solo los alumnos registran su contacto aquí.' });
+    const v = validaContacto(await leeJSON(req)); if (v.error) return responde(res, 400, { error: v.error });
+    if (!guardaContacto(s, v, req)) return responde(res, 404, { error: 'No se encontró tu expediente.' });
+    return responde(res, 200, { ok: true });
   }
   if (tipo === 'cobranza') return rutaCobranza(s, req, res, m, a);
   if (tipo === 'borrados') {

@@ -1,7 +1,7 @@
 import subprocess,time,json,os,urllib.request,threading
 from playwright.sync_api import sync_playwright
 PORT=3079;B='http://127.0.0.1:%d'%PORT;TOK='tok-al-123'
-ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata9',LF_SETUP_TOKEN=TOK)
+ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata9',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1')
 os.system('rm -rf /tmp/nbdata9 && mkdir -p /tmp/nbdata9')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=ENVV,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(60):
@@ -153,7 +153,7 @@ with sync_playwright() as pw:
     pa.evaluate("ir('pagos')");ok('no_entra_a_modulos_del_personal',pa.evaluate("MOD")=='por')
     ok('alumno_sin_datos_ajenos_en_memoria',pa.evaluate("Object.keys(ST).length")==1 and pa.evaluate("Object.keys(LG).join()")=='s1' and pa.evaluate("Object.keys(GRP).length")==1 and pa.evaluate("Object.keys(DOC).length")==2)
     pa.click('#bPw');ok('puede_cambiar_su_contrasena',pa.is_visible('#pwOk'));pa.click('#pwCan')
-    pa.evaluate("document.querySelectorAll('dialog[open]').forEach(function(d){d.close()})");pa.click('#bOut');W(pa,"document.body.classList.contains('locked')")
+    pa.evaluate("document.querySelectorAll('dialog[open]').forEach(function(d){d.close()})");pa.click('#bOut');W(pa,"document.body.classList.contains('locked')&&!document.getElementById('login').hidden")
     ok('cierra_sesion',pa.is_visible('#login'))
     # ---- baja de un usuario de alumno ----
     ok('baja_de_usuario_alumno',ctx.request.delete(B+'/api/usuarios/1002',headers=HDR).status==200 and b.new_context().request.post(B+'/api/login',data=json.dumps({'u':'1002','clave':'clave-de-beto-2'}),headers=HDR).status==401)

@@ -1,7 +1,7 @@
 import subprocess,time,json,os,urllib.request,zipfile,io
 from playwright.sync_api import sync_playwright
 PORT=3072;B='http://127.0.0.1:%d'%PORT;TOK='tok-web-123'
-ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata2',LF_SETUP_TOKEN=TOK,LF_MODO='nube')
+ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata2',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_MODO='nube')
 os.system('rm -rf /tmp/nbdata2 && mkdir -p /tmp/nbdata2')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=ENVV,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(60):
@@ -63,7 +63,7 @@ with sync_playwright() as pw:
     pg.fill('#pwA','clave-segura-1');pg.fill('#pwR','otra');pg.click('#pwOk');ok('pw_no_coincide','no coincide' in pg.inner_text('#pwMsg'))
     pg.fill('#pwR','nueva-admin-77');pg.click('#pwOk');W(pg,"document.getElementById('pwMsg').textContent.includes('cambiada')");ok('pw_cambiada',True);pg.click('#pwCan')
     # 5) cierre de sesión y login como Caja
-    pg.evaluate("document.querySelectorAll('dialog[open]').forEach(function(d){d.close()})");pg.click('#bOut');W(pg,"document.body.classList.contains('locked')");ok('logout_muestra_login',pg.is_visible('#login'))
+    pg.evaluate("document.querySelectorAll('dialog[open]').forEach(function(d){d.close()})");pg.click('#bOut');W(pg,"document.body.classList.contains('locked')&&!document.getElementById('login').hidden");ok('logout_muestra_login',pg.is_visible('#login'))
     pg.fill('#lgU','caja1');pg.fill('#lgP','mala');pg.click('#lgGo');W(pg,"document.getElementById('lgE').textContent.length>0");ok('login_mala','incorrectos' in pg.inner_text('#lgE'))
     pg.fill('#lgP','clave-caja-1');pg.click('#lgGo');W(pg,"typeof APP!=='undefined'&&APP!==null&&!document.body.classList.contains('locked')")
     ok('rol_caja',pg.evaluate("ROL")=='caja' and 'Caja' in pg.inner_text('#who'))
@@ -118,7 +118,7 @@ p.terminate();p.wait()
 esperados={(401,'/api/login'),(403,'/api/autoriza-admin'),(403,'/api/usuarios'),(400,'/api/cambiar-clave'),(401,'/api/configurar')}
 print('respuestas de error:',sorted(set((c,u.split('?')[0]) for c,u,_ in malos)))
 print('detalle:',[m for m in malos if m[0]==401 and 'config/plans' in m[1]])
-inesperados=[(c,u) for c,u,_ in malos if (c,u.split('?')[0]) not in esperados and not (c==401 and u.startswith('/api/col/')) and not (c==403 and u.startswith('/api/configurar')) and not (c==403 and (u.startswith('/api/doc/ledger/') or u.startswith('/api/borrados/'))) and not (c==401 and u.startswith('/api/borrados'))]
+inesperados=[(c,u) for c,u,_ in malos if (c,u.split('?')[0]) not in esperados and not (c==401 and (u.startswith('/api/col/') or u.startswith('/api/comunicados/') or u.startswith('/api/reinscripcion/'))) and not (c==403 and u.startswith('/api/configurar')) and not (c==403 and (u.startswith('/api/doc/ledger/') or u.startswith('/api/borrados/'))) and not (c==401 and u.startswith('/api/borrados'))]
 ok('sin_errores_inesperados',len(inesperados)==0)
 if inesperados:print('INESPERADOS:',inesperados[:8])
 bad=[k for k,v in R.items() if not v];print(len(R),'comprobaciones');print('FALLAN:',bad)

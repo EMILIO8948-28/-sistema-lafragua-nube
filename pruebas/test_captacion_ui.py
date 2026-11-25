@@ -3,7 +3,7 @@ from playwright.sync_api import sync_playwright
 PORT=3330;B='http://127.0.0.1:%d'%PORT;TOK='tok-cu-123';HDR={'Content-Type':'application/json','x-lafragua':'1'}
 os.system('rm -rf /tmp/nbdata107 /tmp/rel107 && mkdir -p /tmp/nbdata107 /tmp/rel107')
 open('/tmp/rel107/leads.csv','w',encoding='utf-8').write('full_name,phone_number,email,created_time,platform\nMaría Torres,+52 722 111 0001,maria@mail.com,2026-11-08T10:00:00,facebook\nJosé Pérez,7221110002,,2026-11-09T11:00:00,instagram\nCarlos Duplicado,7229876543,carlos@mail.com,2026-11-09,instagram\nSin Telefono,,x@y.mx,2026-11-09,facebook\n')
-env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata107',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000')
+env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata107',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000')
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(80):
     time.sleep(0.25)

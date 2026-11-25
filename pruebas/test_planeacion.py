@@ -1,7 +1,7 @@
 import subprocess,time,json,os,urllib.request
 from playwright.sync_api import sync_playwright
 PORT=3088;B='http://127.0.0.1:%d'%PORT;TOK='tok-pl-123'
-ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata18',LF_SETUP_TOKEN=TOK)
+ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata18',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1')
 os.system('rm -rf /tmp/nbdata18 /tmp/plf && mkdir -p /tmp/nbdata18 /tmp/plf')
 open('/tmp/plf/plan.pdf','wb').write(b'%PDF-1.4 planeacion');open('/tmp/plf/plan2.docx','wb').write(b'PK\x03\x04doc');open('/tmp/plf/malo.exe','wb').write(b'MZ');open('/tmp/plf/grande.pdf','wb').write(b'%PDF'+b'0'*(21*1024*1024))
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=ENVV,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)

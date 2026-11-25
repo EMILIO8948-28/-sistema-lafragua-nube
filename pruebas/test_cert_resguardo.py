@@ -1,7 +1,7 @@
 import subprocess,time,json,os,urllib.request,zipfile
 from playwright.sync_api import sync_playwright
 PORT=3109;B='http://127.0.0.1:%d'%PORT;TOK='tok-cr-123'
-ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata39',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1')
+ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata39',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1')
 os.system('rm -rf /tmp/nbdata39 /tmp/cz && mkdir -p /tmp/nbdata39 /tmp/cz')
 open('/tmp/cz/cert.pdf','wb').write(b'%PDF-1.4 certificado escaneado')
 with zipfile.ZipFile('/tmp/cz/esc.zip','w') as z:

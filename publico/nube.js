@@ -78,20 +78,44 @@
   /* Cambiar mi contraseña */
   $("bPw").onclick=function(){$("pwA").value="";$("pwN").value="";$("pwR").value="";$("pwMsg").textContent="";$("dPw").showModal()};
   $("pwCan").onclick=function(){$("dPw").close()};
+  /* Datos de contacto del alumno: celular con WhatsApp (10 dígitos) y correo */
+  function ctError(tel,mail,wa){
+    var d=String(tel||"").replace(/\D/g,"");if(d.length===13&&d.indexOf("521")===0)d=d.slice(3);else if(d.length===12&&d.indexOf("52")===0)d=d.slice(2);
+    if(d.length!==10)return "Escribe tu número de celular a 10 dígitos (el que tiene WhatsApp).";
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(mail||"").trim()))return "Escribe un correo electrónico válido.";
+    if(!wa)return "Confirma que ese número tiene WhatsApp.";return "";
+  }
+  window.LF_ctError=ctError;
+  $("ctcOk").onclick=async function(){
+    var e=ctError($("ctcTel").value,$("ctcMail").value,$("ctcWa").checked);$("ctcMsg").style.color="var(--bad)";
+    if(e){$("ctcMsg").textContent=e;return}
+    var x=await llama("POST","/api/contacto",{tel:$("ctcTel").value,mail:$("ctcMail").value,wa:true});
+    if(!x.ok){$("ctcMsg").textContent=(x.j&&x.j.error)||"No se pudo guardar.";return}
+    $("ctcMsg").style.color="var(--ok)";$("ctcMsg").textContent="Listo, gracias.";setTimeout(function(){location.reload()},400);
+  };
+  $("ctcOut").onclick=function(){$("bOut").onclick()};
   $("pwOk").onclick=async function(){
     var a=$("pwA").value,n=$("pwN").value,r=$("pwR").value;$("pwMsg").style.color="var(--bad)";
     if(!a||!n){$("pwMsg").textContent="Completa la contraseña actual y la nueva.";return}
     if(n!==r){$("pwMsg").textContent="La confirmación no coincide con la nueva contraseña.";return}
-    var x=await llama("POST","/api/cambiar-clave",{actual:a,nueva:n});
+    var ct=!$("pwCt").hidden,cuerpo={actual:a,nueva:n};
+    if(ct){var ec=ctError($("pwTel").value,$("pwMail").value,$("pwWa").checked);if(ec){$("pwMsg").textContent=ec;return}cuerpo.tel=$("pwTel").value;cuerpo.mail=$("pwMail").value;cuerpo.wa=true}
+    var x=await llama("POST","/api/cambiar-clave",cuerpo);
     if(!x.ok){$("pwMsg").textContent=x.j.error||"No se pudo cambiar la contraseña.";return}
     $("pwMsg").style.color="var(--ok)";$("pwMsg").textContent="Contraseña cambiada. Las demás sesiones abiertas se cerraron.";
-    if(window.LF_ME&&window.LF_ME.forzar){setTimeout(function(){location.reload()},600)}
+    if(window.LF_ME&&(window.LF_ME.forzar||window.LF_ME.contacto)){setTimeout(function(){location.reload()},600)}
   };
   /* Cambio de contraseña obligatorio (accesos nuevos o restablecidos de alumnos) */
   (window.LF_LISTO||Promise.resolve()).then(function(){
+    /* alumno que ya cambió su contraseña pero aún no registra su celular y correo */
+    if(window.LF_ME&&window.LF_ME.contacto&&!window.LF_ME.forzar){
+      $("ctcTel").value="";$("ctcMail").value="";$("ctcWa").checked=false;$("ctcMsg").textContent="";
+      $("dCtc").addEventListener("cancel",function(e){e.preventDefault()});$("dCtc").showModal();return;
+    }
     if(!(window.LF_ME&&window.LF_ME.forzar))return;
     $("pwA").value="";$("pwN").value="";$("pwR").value="";
-    $("pwMsg").style.color="var(--ink)";$("pwMsg").textContent="Por seguridad, cambia tu contraseña inicial para continuar. Escribe la que te entregaron y elige una nueva.";
+    $("pwCt").hidden=!window.LF_ME.contacto;$("pwTel").value="";$("pwMail").value="";$("pwWa").checked=false;
+    $("pwMsg").style.color="var(--ink)";$("pwMsg").textContent="Por seguridad, cambia tu contraseña inicial para continuar. Escribe la que te entregaron y elige una nueva."+(window.LF_ME.contacto?" También registra tu celular (con WhatsApp) y tu correo.":"");
     $("pwCan").hidden=true;
     $("dPw").addEventListener("cancel",function(e){e.preventDefault()});
     var so=document.createElement("button");so.textContent="Cerrar sesión";so.id="pwOut";so.onclick=function(){$("bOut").onclick()};$("pwCan").parentNode.insertBefore(so,$("pwCan"));

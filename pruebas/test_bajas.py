@@ -8,7 +8,7 @@ def ok(n,c):
     if not c:print('FALLA',n,flush=True)
 def arranca(port,data,tok,reloj,fd):
     os.system('rm -rf %s && mkdir -p %s'%(data,data));open(reloj,'w').write(HOY.isoformat())
-    env=dict(os.environ,PORT=str(port),DATA_DIR=data,LF_SETUP_TOKEN=tok,LF_SIN_PRECARGA='1',LF_RELOJ_ARCHIVO=reloj,LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000',LF_BAJAS_TICK_MS='3600000',LF_BAJAS_ARRANQUE_MS='600000')
+    env=dict(os.environ,LF_SIN_CONTACTO='1',PORT=str(port),DATA_DIR=data,LF_SETUP_TOKEN=tok,LF_SIN_PRECARGA='1',LF_RELOJ_ARCHIVO=reloj,LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000',LF_BAJAS_TICK_MS='3600000',LF_BAJAS_ARRANQUE_MS='600000')
     p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
     for _ in range(80):
         time.sleep(0.25)
@@ -188,7 +188,7 @@ with sync_playwright() as pw:
     pe.evaluate("etab('A')");pe.wait_for_timeout(400);ok('al_reincorporarlo_vuelve_a_las_listas','Carla Sin Calificaciones' in pe.inner_text('#aTb') and pe.evaluate("alumnosGr(GRP.g1).length")==3)
     # permisos en pantalla
     pc=entra('cons','clave-cons-123');pc.evaluate("ir('esc')");pc.wait_for_timeout(600);ok('con_solo_ver_no_aparece_la_pestana_bajas',pc.is_hidden('#eTabs [data-et="B"]'))
-    pe.evaluate("etab('B')");pe.click('details summary');pe.wait_for_timeout(200);ok('la_configuracion_muestra_los_valores',pe.input_value('#bjCol')=='2' and pe.input_value('#bjDias')=='15' and pe.is_checked('#bjAct'))
+    pe.evaluate("etab('B')");pe.click('#eB details summary');pe.wait_for_timeout(200);ok('la_configuracion_muestra_los_valores',pe.input_value('#bjCol')=='2' and pe.input_value('#bjDias')=='15' and pe.is_checked('#bjAct'))
     pe.fill('#bjCol','3');pe.click('#bjGuarda');pe.wait_for_timeout(600);ok('y_se_puede_cambiar',json.loads(urllib.request.urlopen(urllib.request.Request(B+'/api/bajas/config',headers=HDR)).read() if False else '{}')=={} and 'guardada' in pe.inner_text('#bjMsg'))
     pe.fill('#bjCol','2');pe.click('#bjGuarda');pe.wait_for_timeout(500)
     ok('sin_identificadores_repetidos',pe.evaluate("(function(){var c={},d=[];document.querySelectorAll('[id]').forEach(function(e){c[e.id]=(c[e.id]||0)+1});for(var k in c)if(c[k]>1)d.push(k);return d})()")==[])

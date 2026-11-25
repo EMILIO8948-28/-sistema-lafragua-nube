@@ -2,7 +2,7 @@ import subprocess,time,json,os,urllib.request,urllib.error,http.cookiejar,hmac,h
 PORT=3300;B='http://127.0.0.1:%d'%PORT;TOK='tok-sg-123';HDR={'Content-Type':'application/json','x-lafragua':'1'}
 os.system('rm -rf /tmp/nbdata104 && mkdir -p /tmp/nbdata104')
 def arranca(extra=None):
-    env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata104',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000',**(extra or {}))
+    env=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata104',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_AVISOS_TICK_MS='3600000',LF_RESPALDO_TICK_MS='3600000',**(extra or {}))
     p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
     for _ in range(80):
         time.sleep(0.25)
@@ -47,7 +47,7 @@ adm('POST','/api/usuarios',{'u':'caja1','name':'Caja','rol':'caja','clave':'clav
 ok('el_algoritmo_coincide_con_el_vector_de_la_norma_rfc_6238',totp(base64.b32encode(b'12345678901234567890').decode().rstrip('='),1)=='287082')
 anon=sesion();s,t=anon('GET','/privacidad',raw=True)
 ok('el_aviso_de_privacidad_es_publico',s==200 and 'Aviso de privacidad' in t and 'Universidad Lafragua' in t and 'Versión 1' in t and 'Derechos (ARCO)'.lower() in t.lower() or 'ARCO' in t)
-ok('el_aviso_cubre_los_datos_sensibles_y_las_transferencias','INE' in t and 'justificante médico' in t and 'Stripe' in t and 'WhatsApp' in t and 'borrador' in t.lower())
+ok('el_aviso_cubre_los_datos_sensibles_y_las_transferencias','INE' in t and 'justificante médico' in t and 'Stripe' in t and 'WhatsApp' in t and 'menores de edad' in t and 'Secretaría Anticorrupción y Buen Gobierno' in t and 'borrador' not in t.lower())
 # ============ activar los dos pasos (caja) ============
 caja=sesion('caja1','clave-caja1-123')
 ok('por_defecto_no_tiene_dos_pasos',caja('GET','/api/2fa/estado')[1]['activo'] is False)

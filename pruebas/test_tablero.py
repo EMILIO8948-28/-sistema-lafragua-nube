@@ -4,7 +4,7 @@ from playwright.sync_api import sync_playwright
 PORT=3165;B='http://127.0.0.1:%d'%PORT;TOK='tok-dr-1'
 os.system('rm -rf /tmp/nbdata_dr /tmp/crl_dr && mkdir -p /tmp/nbdata_dr /tmp/crl_dr')
 RELOJ='/tmp/crl_dr/reloj.txt';HOY=datetime.date.today().isoformat();open(RELOJ,'w').write(HOY)
-ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata_dr',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1',LF_RELOJ_ARCHIVO=RELOJ)
+ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata_dr',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1',LF_RELOJ_ARCHIVO=RELOJ)
 p=subprocess.Popen(['node','servidor.js'],cwd='/tmp/nb',env=ENVV,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
 for _ in range(60):
     time.sleep(0.25)

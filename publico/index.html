@@ -539,7 +539,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12px}
     </div>
     <div id="mChoq"></div>
     <h2 style="margin-top:12px">Calendario escolar</h2>
-    <div class="bar"><select id="mFPer" aria-label="Periodo"></select><select id="mFPlan" aria-label="Plan de estudios"></select></div>
+    <div class="bar"><select id="mFPer" aria-label="Periodo"></select><select id="mFPlan" aria-label="Plan de estudios"></select><button id="mPdf" title="Planeación completa del periodo: grupos, horarios, docentes y evaluaciones">Descargar PDF</button><button id="mPdfC" title="Compartir el PDF por WhatsApp, correo u otra aplicación">Compartir PDF</button><button id="mPre" title="Agrega al calendario del periodo las materias del plan que les tocan a sus grupos">Cargar materias del periodo</button></div><p class="hint" id="mPreMsg" style="margin:4px 0"></p>
     <div class="wrap"><table style="min-width:760px"><thead><tr><th>Periodo</th><th>Plan</th><th>Asignatura</th><th>Docente</th><th>Horario</th><th>Evaluación</th><th>Aula</th><th></th></tr></thead><tbody id="mTb"></tbody></table></div>
   </div>
   <div id="eD" hidden>
@@ -4613,7 +4613,7 @@ function periodos(){var o=[],c=cicloAct();for(var y=c-3;y<=c+4;y++){o.push("Sep�
 function setOpts(sel,html){var v=sel.value;sel.innerHTML=html;if(Array.prototype.some.call(sel.options,function(o){return o.value===v}))sel.value=v}
 function vacio(n,t){return '<tr><td colspan="'+n+'" class="empty">'+t+'</td></tr>'}
 function planDe(s){return s.programa||s.carrera||""}
-function hor(m){return "Sáb "+(m.ini||"")+"–"+(m.fin||"")}
+function hor(m){return m.ini&&m.fin?"Sáb "+m.ini+"–"+m.fin:"Horario por definir"}
 function gradeOf(sid,mid){var it=(CAL[sid]&&CAL[sid].items)||[],x=it.find(function(i){return i.mid===mid});return x&&x.cal!=null?x.cal:null}
 function promedio(sid){var it=((CAL[sid]&&CAL[sid].items)||[]).filter(function(i){return i.cal!=null});return it.length?Math.round(it.reduce(function(a,x){return a+x.cal},0)/it.length*100)/100:null}
 function foto(sid,w,h){var f=FOT[sid]&&FOT[sid].d;return f?'<img src="'+f+'" style="width:'+w+'px;height:'+h+'px;object-fit:cover;border-radius:6px" alt="">':'<span style="display:inline-block;width:'+w+'px;height:'+h+'px;border-radius:6px;background:var(--bg);border:1px solid var(--line)"></span>'}
@@ -4770,6 +4770,7 @@ function renderMat(){
   setOpts($("mFPer"),'<option value="">Todos los periodos</option>'+po.map(function(p){return '<option>'+esc(p)+'</option>'}).join(""));
   setOpts($("mFPlan"),'<option value="">Todos los planes</option>'+PL.map(function(p){return '<option>'+esc(p.k)+'</option>'}).join(""));
   var fp=$("mFPer").value,fl=$("mFPlan").value;
+  $("mPre").hidden=!(ROL==="admin"&&permiso("escolar")==="editar");
   var L=Object.keys(MAT).map(function(k){return Object.assign({id:k},MAT[k])}).filter(function(m){return (!fp||m.per===fp)&&(!fl||m.plan===fl)})
     .sort(function(a,b){return po.indexOf(b.per)-po.indexOf(a.per)||String(a.plan).localeCompare(String(b.plan))||ordPlan(a,b)});
   $("mTb").innerHTML=L.length?L.map(function(m){var d=DOC[m.docId];
@@ -4795,6 +4796,147 @@ $("mAdd").onclick=async function(){
   if(fu.fus.length)d.fus=fu.fus;
   var bl=parseInt($("mBl").value,10);if(bl===1||bl===2)d.bl=bl;
   try{await DBH.doc("materias/"+id).set(d);MAT[id]=d;limpiaMat();renderMat()}catch(e){dberr(e)}
+};
+/* ---- Calendario del periodo nuevo: materias que siguen según el plan y el bloque ---- */
+function calPrevia(plan,nom,per){
+  var po=periodos(),ip=po.indexOf(per),mejor=null,mi=-1,n1=nz(nom);
+  Object.keys(MAT).forEach(function(k){var m=MAT[k],mp=matParaPlan(m,plan);if(!mp||nz(mp.nom)!==n1)return;var i=po.indexOf(m.per);if(i<0||(ip>-1&&i>=ip))return;if(i>mi){mi=i;mejor=m}});
+  return mejor;
+}
+function calPlanPrecarga(per){
+  var pares={},nuevas=[],yaEstan=0,sinPlan=[],grupos=0;
+  Object.keys(GRP).forEach(function(k){var g=GRP[k];if(g.per===per&&g.plan&&g.cuat){pares[g.plan+"\u0001"+g.cuat]={plan:g.plan,cuat:g.cuat};grupos++}});
+  Object.keys(pares).sort().forEach(function(pk){
+    var p=pares[pk],cat=catItems(p.plan).filter(function(i){return i.cuat===p.cuat}).slice().sort(ordPlan),n=cat.length;
+    if(!n){sinPlan.push(p.plan+" · cuat. "+p.cuat);return}
+    var lista=[],c1=0,c2=0,mitad=Math.ceil(n/2);
+    cat.forEach(function(it){
+      var n1=nz(it.nom),ya=Object.keys(MAT).some(function(k){var m=MAT[k];if(m.per!==per)return false;var mp=matParaPlan(m,p.plan);return mp&&mp.cuat===p.cuat&&nz(mp.nom)===n1});
+      if(ya){yaEstan++;return}
+      var pv=calPrevia(p.plan,it.nom,per),b=pv?blDe(pv):0;
+      if(b===1)c1++;else if(b===2)c2++;
+      lista.push({it:it,pv:pv,bl:b})
+    });
+    lista.forEach(function(x){
+      if(!x.bl){if(c1<mitad){x.bl=1;c1++}else{x.bl=2;c2++}}
+      var d={per:per,plan:p.plan,cuat:p.cuat,nom:x.it.nom,docId:"",dias:["Sáb"],ini:"",fin:"",aula:"",ev:"",bl:x.bl};
+      if(x.pv){if(x.pv.docId&&DOC[x.pv.docId])d.docId=x.pv.docId;d.ini=x.pv.ini||"";d.fin=x.pv.fin||"";d.aula=x.pv.aula||"";if(matParaPlan(x.pv,p.plan)&&x.pv.plan===p.plan&&fusDe(x.pv).length)d.fus=fusDe(x.pv).map(function(f){return {plan:f.plan,cuat:f.cuat,nom:f.nom}})}
+      nuevas.push({d:d,copia:!!x.pv})
+    })
+  });
+  return {per:per,grupos:grupos,pares:Object.keys(pares).length,nuevas:nuevas,yaEstan:yaEstan,sinPlan:sinPlan};
+}
+async function calPrecargar(per){
+  var r=calPlanPrecarga(per),i,lote;
+  for(i=0;i<r.nuevas.length;i+=10){
+    lote=r.nuevas.slice(i,i+10);
+    await Promise.all(lote.map(function(x){x.id=uid();return DBH.doc("materias/"+x.id).set(x.d).then(function(){MAT[x.id]=x.d})}));
+  }
+  return r;
+}
+$("mPre").onclick=async function(){
+  if(ROL!=="admin"||permiso("escolar")!=="editar")return;
+  var per=$("mFPer").value||perAct(),r=calPlanPrecarga(per),msg=$("mPreMsg");
+  if(!r.grupos){msg.style.color="var(--bad)";msg.textContent="No hay grupos en "+per+". Crea los grupos del periodo (o cierra el periodo anterior) para poder cargar sus materias.";return}
+  if(!r.nuevas.length){msg.style.color="var(--muted)";msg.textContent="El calendario de "+per+" ya tiene todas las materias que les tocan a sus grupos"+(r.sinPlan.length?" (sin plan de estudios cargado: "+r.sinPlan.join(", ")+")":"")+".";return}
+  var cp=r.nuevas.filter(function(x){return x.copia}).length;
+  if(!confirm("Se agregarán "+r.nuevas.length+" asignaturas al calendario de "+per+" ("+r.pares+" grupos por plan y cuatrimestre).\n\n"+cp+" copian bloque, docente, horario y aula de la última vez que se impartieron; las demás se reparten en 1.er y 2.º bloque según el orden del plan y quedan «Sin asignar» / «Horario por definir» para que las completes. No se toca nada de lo que ya está cargado."))return;
+  this.disabled=true;msg.style.color="var(--muted)";msg.textContent="Cargando…";
+  try{var q=await calPrecargar(per);msg.style.color="var(--ok)";msg.textContent="Se cargaron "+q.nuevas.length+" asignaturas en "+per+(q.sinPlan.length?". Sin plan de estudios cargado: "+q.sinPlan.join(", ")+".":".");renderMat()}
+  catch(e){msg.style.color="var(--bad)";msg.textContent="No se pudo cargar: "+((e&&e.message)||"error")+". Revisa la lista antes de volver a intentarlo.";renderMat()}
+  this.disabled=false;
+};
+/* ---- PDF del calendario: planeación por grupo, por docente y evaluaciones ---- */
+function calDatos(per,plan){
+  var ms=Object.keys(MAT).map(function(k){return Object.assign({id:k},MAT[k])}).filter(function(m){return m.per===per&&(!plan||m.plan===plan||fusDe(m).some(function(f){return f.plan===plan}))});
+  var gs=Object.keys(GRP).map(function(k){return Object.assign({id:k},GRP[k])}).filter(function(g){return g.per===per&&(!plan||g.plan===plan)});
+  var pares={};
+  gs.forEach(function(g){pares[g.plan+"\u0001"+g.cuat]={plan:g.plan,cuat:g.cuat}});
+  ms.forEach(function(m){if(!plan||m.plan===plan)pares[m.plan+"\u0001"+m.cuat]={plan:m.plan,cuat:m.cuat};fusDe(m).forEach(function(f){if(!plan||f.plan===plan)pares[f.plan+"\u0001"+f.cuat]={plan:f.plan,cuat:f.cuat}})});
+  var orden=PL.map(function(p){return p.k});
+  var lista=Object.keys(pares).map(function(k){return pares[k]}).sort(function(a,b){var i=orden.indexOf(a.plan),j=orden.indexOf(b.plan);return (i<0?99:i)-(j<0?99:j)||String(a.plan).localeCompare(String(b.plan))||a.cuat-b.cuat});
+  var porGrupo=lista.map(function(p){
+    var g=gs.filter(function(x){return x.plan===p.plan&&x.cuat===p.cuat}).sort(function(a,b){return String(a.num).localeCompare(String(b.num))});
+    var mm=ms.map(function(m){var mp=matParaPlan(m,p.plan);return mp&&mp.cuat===p.cuat?{m:m,nom:mp.nom}:null}).filter(Boolean).sort(function(a,b){return (blDe(a.m)||9)-(blDe(b.m)||9)||String(a.m.ini||"99").localeCompare(String(b.m.ini||"99"))||String(a.nom).localeCompare(String(b.nom))});
+    return {plan:p.plan,cuat:p.cuat,grupos:g,mats:mm,alumnos:g.reduce(function(a,x){return a+((x.alumnos||[]).length)},0)};
+  });
+  var docs={};
+  ms.forEach(function(m){var k=m.docId&&DOC[m.docId]?m.docId:"";(docs[k]=docs[k]||[]).push(m)});
+  var porDoc=Object.keys(docs).sort(function(a,b){if(!a)return 1;if(!b)return -1;return String(DOC[a].nombre).localeCompare(String(DOC[b].nombre))}).map(function(k){
+    return {id:k,nombre:k?DOC[k].nombre:"Sin docente asignado",mats:docs[k].slice().sort(function(a,b){return String(a.ini||"99").localeCompare(String(b.ini||"99"))||String(a.nom).localeCompare(String(b.nom))})}
+  });
+  var evs=ms.filter(function(m){return m.ev}).sort(function(a,b){return a.ev.localeCompare(b.ev)||String(a.nom).localeCompare(String(b.nom))});
+  return {per:per,plan:plan,ms:ms,porGrupo:porGrupo,porDoc:porDoc,evs:evs,sinEv:ms.length-evs.length,sinHor:ms.filter(function(m){return !m.ini||!m.fin}).length,sinDoc:ms.filter(function(m){return !m.docId||!DOC[m.docId]}).length};
+}
+function calBl(m){var b=blDe(m);return b===1?"1.er":b===2?"2.º":"—"}
+function calGrupoTxt(m){var gs=Object.keys(GRP).map(function(k){return GRP[k]}).filter(function(g){return g.per===m.per&&((g.plan===m.plan&&g.cuat===m.cuat)||fusDe(m).some(function(f){return f.plan===g.plan&&f.cuat===g.cuat}))});var nums=gs.map(function(g){return g.num}).sort();return m.plan+" · cuat. "+m.cuat+(nums.length?" · grupo "+nums.join(", "):"")+fusDe(m).map(function(f){return " + "+f.plan+" cuat. "+f.cuat}).join("")}
+function calPDFdoc(per,plan){
+  var J=pdfLib();if(!J)return null;
+  var D=calDatos(per,plan),d=new J.jsPDF({orientation:"landscape",unit:"mm",format:"letter"}),W=279.4,H=215.9,X=12,TW=W-2*X,bot=H-14,lh=4.2;
+  var titulo2=function(){
+    var ht=16,w=ht*LOGO_R;try{d.addImage(LOGO_C,"PNG",X,10,w,ht)}catch(e){}
+    d.setFont("helvetica","bold");d.setFontSize(15);d.text(uni(),X+w+5,16);
+    d.setFontSize(11);d.text("Calendario escolar y planeación · "+per+(plan?" · "+plan:""),X+w+5,22);
+    d.setFont("helvetica","normal");d.setFontSize(8.5);d.text("Emitido el "+fd(today())+" · "+D.ms.length+" asignaturas"+(D.sinDoc?" · "+D.sinDoc+" sin docente":"")+(D.sinHor?" · "+D.sinHor+" sin horario":""),X+w+5,27);
+    d.line(X,30,W-X,30);return 36;
+  };
+  var cont=function(txt){d.setFont("helvetica","normal");d.setFontSize(8);d.text(uni()+" · Calendario escolar "+per+(txt?" · "+txt:""),X,10);d.line(X,12,W-X,12);return 18};
+  var y=titulo2(),secc="";
+  var nueva=function(){d.addPage();y=cont(secc)};
+  var cab=function(cols){
+    var x=X,tw=cols.reduce(function(a,c){return a+c.w},0);
+    d.setFillColor(226,236,232);d.rect(X,y-4,tw,6,"F");d.setFont("helvetica","bold");d.setFontSize(8);
+    cols.forEach(function(c){d.text(c.t,x+1,y);x+=c.w});y+=4;d.setFont("helvetica","normal")
+  };
+  var fila=function(cols,r){
+    var cells=r.map(function(t,i){return d.splitTextToSize(String(t==null?"":t),cols[i].w-2)}),n=Math.max.apply(null,cells.map(function(c){return c.length})),h=n*lh+1.6,x=X,tw=cols.reduce(function(a,c){return a+c.w},0);
+    if(y+h>bot){nueva();cab(cols)}
+    d.setFontSize(8);cells.forEach(function(c,i){d.text(c,x+1,y);x+=cols[i].w});
+    d.setLineWidth(.1);d.setDrawColor(200,200,200);d.line(X,y+h-3.2,X+tw,y+h-3.2);y+=h;
+  };
+  var enc=function(t,sub){if(y+22>bot)nueva();d.setFont("helvetica","bold");d.setFontSize(10.5);d.text(t,X,y);y+=5;if(sub){d.setFont("helvetica","normal");d.setFontSize(8.5);d.text(sub,X,y);y+=5}};
+  var C1=[{t:"Asignatura",w:78},{t:"Docente",w:62},{t:"Día y horario",w:36},{t:"Aula",w:26},{t:"Bloque",w:16},{t:"Evaluación",w:37}];
+  secc="Planeación por grupo";
+  d.setFont("helvetica","bold");d.setFontSize(12);d.text("1. Planeación por grupo",X,y);y+=7;
+  if(!D.porGrupo.length){d.setFont("helvetica","normal");d.setFontSize(9);d.text("No hay grupos ni asignaturas en este periodo.",X,y);y+=7}
+  D.porGrupo.forEach(function(g){
+    enc(g.plan+" · cuatrimestre "+g.cuat,(g.grupos.length?"Grupo"+(g.grupos.length>1?"s":"")+" "+g.grupos.map(function(x){return x.num+" ("+(x.alumnos||[]).length+" alumnos)"}).join(", "):"Sin grupo creado en este periodo"));
+    if(!g.mats.length){d.setFontSize(8.5);d.text("Sin asignaturas cargadas en el calendario.",X,y);y+=7;return}
+    cab(C1);g.mats.forEach(function(x){var m=x.m,dc=DOC[m.docId];fila(C1,[x.nom+(m.plan!==g.plan?" (fusionada con "+m.plan+")":fusDe(m).length?" (fusionada)":""),dc?dc.nombre:"Sin asignar",hor(m),m.aula||"—",calBl(m),m.ev?fd(m.ev):"Por definir"])});
+    y+=4;
+  });
+  d.addPage();secc="Horario por docente";y=cont(secc);
+  d.setFont("helvetica","bold");d.setFontSize(12);d.text("2. Horario por docente",X,y);y+=7;
+  var C2=[{t:"Asignatura",w:70},{t:"Plan · cuatrimestre · grupo",w:84},{t:"Día y horario",w:34},{t:"Aula",w:24},{t:"Bloque",w:14},{t:"Evaluación",w:29}];
+  if(!D.porDoc.length){d.setFont("helvetica","normal");d.setFontSize(9);d.text("No hay asignaturas en este periodo.",X,y);y+=7}
+  D.porDoc.forEach(function(p){
+    enc(p.nombre,p.mats.length+(p.mats.length===1?" asignatura":" asignaturas"));
+    cab(C2);p.mats.forEach(function(m){fila(C2,[m.nom,calGrupoTxt(m),hor(m),m.aula||"—",calBl(m),m.ev?fd(m.ev):"Por definir"])});y+=4;
+  });
+  d.addPage();secc="Evaluaciones";y=cont(secc);
+  d.setFont("helvetica","bold");d.setFontSize(12);d.text("3. Calendario de evaluaciones",X,y);y+=7;
+  var C3=[{t:"Fecha",w:34},{t:"Asignatura",w:72},{t:"Plan · cuatrimestre · grupo",w:78},{t:"Docente",w:56},{t:"Bloque",w:14}];
+  if(!D.evs.length){d.setFont("helvetica","normal");d.setFontSize(9);d.text("Todavía no hay fechas de evaluación capturadas.",X,y);y+=7}
+  else{cab(C3);D.evs.forEach(function(m){var dc=DOC[m.docId];fila(C3,[fd(m.ev),m.nom,calGrupoTxt(m),dc?dc.nombre:"Sin asignar",calBl(m)])})}
+  if(D.sinEv){y+=3;d.setFont("helvetica","normal");d.setFontSize(8.5);d.text(D.sinEv+(D.sinEv===1?" asignatura sin fecha de evaluación.":" asignaturas sin fecha de evaluación.")+" Las clases se imparten los sábados.",X,y)}
+  try{if(d.getNumberOfPages&&d.setPage){var n=d.getNumberOfPages();for(var i=1;i<=n;i++){d.setPage(i);d.setFont("helvetica","normal");d.setFontSize(8);d.text("Página "+i+" de "+n,W-X,H-7,{align:"right"})}}}catch(e){}
+  return {d:d,per:per,plan:plan,n:D.ms.length};
+}
+function calPdfNombre(per,plan){return "calendario-"+slug(per)+(plan?"-"+slug(plan):"")+".pdf"}
+$("mPdf").onclick=function(){
+  var per=$("mFPer").value||perAct(),plan=$("mFPlan").value,r=calPDFdoc(per,plan);if(!r)return;
+  if(!r.n&&!Object.keys(GRP).some(function(k){return GRP[k].per===per})){alert("No hay grupos ni asignaturas en "+per+".");return}
+  saveFile(calPdfNombre(per,plan),r.d.output("arraybuffer"))
+};
+$("mPdfC").onclick=async function(){
+  var per=$("mFPer").value||perAct(),plan=$("mFPlan").value,r=calPDFdoc(per,plan);if(!r)return;
+  var nom=calPdfNombre(per,plan),buf=r.d.output("arraybuffer");
+  try{
+    var f=new File([buf],nom,{type:"application/pdf"});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:"Calendario escolar "+per,text:"Calendario escolar y planeación "+per+(plan?" · "+plan:"")});return}
+  }catch(e){if(e&&e.name==="AbortError")return}
+  await saveFile(nom,buf);
+  alert("Este dispositivo no permite compartir directamente. Se descargó «"+nom+"»: ábrelo y envíalo por WhatsApp, correo o la aplicación que prefieras.")
 };
 $("mTb").onclick=async function(e){
   var t=e.target.dataset;
@@ -11671,7 +11813,7 @@ $("ccOk").onclick=async function(){
     b.disabled=false;return;
   }
   if(!CCR.sig){msg("No se pudo calcular el siguiente periodo.",true);return}
-  if(!confirm("¿Cerrar el periodo "+per+"?\n\nSe crearán los grupos de "+CCR.sig+" con los alumnos que pasan o repiten, y las calificaciones y la asistencia de "+per+" quedarán bloqueadas. Solo el Administrador podrá reabrirlo."))return;
+  if(!confirm("¿Cerrar el periodo "+per+"?\n\nSe crearán los grupos de "+CCR.sig+" con los alumnos que pasan o repiten, se cargarán en su calendario las asignaturas del cuatrimestre que sigue (según el plan de estudios y el bloque), y las calificaciones y la asistencia de "+per+" quedarán bloqueadas. Solo el Administrador podrá reabrirlo."))return;
   b.disabled=true;msg("Cerrando…",false);$("ccMsg").style.color="var(--muted)";
   try{
     var usados=Object.keys(GRP).map(function(k){return GRP[k].num}),creados=[],adeudos={};
@@ -11682,9 +11824,10 @@ $("ccOk").onclick=async function(){
       var mk=async function(cu,ids){if(!ids.length)return;var nn=numRnd();while(usados.indexOf(nn)>-1)nn=numRnd();usados.push(nn);var id=uid(),d={num:nn,plan:g.plan,per:CCR.sig,cuat:cu,alumnos:ids};await DBH.doc("grupos/"+id).set(d);GRP[id]=d;creados.push({de:g.id,a:id,cuat:cu,n:ids.length})};
       await mk(g.cuat+1,nuevo);await mk(g.cuat,rep);
     }
-    var act2=CIC[idPer(per)]||{},doc=Object.assign({},act2,{per:per,sig:CCR.sig,cerrado:true,fecha:today(),por:APP?APP.name:"",minAprob:MINAP,politica:$("ccPol").value,forzado:!!$("ccForzar").checked,resumen:{alumnos:CCR.tot.alumnos,pasan:CCR.tot.pasan,adeudo:CCR.tot.adeudo,repiten:CCR.tot.repiten,terminan:CCR.tot.terminan,sinCal:CCR.tot.sinCal},grupos:creados,adeudos:adeudos});
+    var pre=null;try{pre=await calPrecargar(CCR.sig)}catch(e2){pre={error:(e2&&e2.message)||"error",nuevas:[],sinPlan:[]}}
+    var act2=CIC[idPer(per)]||{},doc=Object.assign({},act2,{per:per,sig:CCR.sig,cerrado:true,calendario:pre.nuevas.length,fecha:today(),por:APP?APP.name:"",minAprob:MINAP,politica:$("ccPol").value,forzado:!!$("ccForzar").checked,resumen:{alumnos:CCR.tot.alumnos,pasan:CCR.tot.pasan,adeudo:CCR.tot.adeudo,repiten:CCR.tot.repiten,terminan:CCR.tot.terminan,sinCal:CCR.tot.sinCal},grupos:creados,adeudos:adeudos});
     await DBH.doc("ciclos/"+idPer(per)).set(doc);CIC[idPer(per)]=doc;
-    renderGr();ccRender();msg("Periodo cerrado. Se crearon "+creados.length+(creados.length===1?" grupo":" grupos")+" en "+CCR.sig+".",false);
+    renderGr();ccRender();msg("Periodo cerrado. Se crearon "+creados.length+(creados.length===1?" grupo":" grupos")+" en "+CCR.sig+" y "+pre.nuevas.length+(pre.nuevas.length===1?" asignatura":" asignaturas")+" en su calendario (bloque, docente y horario copiados cuando ya se habían impartido; completa lo que falte en Calendario escolar)."+(pre.sinPlan&&pre.sinPlan.length?" Sin plan de estudios cargado: "+pre.sinPlan.join(", ")+".":"")+(pre.error?" No se pudieron cargar todas las asignaturas ("+pre.error+"): usa «Cargar materias del periodo».":""),!!pre.error);
   }catch(e){msg("No se pudo cerrar el periodo: "+((e&&e.message)||"error")+". Puede que se hayan creado algunos grupos; revisa la lista antes de volver a intentar.",true)}
   b.disabled=false;
 };

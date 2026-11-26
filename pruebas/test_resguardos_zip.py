@@ -1,7 +1,7 @@
 import subprocess,time,json,os,urllib.request,zipfile,io
 from playwright.sync_api import sync_playwright
 PORT=3108;B='http://127.0.0.1:%d'%PORT;TOK='tok-rz-123'
-ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata38',LF_SETUP_TOKEN=TOK,LF_SIN_PRECARGA='1')
+ENVV=dict(os.environ,PORT=str(PORT),DATA_DIR='/tmp/nbdata38',LF_SETUP_TOKEN=TOK,LF_SIN_CONTACTO='1',LF_SIN_PRECARGA='1')
 os.system('rm -rf /tmp/nbdata38 /tmp/rz && mkdir -p /tmp/nbdata38 /tmp/rz')
 def contenido(n):return b'%PDF-1.4 escaneo '+n.encode()
 def zip_de(nombre,archivos,extra=None):
